@@ -212,10 +212,10 @@ previousBtn.addEventListener('click', () => {
     getPreviousQuestion(); 
     setIndexPreviousQuestion();
     const indexCurrentQuestion = localStorage.getItem('indexCurrentQuestion'); 
-    const indexPreviousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
+    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
     if (parseInt(indexCurrentQuestion) === 0) {
-        previousBtn.classList.add('hidden'); 
-    } else if (indexCurrentQuestion === 'emailForm' && indexPreviousQuestion === totalQuestions) {
+        previousBtn.classList.add('simulator-hidden'); 
+    } else if (indexNextQuestion === 'emailForm') {
         document.getElementById('simulator-block').classList.remove('simulator-hidden'); 
         document.querySelector('.simulator-form-block').classList.add('simulator-hidden'); 
     } else {
