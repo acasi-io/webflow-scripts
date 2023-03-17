@@ -196,7 +196,7 @@ nextBtn.addEventListener('click', () => {
         showForm();
         setIndexPreviousQuestion(); 
         localStorage.setItem('indexPreviousQuestion', totalQuestions - 1);
-        localStorage.setItem('indexCurrentQuestion', 'emailForm'); 
+        localStorage.setItem('indexCurrentQuestion', indexNextQuestion); 
         document.getElementById('simulator-block').classList.add('simulator-hidden'); 
     } else {
         previousBtn.classList.remove('simulator-hidden');
