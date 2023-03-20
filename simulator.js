@@ -260,7 +260,7 @@ function fillContent(currentQuestion) {
    
         answer.addEventListener('click', () => { 
         console.log(input.id);
-            ocalStorage.setItem('indexCurrentChoice', input.id);
+            localStorage.setItem('indexCurrentChoice', input.id);
             localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
         }); 
     }); 
