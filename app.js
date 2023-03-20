@@ -338,6 +338,13 @@ function showForm() {
     simulatorOptions.append(formTemplate); 
 }
 
+submitBtn.addEventListener('click', () => {
+	simulatorOptions.innerHTML = ''; 
+    previousBtn.classList.add('simulator-hidden'); 
+    submitBtn.classList.add('simulator-hidden');
+    getResult(); 
+});
+
 
 function getResult() {
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
@@ -346,16 +353,19 @@ function getResult() {
     const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
     const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
 
+    questionTitle.textContent = 'La forme sociale recommandée pour vous est'; 
+    questionTheme.textContent = 'Résultat'; 
+
     if (seulAnswer && dividendesAnswer) {
-        answers.innerHTML = 'La forme sociale recommandée pour vous est la SASU'; 
+        simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SASU'; 
     } else if (microEntrepriseAnswer) {
-        answers.innerHTML = 'La forme sociale recommandée pour vous est la micro-entreprise';
+        simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la micro-entreprise';
     } else if (plusieursAnswer && dividendesAnswer) {
-        answers.innerHTML = 'La forme sociale recommandée pour vous est la SAS'; 
+        simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SAS'; 
     } else if (salaireAnswer && plusieursAnswer) {
-        answers.innerHTML = 'La forme sociale recommandée pour vous est la SARL'; 
+        simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SARL'; 
     } else if (seulAnswer && salaireAnswer) {
-        answers.innerHTML = 'La forme sociale recommandée pour vous est : EURL'; 
+        simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est : EURL'; 
     } else {
         return;
     }
