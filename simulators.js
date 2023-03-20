@@ -338,7 +338,8 @@ function showForm() {
     simulatorOptions.append(formTemplate); 
 }
 
-submitBtn.addEventListener('click', () => {
+submitBtn.addEventListener('click', (e) => {
+    e.preventDefault(); 
 	simulatorOptions.innerHTML = ''; 
     previousBtn.classList.add('simulator-hidden'); 
     submitBtn.classList.add('simulator-hidden');
