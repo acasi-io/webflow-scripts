@@ -196,7 +196,7 @@ nextBtn.addEventListener('click', () => {
         showForm();
         setIndexPreviousQuestion(); 
         localStorage.setItem('indexPreviousQuestion', totalQuestions - 1);
-        localStorage.setItem('indexCurrentQuestion', indexNextQuestion); 
+        localStorage.setItem('indexCurrentQuestion', 'emailForm'); 
         document.getElementById('simulator-block').classList.add('simulator-hidden'); 
     } else {
         previousBtn.classList.remove('simulator-hidden');
@@ -207,13 +207,13 @@ nextBtn.addEventListener('click', () => {
     console.log(resultArray);
 }); 
    
-   
+
 previousBtn.addEventListener('click', () => {
     getPreviousQuestion(); 
     setIndexPreviousQuestion();
-    const indexCurrentQuestion = localStorage.getItem('indexCurrentQuestion'); 
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
-    if (parseInt(indexCurrentQuestion) === 0) {
+    if (indexCurrentQuestion === 0) {
         previousBtn.classList.add('simulator-hidden'); 
     } else if (indexNextQuestion === 'emailForm') {
         document.getElementById('simulator-block').classList.remove('simulator-hidden'); 
@@ -265,7 +265,7 @@ function fillContent(currentQuestion) {
         }); 
     }); 
 }
-   
+
    
 function firstQuestion() {
     const firstQuestionData = questionsData.find(question => question.id === questionIndex);
@@ -287,7 +287,6 @@ function getNextQuestion() {
     questionTitle.textContent = currentQuestionData.question;
     questionTheme.textContent = currentQuestionData.theme;
      
-    const choiceLength = Object.keys(currentQuestionData.choices).length; 
     showQuestion(currentQuestionData); 
 }
    
@@ -296,7 +295,6 @@ function getPreviousQuestion() {
     //simulatorOptions.innerHTML = '';  
     let indexPreviousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
     const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
-    const choiceLength = Object.keys(previousQuestionData.choices).length; 
    
     questionTitle.textContent = previousQuestionData.question; 
    
@@ -326,8 +324,7 @@ function storeResult() {
     const currentChoiceData = previousQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
     updateResultArray(currentChoiceData, previousQuestionData); 
 }
-   
-   
+    
    
 function showForm() {
     simulatorOptions.innerHTML = ''; 
