@@ -359,15 +359,15 @@ function getResult() {
     //questionTheme.textContent = 'Résultat'; 
 
     if (seulAnswer && dividendesAnswer) {
-        resultInput.innerHTML = 'La forme sociale recommandée pour vous est la SASU'; 
+        resultInput.value = 'La forme sociale recommandée pour vous est la SASU'; 
     } else if (microEntrepriseAnswer) {
-        resultInput.innerHTML = 'La forme sociale recommandée pour vous est la micro-entreprise';
+        resultInput.value = 'La forme sociale recommandée pour vous est la micro-entreprise';
     } else if (plusieursAnswer && dividendesAnswer) {
-        resultInput.innerHTML = 'La forme sociale recommandée pour vous est la SAS'; 
+        resultInput.value = 'La forme sociale recommandée pour vous est la SAS'; 
     } else if (salaireAnswer && plusieursAnswer) {
-        resultInput.innerHTML = 'La forme sociale recommandée pour vous est la SARL'; 
+        resultInput.value = 'La forme sociale recommandée pour vous est la SARL'; 
     } else if (seulAnswer && salaireAnswer) {
-        resultInput.innerHTML = 'La forme sociale recommandée pour vous est : EURL'; 
+        resultInput.value = 'La forme sociale recommandée pour vous est : EURL'; 
     } else {
         return;
     }
