@@ -216,10 +216,10 @@ previousBtn.addEventListener('click', () => {
     if (indexCurrentQuestion === 0) {
         previousBtn.classList.add('simulator-hidden'); 
     } else if (indexNextQuestion === 'emailForm') {
-        document.getElementById('simulator-block').classList.remove('simulator-hidden'); 
         document.querySelector('.simulator-form-block').classList.add('simulator-hidden'); 
         submitBtn.classList.add('simulator-hidden');
         nextBtn.classList.remove('simulator-hidden'); 
+        
     } else {
         return;
     }
