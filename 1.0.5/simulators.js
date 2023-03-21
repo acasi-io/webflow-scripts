@@ -1,3 +1,5 @@
+const { ErrorResponse } = require("@remix-run/router");
+
 const questionsData = [
     {   
         id: 0, 
@@ -336,7 +338,6 @@ function showForm() {
     formTemplate.classList.remove('simulator-hidden'); 
    
     simulatorOptions.append(formTemplate); 
-    getResult(); 
 }
 
 submitBtn.addEventListener('click', () => {
@@ -357,30 +358,19 @@ function getResult() {
     questionTitle.textContent = 'La forme sociale recommandée pour vous est'; 
     questionTheme.textContent = 'Résultat'; 
 
-    const newInput = document.createElement('input'); 
-    newInput.setAttribute('name', 'result'); 
-    newInput.setAttribute('id', 'result'); 
-    newInput.setAttribute('type', 'text'); 
-
     if (seulAnswer && dividendesAnswer) {
-        newInput.setAttribute('value', 'La forme sociale recommandée pour vous est la SASU'); 
+        simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SASU';
     } else if (microEntrepriseAnswer) {
-        newInput.setAttribute('value', 'La forme sociale recommandée pour vous est la micro-entreprise')
-        //simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la micro-entreprise';
+        simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la micro-entreprise';
     } else if (plusieursAnswer && dividendesAnswer) {
-        newInput.setAttribute('value', 'La forme sociale recommandée pour vous est la SAS')
-        //simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SAS'; 
+        simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SAS'; 
     } else if (salaireAnswer && plusieursAnswer) {
-        newInput.setAttribute('value', 'La forme sociale recommandée pour vous est la SARL')
-        //simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SARL'; 
+        simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SARL'; 
     } else if (seulAnswer && salaireAnswer) {
-        newInput.setAttribute('value', 'La forme sociale recommandée pour vous est : EURL');
-        //simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est : EURL'; 
+        simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est : EURL'; 
     } else {
         return;
     }
-
-    simulatorOptions.append(newInput); 
 }
 
 
@@ -399,3 +389,30 @@ function deleteOldValue() {
 /*document.querySelector('.simulator-answer').addEventListener('change', () => {
     document.querySelector('.simulator-answer-btn').classList.toggle('active'); 
 });*/
+
+
+const form = document.querySelector('.form-block'); 
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault(); 
+
+    const datasForm = new FormData(form); 
+
+    fetch('http://exemple.com/api', {
+        method: 'POST', 
+        body: datasForm
+    })
+    .then(response => {
+        if (response.ok) {
+            const confirmationMessage = document.createElement('p'); 
+            confirmationMessage.textContent = 'Le formulaire a été envoyé avec succès.'; 
+            form.appendChild(confirmationMessage); 
+            form.reset();  
+        } else {
+            throw new Error('La requête a échoué.'); 
+        }
+    })
+    .catch(error => {
+        console.error(error); 
+    })
+});
