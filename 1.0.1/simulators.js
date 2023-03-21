@@ -338,14 +338,11 @@ function showForm() {
     simulatorOptions.append(formTemplate); 
 }
 
-submitBtn.addEventListener('click', (e) => {
-    e.preventDefault(); 
-    if (e.target.checkValidity()) {
-        simulatorOptions.innerHTML = ''; 
-        previousBtn.classList.add('simulator-hidden'); 
-        submitBtn.classList.add('simulator-hidden');
-        getResult(); 
-    }
+submitBtn.addEventListener('click', () => {
+    simulatorOptions.innerHTML = ''; 
+    previousBtn.classList.add('simulator-hidden'); 
+    submitBtn.classList.add('simulator-hidden');
+    getResult(); 
 });
 
 
@@ -385,3 +382,8 @@ function deleteOldValue() {
   
     resultArray.splice(indexAnswerToFind, 1); 
 }
+
+
+document.querySelector('.simulator-answer').addEventListener('change', () => {
+    document.querySelector('.simulator-answer-btn').classList.toggle('active'); 
+});
