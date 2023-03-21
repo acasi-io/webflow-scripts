@@ -374,6 +374,7 @@ function getResult() {
 
 
 function deleteOldValue() {
+    debugger
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
   
