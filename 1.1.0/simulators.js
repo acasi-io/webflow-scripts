@@ -168,7 +168,7 @@ const questionsData = [
    
 const startBtn = document.getElementById('start-button'); 
 const nextBtn = document.getElementById('next-button'); 
-const previousBtn = document.querySelectorAll('.previous-button'); 
+const previousBtn = document.querySelector('.previous-button'); 
 const questionTitle = document.getElementById('question'); 
 const questionIndex = 0; 
 const simulatorOptions = document.getElementById('simulator-options');
@@ -176,7 +176,6 @@ let resultArray = [];
 const questionTheme = document.querySelector('.simulator-theme');
 const submitBtn = document.querySelector('.simulator-submit-button');
 const totalQuestions = Object.keys(questionsData).length;
-const previousQuestionBtn = document.querySelector('.previous-question');
    
    
 startBtn.addEventListener('click', () => {
@@ -199,36 +198,33 @@ nextBtn.addEventListener('click', () => {
         localStorage.setItem('indexPreviousQuestion', totalQuestions - 1);
         localStorage.setItem('indexCurrentQuestion', 'emailForm'); 
         document.getElementById('simulator-block').classList.add('simulator-hidden');
-        previousQuestionBtn.classList.add('simulator-hidden'); 
     } else {
-        previousQuestionBtn.classList.remove('simulator-hidden');
+        previousBtn.classList.remove('simulator-hidden');
         getNextQuestion(); 
         setIndexPreviousQuestion(); 
     } 
     storeResult(); 
     console.log(resultArray);
 }); 
-   
 
-previousBtn.forEach(button => {
-    button.addEventListener('click', () => {
-        getPreviousQuestion(); 
-        setIndexPreviousQuestion();
-        const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-        const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
-        if (indexCurrentQuestion === 0) {
-            previousBtn.classList.add('simulator-hidden'); 
-        } else if (indexNextQuestion === 'emailForm') {
-            document.getElementById('simulator-block').classList.remove('simulator-hidden'); 
-            document.querySelector('.simulator-form-block').classList.add('simulator-hidden'); 
-            submitBtn.classList.add('simulator-hidden');
-            nextBtn.classList.remove('simulator-hidden'); 
-        } else {
-            return;
-        }
-        deleteOldValue();
-    }); 
-});
+
+previousBtn.addEventListener('click', () => {
+    getPreviousQuestion(); 
+    setIndexPreviousQuestion();
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
+    if (indexCurrentQuestion === 0) {
+        previousBtn.classList.add('simulator-hidden'); 
+    } else if (indexNextQuestion === 'emailForm') {
+        document.getElementById('simulator-block').classList.remove('simulator-hidden'); 
+        document.querySelector('.simulator-form-block').classList.add('simulator-hidden'); 
+        submitBtn.classList.add('simulator-hidden');
+        nextBtn.classList.remove('simulator-hidden'); 
+    } else {
+        return;
+    }
+    deleteOldValue();
+}); 
    
    
 function showQuestion(currentQuestion) {
