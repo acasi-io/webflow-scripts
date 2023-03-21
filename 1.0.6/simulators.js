@@ -1,5 +1,3 @@
-const { ErrorResponse } = require("@remix-run/router");
-
 const questionsData = [
     {   
         id: 0, 
