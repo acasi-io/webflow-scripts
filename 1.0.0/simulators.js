@@ -328,7 +328,7 @@ function storeResult() {
    
 function showForm() {
     simulatorOptions.innerHTML = ''; 
-    questionTitle.innerHTML = 'Entrez vos coordonnés pour afficher le résultat de la simulation';
+    questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
     questionTheme.innerHTML = 'Résultat';
     nextBtn.classList.add('simulator-hidden'); 
     submitBtn.classList.remove('simulator-hidden');
@@ -340,10 +340,12 @@ function showForm() {
 
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault(); 
-	simulatorOptions.innerHTML = ''; 
-    previousBtn.classList.add('simulator-hidden'); 
-    submitBtn.classList.add('simulator-hidden');
-    getResult(); 
+    if (e.target.checkValidity()) {
+        simulatorOptions.innerHTML = ''; 
+        previousBtn.classList.add('simulator-hidden'); 
+        submitBtn.classList.add('simulator-hidden');
+        getResult(); 
+    }
 });
 
 
