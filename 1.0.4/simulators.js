@@ -194,7 +194,6 @@ nextBtn.addEventListener('click', () => {
    
     if (indexNextQuestion === 'emailForm') {
         showForm();
-        getResult(); 
         setIndexPreviousQuestion(); 
         localStorage.setItem('indexPreviousQuestion', totalQuestions - 1);
         localStorage.setItem('indexCurrentQuestion', 'emailForm'); 
@@ -337,6 +336,7 @@ function showForm() {
     formTemplate.classList.remove('simulator-hidden'); 
    
     simulatorOptions.append(formTemplate); 
+    getResult(); 
 }
 
 submitBtn.addEventListener('click', () => {
@@ -348,29 +348,39 @@ submitBtn.addEventListener('click', () => {
 
 
 function getResult() {
-    const resultInput = document.getElementById('result'); 
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
     const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
     const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
     const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
     const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
 
-    //questionTitle.textContent = 'La forme sociale recommandée pour vous est'; 
-    //questionTheme.textContent = 'Résultat'; 
+    questionTitle.textContent = 'La forme sociale recommandée pour vous est'; 
+    questionTheme.textContent = 'Résultat'; 
+
+    const newInput = document.createElement('input'); 
+    newInput.setAttribute('name', 'result'); 
+    newInput.setAttribute('id', 'result'); 
+    newInput.setAttribute('type', 'text'); 
 
     if (seulAnswer && dividendesAnswer) {
-        resultInput.value = 'La forme sociale recommandée pour vous est la SASU'; 
+        newInput.setAttribute('value', 'La forme sociale recommandée pour vous est la SASU'); 
     } else if (microEntrepriseAnswer) {
-        resultInput.value = 'La forme sociale recommandée pour vous est la micro-entreprise';
+        newInput.setAttribute('value', 'La forme sociale recommandée pour vous est la micro-entreprise')
+        //simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la micro-entreprise';
     } else if (plusieursAnswer && dividendesAnswer) {
-        resultInput.value = 'La forme sociale recommandée pour vous est la SAS'; 
+        newInput.setAttribute('value', 'La forme sociale recommandée pour vous est la SAS')
+        //simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SAS'; 
     } else if (salaireAnswer && plusieursAnswer) {
-        resultInput.value = 'La forme sociale recommandée pour vous est la SARL'; 
+        newInput.setAttribute('value', 'La forme sociale recommandée pour vous est la SARL')
+        //simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SARL'; 
     } else if (seulAnswer && salaireAnswer) {
-        resultInput.value = 'La forme sociale recommandée pour vous est : EURL'; 
+        newInput.setAttribute('value', 'La forme sociale recommandée pour vous est : EURL');
+        //simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est : EURL'; 
     } else {
         return;
     }
+
+    simulatorOptions.append(newInput); 
 }
 
 
