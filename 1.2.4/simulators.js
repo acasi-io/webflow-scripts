@@ -391,9 +391,8 @@ function deleteOldValue() {
 const simulatorAnswers = document.querySelectorAll('.simulator-answer'); 
 
 simulatorAnswers.forEach(simulatorAnswer => {
-    simulatorAnswer.addEventListener('change', () => {
-        debugger
-        document.querySelector('.simulator-answer-btn').classList.toggle('active');
-    }); 
+    if (simulatorAnswer.checked) {
+        document.querySelector('.simulator-answer-btn').classList.add('simulator-checked');
+    }
 }); 
 
