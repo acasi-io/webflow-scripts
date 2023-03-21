@@ -374,7 +374,6 @@ function getResult() {
 
 
 function deleteOldValue() {
-    debugger
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
   
@@ -383,6 +382,8 @@ function deleteOldValue() {
     let indexAnswerToFind = resultArray.indexOf(answerToFind); 
   
     resultArray.splice(indexAnswerToFind, 1); 
+    debugger
+    console.log(resultArray);
 }
 
 
