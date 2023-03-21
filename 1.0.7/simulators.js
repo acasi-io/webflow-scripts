@@ -387,30 +387,3 @@ function deleteOldValue() {
 /*document.querySelector('.simulator-answer').addEventListener('change', () => {
     document.querySelector('.simulator-answer-btn').classList.toggle('active'); 
 });*/
-
-
-const form = document.querySelector('.form-block'); 
-
-form.addEventListener('submit', (e) => {
-    e.preventDefault(); 
-
-    const datasForm = new FormData(form); 
-
-    fetch('http://exemple.com/api', {
-        method: 'POST', 
-        body: datasForm
-    })
-    .then(response => {
-        if (response.ok) {
-            const confirmationMessage = document.createElement('p'); 
-            confirmationMessage.textContent = 'Le formulaire a été envoyé avec succès.'; 
-            form.appendChild(confirmationMessage); 
-            form.reset();  
-        } else {
-            throw new Error('La requête a échoué.'); 
-        }
-    })
-    .catch(error => {
-        console.error(error); 
-    })
-});
