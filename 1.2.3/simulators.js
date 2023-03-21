@@ -392,6 +392,7 @@ const simulatorAnswers = document.querySelectorAll('.simulator-answer');
 
 simulatorAnswers.forEach(simulatorAnswer => {
     simulatorAnswer.addEventListener('change', () => {
+        debugger
         document.querySelector('.simulator-answer-btn').classList.toggle('active');
     }); 
 }); 
