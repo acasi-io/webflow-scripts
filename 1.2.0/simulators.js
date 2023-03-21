@@ -358,10 +358,10 @@ function getResult() {
     questionTitle.textContent = 'La forme sociale recommandée pour vous est'; 
     questionTheme.textContent = 'Résultat'; 
 
-    if (seulAnswer && dividendesAnswer) {
-        simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SASU';
-    } else if (microEntrepriseAnswer) {
+    if (microEntrepriseAnswer) {
         simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la micro-entreprise';
+    } else if (seulAnswer && dividendesAnswer) {
+        simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SASU';
     } else if (plusieursAnswer && dividendesAnswer) {
         simulatorOptions.innerHTML = 'La forme sociale recommandée pour vous est la SAS'; 
     } else if (salaireAnswer && plusieursAnswer) {
