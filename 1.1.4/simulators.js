@@ -209,6 +209,7 @@ nextBtn.addEventListener('click', () => {
 
 
 previousBtn.addEventListener('click', () => {
+    deleteOldValue();
     getPreviousQuestion(); 
     setIndexPreviousQuestion();
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
@@ -224,7 +225,6 @@ previousBtn.addEventListener('click', () => {
     } else {
         return;
     }
-    deleteOldValue();
 }); 
    
    
