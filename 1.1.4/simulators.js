@@ -209,9 +209,9 @@ nextBtn.addEventListener('click', () => {
 
 
 previousBtn.addEventListener('click', () => {
-    deleteOldValue();
     getPreviousQuestion(); 
     setIndexPreviousQuestion();
+    deleteOldValue();
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
     if (indexCurrentQuestion === 0) {
