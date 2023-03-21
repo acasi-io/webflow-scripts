@@ -176,6 +176,7 @@ let resultArray = [];
 const questionTheme = document.querySelector('.simulator-theme');
 const submitBtn = document.querySelector('.simulator-submit-button');
 const totalQuestions = Object.keys(questionsData).length;
+const previousQuestionBtn = document.querySelector('.previous-question');
    
    
 startBtn.addEventListener('click', () => {
@@ -198,9 +199,9 @@ nextBtn.addEventListener('click', () => {
         localStorage.setItem('indexPreviousQuestion', totalQuestions - 1);
         localStorage.setItem('indexCurrentQuestion', 'emailForm'); 
         document.getElementById('simulator-block').classList.add('simulator-hidden');
-        document.querySelector('previous-question').classList.add('simulator-hidden'); 
+        previousQuestionBtn.classList.add('simulator-hidden'); 
     } else {
-        previousBtn.classList.remove('simulator-hidden');
+        previousQuestionBtn.classList.remove('simulator-hidden');
         getNextQuestion(); 
         setIndexPreviousQuestion(); 
     } 
