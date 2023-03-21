@@ -382,8 +382,6 @@ function deleteOldValue() {
     let indexAnswerToFind = resultArray.indexOf(answerToFind); 
   
     resultArray.splice(indexAnswerToFind, 1); 
-    debugger
-    console.log(resultArray);
 }
 
 
