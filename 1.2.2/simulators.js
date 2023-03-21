@@ -388,7 +388,11 @@ function deleteOldValue() {
     resultArray.splice(indexAnswerToFind, 1); 
 }
 
+const simulatorAnswers = document.querySelectorAll('.simulator-answer'); 
 
-/*document.querySelector('.simulator-answer').addEventListener('change', () => {
-    document.querySelector('.simulator-answer-btn').classList.toggle('active'); 
-});*/
+simulatorAnswers.forEach(simulatorAnswer => {
+    simulatorAnswer.addEventListener('change', () => {
+        document.querySelector('.simulator-answer-btn').classList.toggle('active');
+    }); 
+}); 
+
