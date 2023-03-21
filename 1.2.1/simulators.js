@@ -176,6 +176,7 @@ let resultArray = [];
 const questionTheme = document.querySelector('.simulator-theme');
 const submitBtn = document.querySelector('.simulator-submit-button');
 const totalQuestions = Object.keys(questionsData).length;
+const simulatorInformation = document.getElementById('simulator-information');
    
    
 startBtn.addEventListener('click', () => {
@@ -198,6 +199,7 @@ nextBtn.addEventListener('click', () => {
         localStorage.setItem('indexPreviousQuestion', totalQuestions - 1);
         localStorage.setItem('indexCurrentQuestion', 'emailForm'); 
         document.getElementById('simulator-block').classList.add('simulator-hidden');
+        simulatorInformation.textContent = ''; 
     } else {
         previousBtn.classList.remove('simulator-hidden');
         getNextQuestion(); 
@@ -345,6 +347,7 @@ submitBtn.addEventListener('click', (e) => {
     previousBtn.classList.add('simulator-hidden'); 
     submitBtn.classList.add('simulator-hidden');
     getResult(); 
+    simulatorInformation.textContent = 'Les résultats de cette simulation ne sont pas définitifs. D’autres paramètres personnels peuvent entrer en compte dans le choix de la forme sociale la plus adaptée pour vous. Si vous souhaitez avoir de l’aide d’un nos experts. Prenez rendez-vous ici'; 
 });
 
 
