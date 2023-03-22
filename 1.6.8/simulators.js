@@ -264,29 +264,12 @@ function fillContent(currentQuestion) {
         } else {
             emoji.remove(); 
         }
-
-        /*if (document.querySelector('.simulator-radio:checked') === null) {
-            answer.addEventListener('click', (e) => {
-                console.log(input.id);
-                localStorage.setItem('indexCurrentChoice', input.id);
-                localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
-                e.classList.add('simulator-checked'); 
-            }); 
-        } if (document.querySelector('.simulator-radio:checked') !== null) {
-            answer.classList.remove('simulator-hidden'); 
-            answer.addEventListener('click', (e) => {
-                console.log(input.id);
-                localStorage.setItem('indexCurrentChoice', input.id);
-                localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
-                e.classList.add('simulator-checked'); 
-            }); 
-        }*/
    
         answer.addEventListener('click', () => { 
             console.log(input.id);
             localStorage.setItem('indexCurrentChoice', input.id);
             localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
-            answer.classList.add('simulator-checked');
+            //answer.classList.add('simulator-checked');
         }); 
 
         /*if (document.querySelector('.simulator-radio:checked') === null) {
@@ -295,11 +278,11 @@ function fillContent(currentQuestion) {
             inputCheck.classList.add('simulator-checked'); 
         }*/
 
-        /*input.addEventListener('click', () => {
+        input.addEventListener('click', () => {
             const inputCheck = document.querySelector('.simulator-radio:checked').parentNode; 
             inputCheck.classList.add('simulator-checked');
             //answer.classList.add('simulator-checked');
-        });*/
+        });
     }); 
 }
 
