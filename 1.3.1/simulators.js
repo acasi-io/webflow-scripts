@@ -1,5 +1,3 @@
-const { element } = require("prop-types");
-
 const questionsData = [
     {   
         id: 0, 
