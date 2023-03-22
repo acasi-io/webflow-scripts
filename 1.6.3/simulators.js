@@ -243,7 +243,6 @@ function fillContent(currentQuestion) {
     simulatorBlock.innerHTML = ''; 
 
     const inputCheck = document.querySelector('.simulator-radio:checked'); 
-    inputCheck.classList.add('simulator-checked'); 
    
     currentQuestion.choices.forEach((choice, index) => {
         const cloneAnswerBlock = answerBlock.cloneNode(true); 
@@ -296,6 +295,12 @@ function fillContent(currentQuestion) {
             //answer.classList.add('simulator-checked');
         });*/
     }); 
+
+    if (document.querySelector('.simulator-radio:checked') === null) {
+        return; 
+    } else {
+        inputCheck.classList.add('simulator-checked'); 
+    }
 }
 
    
