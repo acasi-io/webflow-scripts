@@ -203,6 +203,7 @@ nextBtn.addEventListener('click', () => {
    
     if (indexCurrentQuestion === totalQuestions - 1) {
         showForm();
+        localStorage.setItem('indexPreviousQuestion', 6);
         localStorage.setItem('indexCurrentQuestion', 'emailForm'); 
         document.getElementById('simulator-block').classList.add('simulator-hidden');
         simulatorInformation.textContent = ''; 
@@ -323,10 +324,10 @@ function updateResultArray(currentChoice, currentQuestion) {
    
 function storeResult() {
     const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
-    const indexPreviousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
-    const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
-    const currentChoiceData = previousQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
-    updateResultArray(currentChoiceData, previousQuestionData); 
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
+    const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
+    updateResultArray(currentChoiceData, currentQuestionData); 
 }
     
    
