@@ -286,13 +286,7 @@ function fillContent(currentQuestion) {
             console.log(input.id);
             localStorage.setItem('indexCurrentChoice', input.id);
             localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
-
-            if (document.querySelector('.simulator-radio:checked') === null) {
-                return;
-            } else if (document.querySelector('.simulator-radio:checked') !== null) {
-                const simulatorRadioBtn = document.querySelector(`.simulator-radio[id=${input.id}]`); 
-                simulatorRadioBtn.classList.add('simulator-checked'); 
-            }
+            answer.classList.add('simulator-checked');
         }); 
 
         /*if (document.querySelector('.simulator-radio:checked') === null) {
