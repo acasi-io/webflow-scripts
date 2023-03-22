@@ -193,13 +193,13 @@ startBtn.addEventListener('click', () => {
 nextBtn.addEventListener('click', () => {
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    storeResult();
 
     if (indexCurrentQuestion !== totalQuestions - 1) {
         previousBtn.classList.remove('simulator-hidden');
         getNextQuestion();
     }
-    setIndexPreviousQuestion(); 
-    storeResult();
+    setIndexPreviousQuestion();
    
     if (indexCurrentQuestion === totalQuestions - 1) {
         showForm();
