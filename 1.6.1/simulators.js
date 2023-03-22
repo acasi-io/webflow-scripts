@@ -280,20 +280,18 @@ function fillContent(currentQuestion) {
             }); 
         }*/
    
-        answer.addEventListener('click', (e) => { 
+        answer.addEventListener('click', () => { 
             console.log(input.id);
-            e.classList.remove('simulator-checked');
             localStorage.setItem('indexCurrentChoice', input.id);
             localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
-            e.classList.add('simulator-checked');
         }); 
 
 
-        /*input.addEventListener('click', () => {
+        input.addEventListener('click', () => {
             const inputCheck = document.querySelector('.simulator-radio:checked').parentNode; 
             inputCheck.classList.add('simulator-checked');
             //answer.classList.add('simulator-checked');
-        });*/
+        });
     }); 
 }
 
