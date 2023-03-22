@@ -268,6 +268,13 @@ function fillContent(currentQuestion) {
             localStorage.setItem('indexCurrentChoice', input.id);
             localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
         }); 
+
+
+        input.addEventListener('click', () => {
+            const inputCheck = document.querySelector('.simulator-radio:checked').parentNode; 
+            inputCheck.classList.remove('simulator-checked');
+            answer.classList.add('simulator-checked');
+        });
     }); 
 }
 
@@ -280,14 +287,6 @@ function firstQuestion() {
     questionTheme.textContent = firstQuestionData.theme;
        
     showQuestion(firstQuestionData); 
-
-    const simulatorAnswers = document.querySelectorAll('.simulator-radio'); 
-
-    simulatorAnswers.forEach(simulatorAnswer => {
-        simulatorAnswer.addEventListener('change', () => {
-            document.querySelector('.simulator-answer-btn').classList.add('simulator-checked');
-        }); 
-    }); 
 }
    
    
@@ -301,14 +300,6 @@ function getNextQuestion() {
     questionTheme.textContent = currentQuestionData.theme;
      
     showQuestion(currentQuestionData); 
-
-    const simulatorAnswers = document.querySelectorAll('.simulator-radio'); 
-
-    simulatorAnswers.forEach(simulatorAnswer => {
-        simulatorAnswer.addEventListener('change', () => {
-            document.querySelector('.simulator-answer-btn').classList.add('simulator-checked');
-        }); 
-    }); 
 }
    
    
@@ -365,14 +356,19 @@ function showForm() {
 
     if (microEntrepriseAnswer) {
         resultInput.value = 'micro-entreprise';
+        localStorage.setItem('result', 'micro-entreprise');
     } else if (seulAnswer && dividendesAnswer) {
         resultInput.value = 'SASU';
+        localStorage.setItem('result', 'SASU');
     } else if (plusieursAnswer && dividendesAnswer) {
         resultInput.value = 'SAS'; 
+        localStorage.setItem('result', 'SAS');
     } else if (salaireAnswer && plusieursAnswer) {
         resultInput.value = 'SARL'; 
+        localStorage.setItem('result', 'SARL');
     } else if (seulAnswer && salaireAnswer) {
         resultInput.value = 'EURL'; 
+        localStorage.setItem('result', 'EURL');
     } else {
         return;
     }
