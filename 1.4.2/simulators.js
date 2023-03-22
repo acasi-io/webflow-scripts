@@ -419,7 +419,7 @@ simulatorAnswers.forEach(simulatorAnswer => {
 }); 
 
 
-const simulatorSubmitBtn = document.getElementById('simulator-submit-button2'); 
+/*const simulatorSubmitBtn = document.getElementById('simulator-submit-button2'); 
 const mailInput = document.getElementById('email'); 
 const phoneInput = document.getElementById('phone'); 
 
@@ -435,4 +435,4 @@ simulatorSubmitBtn.addEventListener('click', (e) => {
     } else {
         return; 
     }
-});
+});*/
