@@ -280,6 +280,14 @@ function firstQuestion() {
     questionTheme.textContent = firstQuestionData.theme;
        
     showQuestion(firstQuestionData); 
+
+    const simulatorAnswers = document.querySelectorAll('.simulator-radio'); 
+
+    simulatorAnswers.forEach(simulatorAnswer => {
+        simulatorAnswer.addEventListener('change', () => {
+            document.querySelector('.simulator-answer-btn').classList.add('simulator-checked');
+        }); 
+    }); 
 }
    
    
@@ -293,6 +301,14 @@ function getNextQuestion() {
     questionTheme.textContent = currentQuestionData.theme;
      
     showQuestion(currentQuestionData); 
+
+    const simulatorAnswers = document.querySelectorAll('.simulator-radio'); 
+
+    simulatorAnswers.forEach(simulatorAnswer => {
+        simulatorAnswer.addEventListener('change', () => {
+            document.querySelector('.simulator-answer-btn').classList.add('simulator-checked');
+        }); 
+    }); 
 }
    
    
@@ -411,13 +427,6 @@ function deleteOldValue() {
     resultArray.splice(indexAnswerToFind, 1); 
 }*/
 
-const simulatorAnswers = document.querySelectorAll('.simulator-radio'); 
-
-simulatorAnswers.forEach(simulatorAnswer => {
-    simulatorAnswer.addEventListener('change', () => {
-        document.querySelector('.simulator-answer-btn').classList.add('simulator-checked');
-    }); 
-}); 
 
 
 /*const simulatorSubmitBtn = document.getElementById('simulator-submit-button2'); 
