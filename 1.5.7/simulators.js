@@ -289,8 +289,8 @@ function fillContent(currentQuestion) {
 
         input.addEventListener('click', () => {
             const inputCheck = document.querySelector('.simulator-radio:checked').parentNode; 
-            inputCheck.classList.remove('simulator-checked');
-            answer.classList.add('simulator-checked');
+            inputCheck.classList.add('simulator-checked');
+            //answer.classList.add('simulator-checked');
         });
     }); 
 }
