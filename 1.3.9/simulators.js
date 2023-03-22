@@ -330,6 +330,14 @@ function storeResult() {
     
    
 function showForm() {
+    simulatorOptions.innerHTML = ''; 
+    questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
+    questionTheme.innerHTML = 'Résultat';
+    nextBtn.classList.add('simulator-hidden'); 
+    submitBtn.classList.remove('simulator-hidden');
+    const formTemplate = document.querySelector('.simulator-form-block'); 
+    formTemplate.classList.remove('simulator-hidden');  
+
     const resultInput = document.getElementById('result');
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
     const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
@@ -350,13 +358,6 @@ function showForm() {
     } else {
         return;
     }
-    simulatorOptions.innerHTML = ''; 
-    questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
-    questionTheme.innerHTML = 'Résultat';
-    nextBtn.classList.add('simulator-hidden'); 
-    submitBtn.classList.remove('simulator-hidden');
-    const formTemplate = document.querySelector('.simulator-form-block'); 
-    formTemplate.classList.remove('simulator-hidden');  
    
     simulatorOptions.append(formTemplate); 
 }
