@@ -191,7 +191,6 @@ startBtn.addEventListener('click', () => {
 }); 
    
 nextBtn.addEventListener('click', () => {
-    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     storeResult();
 
@@ -203,12 +202,12 @@ nextBtn.addEventListener('click', () => {
    
     if (indexCurrentQuestion === totalQuestions - 1) {
         showForm();
+        previousBtn.classList.add('simulator-hidden');
         localStorage.setItem('indexPreviousQuestion', 6);
         localStorage.setItem('indexCurrentQuestion', 'emailForm'); 
         document.getElementById('simulator-block').classList.add('simulator-hidden');
         simulatorInformation.textContent = ''; 
     } 
-    console.log(resultArray);
 }); 
 
 
@@ -233,11 +232,6 @@ previousBtn.addEventListener('click', () => {
    
    
 function showQuestion(currentQuestion) {
-    fillContent(currentQuestion);
-}
-   
-   
-function fillContent(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild;
     const simulatorBlock = document.getElementById('simulator-block'); 
     simulatorBlock.innerHTML = ''; 
@@ -264,24 +258,15 @@ function fillContent(currentQuestion) {
         }
    
         answer.addEventListener('click', () => { 
-            console.log(input.id);
             localStorage.setItem('indexCurrentChoice', input.id);
             localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
-            //answer.classList.add('simulator-checked');
         }); 
-
-        /*if (document.querySelector('.simulator-radio:checked') === null) {
-            return; 
-        } else {
-            inputCheck.classList.add('simulator-checked'); 
-        }*/
 
         input.addEventListener('click', (e) => {
             [...document.querySelectorAll('.simulator-answer-btn')].forEach(element => {
                 element.classList.remove('simulator-checked'); 
             });
             e.currentTarget.parentNode.classList.add('simulator-checked');
-            //answer.classList.add('simulator-checked');
         });
     }); 
 }
@@ -395,38 +380,3 @@ function deleteOldValue() {
   
     resultArray.splice(indexAnswerToFind, 1); 
 }
-
-/*submitBtn.addEventListener('click', (e) => {
-    e.preventDefault(); 
-    simulatorOptions.innerHTML = ''; 
-    previousBtn.classList.add('simulator-hidden'); 
-    submitBtn.classList.add('simulator-hidden');
-    getResult(); 
-    simulatorInformation.textContent = 'Les résultats de cette simulation ne sont pas définitifs. D’autres paramètres personnels peuvent entrer en compte dans le choix de la forme sociale la plus adaptée pour vous. Si vous souhaitez avoir de l’aide d’un nos experts. Prenez rendez-vous ici'; 
-});
-
-
-function getResult() {
-    questionTitle.textContent = 'La forme sociale recommandée pour vous est'; 
-    questionTheme.textContent = 'Résultat'; 
-
-    const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
-    const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
-    const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
-    const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
-    const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
-
-    if (microEntrepriseAnswer) {
-        simulatorOptions.innerHTML = 'micro-entreprise';
-    } else if (seulAnswer && dividendesAnswer) {
-        simulatorOptions.innerHTML = 'SASU';
-    } else if (plusieursAnswer && dividendesAnswer) {
-        simulatorOptions.innerHTML = 'SAS'; 
-    } else if (salaireAnswer && plusieursAnswer) {
-        simulatorOptions.innerHTML = 'SARL'; 
-    } else if (seulAnswer && salaireAnswer) {
-        simulatorOptions.innerHTML = 'EURL'; 
-    } else {
-        return;
-    }
-}*/
