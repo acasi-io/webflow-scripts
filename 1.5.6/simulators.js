@@ -268,9 +268,9 @@ function fillContent(currentQuestion) {
                 console.log(input.id);
                 localStorage.setItem('indexCurrentChoice', input.id);
                 localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
-                //e.classList.add('simulator-checked'); 
+                e.classList.add('simulator-checked'); 
             }); 
-        } */if (document.querySelector('.simulator-radio:checked') !== null) {
+        } if (document.querySelector('.simulator-radio:checked') !== null) {
             answer.classList.remove('simulator-hidden'); 
             answer.addEventListener('click', (e) => {
                 console.log(input.id);
@@ -278,9 +278,9 @@ function fillContent(currentQuestion) {
                 localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
                 e.classList.add('simulator-checked'); 
             }); 
-        }
+        }*/
    
-        /*answer.addEventListener('click', () => { 
+        answer.addEventListener('click', () => { 
             console.log(input.id);
             localStorage.setItem('indexCurrentChoice', input.id);
             localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
@@ -291,7 +291,7 @@ function fillContent(currentQuestion) {
             const inputCheck = document.querySelector('.simulator-radio:checked').parentNode; 
             inputCheck.classList.remove('simulator-checked');
             answer.classList.add('simulator-checked');
-        });*/
+        });
     }); 
 }
 
