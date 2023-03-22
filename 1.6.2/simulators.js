@@ -241,6 +241,9 @@ function fillContent(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild;
     const simulatorBlock = document.getElementById('simulator-block'); 
     simulatorBlock.innerHTML = ''; 
+
+    const inputCheck = document.querySelector('.simulator-radio:checked'); 
+    inputCheck.classList.add('simulator-checked'); 
    
     currentQuestion.choices.forEach((choice, index) => {
         const cloneAnswerBlock = answerBlock.cloneNode(true); 
@@ -287,11 +290,11 @@ function fillContent(currentQuestion) {
         }); 
 
 
-        input.addEventListener('click', () => {
+        /*input.addEventListener('click', () => {
             const inputCheck = document.querySelector('.simulator-radio:checked').parentNode; 
             inputCheck.classList.add('simulator-checked');
             //answer.classList.add('simulator-checked');
-        });
+        });*/
     }); 
 }
 
