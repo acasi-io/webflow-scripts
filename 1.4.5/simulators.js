@@ -362,7 +362,7 @@ function showForm() {
     simulatorOptions.append(formTemplate); 
 }
 
-submitBtn.addEventListener('click', (e) => {
+/*submitBtn.addEventListener('click', (e) => {
     e.preventDefault(); 
     simulatorOptions.innerHTML = ''; 
     previousBtn.classList.add('simulator-hidden'); 
@@ -409,7 +409,7 @@ function deleteOldValue() {
     resultArray.splice(indexAnswerToFind, 1); 
 }
 
-const simulatorAnswers = document.querySelectorAll('.simulator-answer'); 
+const simulatorAnswers = document.querySelectorAll('.simulator-radio'); 
 
 simulatorAnswers.forEach(simulatorAnswer => {
     simulatorAnswer.addEventListener('change', () => {
@@ -422,7 +422,7 @@ const simulatorSubmitBtn = document.getElementById('simulator-submit-button2');
 const mailInput = document.getElementById('email'); 
 const phoneInput = document.getElementById('phone'); 
 
-/*simulatorSubmitBtn.addEventListener('click', (e) => {
+simulatorSubmitBtn.addEventListener('click', (e) => {
     if (mailInput.value != '' && phoneInput != '') { 
         e.preventDefault();
         simulatorOptions.innerHTML = ''; 
@@ -434,7 +434,7 @@ const phoneInput = document.getElementById('phone');
     } else {
         return; 
     }
-});*/
+});
 
 
 (function() {
@@ -462,4 +462,4 @@ const phoneInput = document.getElementById('phone');
             }
         }
     }
-})(); 
+})(); */
