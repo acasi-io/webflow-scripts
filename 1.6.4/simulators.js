@@ -288,6 +288,11 @@ function fillContent(currentQuestion) {
             localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
         }); 
 
+        if (document.querySelector('.simulator-radio:checked') === null) {
+            return; 
+        } else {
+            inputCheck.classList.add('simulator-checked'); 
+        }
 
         /*input.addEventListener('click', () => {
             const inputCheck = document.querySelector('.simulator-radio:checked').parentNode; 
@@ -295,12 +300,6 @@ function fillContent(currentQuestion) {
             //answer.classList.add('simulator-checked');
         });*/
     }); 
-
-    if (document.querySelector('.simulator-radio:checked') === null) {
-        return; 
-    } else {
-        inputCheck.classList.add('simulator-checked'); 
-    }
 }
 
    
