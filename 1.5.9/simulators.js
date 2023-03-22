@@ -282,9 +282,10 @@ function fillContent(currentQuestion) {
    
         answer.addEventListener('click', () => { 
             console.log(input.id);
+            document.querySelector('.simulator-radio').classList.remove('simulator-checked');
             localStorage.setItem('indexCurrentChoice', input.id);
             localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
-            document.querySelector('.simulator-radio:checked').parentNode.classList.add('simulator-checked');
+            document.querySelector('.simulator-radio:checked').classList.add('simulator-checked');
         }); 
 
 
