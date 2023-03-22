@@ -192,6 +192,7 @@ startBtn.addEventListener('click', () => {
    
 nextBtn.addEventListener('click', () => {
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
+    storeResult(); 
    
     if (indexNextQuestion === 'emailForm') {
         showForm();
@@ -205,7 +206,6 @@ nextBtn.addEventListener('click', () => {
         getNextQuestion(); 
         setIndexPreviousQuestion(); 
     } 
-    storeResult(); 
     console.log(resultArray);
 }); 
 
@@ -407,7 +407,7 @@ function deleteOldValue() {
     let indexAnswerToFind = resultArray.indexOf(answerToFind); 
   
     resultArray.splice(indexAnswerToFind, 1); 
-}
+}*/
 
 const simulatorAnswers = document.querySelectorAll('.simulator-radio'); 
 
@@ -418,7 +418,7 @@ simulatorAnswers.forEach(simulatorAnswer => {
 }); 
 
 
-const simulatorSubmitBtn = document.getElementById('simulator-submit-button2'); 
+/*const simulatorSubmitBtn = document.getElementById('simulator-submit-button2'); 
 const mailInput = document.getElementById('email'); 
 const phoneInput = document.getElementById('phone'); 
 
