@@ -284,14 +284,15 @@ function fillContent(currentQuestion) {
             console.log(input.id);
             localStorage.setItem('indexCurrentChoice', input.id);
             localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
+            document.querySelector('.simulator-radio:checked').parentNode.classList.add('simulator-checked');
         }); 
 
 
-        input.addEventListener('click', () => {
+        /*input.addEventListener('click', () => {
             const inputCheck = document.querySelector('.simulator-radio:checked').parentNode; 
             inputCheck.classList.add('simulator-checked');
             //answer.classList.add('simulator-checked');
-        });
+        });*/
     }); 
 }
 
