@@ -194,6 +194,8 @@ nextBtn.addEventListener('click', () => {
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
    
     if (indexNextQuestion === 'emailForm') {
+        const resultInput = document.getElementById('result');
+        fillAnswer(resultInput.value); 
         showForm();
         setIndexPreviousQuestion(); 
         localStorage.setItem('indexPreviousQuestion', totalQuestions - 1);
@@ -330,8 +332,6 @@ function storeResult() {
     
    
 function showForm() {
-    const resultInput = document.getElementById('result');
-    fillAnswer(resultInput.value); 
     simulatorOptions.innerHTML = ''; 
     questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
     questionTheme.innerHTML = 'Résultat';
