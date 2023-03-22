@@ -191,18 +191,18 @@ startBtn.addEventListener('click', () => {
 }); 
    
 nextBtn.addEventListener('click', () => {
-    const indexNextQuestion = localStorage.getItem('indexNextQuestion');  
+    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
+    const indexCurrentQuestion = localStorage.getItem('indexCurrentQuestion'); 
 
-    if (indexNextQuestion !== 'emailForm') {
+    if (indexCurrentQuestion !== totalQuestions - 1) {
         previousBtn.classList.remove('simulator-hidden');
         getNextQuestion();
     }
     setIndexPreviousQuestion(); 
     storeResult();
    
-    if (indexNextQuestion === 'emailForm') {
+    if (indexCurrentQuestion === totalQuestions - 1) {
         showForm();
-        localStorage.setItem('indexPreviousQuestion', totalQuestions - 1);
         localStorage.setItem('indexCurrentQuestion', 'emailForm'); 
         document.getElementById('simulator-block').classList.add('simulator-hidden');
         simulatorInformation.textContent = ''; 
