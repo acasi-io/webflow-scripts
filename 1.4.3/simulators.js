@@ -419,13 +419,13 @@ simulatorAnswers.forEach(simulatorAnswer => {
 }); 
 
 
-/*const simulatorSubmitBtn = document.getElementById('simulator-submit-button2'); 
+const simulatorSubmitBtn = document.getElementById('simulator-submit-button2'); 
 const mailInput = document.getElementById('email'); 
 const phoneInput = document.getElementById('phone'); 
 
 simulatorSubmitBtn.addEventListener('click', (e) => {
     if (mailInput.value != '' && phoneInput != '') { 
-        //e.preventDefault();
+        e.preventDefault();
         simulatorOptions.innerHTML = ''; 
         previousBtn.classList.add('simulator-hidden'); 
         submitBtn.classList.add('simulator-hidden');
@@ -435,4 +435,4 @@ simulatorSubmitBtn.addEventListener('click', (e) => {
     } else {
         return; 
     }
-});*/
+});
