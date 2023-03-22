@@ -194,26 +194,6 @@ nextBtn.addEventListener('click', () => {
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
    
     if (indexNextQuestion === 'emailForm') {
-        const resultInput = document.getElementById('result');
-        const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
-        const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
-        const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
-        const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
-        const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
-    
-        if (microEntrepriseAnswer) {
-            resultInput.value = 'micro-entreprise';
-        } else if (seulAnswer && dividendesAnswer) {
-            resultInput.value = 'SASU';
-        } else if (plusieursAnswer && dividendesAnswer) {
-            resultInput.value = 'SAS'; 
-        } else if (salaireAnswer && plusieursAnswer) {
-            resultInput.value = 'SARL'; 
-        } else if (seulAnswer && salaireAnswer) {
-            resultInput.value = 'EURL'; 
-        } else {
-            return;
-        }
         showForm();
         setIndexPreviousQuestion(); 
         localStorage.setItem('indexPreviousQuestion', totalQuestions - 1);
@@ -350,6 +330,26 @@ function storeResult() {
     
    
 function showForm() {
+    const resultInput = document.getElementById('result');
+    const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
+    const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
+    const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
+    const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
+    const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
+
+    if (microEntrepriseAnswer) {
+        resultInput.value = 'micro-entreprise';
+    } else if (seulAnswer && dividendesAnswer) {
+        resultInput.value = 'SASU';
+    } else if (plusieursAnswer && dividendesAnswer) {
+        resultInput.value = 'SAS'; 
+    } else if (salaireAnswer && plusieursAnswer) {
+        resultInput.value = 'SARL'; 
+    } else if (seulAnswer && salaireAnswer) {
+        resultInput.value = 'EURL'; 
+    } else {
+        return;
+    }
     simulatorOptions.innerHTML = ''; 
     questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
     questionTheme.innerHTML = 'Résultat';
