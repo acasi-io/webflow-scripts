@@ -276,12 +276,11 @@ function fillContent(currentQuestion) {
             inputCheck.classList.add('simulator-checked'); 
         }*/
 
-        input.addEventListener('click', () => {
-            const inputCheck = document.querySelector('.simulator-radio:checked').parentNode; 
-            if (document.querySelector('.simulator-radio:checked') !== null) {
-                inputCheck.classList.remove('simulator-checked'); 
-            }
-            inputCheck.classList.add('simulator-checked');
+        input.addEventListener('click', (e) => {
+            [...document.querySelectorAll('.simulator-answer-btn')].forEach(element => {
+                element.classList.remove('simulator-checked'); 
+            });
+            e.currentTarget.parentNode.classList.add('simulator-checked');
             //answer.classList.add('simulator-checked');
         });
     }); 
