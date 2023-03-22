@@ -362,7 +362,6 @@ function showForm() {
     simulatorOptions.append(formTemplate); 
 }
 
-
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault(); 
     simulatorOptions.innerHTML = ''; 
@@ -423,7 +422,7 @@ const simulatorSubmitBtn = document.getElementById('simulator-submit-button2');
 const mailInput = document.getElementById('email'); 
 const phoneInput = document.getElementById('phone'); 
 
-simulatorSubmitBtn.addEventListener('click', (e) => {
+/*simulatorSubmitBtn.addEventListener('click', (e) => {
     if (mailInput.value != '' && phoneInput != '') { 
         e.preventDefault();
         simulatorOptions.innerHTML = ''; 
@@ -435,4 +434,32 @@ simulatorSubmitBtn.addEventListener('click', (e) => {
     } else {
         return; 
     }
-});
+});*/
+
+
+(function() {
+    let httpRequest; 
+    document.getElementById('simulator-submit-button2').addEventListener('click', makeRequest); 
+
+    function makeRequest() {
+        httpRequest = new XMLHttpRequest(); 
+
+        if (!httpRequest) {
+            alert('Abandon'); 
+            return false;
+        }
+        httpRequest.onreadystatechange = alertContents; 
+        httpRequest.open('GET', 'hello'); 
+        httpRequest.send(); 
+    }
+
+    function alertContents() {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                alert(httpRequest.responseText); 
+            } else {
+                alert('Il y a eu un problème'); 
+            }
+        }
+    }
+})(); 
