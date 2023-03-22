@@ -339,7 +339,8 @@ function showForm() {
     formTemplate.classList.remove('simulator-hidden');  
 
     const resultInput = document.getElementById('result');
-    const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
+    fillAnswer(resultInput.value); 
+    /*const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
     const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
     const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
     const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
@@ -357,9 +358,32 @@ function showForm() {
         resultInput.value = 'EURL'; 
     } else {
         return;
-    }
+    }*/
    
     simulatorOptions.append(formTemplate); 
+}
+
+
+function fillAnswer(elementProperty) {
+    const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
+    const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
+    const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
+    const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
+    const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
+
+    if (microEntrepriseAnswer) {
+        elementProperty = 'micro-entreprise';
+    } else if (seulAnswer && dividendesAnswer) {
+        elementProperty = 'SASU';
+    } else if (plusieursAnswer && dividendesAnswer) {
+        elementProperty = 'SAS'; 
+    } else if (salaireAnswer && plusieursAnswer) {
+        elementProperty = 'SARL'; 
+    } else if (seulAnswer && salaireAnswer) {
+        elementProperty = 'EURL'; 
+    } else {
+        return;
+    }
 }
 
 submitBtn.addEventListener('click', (e) => {
@@ -376,7 +400,9 @@ function getResult() {
     questionTitle.textContent = 'La forme sociale recommandée pour vous est'; 
     questionTheme.textContent = 'Résultat'; 
 
-    const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
+    fillAnswer(simulatorOptions.innerHTML);
+
+    /*const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
     const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
     const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
     const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
@@ -394,7 +420,7 @@ function getResult() {
         simulatorOptions.innerHTML = 'EURL'; 
     } else {
         return;
-    }
+    }*/
 }
 
 
