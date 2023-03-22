@@ -279,10 +279,10 @@ function fillContent(currentQuestion) {
         }*/
 
         input.addEventListener('click', () => {
+            const inputCheck = document.querySelector('.simulator-radio:checked').parentNode; 
             if (document.querySelector('.simulator-radio:checked') !== null) {
                 inputCheck.classList.remove('simulator-checked');
             }
-            const inputCheck = document.querySelector('.simulator-radio:checked').parentNode; 
             inputCheck.classList.add('simulator-checked');
             //answer.classList.add('simulator-checked');
         });
