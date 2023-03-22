@@ -347,15 +347,15 @@ function showForm() {
     const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
 
     if (microEntrepriseAnswer) {
-        resultInput.innerHTML = 'micro-entreprise';
+        resultInput.value = 'micro-entreprise';
     } else if (seulAnswer && dividendesAnswer) {
-        resultInput.innerHTML = 'SASU';
+        resultInput.value = 'SASU';
     } else if (plusieursAnswer && dividendesAnswer) {
-        resultInput.innerHTML = 'SAS'; 
+        resultInput.value = 'SAS'; 
     } else if (salaireAnswer && plusieursAnswer) {
-        resultInput.innerHTML = 'SARL'; 
+        resultInput.value = 'SARL'; 
     } else if (seulAnswer && salaireAnswer) {
-        resultInput.innerHTML = 'EURL'; 
+        resultInput.value = 'EURL'; 
     } else {
         return;
     }
