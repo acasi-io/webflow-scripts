@@ -222,7 +222,6 @@ previousBtn.addEventListener('click', () => {
     } else if (indexNextQuestion === 'emailForm') {
         document.getElementById('simulator-block').classList.remove('simulator-hidden');
         document.querySelector('.simulator-form-block').classList.add('simulator-hidden'); 
-        submitBtn.classList.add('simulator-hidden');
         nextBtn.classList.remove('simulator-hidden'); 
         
     } else {
@@ -334,7 +333,6 @@ function showForm() {
     questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
     questionTheme.innerHTML = 'Résultat';
     nextBtn.classList.add('simulator-hidden'); 
-    submitBtn.classList.remove('simulator-hidden');
     const formTemplate = document.querySelector('.simulator-form-block'); 
     formTemplate.classList.remove('simulator-hidden');  
 
