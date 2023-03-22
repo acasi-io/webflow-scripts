@@ -403,7 +403,9 @@ const phoneInput = document.getElementById('phone');
 
 simulatorSubmitBtn.addEventListener('click', (e) => {
     if (mailInput.value != '' && phoneInput != '') {
-        e.preventDefault(); 
+        setTimeout(() => {
+            e.preventDefault();
+        }, 500);  
         simulatorOptions.innerHTML = ''; 
         previousBtn.classList.add('simulator-hidden'); 
         submitBtn.classList.add('simulator-hidden');
