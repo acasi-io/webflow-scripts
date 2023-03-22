@@ -191,20 +191,21 @@ startBtn.addEventListener('click', () => {
 }); 
    
 nextBtn.addEventListener('click', () => {
-    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
-    storeResult(); 
+    const indexNextQuestion = localStorage.getItem('indexNextQuestion');  
+
+    if (indexNextQuestion !== 'emailForm') {
+        previousBtn.classList.remove('simulator-hidden');
+        getNextQuestion();
+    }
+    setIndexPreviousQuestion(); 
+    storeResult();
    
     if (indexNextQuestion === 'emailForm') {
         showForm();
-        setIndexPreviousQuestion(); 
         localStorage.setItem('indexPreviousQuestion', totalQuestions - 1);
         localStorage.setItem('indexCurrentQuestion', 'emailForm'); 
         document.getElementById('simulator-block').classList.add('simulator-hidden');
         simulatorInformation.textContent = ''; 
-    } else {
-        previousBtn.classList.remove('simulator-hidden');
-        getNextQuestion(); 
-        setIndexPreviousQuestion(); 
     } 
     console.log(resultArray);
 }); 
