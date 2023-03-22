@@ -213,7 +213,7 @@ nextBtn.addEventListener('click', () => {
             resultInput.value = 'EURL'; 
         } else {
             return;
-        }Ò
+        }
         showForm();
         setIndexPreviousQuestion(); 
         localStorage.setItem('indexPreviousQuestion', totalQuestions - 1);
