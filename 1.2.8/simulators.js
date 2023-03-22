@@ -337,6 +337,29 @@ function showForm() {
     submitBtn.classList.remove('simulator-hidden');
     const formTemplate = document.querySelector('.simulator-form-block'); 
     formTemplate.classList.remove('simulator-hidden'); 
+
+    const resultInput = document.getElementById('result'); 
+
+    const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
+    const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
+    const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
+    const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
+    const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
+
+    if (microEntrepriseAnswer) {
+        resultInput.innerHTML = 'micro-entreprise';
+    } else if (seulAnswer && dividendesAnswer) {
+        resultInput.innerHTML = 'SASU';
+    } else if (plusieursAnswer && dividendesAnswer) {
+        resultInput.innerHTML = 'SAS'; 
+    } else if (salaireAnswer && plusieursAnswer) {
+        resultInput.innerHTML = 'SARL'; 
+    } else if (seulAnswer && salaireAnswer) {
+        resultInput.innerHTML = 'EURL'; 
+    } else {
+        return;
+    }
+
    
     simulatorOptions.append(formTemplate); 
 }
@@ -391,9 +414,9 @@ function deleteOldValue() {
 const simulatorAnswers = document.querySelectorAll('.simulator-answer'); 
 
 simulatorAnswers.forEach(simulatorAnswer => {
-    if (simulatorAnswer.checked) {
+    simulatorAnswer.addEventListener('change', () => {
         document.querySelector('.simulator-answer-btn').classList.add('simulator-checked');
-    }
+    }); 
 }); 
 
 
@@ -403,15 +426,13 @@ const phoneInput = document.getElementById('phone');
 
 simulatorSubmitBtn.addEventListener('click', (e) => {
     if (mailInput.value != '' && phoneInput != '') { 
+        e.preventDefault();
         simulatorOptions.innerHTML = ''; 
         previousBtn.classList.add('simulator-hidden'); 
         submitBtn.classList.add('simulator-hidden');
         simulatorSubmitBtn.classList.add('simulator-hidden');
         getResult(); 
         simulatorInformation.textContent = 'Les résultats de cette simulation ne sont pas définitifs. D’autres paramètres personnels peuvent entrer en compte dans le choix de la forme sociale la plus adaptée pour vous. Si vous souhaitez avoir de l’aide d’un nos experts. Prenez rendez-vous ici'; 
-        setTimeout(() => {
-            e.preventDefault();
-        }, 1000); 
     } else {
         return; 
     }
