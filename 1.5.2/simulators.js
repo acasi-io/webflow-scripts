@@ -262,9 +262,26 @@ function fillContent(currentQuestion) {
         } else {
             emoji.remove(); 
         }
+
+        if (document.querySelector('.simulator-radio:checked') === null) {
+            answer.addEventListener('click', (e) => {
+                console.log(input.id);
+                localStorage.setItem('indexCurrentChoice', input.id);
+                localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
+                e.classList.add('simulator-checked'); 
+            }); 
+        } else if (document.querySelector('.simulator-radio:checked') !== null) {
+            answer.classList.remove('simulator-hidden'); 
+            answer.addEventListener('click', (e) => {
+                console.log(input.id);
+                localStorage.setItem('indexCurrentChoice', input.id);
+                localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
+                e.classList.add('simulator-checked'); 
+            }); 
+        }
    
-        answer.addEventListener('click', () => { 
-        console.log(input.id);
+        /*answer.addEventListener('click', () => { 
+            console.log(input.id);
             localStorage.setItem('indexCurrentChoice', input.id);
             localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
         }); 
@@ -274,7 +291,7 @@ function fillContent(currentQuestion) {
             const inputCheck = document.querySelector('.simulator-radio:checked').parentNode; 
             inputCheck.classList.remove('simulator-checked');
             answer.classList.add('simulator-checked');
-        });
+        });*/
     }); 
 }
 
@@ -291,7 +308,6 @@ function firstQuestion() {
    
    
 function getNextQuestion() {
-    //simulatorOptions.innerHTML = ''; 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     localStorage.setItem('indexCurrentQuestion', currentQuestionData.id); 
@@ -303,8 +319,7 @@ function getNextQuestion() {
 }
    
    
-function getPreviousQuestion() {
-    //simulatorOptions.innerHTML = '';  
+function getPreviousQuestion() { 
     let indexPreviousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
     const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
    
@@ -371,6 +386,25 @@ function showForm() {
     simulatorOptions.append(formTemplate); 
 }
 
+
+const simulatorSubmitBtn = document.getElementById('simulator-submit-button2'); 
+simulatorSubmitBtn.addEventListener('click', () => {
+    const resultInputValue = document.getElementById('result').value; 
+    localStorage.setItem('result', resultInputValue); 
+});
+
+
+function deleteOldValue() {
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
+  
+    const answerToFind = resultArray.find(answer => answer.question === currentQuestionData.question);
+  
+    let indexAnswerToFind = resultArray.indexOf(answerToFind); 
+  
+    resultArray.splice(indexAnswerToFind, 1); 
+}
+
 /*submitBtn.addEventListener('click', (e) => {
     e.preventDefault(); 
     simulatorOptions.innerHTML = ''; 
@@ -404,53 +438,4 @@ function getResult() {
     } else {
         return;
     }
-}
-
-
-function deleteOldValue() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-  
-    const answerToFind = resultArray.find(answer => answer.question === currentQuestionData.question);
-  
-    let indexAnswerToFind = resultArray.indexOf(answerToFind); 
-  
-    resultArray.splice(indexAnswerToFind, 1); 
 }*/
-
-
-
-const simulatorSubmitBtn = document.getElementById('simulator-submit-button2'); 
-
-simulatorSubmitBtn.addEventListener('click', (e) => {
-    const resultInputValue = document.getElementById('result').value; 
-    localStorage.setItem('result', resultInputValue); 
-});
-
-
-/*(function() {
-    let httpRequest; 
-    document.getElementById('simulator-submit-button2').addEventListener('click', makeRequest); 
-
-    function makeRequest() {
-        httpRequest = new XMLHttpRequest(); 
-
-        if (!httpRequest) {
-            alert('Abandon'); 
-            return false;
-        }
-        httpRequest.onreadystatechange = alertContents; 
-        httpRequest.open('GET', 'hello'); 
-        httpRequest.send(); 
-    }
-
-    function alertContents() {
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-                alert(httpRequest.responseText); 
-            } else {
-                alert('Il y a eu un problème'); 
-            }
-        }
-    }
-})(); */
