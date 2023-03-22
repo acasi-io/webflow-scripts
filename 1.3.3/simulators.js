@@ -330,16 +330,15 @@ function storeResult() {
     
    
 function showForm() {
+    const resultInput = document.getElementById('result');
+    fillAnswer(resultInput.value); 
     simulatorOptions.innerHTML = ''; 
     questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
     questionTheme.innerHTML = 'Résultat';
     nextBtn.classList.add('simulator-hidden'); 
     submitBtn.classList.remove('simulator-hidden');
     const formTemplate = document.querySelector('.simulator-form-block'); 
-    formTemplate.classList.remove('simulator-hidden'); 
-
-    const resultInput = document.getElementById('result'); 
-    fillAnswer(resultInput.value); 
+    formTemplate.classList.remove('simulator-hidden');  
    
     simulatorOptions.append(formTemplate); 
 }
