@@ -402,16 +402,16 @@ const mailInput = document.getElementById('email');
 const phoneInput = document.getElementById('phone'); 
 
 simulatorSubmitBtn.addEventListener('click', (e) => {
-    if (mailInput.value != '' && phoneInput != '') {
-        setTimeout(() => {
-            e.preventDefault();
-        }, 500);  
+    if (mailInput.value != '' && phoneInput != '') { 
         simulatorOptions.innerHTML = ''; 
         previousBtn.classList.add('simulator-hidden'); 
         submitBtn.classList.add('simulator-hidden');
         simulatorSubmitBtn.classList.add('simulator-hidden');
         getResult(); 
         simulatorInformation.textContent = 'Les résultats de cette simulation ne sont pas définitifs. D’autres paramètres personnels peuvent entrer en compte dans le choix de la forme sociale la plus adaptée pour vous. Si vous souhaitez avoir de l’aide d’un nos experts. Prenez rendez-vous ici'; 
+        setTimeout(() => {
+            e.preventDefault();
+        }, 1000); 
     } else {
         return; 
     }
