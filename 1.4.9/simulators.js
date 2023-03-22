@@ -192,7 +192,7 @@ startBtn.addEventListener('click', () => {
    
 nextBtn.addEventListener('click', () => {
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
-    const indexCurrentQuestion = localStorage.getItem('indexCurrentQuestion'); 
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
 
     if (indexCurrentQuestion !== totalQuestions - 1) {
         previousBtn.classList.remove('simulator-hidden');
