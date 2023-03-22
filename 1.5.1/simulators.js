@@ -356,19 +356,14 @@ function showForm() {
 
     if (microEntrepriseAnswer) {
         resultInput.value = 'micro-entreprise';
-        localStorage.setItem('result', 'micro-entreprise');
     } else if (seulAnswer && dividendesAnswer) {
         resultInput.value = 'SASU';
-        localStorage.setItem('result', 'SASU');
     } else if (plusieursAnswer && dividendesAnswer) {
         resultInput.value = 'SAS'; 
-        localStorage.setItem('result', 'SAS');
     } else if (salaireAnswer && plusieursAnswer) {
         resultInput.value = 'SARL'; 
-        localStorage.setItem('result', 'SARL');
     } else if (seulAnswer && salaireAnswer) {
         resultInput.value = 'EURL'; 
-        localStorage.setItem('result', 'EURL');
     } else {
         return;
     }
@@ -425,26 +420,15 @@ function deleteOldValue() {
 
 
 
-/*const simulatorSubmitBtn = document.getElementById('simulator-submit-button2'); 
-const mailInput = document.getElementById('email'); 
-const phoneInput = document.getElementById('phone'); 
+const simulatorSubmitBtn = document.getElementById('simulator-submit-button2'); 
 
 simulatorSubmitBtn.addEventListener('click', (e) => {
-    if (mailInput.value != '' && phoneInput != '') { 
-        e.preventDefault();
-        simulatorOptions.innerHTML = ''; 
-        previousBtn.classList.add('simulator-hidden'); 
-        submitBtn.classList.add('simulator-hidden');
-        simulatorSubmitBtn.classList.add('simulator-hidden');
-        getResult(); 
-        simulatorInformation.textContent = 'Les résultats de cette simulation ne sont pas définitifs. D’autres paramètres personnels peuvent entrer en compte dans le choix de la forme sociale la plus adaptée pour vous. Si vous souhaitez avoir de l’aide d’un nos experts. Prenez rendez-vous ici'; 
-    } else {
-        return; 
-    }
+    const resultInputValue = document.getElementById('result').value; 
+    localStorage.setItem('result', resultInputValue); 
 });
 
 
-(function() {
+/*(function() {
     let httpRequest; 
     document.getElementById('simulator-submit-button2').addEventListener('click', makeRequest); 
 
