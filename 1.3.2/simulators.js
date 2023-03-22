@@ -339,7 +339,7 @@ function showForm() {
     formTemplate.classList.remove('simulator-hidden'); 
 
     const resultInput = document.getElementById('result'); 
-    fillAnswer(resultInput, value); 
+    fillAnswer(resultInput.value); 
    
     simulatorOptions.append(formTemplate); 
 }
@@ -354,7 +354,7 @@ submitBtn.addEventListener('click', (e) => {
 });
 
 
-function fillAnswer(element, property) {
+function fillAnswer(element) {
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
     const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
     const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
@@ -362,15 +362,15 @@ function fillAnswer(element, property) {
     const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
 
     if (microEntrepriseAnswer) {
-        element.property = 'micro-entreprise';
+        element = 'micro-entreprise';
     } else if (seulAnswer && dividendesAnswer) {
-        element.property = 'SASU';
+        element = 'SASU';
     } else if (plusieursAnswer && dividendesAnswer) {
-        element.property = 'SAS'; 
+        element = 'SAS'; 
     } else if (salaireAnswer && plusieursAnswer) {
-        element.property = 'SARL'; 
+        element = 'SARL'; 
     } else if (seulAnswer && salaireAnswer) {
-        element.property = 'EURL'; 
+        element = 'EURL'; 
     } else {
         return;
     }
@@ -381,7 +381,7 @@ function getResult() {
     questionTitle.textContent = 'La forme sociale recommandée pour vous est'; 
     questionTheme.textContent = 'Résultat'; 
 
-    fillAnswer(simulatorOptions, innerHTML); 
+    fillAnswer(simulatorOptions.innerHTML); 
 }
 
 
