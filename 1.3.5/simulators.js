@@ -353,7 +353,7 @@ submitBtn.addEventListener('click', (e) => {
 });
 
 
-function fillAnswer(element) {
+function fillAnswer(elementProperty) {
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
     const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
     const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
@@ -361,15 +361,15 @@ function fillAnswer(element) {
     const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
 
     if (microEntrepriseAnswer) {
-        element = 'micro-entreprise';
+        elementProperty = 'micro-entreprise';
     } else if (seulAnswer && dividendesAnswer) {
-        element = 'SASU';
+        elementProperty = 'SASU';
     } else if (plusieursAnswer && dividendesAnswer) {
-        element = 'SAS'; 
+        elementProperty = 'SAS'; 
     } else if (salaireAnswer && plusieursAnswer) {
-        element = 'SARL'; 
+        elementProperty = 'SARL'; 
     } else if (seulAnswer && salaireAnswer) {
-        element = 'EURL'; 
+        elementProperty = 'EURL'; 
     } else {
         return;
     }
