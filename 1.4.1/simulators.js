@@ -339,8 +339,7 @@ function showForm() {
     formTemplate.classList.remove('simulator-hidden');  
 
     const resultInput = document.getElementById('result');
-    fillAnswer(resultInput.value); 
-    /*const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
+    const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
     const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
     const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
     const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
@@ -358,33 +357,11 @@ function showForm() {
         resultInput.value = 'EURL'; 
     } else {
         return;
-    }*/
+    }
    
     simulatorOptions.append(formTemplate); 
 }
 
-
-function fillAnswer(elementProperty) {
-    const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
-    const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
-    const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
-    const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
-    const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
-
-    if (microEntrepriseAnswer) {
-        elementProperty = 'micro-entreprise';
-    } else if (seulAnswer && dividendesAnswer) {
-        elementProperty = 'SASU';
-    } else if (plusieursAnswer && dividendesAnswer) {
-        elementProperty = 'SAS'; 
-    } else if (salaireAnswer && plusieursAnswer) {
-        elementProperty = 'SARL'; 
-    } else if (seulAnswer && salaireAnswer) {
-        elementProperty = 'EURL'; 
-    } else {
-        return;
-    }
-}
 
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault(); 
@@ -400,9 +377,7 @@ function getResult() {
     questionTitle.textContent = 'La forme sociale recommandée pour vous est'; 
     questionTheme.textContent = 'Résultat'; 
 
-    fillAnswer(simulatorOptions.innerHTML);
-
-    /*const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
+    const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
     const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
     const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
     const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
@@ -420,7 +395,7 @@ function getResult() {
         simulatorOptions.innerHTML = 'EURL'; 
     } else {
         return;
-    }*/
+    }
 }
 
 
@@ -450,7 +425,7 @@ const phoneInput = document.getElementById('phone');
 
 simulatorSubmitBtn.addEventListener('click', (e) => {
     if (mailInput.value != '' && phoneInput != '') { 
-        e.preventDefault();
+        //e.preventDefault();
         simulatorOptions.innerHTML = ''; 
         previousBtn.classList.add('simulator-hidden'); 
         submitBtn.classList.add('simulator-hidden');
