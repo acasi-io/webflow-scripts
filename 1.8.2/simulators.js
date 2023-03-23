@@ -176,7 +176,6 @@ let resultArray = [];
 const questionTheme = document.querySelector('.simulator-theme');
 const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
-let constArray; 
 
 
 function setItemStorage(key, value) {
@@ -190,25 +189,24 @@ function addHiddenClass(elementProperty) {
 function removeHiddenClass(elementProperty) {
     elementProperty.classList.remove('simulator-hidden'); 
 }
+
+function fillQuestionTitleTheme(currentQuestion) {
+    questionTitle.textContent = currentQuestion.question; 
+    questionTheme.textContent = currentQuestion.theme; 
+}
    
    
 startBtn.addEventListener('click', () => {
     setItemStorage('indexPreviousQuestion', 0); 
     setItemStorage('indexCurrentChoice', 0); 
     setItemStorage('indexCurrentQuestion', 0); 
-    //localStorage.setItem('indexPreviousQuestion', 0);
-    //localStorage.setItem('indexCurrentChoice', 0); 
-    //localStorage.setItem('indexCurrentQuestion', 0); 
     removeHiddenClass(document.getElementById('form-question')); 
     addHiddenClass(document.querySelector('.simulator-start')); 
     addHiddenClass(document.querySelector('.simulator-start-image')); 
     removeHiddenClass(document.querySelector('.simulator-questions-image')); 
-    //document.getElementById('form-question').classList.remove('simulator-hidden');
-    //document.querySelector('.simulator-start').classList.add('simulator-hidden');
-    //document.querySelector('.simulator-start-image').classList.add('simulator-hidden');
-    //document.querySelector('.simulator-questions-image').classList.remove('simulator-hidden');
     firstQuestion();
 }); 
+
    
 nextBtn.addEventListener('click', () => {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
@@ -225,10 +223,7 @@ nextBtn.addEventListener('click', () => {
         addHiddenClass(previousBtn)
         setItemStorage('indexPreviousQuestion', 6); 
         setItemStorage('indexCurrentQuestion', 'emailForm'); 
-        //localStorage.setItem('indexPreviousQuestion', 6);
-        //localStorage.setItem('indexCurrentQuestion', 'emailForm'); 
         addHiddenClass(document.getElementById('simulator-block')); 
-        //document.getElementById('simulator-block').classList.add('simulator-hidden');
         simulatorInformation.textContent = ''; 
     } 
 }); 
@@ -245,11 +240,7 @@ previousBtn.addEventListener('click', () => {
     } else if (indexNextQuestion === 'emailForm') {
         removeHiddenClass(document.getElementById('simulator-block')); 
         addHiddenClass(document.querySelector('.simulator-form-block')); 
-        //document.getElementById('simulator-block').classList.remove('simulator-hidden');
-        //document.querySelector('.simulator-form-block').classList.add('simulator-hidden'); 
-        removeHiddenClass(nextBtn); 
-        //nextBtn.classList.remove('simulator-hidden'); 
-        
+        removeHiddenClass(nextBtn);  
     } else {
         return;
     }
@@ -285,8 +276,6 @@ function showQuestion(currentQuestion) {
         answer.addEventListener('click', () => { 
             setItemStorage('indexCurrentChoice', input.id); 
             setItemStorage('indexNextQuestion', currentQuestion.nextQuestion); 
-            //localStorage.setItem('indexCurrentChoice', input.id);
-            //localStorage.setItem('indexNextQuestion', currentQuestion.nextQuestion);
         }); 
 
         input.addEventListener('click', (e) => {
@@ -302,10 +291,8 @@ function showQuestion(currentQuestion) {
 function firstQuestion() {
     const firstQuestionData = questionsData.find(question => question.id === questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
-    //localStorage.setItem('indexCurrentQuestion', firstQuestionData.id); 
-   
-    questionTitle.textContent = firstQuestionData.question;
-    questionTheme.textContent = firstQuestionData.theme;
+
+    fillQuestionTitleTheme(firstQuestionData); 
        
     showQuestion(firstQuestionData); 
 }
@@ -315,9 +302,8 @@ function getNextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     localStorage.setItem('indexCurrentQuestion', currentQuestionData.id); 
-   
-    questionTitle.textContent = currentQuestionData.question;
-    questionTheme.textContent = currentQuestionData.theme;
+
+    fillQuestionTitleTheme(currentQuestionData); 
      
     showQuestion(currentQuestionData); 
 }
@@ -326,19 +312,17 @@ function getNextQuestion() {
 function getPreviousQuestion() { 
     let indexPreviousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
     const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
-   
-    questionTitle.textContent = previousQuestionData.question; 
+
+    fillQuestionTitleTheme(previousQuestionData); 
    
     showQuestion(previousQuestionData); 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
-    //localStorage.setItem('indexCurrentQuestion', previousQuestionData.id);
 }
    
 function setIndexPreviousQuestion() {
     let indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     let indexPreviousQuestion = indexCurrentQuestion - 1; 
     setItemStorage('indexPreviousQuestion', indexPreviousQuestion); 
-    //localStorage.setItem('indexPreviousQuestion', indexPreviousQuestion);
 }
    
 function updateResultArray(currentChoice, currentQuestion) {
@@ -361,13 +345,11 @@ function storeResult() {
    
 function showForm() {
     simulatorOptions.innerHTML = ''; 
-    questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
-    questionTheme.innerHTML = 'Résultat';
-    //nextBtn.classList.add('simulator-hidden'); 
+    questionTitle.textContent = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
+    questionTheme.textContent = 'Résultat';
     const formTemplate = document.querySelector('.simulator-form-block'); 
     addHiddenClass(nextBtn); 
-    removeHiddenClass(formTemplate); 
-    //formTemplate.classList.remove('simulator-hidden');  
+    removeHiddenClass(formTemplate);  
 
     const resultInput = document.getElementById('result');
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
@@ -397,8 +379,7 @@ function showForm() {
 const simulatorSubmitBtn = document.getElementById('simulator-submit-button'); 
 simulatorSubmitBtn.addEventListener('click', () => {
     const resultInputValue = document.getElementById('result').value; 
-    setItemStorage('result', resultInputValue); 
-    //localStorage.setItem('result', resultInputValue); 
+    setItemStorage('result', resultInputValue);  
 });
 
 
