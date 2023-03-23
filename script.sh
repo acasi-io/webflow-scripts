@@ -1,5 +1,3 @@
-echo "Message du commit : "
-read "commit_message"
 git add .
-git commit -m "$commit_message"
+git commit -m "add functions"
 git push origin main
