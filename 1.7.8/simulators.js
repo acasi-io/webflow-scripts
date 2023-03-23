@@ -174,13 +174,16 @@ const questionIndex = 0;
 const simulatorOptions = document.getElementById('simulator-options');
 let resultArray = [];
 const questionTheme = document.querySelector('.simulator-theme');
-const submitBtn = document.querySelector('.simulator-submit-button');
 const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
 
 
 function setItemStorage(key, value) {
     localStorage.setItem(key, value); 
+}
+
+function findQuestion(questionArray, index) {
+    questionArray.find(question => question.id === index); 
 }
    
    
@@ -284,7 +287,8 @@ function showQuestion(currentQuestion) {
 
    
 function firstQuestion() {
-    const firstQuestionData = questionsData.find(question => question.id === questionIndex);
+    //const firstQuestionData = questionsData.find(question => question.id === questionIndex);
+    const firstQuestionData = findQuestion(questionsData, questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
     //localStorage.setItem('indexCurrentQuestion', firstQuestionData.id); 
    
@@ -314,13 +318,15 @@ function getPreviousQuestion() {
     questionTitle.textContent = previousQuestionData.question; 
    
     showQuestion(previousQuestionData); 
-    localStorage.setItem('indexCurrentQuestion', previousQuestionData.id);
+    setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
+    //localStorage.setItem('indexCurrentQuestion', previousQuestionData.id);
 }
    
 function setIndexPreviousQuestion() {
     let indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     let indexPreviousQuestion = indexCurrentQuestion - 1; 
-    localStorage.setItem('indexPreviousQuestion', indexPreviousQuestion);
+    setItemStorage('indexPreviousQuestion', indexPreviousQuestion); 
+    //localStorage.setItem('indexPreviousQuestion', indexPreviousQuestion);
 }
    
 function updateResultArray(currentChoice, currentQuestion) {
@@ -374,7 +380,7 @@ function showForm() {
 }
 
 
-const simulatorSubmitBtn = document.getElementById('simulator-submit-button2'); 
+const simulatorSubmitBtn = document.getElementById('simulator-submit-button'); 
 simulatorSubmitBtn.addEventListener('click', () => {
     const resultInputValue = document.getElementById('result').value; 
     setItemStorage('result', resultInputValue); 
