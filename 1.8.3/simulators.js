@@ -345,8 +345,8 @@ function storeResult() {
    
 function showForm() {
     simulatorOptions.innerHTML = ''; 
-    questionTitle.textContent = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
-    questionTheme.textContent = 'Résultat';
+    questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
+    questionTheme.innerHTML = 'Résultat';
     const formTemplate = document.querySelector('.simulator-form-block'); 
     addHiddenClass(nextBtn); 
     removeHiddenClass(formTemplate);  
