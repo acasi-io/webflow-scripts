@@ -182,6 +182,14 @@ let constArray;
 function setItemStorage(key, value) {
     localStorage.setItem(key, value); 
 }
+
+function addHiddenClass(elementProperty) {
+    elementProperty.classList.add('simulator-hidden'); 
+}
+
+function removeHiddenClass(elementProperty) {
+    elementProperty.classList.remove('simulator-hidden'); 
+}
    
    
 startBtn.addEventListener('click', () => {
@@ -190,11 +198,15 @@ startBtn.addEventListener('click', () => {
     setItemStorage('indexCurrentQuestion', 0); 
     //localStorage.setItem('indexPreviousQuestion', 0);
     //localStorage.setItem('indexCurrentChoice', 0); 
-    //localStorage.setItem('indexCurrentQuestion', 0);
-    document.getElementById('form-question').classList.remove('simulator-hidden');
-    document.querySelector('.simulator-start').classList.add('simulator-hidden');
-    document.querySelector('.simulator-start-image').classList.add('simulator-hidden');
-    document.querySelector('.simulator-questions-image').classList.remove('simulator-hidden');
+    //localStorage.setItem('indexCurrentQuestion', 0); 
+    removeHiddenClass(document.getElementById('form-question')); 
+    addHiddenClass(document.querySelector('.simulator-start')); 
+    addHiddenClass(document.querySelector('.simulator-start-image')); 
+    removeHiddenClass(document.querySelector('.simulator-questions-image')); 
+    //document.getElementById('form-question').classList.remove('simulator-hidden');
+    //document.querySelector('.simulator-start').classList.add('simulator-hidden');
+    //document.querySelector('.simulator-start-image').classList.add('simulator-hidden');
+    //document.querySelector('.simulator-questions-image').classList.remove('simulator-hidden');
     firstQuestion();
 }); 
    
@@ -210,12 +222,13 @@ nextBtn.addEventListener('click', () => {
    
     if (indexCurrentQuestion === totalQuestions - 1) {
         showForm();
-        previousBtn.classList.add('simulator-hidden');
+        addHiddenClass(previousBtn)
         setItemStorage('indexPreviousQuestion', 6); 
         setItemStorage('indexCurrentQuestion', 'emailForm'); 
         //localStorage.setItem('indexPreviousQuestion', 6);
         //localStorage.setItem('indexCurrentQuestion', 'emailForm'); 
-        document.getElementById('simulator-block').classList.add('simulator-hidden');
+        addHiddenClass(document.getElementById('simulator-block')); 
+        //document.getElementById('simulator-block').classList.add('simulator-hidden');
         simulatorInformation.textContent = ''; 
     } 
 }); 
@@ -230,9 +243,12 @@ previousBtn.addEventListener('click', () => {
     if (indexCurrentQuestion === 0) {
         previousBtn.classList.add('simulator-hidden'); 
     } else if (indexNextQuestion === 'emailForm') {
-        document.getElementById('simulator-block').classList.remove('simulator-hidden');
-        document.querySelector('.simulator-form-block').classList.add('simulator-hidden'); 
-        nextBtn.classList.remove('simulator-hidden'); 
+        removeHiddenClass(document.getElementById('simulator-block')); 
+        addHiddenClass(document.querySelector('.simulator-form-block')); 
+        //document.getElementById('simulator-block').classList.remove('simulator-hidden');
+        //document.querySelector('.simulator-form-block').classList.add('simulator-hidden'); 
+        removeHiddenClass(nextBtn); 
+        //nextBtn.classList.remove('simulator-hidden'); 
         
     } else {
         return;
@@ -347,9 +363,11 @@ function showForm() {
     simulatorOptions.innerHTML = ''; 
     questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
     questionTheme.innerHTML = 'Résultat';
-    nextBtn.classList.add('simulator-hidden'); 
+    //nextBtn.classList.add('simulator-hidden'); 
     const formTemplate = document.querySelector('.simulator-form-block'); 
-    formTemplate.classList.remove('simulator-hidden');  
+    addHiddenClass(nextBtn); 
+    removeHiddenClass(formTemplate); 
+    //formTemplate.classList.remove('simulator-hidden');  
 
     const resultInput = document.getElementById('result');
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
