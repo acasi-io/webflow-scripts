@@ -182,10 +182,6 @@ let constArray;
 function setItemStorage(key, value) {
     localStorage.setItem(key, value); 
 }
-
-function findQuestion(constArray, questionArray, index) {
-    constArray = questionArray.find(question => question.id === index); 
-}
    
    
 startBtn.addEventListener('click', () => {
@@ -288,8 +284,7 @@ function showQuestion(currentQuestion) {
 
    
 function firstQuestion() {
-    //const firstQuestionData = questionsData.find(question => question.id === questionIndex);
-    findQuestion(firstQuestionData, questionsData, questionIndex); 
+    const firstQuestionData = questionsData.find(question => question.id === questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
     //localStorage.setItem('indexCurrentQuestion', firstQuestionData.id); 
    
