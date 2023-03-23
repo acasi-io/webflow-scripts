@@ -176,14 +176,15 @@ let resultArray = [];
 const questionTheme = document.querySelector('.simulator-theme');
 const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
+let constArray; 
 
 
 function setItemStorage(key, value) {
     localStorage.setItem(key, value); 
 }
 
-function findQuestion(questionArray, index) {
-    questionArray.find(question => question.id === index); 
+function findQuestion(constArray, questionArray, index) {
+    constArray = questionArray.find(question => question.id === index); 
 }
    
    
@@ -288,7 +289,7 @@ function showQuestion(currentQuestion) {
    
 function firstQuestion() {
     //const firstQuestionData = questionsData.find(question => question.id === questionIndex);
-    const firstQuestionData = findQuestion(questionsData, questionIndex);
+    findQuestion(firstQuestionData, questionsData, questionIndex); 
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
     //localStorage.setItem('indexCurrentQuestion', firstQuestionData.id); 
    
