@@ -333,6 +333,7 @@ function updateResultArray(currentChoice, currentQuestion) {
         newResult.question = `${currentQuestion.question}`;
         newResult.result = `${currentChoice.resultValue}`;
         resultArray.push(newResult); 
+        setItemStorage('result', currentChoice.resultValue); 
     }
 }
    

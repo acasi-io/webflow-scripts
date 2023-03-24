@@ -48,12 +48,16 @@ const questionsData = [
             {
                 id: 1, 
                 value: "Plus de % de votre CA", 
-                nextQuestion: "emailForm"
+                nextQuestion: "emailForm", 
+                result: true, 
+                resultValue: "Plus de % de votre CA"
             }, 
             {
                 id: 2, 
                 value: "Moins de % de votre CA", 
-                nextQuestion: "emailForm" 
+                nextQuestion: "emailForm", 
+                result: true, 
+                resultValue: "Moins de % de votre CA"
             }
         ]
     },
@@ -64,7 +68,9 @@ const questionsData = [
             {
                 id: 1, 
                 value: "Plus de 85 500€", 
-                nextQuestion: "emailForm"
+                nextQuestion: "emailForm", 
+                result: true, 
+                resultValue: "Plus de 85 500€"
             }, 
             {
                 id: 2, 
@@ -85,12 +91,16 @@ const questionsData = [
             {
                 id: 1, 
                 value: "Particuliers", 
-                nextQuestion: "emailForm"
+                nextQuestion: "emailForm", 
+                result: true, 
+                resultValue: "Particuliers"
             }, 
             {
                 id: 2, 
                 value: "Professionnels (autres sociétés)", 
-                nextQuestion: "emailForm"
+                nextQuestion: "emailForm", 
+                result: true, 
+                resultValue: "Professionnels"
             }
         ]
     }, 
@@ -106,7 +116,9 @@ const questionsData = [
             {
                 id: 2, 
                 value: "Plus de 176 200€", 
-                nextQuestion: "emailForm"
+                nextQuestion: "emailForm", 
+                result: true,
+                resultValue: "Plus de 176 200€"
             }
         ]
     }
@@ -138,6 +150,7 @@ startBtn.addEventListener('click', () => {
 nextBtn.addEventListener('click', () => {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
+    storeResult();
 
     if (indexNextQuestion === 'emailForm') {
         simulatorBlock.innerHTML = '';
@@ -146,7 +159,6 @@ nextBtn.addEventListener('click', () => {
     } else {
         getNextQuestion(); 
     }
-    //storeResult();
 }); 
 
 
@@ -224,6 +236,24 @@ function showForm() {
     viewAnswerBtn.classList.remove('hidden'); 
 
     simulatorBlock.append(cloneForm); 
+}
+
+
+function updateResultArray(currentChoice, currentQuestion) {
+    if (currentChoice.result === true) {
+        const newResult = new Object(); 
+        newResult.question = `${currentQuestion.question}`;
+        newResult.result = `${currentChoice.resultValue}`;
+        resultArray.push(newResult); 
+    }
+}
+   
+function storeResult() {
+    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
+    const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
+    updateResultArray(currentChoiceData, currentQuestionData); 
 }
 
 
