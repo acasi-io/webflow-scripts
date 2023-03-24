@@ -190,7 +190,7 @@ previousBtn.addEventListener('click', () => {
     const newPreviousQuestion = previousQuestionArray[lastQuestion].question; 
     setItemStorage('previousQuestion', newPreviousQuestion);
     
-    if (previousQuestionData.id === '0') {
+    if (previousQuestionData.id === 0) {
         addHiddenClass(previousBtn); 
     }
 });
