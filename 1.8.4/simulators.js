@@ -221,7 +221,7 @@ nextBtn.addEventListener('click', () => {
     if (indexCurrentQuestion === totalQuestions - 1) {
         showForm();
         addHiddenClass(previousBtn)
-        setItemStorage('indexPreviousQuestion', 6); 
+        setItemStorage('indexPreviousQuestion', totalQuestions - 1); 
         setItemStorage('indexCurrentQuestion', 'emailForm'); 
         addHiddenClass(document.getElementById('simulator-block')); 
         simulatorInformation.textContent = ''; 
