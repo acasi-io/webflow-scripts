@@ -182,16 +182,17 @@ nextBtn.addEventListener('click', () => {
 previousBtn.addEventListener('click', () => {
 	const previousQuestion = localStorage.getItem('previousQuestion');
     const previousQuestionData = questionsData.find(question => question.question === previousQuestion);
-    if (previousQuestionData.id === 0) {
-        addHiddenClass(previousBtn); 
-    }
     showQuestion(previousQuestionData); 
     questionTitle.textContent = previousQuestionData.question; 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 	deleteOldValue(); 
-    const lastQuestion = previousQuestionArray.length - 1; 
-    const newPreviousQuestion = previousQuestionArray[lastQuestion].question; 
-    setItemStorage('previousQuestion', newPreviousQuestion);
+    if (previousQuestionData.id === 0) {
+        addHiddenClass(previousBtn); 
+    } else {
+        const lastQuestion = previousQuestionArray.length - 1; 
+        const newPreviousQuestion = previousQuestionArray[lastQuestion].question; 
+        setItemStorage('previousQuestion', newPreviousQuestion);
+    } 
 });
 
 
