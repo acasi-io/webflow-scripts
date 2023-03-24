@@ -122,7 +122,7 @@ const questionsData = [
             }
         ]
     }
-]; 
+];
 
 
 let questionIndex = 0; 
@@ -130,11 +130,190 @@ const previousBtn = document.getElementById('previous-button');
 const nextBtn = document.getElementById('next-button'); 
 const questionTitle = document.getElementById('question');
 let resultArray = []; 
+const startBtn = document.querySelector('.simulator-start-button'); 
+const simulatorOptions = document.getElementById('simulator-options'); 
 const simulatorBlock = document.getElementById('simulator-block');
-const startBtn = document.getElementById('start-button'); 
+let previousQuestionArray = []; 
+let previousQuestionArrayLength = Object.keys(previousQuestionArray).length; 
 
 
 function setItemStorage(key, value) {
+    localStorage.setItem(key, value); 
+}
+
+function addHiddenClass(elementProperty) {
+    elementProperty.classList.add('simulator-hidden'); 
+}
+
+function removeHiddenClass(elementProperty) {
+	elementProperty.classList.remove('simulator-hidden'); 
+}
+
+
+startBtn.addEventListener('click', () => {
+	setItemStorage('indexPreviousQuestion', 0); 
+    setItemStorage('indexCurrentChoice', 0); 
+    setItemStorage('indexCurrentQuestion', 0);
+    removeHiddenClass(document.getElementById('form-question')); 
+    addHiddenClass(document.querySelector('.simulator-start')); 
+    addHiddenClass(document.querySelector('.simulator-start-image')); 
+    removeHiddenClass(document.querySelector('.simulator-questions-image')); 
+    firstQuestion();
+});
+
+
+nextBtn.addEventListener('click', () => {
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
+    storeResult(); 
+    removeHiddenClass(previousBtn);
+    console.log(previousQuestionArrayLength); 
+
+    if (indexNextQuestion === 'emailForm') {
+				simulatorBlock.innerHTML = '';
+        questionTitle.textContent = '';
+        showForm(); 
+    } else {
+        getNextQuestion(); 
+    }
+}); 
+
+
+previousBtn.addEventListener('click', () => {
+	const previousQuestion = localStorage.getItem('previousQuestion');
+    const previousQuestionData = questionsData.find(question => question.question === previousQuestion);
+    showQuestion(previousQuestionData); 
+    questionTitle.textContent = previousQuestionData.question; 
+    setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
+	deleteOldValue(); 
+    const lastQuestion = previousQuestionArray.length - 1; 
+    const newPreviousQuestion = previousQuestionArray[lastQuestion].question; 
+    setItemStorage('previousQuestion', newPreviousQuestion);
+});
+
+
+function firstQuestion() {
+    const firstQuestionData = questionsData.find(question => question.id === questionIndex);
+    setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
+
+    questionTitle.textContent = firstQuestionData.question;  
+       
+    showQuestion(firstQuestionData); 
+}
+
+
+function showQuestion(currentQuestion) {
+    const answerBlock = document.getElementById('answer-block').firstChild;
+    simulatorBlock.innerHTML = ''; 
+   
+    currentQuestion.choices.forEach((choice, index) => {
+        const cloneAnswerBlock = answerBlock.cloneNode(true); 
+        simulatorBlock.appendChild(cloneAnswerBlock); 
+        answer = simulatorBlock.children[index];
+   
+        const { id, value, image } = choice; 
+        const input = answer.querySelector('.simulator-radio'); 
+        input.setAttribute('id', id); 
+        input.setAttribute('value', id); 
+   
+        const label = answer.querySelector('.simulator-answer'); 
+        label.textContent = value; 
+        label.setAttribute('for', id); 
+     
+        const emoji = answer.querySelector('.simulator-emoji');
+        if (image) { 
+            emoji.textContent = image; 
+        } else {
+            emoji.remove(); 
+        }
+   
+        answer.addEventListener('click', () => { 
+            setItemStorage('indexCurrentChoice', input.id); 
+            updateLocalStorage(currentQuestion); 
+        }); 
+
+        input.addEventListener('click', (e) => {
+            [...document.querySelectorAll('.simulator-answer-btn')].forEach(element => {
+                element.classList.remove('simulator-checked'); 
+            });
+            e.currentTarget.parentNode.classList.add('simulator-checked');
+        });
+    }); 
+}
+
+
+function updateLocalStorage(currentQuestion) {
+    const currentChoiceIndex = parseInt(localStorage.getItem('indexCurrentChoice')); 
+    const currentChoiceData = currentQuestion.choices.find(data => data.id === currentChoiceIndex)
+    setItemStorage('indexNextQuestion', currentChoiceData.nextQuestion);
+}
+
+
+function getNextQuestion() {
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
+    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id)
+
+    questionTitle.textContent = currentQuestionData.question;
+     
+    showQuestion(currentQuestionData); 
+}
+
+
+function showForm() { 
+	simulatorOptions.innerHTML = '';
+	questionTitle.textContent = 'Résultat'; 
+    const formTemplate = document.getElementById('simulator-form-block');  
+    addHiddenClass(nextBtn); 
+    removeHiddenClass(formTemplate); 
+
+    simulatorOptions.append(formTemplate); 
+}
+
+
+function updateResultArray(currentChoice, currentQuestion) {
+    if (currentChoice.result === true) {
+        const newResult = new Object(); 
+        newResult.question = `${currentQuestion.question}`;
+        newResult.result = `${currentChoice.resultValue}`;
+        resultArray.push(newResult); 
+        setItemStorage('result', currentChoice.resultValue); 
+    }
+}
+   
+function storeResult() {
+    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
+    const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
+		updateResultArray(currentChoiceData, currentQuestionData); 
+    updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
+    console.log(previousQuestionArray);
+}
+
+
+function updatePreviousQuestionArray(currentQuestion, currentChoice) {
+    const newValue = new Object(); 
+    newValue.question = `${currentQuestion.question}`; 
+    newValue.value = `${currentChoice.value}`; 
+    setItemStorage('previousQuestion', currentQuestion.question); 
+    previousQuestionArray.push(newValue); 
+}
+
+function deleteOldValue() {
+    const previousQuestion = localStorage.getItem('previousQuestion'); 
+    const currentQuestionData = questionsData.find(question => question.question === previousQuestion); 
+  
+    const answerToFind = previousQuestionArray.find(answer => answer.question === currentQuestionData.question);
+  
+    let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
+  
+    previousQuestionArray.splice(indexAnswerToFind, 1); 
+} 
+
+
+
+/*function setItemStorage(key, value) {
     localStorage.setItem(key, value); 
 }
 
@@ -202,12 +381,12 @@ function showQuestion(currentQuestion) {
             updateLocalStorage(currentQuestion); 
         }); 
 
-        /*input.addEventListener('click', (e) => {
+        input.addEventListener('click', (e) => {
             [...document.querySelectorAll('.simulator-answer-btn')].forEach(element => {
                 element.classList.remove('simulator-checked'); 
             });
             e.currentTarget.parentNode.classList.add('simulator-checked');
-        });*/
+        });
     }); 
 }
 
@@ -253,8 +432,29 @@ function storeResult() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
-    updateResultArray(currentChoiceData, currentQuestionData); 
+    updateResultArray(currentChoiceData, currentQuestionData);
+    updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
 }
+
+
+function updatePreviousQuestionArray(currentQuestion, currentChoice) {
+    const newValue = new Object(); 
+    newValue.question = `${currentQuestion.question}`; 
+    newValue.value = `${currentChoice.value}`; 
+    setItemStorage('previousQuestion', currentQuestion.question); 
+    previousQuestionArray.push(newValue); 
+}
+
+function deleteOldValue() {
+    const previousQuestion = localStorage.getItem('previousQuestion'); 
+    const currentQuestionData = questionsData.find(question => question.question === previousQuestion); 
+  
+    const answerToFind = previousQuestionArray.find(answer => answer.question === currentQuestionData.question);
+  
+    let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
+  
+    previousQuestionArray.splice(indexAnswerToFind, 1); 
+}*/
 
 
 
