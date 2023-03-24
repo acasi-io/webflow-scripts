@@ -116,10 +116,10 @@ const questionsData = [
 let questionIndex = 0; 
 const previousBtn = document.getElementById('previous-button'); 
 const nextBtn = document.getElementById('next-button'); 
-const viewAnswerBtn = document.querySelector('.view-answer'); 
 const questionTitle = document.getElementById('question');
 let resultArray = []; 
 const simulatorBlock = document.getElementById('simulator-block');
+const startBtn = document.getElementById('start-button'); 
 
 
 function setItemStorage(key, value) {
@@ -127,7 +127,7 @@ function setItemStorage(key, value) {
 }
 
 
-window.addEventListener('load', () => {
+startBtn.addEventListener('click', () => {
     setItemStorage('indexPreviousQuestion', 0); 
     setItemStorage('indexCurrentChoice', 0); 
     setItemStorage('indexCurrentQuestion', 0);
@@ -165,7 +165,7 @@ function showQuestion(currentQuestion) {
     simulatorBlock.innerHTML = ''; 
    
     currentQuestion.choices.forEach((choice, index) => {
-        const cloneAnswerBlock = answerBlock.content.cloneNode(true); 
+        const cloneAnswerBlock = answerBlock.cloneNode(true); 
         simulatorBlock.appendChild(cloneAnswerBlock); 
         answer = simulatorBlock.children[index];
    
@@ -227,7 +227,7 @@ function showForm() {
 }
 
 
-function getAnswer() {
+/*function getAnswer() {
     simulatorBlock.innerHTML = ''; 
     const indexLastChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const indexLastQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
@@ -245,15 +245,4 @@ function getAnswer() {
     } else {
         simulatorBlock.innerHTML = 'autre';  
     }
-}
-
-
-viewAnswerBtn.addEventListener('click', () => {
-    const emailInput = document.getElementById('email'); 
-    const telInput = document.getElementById('tel'); 
-    if (emailInput.value === '' || telInput.value === '') {
-        alert('Veuillez renseignez votre mail et votre numéro de téléphone pour accéder à la réponse'); 
-    } else {
-        getAnswer(); 
-    }
-}); 
+}*/
