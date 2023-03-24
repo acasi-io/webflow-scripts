@@ -301,7 +301,7 @@ function firstQuestion() {
 function getNextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    localStorage.setItem('indexCurrentQuestion', currentQuestionData.id); 
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id)
 
     fillQuestionTitleTheme(currentQuestionData); 
      
@@ -318,12 +318,14 @@ function getPreviousQuestion() {
     showQuestion(previousQuestionData); 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 }
+
    
 function setIndexPreviousQuestion() {
-    let indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     let indexPreviousQuestion = indexCurrentQuestion - 1; 
     setItemStorage('indexPreviousQuestion', indexPreviousQuestion); 
 }
+
    
 function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
