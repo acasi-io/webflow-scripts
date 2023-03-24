@@ -269,6 +269,7 @@ function showForm() {
 	questionTitle.textContent = 'Résultat'; 
     const formTemplate = document.getElementById('simulator-form-block');  
     addHiddenClass(nextBtn); 
+    addHiddenClass(previousBtn);
     removeHiddenClass(formTemplate); 
 
     simulatorOptions.append(formTemplate); 
