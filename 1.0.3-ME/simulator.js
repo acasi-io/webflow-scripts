@@ -257,22 +257,83 @@ function storeResult() {
 }
 
 
-/*function getAnswer() {
-    simulatorBlock.innerHTML = ''; 
-    const indexLastChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
-    const indexLastQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
 
-    if (indexLastQuestion === 3 && indexLastChoice === 1) {
-        simulatorBlock.innerHTML = '3 et 1'; 
-    } else if (indexLastQuestion === 2 && indexLastChoice === 1) {
-        simulatorBlock.innerHTML = '2 et 1'; 
-    } else if (indexLastQuestion === 2 && indexLastChoice === 2) {
-        simulatorBlock.innerHTML = '2 et 2';  
-    } else if (indexLastQuestion === 4 && indexLastChoice === 1) {
-        simulatorBlock.innerHTML = '4 et 1'; 
-    } else if (indexLastQuestion === 4 && indexLastChoice === 2) {
-        simulatorBlock.innerHTML = '4 et 2';  
-    } else {
-        simulatorBlock.innerHTML = 'autre';  
-    }
-}*/
+/*
+
+CODE WEBFLOW ME RESULTAT 
+
+<script>
+
+const resultText = document.getElementById('simulator-result-explanation-container');
+const resultStorage = localStorage.getItem('result');  
+const nextBtn = document.getElementById('next-button'); 
+
+
+function addHiddenClass(elementProperty) {
+	elementProperty.classList.add('simulator-hidden'); 
+}
+
+function removeHiddenClass(elementProperty) {
+	elementProperty.classList.remove('simulator-hidden'); 
+}
+
+
+function fillAnswer(number) {
+	const explanation = document.getElementById(`simulator-${number}-explanation`); 
+  explanation.classList.remove('simulator-hidden'); 
+	resultText.append(explanation);
+}
+
+
+if (resultStorage === "Plus de 85 500€" || resultStorage === "Particuliers") {
+  fillAnswer('first');
+} else if (resultStorage === "Plus de % de votre CA") { 
+  fillAnswer('two');
+} else if (resultStorage === "Moins de % de votre CA") {
+  fillAnswer('three'); 
+} else if (resultStorage === "Professionnels") {
+  fillAnswer('four');
+} else {
+  fillAnswer('five'); 
+}
+
+
+nextBtn.addEventListener('click', () => {
+	addHiddenClass(document.getElementById('simulator-result-container')); 
+  removeHiddenClass(document.getElementById('simulator-two-answers'));
+  const questionTitle = document.getElementById('simulator-result-title'); 
+  
+  if (resultStorage === "Plus de 85 500€" || resultStorage === "Particuliers") {
+  	questionTitle.textContent = "Vous souhaitez qu'Acasi vous aide à choisir votre nouveau statut ?";
+	} else if (resultStorage === "Professionnels") {
+  	questionTitle.textContent = "Souhaitez-vous qu'on vous aide à préparer la transition vers le régime de la TVA ?";
+	} else if (resultStorage === "Plus de 176 200€") {
+  	questionTitle.textContent = "Vous souhaitez avoir de l'aide pour la transition vers un autre statut juridique ?";
+  } else {
+  	return window.location.href = "https://www.acasi.io/"; 
+	}
+  addHiddenClass(nextBtn); 
+});
+
+
+const yesToHelp = document.getElementById('yes-to-help'); 
+const noToHelp = document.getElementById('no-to-help');
+
+
+yesToHelp.addEventListener('click', () => {
+	removeHiddenClass(document.getElementById('simulator-result-container')); 
+  addHiddenClass(document.getElementById('simulator-two-answers'));
+	resultText.textContent = "Nous allons vous rappeler dans la journée !";  
+});
+
+
+noToHelp.addEventListener('click', () => {
+	removeHiddenClass(document.getElementById('simulator-result-container')); 
+  addHiddenClass(document.getElementById('simulator-two-answers'));
+	resultText.textContent = "Pas de problèmes ! Sachez qu'en ce moment, la création de société est totalement gratuite avec Acasi. J'en profite !"; 
+});
+
+
+</script>
+
+*/
