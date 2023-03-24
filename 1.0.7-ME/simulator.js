@@ -180,6 +180,9 @@ nextBtn.addEventListener('click', () => {
 
 
 previousBtn.addEventListener('click', () => {
+    if (previousQuestionData.id === 0) {
+        addHiddenClass(previousBtn); 
+    }
 	const previousQuestion = localStorage.getItem('previousQuestion');
     const previousQuestionData = questionsData.find(question => question.question === previousQuestion);
     showQuestion(previousQuestionData); 
@@ -189,10 +192,6 @@ previousBtn.addEventListener('click', () => {
     const lastQuestion = previousQuestionArray.length - 1; 
     const newPreviousQuestion = previousQuestionArray[lastQuestion].question; 
     setItemStorage('previousQuestion', newPreviousQuestion);
-    
-    if (previousQuestionData.id === 0) {
-        addHiddenClass(previousBtn); 
-    }
 });
 
 
