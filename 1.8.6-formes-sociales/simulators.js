@@ -368,9 +368,9 @@ function showForm() {
     } else if (plusieursAnswer && dividendesAnswer) {
         resultInput.value = 'SAS'; 
     } else if (salaireAnswer && plusieursAnswer) {
-        resultInput.value = 'SARL'; 
+        resultInput.value = 'SARL ou SAS'; 
     } else if (seulAnswer && salaireAnswer) {
-        resultInput.value = 'EURL'; 
+        resultInput.value = 'EURL ou SASU'; 
     } else {
         return;
     }
