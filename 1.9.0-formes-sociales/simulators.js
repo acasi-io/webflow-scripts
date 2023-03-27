@@ -208,7 +208,7 @@ startBtn.addEventListener('click', () => {
 }); 
 
    
-nextBtn.addEventListener('click', () => {
+/*nextBtn.addEventListener('click', () => {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     storeResult();
 
@@ -226,7 +226,28 @@ nextBtn.addEventListener('click', () => {
         addHiddenClass(document.getElementById('simulator-block')); 
         simulatorInformation.textContent = ''; 
     } 
-}); 
+}); */
+
+
+function nextQuestion() {
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    storeResult();
+
+    if (indexCurrentQuestion !== totalQuestions - 1) {
+        previousBtn.classList.remove('simulator-hidden');
+        getNextQuestion();
+    }
+    setIndexPreviousQuestion();
+   
+    if (indexCurrentQuestion === totalQuestions - 1) {
+        showForm();
+        addHiddenClass(previousBtn)
+        setItemStorage('indexPreviousQuestion', totalQuestions - 1); 
+        setItemStorage('indexCurrentQuestion', 'emailForm'); 
+        addHiddenClass(document.getElementById('simulator-block')); 
+        simulatorInformation.textContent = ''; 
+    } 
+}
 
 
 previousBtn.addEventListener('click', () => {
@@ -276,6 +297,7 @@ function showQuestion(currentQuestion) {
         answer.addEventListener('click', () => { 
             setItemStorage('indexCurrentChoice', input.id); 
             setItemStorage('indexNextQuestion', currentQuestion.nextQuestion); 
+            nextQuestion();
         }); 
 
         input.addEventListener('click', (e) => {
