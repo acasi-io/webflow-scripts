@@ -296,7 +296,8 @@ function showQuestion(currentQuestion) {
    
         answer.addEventListener('click', () => { 
             setItemStorage('indexCurrentChoice', input.id); 
-            setItemStorage('indexNextQuestion', currentQuestion.nextQuestion); 
+            //setItemStorage('indexNextQuestion', currentQuestion.nextQuestion); 
+            setItemStorage('indexNextQuestion', currentQuestion.id + 1); 
             nextQuestion();
         }); 
 
