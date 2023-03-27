@@ -6,11 +6,13 @@ const questionsData = [
             {
                 id: 1, 
                 value: "Vente de marchandises",
+                image: "🏠", 
                 nextQuestion: 1
             }, 
             {
                 id: 2, 
                 value: "Prestation de services",
+                image: "👩‍💻", 
                 nextQuestion: 1
             }
         ]
@@ -22,21 +24,25 @@ const questionsData = [
             {
                 id: 1, 
                 value: "Moins de 85 500€ de CA", 
+                image: "💰", 
                 nextQuestion: 2
             }, 
             {
                 id: 2, 
                 value: "Entre 85 500€ et 94 300€ de CA", 
+                image: "💰💰", 
                 nextQuestion: 3
             }, 
             {
                 id: 3, 
                 value: "Plus de 94 300€ de CA", 
+                image: "💰💰💰", 
                 nextQuestion: 4
             }, 
             {
                 id: 4, 
                 value: "Plus de 176 200 € de CA", 
+                image: "💰💰💰💰", 
                 nextQuestion: 5
             }
         ]
@@ -69,17 +75,20 @@ const questionsData = [
                 id: 1, 
                 value: "Plus de 85 500€", 
                 nextQuestion: "emailForm", 
+                image: "💰💰", 
                 result: true, 
                 resultValue: "Plus de 85 500€"
             }, 
             {
                 id: 2, 
                 value: "Moins de 85 800€", 
+                image: "💰", 
                 nextQuestion: 2 
             },
             {
                 id: 3, 
                 value: "C'est ma premère année d'activité", 
+                image: "🚀", 
                 nextQuestion: 2
             }
         ]
