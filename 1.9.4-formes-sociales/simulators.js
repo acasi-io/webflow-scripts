@@ -208,7 +208,7 @@ startBtn.addEventListener('click', () => {
 }); 
 
    
-/*nextBtn.addEventListener('click', () => {
+nextBtn.addEventListener('click', () => {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     storeResult();
 
@@ -226,10 +226,10 @@ startBtn.addEventListener('click', () => {
         addHiddenClass(document.getElementById('simulator-block')); 
         simulatorInformation.textContent = ''; 
     } 
-}); */
+});
 
 
-function nextQuestion() {
+/*function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     storeResult();
 
@@ -247,7 +247,7 @@ function nextQuestion() {
         addHiddenClass(document.getElementById('simulator-block')); 
         simulatorInformation.textContent = ''; 
     } 
-}
+}*/
 
 
 previousBtn.addEventListener('click', () => {
@@ -296,9 +296,8 @@ function showQuestion(currentQuestion) {
    
         answer.addEventListener('click', () => { 
             setItemStorage('indexCurrentChoice', input.id); 
-            //setItemStorage('indexNextQuestion', currentQuestion.nextQuestion); 
-            setItemStorage('indexNextQuestion', currentQuestion.id + 1); 
-            nextQuestion();
+            setItemStorage('indexNextQuestion', currentQuestion.nextQuestion); 
+            //nextQuestion();
         }); 
 
         input.addEventListener('click', (e) => {
@@ -325,7 +324,7 @@ function getNextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     setItemStorage('indexCurrentQuestion', currentQuestionData.id); 
-    setItemStorage('indexNextQuestion', currentQuestionData.id + 1); 
+    //setItemStorage('indexNextQuestion', currentQuestionData.id + 1); 
 
     fillQuestionTitleTheme(currentQuestionData); 
      
