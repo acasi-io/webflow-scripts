@@ -206,7 +206,7 @@ startBtn.addEventListener('click', () => {
     if (window.matchMedia("(min-width: 360px)").matches) {
         removeHiddenClass(document.querySelector('.simulator-questions-image'));
     } else {
-        return; 
+        addHiddenClass(document.querySelector('.simulator-questions-image'));
     } 
     firstQuestion();
 }); 
