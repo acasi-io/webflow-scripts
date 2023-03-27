@@ -324,7 +324,8 @@ function firstQuestion() {
 function getNextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    setItemStorage('indexCurrentQuestion', currentQuestionData.id)
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id); 
+    setItemStorage('indexNextQuestion', currentQuestionData.id + 1); 
 
     fillQuestionTitleTheme(currentQuestionData); 
      
