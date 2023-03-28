@@ -171,7 +171,7 @@ startBtn.addEventListener('click', () => {
 });
 
 
-nextBtn.addEventListener('click', () => {
+/*nextBtn.addEventListener('click', () => {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
     storeResult(); 
@@ -185,7 +185,23 @@ nextBtn.addEventListener('click', () => {
     } else {
         getNextQuestion(); 
     }
-}); 
+});*/
+
+
+function nextQuestion() {
+    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
+    storeResult(); 
+    removeHiddenClass(previousBtn);
+    console.log(previousQuestionArrayLength); 
+
+    if (indexNextQuestion === 'emailForm') {
+				simulatorBlock.innerHTML = '';
+        questionTitle.textContent = '';
+        showForm(); 
+    } else {
+        getNextQuestion(); 
+    }
+}
 
 
 previousBtn.addEventListener('click', () => {
@@ -250,6 +266,7 @@ function showQuestion(currentQuestion) {
                 element.classList.remove('simulator-checked'); 
             });
             e.currentTarget.parentNode.classList.add('simulator-checked');
+            nextQuestion(); 
         });
     }); 
 }
