@@ -208,7 +208,7 @@ startBtn.addEventListener('click', () => {
 }); 
 
    
-nextBtn.addEventListener('click', () => {
+/*nextBtn.addEventListener('click', () => {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     storeResult();
 
@@ -226,10 +226,10 @@ nextBtn.addEventListener('click', () => {
         addHiddenClass(document.getElementById('simulator-block')); 
         simulatorInformation.textContent = ''; 
     } 
-});
+});*/
 
 
-/*function nextQuestion() {
+function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     storeResult();
 
@@ -247,7 +247,7 @@ nextBtn.addEventListener('click', () => {
         addHiddenClass(document.getElementById('simulator-block')); 
         simulatorInformation.textContent = ''; 
     } 
-}*/
+}
 
 
 previousBtn.addEventListener('click', () => {
@@ -305,6 +305,7 @@ function showQuestion(currentQuestion) {
                 element.classList.remove('simulator-checked'); 
             });
             e.currentTarget.parentNode.classList.add('simulator-checked');
+            nextQuestion(); 
         });
     }); 
 }
