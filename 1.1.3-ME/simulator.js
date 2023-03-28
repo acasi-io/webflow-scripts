@@ -101,6 +101,7 @@ const questionsData = [
                 id: 1, 
                 value: "Particuliers", 
                 nextQuestion: "emailForm", 
+                image: "👩‍💼", 
                 result: true, 
                 resultValue: "Particuliers"
             }, 
@@ -108,6 +109,7 @@ const questionsData = [
                 id: 2, 
                 value: "Professionnels (autres sociétés)", 
                 nextQuestion: "emailForm", 
+                image: "🏭", 
                 result: true, 
                 resultValue: "Professionnels"
             }
@@ -120,12 +122,14 @@ const questionsData = [
             {
                 id: 1, 
                 value: "Moins de 176 200€", 
+                image: "💰", 
                 nextQuestion: 2
             }, 
             {
                 id: 2, 
                 value: "Plus de 176 200€", 
                 nextQuestion: "emailForm", 
+                image: "💰💰", 
                 result: true,
                 resultValue: "Plus de 176 200€"
             }
