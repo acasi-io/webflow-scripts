@@ -203,7 +203,6 @@ function nextQuestion() {
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
     storeResult(); 
     removeHiddenClass(previousBtn);
-    console.log(previousQuestionArrayLength); 
 
     if (indexNextQuestion === 'emailForm') {
 		simulatorBlock.innerHTML = '';
