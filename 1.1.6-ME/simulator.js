@@ -312,6 +312,7 @@ function showForm() {
     addHiddenClass(nextBtn); 
     addHiddenClass(previousBtn);
     removeHiddenClass(formTemplate); 
+    addHiddenClass(document.getElementById('simulator-prendre-rendez-vous')); 
 
     simulatorOptions.append(formTemplate); 
 }
