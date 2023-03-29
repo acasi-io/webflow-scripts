@@ -306,7 +306,7 @@ function getNextQuestion() {
 
 function showForm() { 
 	simulatorOptions.innerHTML = '';
-    questionTitle.textContent = 'Entrez vos coordonnés pour afficher le résultat de la simulation';
+    questionTitle.textContent = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
 	questionTheme.textContent = 'Résultat'; 
     const formTemplate = document.getElementById('simulator-form-block');  
     addHiddenClass(nextBtn); 
