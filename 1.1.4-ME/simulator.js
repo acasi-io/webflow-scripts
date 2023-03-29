@@ -2,10 +2,11 @@ const questionsData = [
     {   
         id: 0, 
         question: "Quel est votre type d'activité ?", 
+        theme: "Votre projet",
         choices: [
             {
                 id: 1, 
-                value: "Vente de marchandises",
+                value: "Vente de marchandises", 
                 image: "🏠", 
                 nextQuestion: 1
             }, 
@@ -20,6 +21,7 @@ const questionsData = [
     {
         id: 1,
         question: "Cette année, vous allez réaliser", 
+        theme: "Données financières",
         choices: [
             {
                 id: 1, 
@@ -50,6 +52,7 @@ const questionsData = [
     {
         id: 2,
         question: "Vos charges représentent", 
+        theme: "Données financières",
         choices: [
             {
                 id: 1, 
@@ -70,6 +73,7 @@ const questionsData = [
     { 
         id: 3,
         question: "L'année dernière vous avez réalisé", 
+        theme: "Données financières",
         choices: [
             {
                 id: 1, 
@@ -96,6 +100,7 @@ const questionsData = [
     {
         id: 4, 
         question: "Vos clients sont majoritairement des", 
+        theme: "Votre projet",
         choices: [
             {
                 id: 1, 
@@ -118,6 +123,7 @@ const questionsData = [
     {
         id: 5, 
         question: "L'année dernière vous avez réalisé ", 
+        theme: "Données financières",
         choices: [
             {
                 id: 1, 
@@ -142,6 +148,7 @@ let questionIndex = 0;
 const previousBtn = document.getElementById('previous-button'); 
 const nextBtn = document.getElementById('next-button'); 
 const questionTitle = document.getElementById('question');
+const questionTheme = document.querySelector('.simulator-theme'); 
 let resultArray = []; 
 const startBtn = document.querySelector('.simulator-start-button'); 
 const simulatorOptions = document.getElementById('simulator-options'); 
@@ -199,12 +206,16 @@ function nextQuestion() {
     console.log(previousQuestionArrayLength); 
 
     if (indexNextQuestion === 'emailForm') {
-				simulatorBlock.innerHTML = '';
-        questionTitle.textContent = '';
+		simulatorBlock.innerHTML = '';
         showForm(); 
     } else {
         getNextQuestion(); 
     }
+}
+
+function fillQuestionTitleTheme(currentQuestion) {
+    questionTitle.textContent = currentQuestion.question; 
+    questionTheme.textContent = currentQuestion.theme; 
 }
 
 
@@ -212,7 +223,7 @@ previousBtn.addEventListener('click', () => {
 	const previousQuestion = localStorage.getItem('previousQuestion');
     const previousQuestionData = questionsData.find(question => question.question === previousQuestion);
     showQuestion(previousQuestionData); 
-    questionTitle.textContent = previousQuestionData.question; 
+    fillQuestionTitleTheme(previousQuestionData); 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 	deleteOldValue(); 
     if (previousQuestionData.id === 0) {
@@ -229,7 +240,7 @@ function firstQuestion() {
     const firstQuestionData = questionsData.find(question => question.id === questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
 
-    questionTitle.textContent = firstQuestionData.question;  
+    fillQuestionTitleTheme(firstQuestionData);   
        
     showQuestion(firstQuestionData); 
 }
@@ -288,7 +299,7 @@ function getNextQuestion() {
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     setItemStorage('indexCurrentQuestion', currentQuestionData.id)
 
-    questionTitle.textContent = currentQuestionData.question;
+    fillQuestionTitleTheme(currentQuestionData);  
      
     showQuestion(currentQuestionData); 
 }
@@ -296,7 +307,8 @@ function getNextQuestion() {
 
 function showForm() { 
 	simulatorOptions.innerHTML = '';
-	questionTitle.textContent = 'Résultat'; 
+    questionTitle.textContent = 'Entrez vos coordonnés pour afficher le résultat de la simulation';
+	questionTheme.textContent = 'Résultat'; 
     const formTemplate = document.getElementById('simulator-form-block');  
     addHiddenClass(nextBtn); 
     addHiddenClass(previousBtn);
@@ -321,9 +333,8 @@ function storeResult() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
-		updateResultArray(currentChoiceData, currentQuestionData); 
+	updateResultArray(currentChoiceData, currentQuestionData); 
     updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
-    console.log(previousQuestionArray);
 }
 
 
