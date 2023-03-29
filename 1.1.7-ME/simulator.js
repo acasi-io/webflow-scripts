@@ -56,14 +56,14 @@ const questionsData = [
         choices: [
             {
                 id: 1, 
-                value: "Plus de % de votre CA", 
+                value: "Plus de 34% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
                 resultValue: "Plus de % de votre CA"
             }, 
             {
                 id: 2, 
-                value: "Moins de % de votre CA", 
+                value: "Moins de 34% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
                 resultValue: "Moins de % de votre CA"
