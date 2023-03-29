@@ -175,7 +175,7 @@ startBtn.addEventListener('click', () => {
     setItemStorage('indexCurrentChoice', 0); 
     setItemStorage('indexCurrentQuestion', 0);
     removeHiddenClass(document.getElementById('form-question')); 
-    //addHiddenClass(document.querySelector('.simulator-start')); 
+    addHiddenClass(document.querySelector('.simulator-start')); 
     addHiddenClass(document.querySelector('.simulator-start-image')); 
     removeHiddenClass(document.querySelector('.simulator-questions-image')); 
     firstQuestion();
