@@ -377,6 +377,7 @@ function showForm() {
     const formTemplate = document.querySelector('.simulator-form-block'); 
     addHiddenClass(nextBtn); 
     removeHiddenClass(formTemplate);  
+    addHiddenClass(document.getElementById('simulator-information')); 
 
     const resultInput = document.getElementById('result');
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
