@@ -8,22 +8,26 @@ const questionsData = [
             {
                 id: 1, 
                 value: "Salarié",
-                image: "💼"
+                image: "💼", 
+                highlight: true
             }, 
             {
                 id: 2, 
                 value: "Bénéficiaire du chômage",
-                image: "🌴"
+                image: "🌴", 
+                highlight: true
             }, 
             {
                 id: 3, 
                 value: "Micro-entrepreneur", 
-                image: "🚗"
+                image: "🚗", 
+                highlight: true
             }, 
             {
                 id: 4, 
                 value: "Entrepreneur (EI, SAS/SASU, SARL/EURL)", 
-                image: "🚀"
+                image: "🚀", 
+                highlight: true 
             }
         ]
     }, 
@@ -293,6 +297,8 @@ function showQuestion(currentQuestion) {
         } else {
             emoji.remove(); 
         }
+
+        highlightCards(choice, answer); 
    
         answer.addEventListener('click', () => { 
             setItemStorage('indexCurrentChoice', input.id); 
@@ -420,4 +426,11 @@ function deleteOldValue() {
     let indexAnswerToFind = resultArray.indexOf(answerToFind); 
   
     resultArray.splice(indexAnswerToFind, 1); 
+}
+
+
+function highlightCards(choice, answer) {
+    if (choice.highlight === true) {
+        answer.style.boxShadow = "0px 0px 20px #132966"; 
+    }
 }
