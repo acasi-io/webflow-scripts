@@ -8,12 +8,14 @@ const questionsData = [
                 id: 1, 
                 value: "Vente de marchandises", 
                 image: "🏠", 
+                highlight: true, 
                 nextQuestion: 1
             }, 
             {
                 id: 2, 
                 value: "Prestation de services",
                 image: "👩‍💻", 
+                highlight: true, 
                 nextQuestion: 1
             }
         ]
@@ -269,6 +271,8 @@ function showQuestion(currentQuestion) {
         } else {
             emoji.remove(); 
         }
+
+        highlightCards(choice, answer); 
    
         answer.addEventListener('click', () => { 
             setItemStorage('indexCurrentChoice', input.id); 
@@ -356,6 +360,13 @@ function deleteOldValue() {
   
     previousQuestionArray.splice(indexAnswerToFind, 1); 
 } 
+
+
+function highlightCards(choice, answer) {
+    if (choice.highlight === true) {
+        answer.style.boxshadoww = "10px 10px 10px blue"; 
+    }
+}
 
 
 
