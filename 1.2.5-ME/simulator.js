@@ -326,6 +326,7 @@ function showForm() {
     addHiddenClass(nextBtn); 
     addHiddenClass(previousBtn);
     removeHiddenClass(formTemplate); 
+    removeHiddenClass(questionTheme); 
     addHiddenClass(document.getElementById('simulator-information')); 
 
     simulatorOptions.append(formTemplate); 
@@ -374,7 +375,7 @@ function deleteOldValue() {
 
 function highlightCards(choice, answer) {
     if (choice.highlight === true) {
-        answer.style.backgroundColor = "blue"; 
+        answer.style.boxShadow = "10px 10px 10px blue"; 
     }
 }
 
