@@ -223,6 +223,12 @@ previousBtn.addEventListener('click', () => {
 	const previousQuestion = localStorage.getItem('previousQuestion');
     const previousQuestionData = questionsData.find(question => question.question === previousQuestion);
     showQuestion(previousQuestionData); 
+    if (previousQuestionData.theme) {
+        fillQuestionTitleTheme(previousQuestionData); 
+    } else {
+        questionTitle.textContent = previousQuestionData.question; 
+        addHiddenClass(questionTheme); 
+    }
     fillQuestionTitleTheme(previousQuestionData); 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 	deleteOldValue(); 
@@ -301,7 +307,12 @@ function getNextQuestion() {
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     setItemStorage('indexCurrentQuestion', currentQuestionData.id)
 
-    fillQuestionTitleTheme(currentQuestionData);  
+    if (currentQuestionData.theme) {
+        fillQuestionTitleTheme(currentQuestionData); 
+    } else {
+        questionTitle.textContent = currentQuestionData.question; 
+        addHiddenClass(questionTheme); 
+    }
      
     showQuestion(currentQuestionData); 
 }
@@ -363,7 +374,7 @@ function deleteOldValue() {
 
 function highlightCards(choice, answer) {
     if (choice.highlight === true) {
-        answer.style.boxshadoww = "10px 10px 10px blue"; 
+        answer.style.backgroundColor = "blue"; 
     }
 }
 
