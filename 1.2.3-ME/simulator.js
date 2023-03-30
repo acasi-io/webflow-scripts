@@ -102,7 +102,6 @@ const questionsData = [
     {
         id: 4, 
         question: "Vos clients sont majoritairement des", 
-        theme: "Votre projet",
         choices: [
             {
                 id: 1, 
