@@ -375,7 +375,7 @@ function deleteOldValue() {
 
 function highlightCards(choice, answer) {
     if (choice.highlight === true) {
-        answer.style.boxShadow = "10px 10px 10px blue"; 
+        answer.style.boxShadow = "0px 0px 10px #132966"; 
     }
 }
 
