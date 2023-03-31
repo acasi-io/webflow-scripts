@@ -27,25 +27,25 @@ const questionsData = [
         choices: [
             {
                 id: 1, 
-                value: "Moins de 85 500€ de CA", 
+                value: "Moins de 91 900€ de CA", 
                 image: "💰", 
                 nextQuestion: 2
             }, 
             {
                 id: 2, 
-                value: "Entre 85 500€ et 94 300€ de CA", 
+                value: "Entre 91 900€ et 101 000€ de CA", 
                 image: "💰💰", 
                 nextQuestion: 3
             }, 
             {
                 id: 3, 
-                value: "Plus de 94 300€ de CA", 
+                value: "Plus de 101 000€ de CA", 
                 image: "💰💰💰", 
                 nextQuestion: 4
             }, 
             {
                 id: 4, 
-                value: "Plus de 176 200 € de CA", 
+                value: "Plus de 188 700€ de CA", 
                 image: "💰💰💰💰", 
                 nextQuestion: 5
             }
@@ -79,15 +79,15 @@ const questionsData = [
         choices: [
             {
                 id: 1, 
-                value: "Plus de 85 500€", 
+                value: "Plus de 91 900€", 
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true, 
-                resultValue: "Plus de 85 500€"
+                resultValue: "Plus de 91 900€"
             }, 
             {
                 id: 2, 
-                value: "Moins de 85 800€", 
+                value: "Moins de 91 900€", 
                 image: "💰", 
                 nextQuestion: 2 
             },
@@ -128,17 +128,17 @@ const questionsData = [
         choices: [
             {
                 id: 1, 
-                value: "Moins de 176 200€", 
+                value: "Moins de 188 700€", 
                 image: "💰", 
                 nextQuestion: 2
             }, 
             {
                 id: 2, 
-                value: "Plus de 176 200€", 
+                value: "Plus de 188 700€", 
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true,
-                resultValue: "Plus de 176 200€"
+                resultValue: "Plus de 188 700€"
             }
         ]
     }
