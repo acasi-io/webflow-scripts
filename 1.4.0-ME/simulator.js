@@ -491,7 +491,7 @@ function updatePreviousQuestionArray(currentQuestion, currentChoice) {
     const newValue = new Object();  
     newValue.question = `${currentQuestion.questionTree}`; 
     newValue.value = `${currentChoice.value}`; 
-    setItemStorage('previousQuestion', currentQuestion.question); 
+    setItemStorage('previousQuestion', currentQuestion.questionTree); 
     console.log(localStorage.getItem('previousQuestion')); 
     previousQuestionArray.push(newValue); 
 }
