@@ -471,7 +471,7 @@ function showForm() {
 function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
         const newResult = new Object(); 
-        newResult.question = `${currentQuestion.questionTree}`;
+        newResult.question = `${currentQuestion.question}`;
         newResult.result = `${currentChoice.resultValue}`;
         resultArray.push(newResult); 
         setItemStorage('result', currentChoice.resultValue); 
@@ -490,9 +490,9 @@ function storeResult() {
 
 function updatePreviousQuestionArray(currentQuestion, currentChoice) {
     const newValue = new Object(); 
-    newValue.question = `${currentQuestion.questionTree}`; 
+    newValue.question = `${currentQuestion.question}`; 
     newValue.value = `${currentChoice.value}`; 
-    setItemStorage('previousQuestion', currentQuestion.questionTree); 
+    setItemStorage('previousQuestion', currentQuestion.question); 
     previousQuestionArray.push(newValue); 
 }
 
