@@ -337,11 +337,6 @@ function nextQuestion() {
     }
 }
 
-function fillQuestionTitleTheme(currentQuestion) {
-    questionTitle.textContent = currentQuestion.question; 
-    questionTheme.textContent = currentQuestion.theme; 
-}
-
 
 previousBtn.addEventListener('click', () => {
 	const previousQuestion = localStorage.getItem('previousQuestion');
