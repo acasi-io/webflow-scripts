@@ -354,6 +354,8 @@ function fillQuestionTitleTheme(currentQuestion) {
 previousBtn.addEventListener('click', () => {
 	const previousQuestion = localStorage.getItem('previousQuestion');
     const previousQuestionData = questionsData.find(question => question.question === previousQuestion);
+    console.log(resultArray); 
+    console.log(previousQuestionData)
     showQuestion(previousQuestionData); 
     if (previousQuestionData.theme) {
         fillQuestionTitleTheme(previousQuestionData); 
