@@ -425,6 +425,7 @@ function showQuestion(currentQuestion) {
             e.currentTarget.parentNode.classList.add('simulator-checked');
             nextQuestion(); 
             console.log(resultArray); 
+            console.log(previousQuestionArray); 
         });
     }); 
 }
