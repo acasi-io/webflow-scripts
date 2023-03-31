@@ -3,6 +3,7 @@ const questionsData = [
         id: 0, 
         question: "Quel est votre type d'activité ?", 
         theme: "Votre projet",
+        questionTree: "Quel est votre type d'activité ?", 
         choices: [
             {
                 id: 1, 
@@ -487,8 +488,7 @@ function storeResult() {
 
 
 function updatePreviousQuestionArray(currentQuestion, currentChoice) {
-    const newValue = new Object(); 
-    newValue.question = `${currentQuestion.question}`; 
+    const newValue = new Object();  
     newValue.question = `${currentQuestion.questionTree}`; 
     newValue.value = `${currentChoice.value}`; 
     setItemStorage('previousQuestion', currentQuestion.question); 
