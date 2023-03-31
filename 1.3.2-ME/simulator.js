@@ -16,7 +16,7 @@ const questionsData = [
                 value: "Prestation de services",
                 image: "👩‍💻", 
                 highlight: true, 
-                nextQuestion: 1
+                nextQuestion: 6
             }
         ]
     }, 
@@ -139,6 +139,128 @@ const questionsData = [
                 image: "💰💰", 
                 result: true,
                 resultValue: "Plus de 188 700€"
+            }
+        ]
+    },
+    {
+        id: 6,
+        question: "Cette année, vous allez réaliser", 
+        theme: "Données financières",
+        choices: [
+            {
+                id: 1, 
+                value: "Moins de 36 800€ de CA", 
+                image: "💰", 
+                nextQuestion: 7
+            }, 
+            {
+                id: 2, 
+                value: "Entre 36 800€ et 39 100€ de CA", 
+                image: "💰💰", 
+                nextQuestion: 8
+            }, 
+            {
+                id: 3, 
+                value: "Plus de 39 100€ de CA", 
+                image: "💰💰💰", 
+                nextQuestion: 9
+            }, 
+            {
+                id: 4, 
+                value: "Plus de 77 700€ de CA", 
+                image: "💰💰💰💰", 
+                nextQuestion: 10
+            }
+        ]
+    },
+    {
+        id: 7,
+        question: "Vos charges représentent", 
+        theme: "Données financières",
+        choices: [
+            {
+                id: 1, 
+                value: "Plus de 50% de votre CA", 
+                nextQuestion: "emailForm", 
+                result: true, 
+                resultValue: "Plus de 50% de votre CA"
+            }, 
+            {
+                id: 2, 
+                value: "Moins de 50% de votre CA", 
+                nextQuestion: "emailForm", 
+                result: true, 
+                resultValue: "Moins de 50% de votre CA"
+            }
+        ]
+    },
+    { 
+        id: 8,
+        question: "L'année dernière vous avez réalisé", 
+        theme: "Données financières",
+        choices: [
+            {
+                id: 1, 
+                value: "Plus de 36 800€", 
+                nextQuestion: "emailForm", 
+                image: "💰💰", 
+                result: true, 
+                resultValue: "Plus de 36 800€"
+            }, 
+            {
+                id: 2, 
+                value: "Moins de 36 800€", 
+                image: "💰", 
+                nextQuestion: 7 
+            },
+            {
+                id: 3, 
+                value: "C'est ma premère année d'activité", 
+                image: "🚀", 
+                nextQuestion: 7
+            }
+        ]
+    }, 
+    {
+        id: 9, 
+        question: "Vos clients sont majoritairement des", 
+        choices: [
+            {
+                id: 1, 
+                value: "Particuliers", 
+                nextQuestion: "emailForm", 
+                image: "👩‍💼", 
+                result: true, 
+                resultValue: "Particuliers"
+            }, 
+            {
+                id: 2, 
+                value: "Professionnels (autres sociétés)", 
+                nextQuestion: "emailForm", 
+                image: "🏭", 
+                result: true, 
+                resultValue: "Professionnels"
+            }
+        ]
+    }, 
+    {
+        id: 10, 
+        question: "L'année dernière vous avez réalisé ", 
+        theme: "Données financières",
+        choices: [
+            {
+                id: 1, 
+                value: "Moins de 77 700€", 
+                image: "💰", 
+                nextQuestion: 7
+            }, 
+            {
+                id: 2, 
+                value: "Plus de 77 700€", 
+                nextQuestion: "emailForm", 
+                image: "💰💰", 
+                result: true,
+                resultValue: "Plus de 77 700€"
             }
         ]
     }
