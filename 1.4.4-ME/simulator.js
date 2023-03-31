@@ -2,7 +2,6 @@ const questionsData = [
     {   
         id: 0, 
         question: "Quel est votre type d'activité ?", 
-        theme: "Votre projet",
         questionTree: "Quel est votre type d'activité ?", 
         choices: [
             {
@@ -24,7 +23,6 @@ const questionsData = [
     {
         id: 1,
         question: "Cette année, vous allez réaliser", 
-        theme: "Données financières",
         questionTree: "Marchandises - Cette année vous allez réaliser", 
         choices: [
             {
@@ -56,7 +54,6 @@ const questionsData = [
     {
         id: 2,
         question: "Vos charges représentent", 
-        theme: "Données financières",
         questionTree: "Marchandises - vos charges réprésentent", 
         choices: [
             {
@@ -78,7 +75,6 @@ const questionsData = [
     { 
         id: 3,
         question: "L'année dernière vous avez réalisé", 
-        theme: "Données financières",
         questionTree: "Marchandises - L'année dernière vous avez réalisé",
         choices: [
             {
@@ -130,7 +126,6 @@ const questionsData = [
         id: 5, 
         question: "L'année dernière vous avez réalisé ", 
         questionTree: "Marchandises - l'année dernière vous avez réalisé ",
-        theme: "Données financières",
         choices: [
             {
                 id: 1, 
@@ -151,7 +146,6 @@ const questionsData = [
     {
         id: 6,
         question: "Cette année, vous allez réaliser", 
-        theme: "Données financières",
         questionTree: "Services - cette année, vous allez réaliser",
         choices: [
             {
@@ -183,7 +177,6 @@ const questionsData = [
     {
         id: 7,
         question: "Vos charges représentent", 
-        theme: "Données financières",
         questionTree: "Services - vos charges réprésentent",
         choices: [
             {
@@ -205,7 +198,6 @@ const questionsData = [
     { 
         id: 8,
         question: "L'année dernière vous avez réalisé", 
-        theme: "Données financières",
         questionTree: "Services - l'année dernière vous avez réalisé",
         choices: [
             {
@@ -257,7 +249,6 @@ const questionsData = [
         id: 10, 
         question: "L'année dernière vous avez réalisé ", 
         questionTree: "Services - l'année dernière vous avez réalisé ",
-        theme: "Données financières",
         choices: [
             {
                 id: 1, 
@@ -356,13 +347,14 @@ previousBtn.addEventListener('click', () => {
 	const previousQuestion = localStorage.getItem('previousQuestion');
     const previousQuestionData = questionsData.find(question => question.questionTree === previousQuestion);
     showQuestion(previousQuestionData); 
-    if (previousQuestionData.theme) {
+    /*if (previousQuestionData.theme) {
         fillQuestionTitleTheme(previousQuestionData); 
     } else {
         questionTitle.textContent = previousQuestionData.question; 
         addHiddenClass(questionTheme); 
     }
-    fillQuestionTitleTheme(previousQuestionData); 
+    fillQuestionTitleTheme(previousQuestionData);*/
+    questionTitle.textContent = currentQuestion.question; 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 	deleteOldValue(); 
     if (previousQuestionData.id === 0) {
@@ -379,7 +371,8 @@ function firstQuestion() {
     const firstQuestionData = questionsData.find(question => question.id === questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
 
-    fillQuestionTitleTheme(firstQuestionData);   
+    questionTitle.textContent = currentQuestion.question;
+    //fillQuestionTitleTheme(firstQuestionData);   
        
     showQuestion(firstQuestionData); 
 }
@@ -441,7 +434,8 @@ function getNextQuestion() {
     setItemStorage('indexCurrentQuestion', currentQuestionData.id)
 
     if (currentQuestionData.theme) {
-        fillQuestionTitleTheme(currentQuestionData); 
+        questionTitle.textContent = currentQuestion.question;
+        //fillQuestionTitleTheme(currentQuestionData); 
     } else {
         questionTitle.textContent = currentQuestionData.question; 
         addHiddenClass(questionTheme); 
