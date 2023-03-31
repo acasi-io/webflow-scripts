@@ -354,7 +354,6 @@ function fillQuestionTitleTheme(currentQuestion) {
 previousBtn.addEventListener('click', () => {
 	const previousQuestion = localStorage.getItem('previousQuestion');
     const previousQuestionData = questionsData.find(question => question.question === previousQuestion);
-    console.log(resultArray); 
     console.log(previousQuestionData)
     showQuestion(previousQuestionData); 
     if (previousQuestionData.theme) {
@@ -366,6 +365,7 @@ previousBtn.addEventListener('click', () => {
     fillQuestionTitleTheme(previousQuestionData); 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 	deleteOldValue(); 
+    console.log(resultArray); 
     if (previousQuestionData.id === 0) {
         addHiddenClass(previousBtn); 
     } else {
@@ -424,6 +424,7 @@ function showQuestion(currentQuestion) {
             });
             e.currentTarget.parentNode.classList.add('simulator-checked');
             nextQuestion(); 
+            console.log(resultArray); 
         });
     }); 
 }
