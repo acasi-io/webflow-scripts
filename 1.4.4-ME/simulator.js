@@ -423,7 +423,6 @@ function showQuestion(currentQuestion) {
             });
             e.currentTarget.parentNode.classList.add('simulator-checked');
             nextQuestion(); 
-            console.log(previousQuestionArray); 
         });
     }); 
 }
@@ -492,7 +491,6 @@ function updatePreviousQuestionArray(currentQuestion, currentChoice) {
     newValue.question = `${currentQuestion.questionTree}`; 
     newValue.value = `${currentChoice.value}`; 
     setItemStorage('previousQuestion', currentQuestion.questionTree); 
-    console.log(localStorage.getItem('previousQuestion')); 
     previousQuestionArray.push(newValue); 
 }
 
