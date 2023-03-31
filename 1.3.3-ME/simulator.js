@@ -24,6 +24,7 @@ const questionsData = [
         id: 1,
         question: "Cette année, vous allez réaliser", 
         theme: "Données financières",
+        questionTree: "Marchandises - Cette année vous allez réaliser", 
         choices: [
             {
                 id: 1, 
@@ -55,6 +56,7 @@ const questionsData = [
         id: 2,
         question: "Vos charges représentent", 
         theme: "Données financières",
+        questionTree: "Marchandises - vos charges réprésentent", 
         choices: [
             {
                 id: 1, 
@@ -76,6 +78,7 @@ const questionsData = [
         id: 3,
         question: "L'année dernière vous avez réalisé", 
         theme: "Données financières",
+        questionTree: "Marchandises - L'année dernière vous avez réalisé",
         choices: [
             {
                 id: 1, 
@@ -102,6 +105,7 @@ const questionsData = [
     {
         id: 4, 
         question: "Vos clients sont majoritairement des", 
+        questionTree: "Marchandises - vos clients sont majoritairement des",
         choices: [
             {
                 id: 1, 
@@ -124,6 +128,7 @@ const questionsData = [
     {
         id: 5, 
         question: "L'année dernière vous avez réalisé ", 
+        questionTree: "Marchandises - l'année dernière vous avez réalisé ",
         theme: "Données financières",
         choices: [
             {
@@ -146,6 +151,7 @@ const questionsData = [
         id: 6,
         question: "Cette année, vous allez réaliser", 
         theme: "Données financières",
+        questionTree: "Services - cette année, vous allez réaliser",
         choices: [
             {
                 id: 1, 
@@ -177,6 +183,7 @@ const questionsData = [
         id: 7,
         question: "Vos charges représentent", 
         theme: "Données financières",
+        questionTree: "Services - vos charges réprésentent",
         choices: [
             {
                 id: 1, 
@@ -198,6 +205,7 @@ const questionsData = [
         id: 8,
         question: "L'année dernière vous avez réalisé", 
         theme: "Données financières",
+        questionTree: "Services - l'année dernière vous avez réalisé",
         choices: [
             {
                 id: 1, 
@@ -224,6 +232,7 @@ const questionsData = [
     {
         id: 9, 
         question: "Vos clients sont majoritairement des", 
+        questionTree: "Services - vos clients sont majoritairement des",
         choices: [
             {
                 id: 1, 
@@ -246,6 +255,7 @@ const questionsData = [
     {
         id: 10, 
         question: "L'année dernière vous avez réalisé ", 
+        questionTree: "Services - l'année dernière vous avez réalisé ",
         theme: "Données financières",
         choices: [
             {
@@ -458,7 +468,7 @@ function showForm() {
 function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
         const newResult = new Object(); 
-        newResult.question = `${currentQuestion.question}`;
+        newResult.question = `${currentQuestion.questionTree}`;
         newResult.result = `${currentChoice.resultValue}`;
         resultArray.push(newResult); 
         setItemStorage('result', currentChoice.resultValue); 
@@ -477,9 +487,9 @@ function storeResult() {
 
 function updatePreviousQuestionArray(currentQuestion, currentChoice) {
     const newValue = new Object(); 
-    newValue.question = `${currentQuestion.question}`; 
+    newValue.question = `${currentQuestion.questionTree}`; 
     newValue.value = `${currentChoice.value}`; 
-    setItemStorage('previousQuestion', currentQuestion.question); 
+    setItemStorage('previousQuestion', currentQuestion.questionTree); 
     previousQuestionArray.push(newValue); 
 }
 
