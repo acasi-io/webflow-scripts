@@ -61,14 +61,14 @@ const questionsData = [
                 value: "Plus de 34% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
-                resultValue: "Plus de % de votre CA"
+                resultValue: "Plus de 34% de votre CA"
             }, 
             {
                 id: 2, 
                 value: "Moins de 34% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
-                resultValue: "Moins de % de votre CA"
+                resultValue: "Moins de 34% de votre CA"
             }
         ]
     },
