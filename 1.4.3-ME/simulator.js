@@ -498,7 +498,7 @@ function updatePreviousQuestionArray(currentQuestion, currentChoice) {
 
 function deleteOldValue() {
     const previousQuestion = localStorage.getItem('previousQuestion'); 
-    const currentQuestionData = questionsData.find(question => question.question === previousQuestion); 
+    const currentQuestionData = questionsData.find(question => question.questionTree === previousQuestion); 
   
     const answerToFind = previousQuestionArray.find(answer => answer.question === currentQuestionData.questionTree);
   
