@@ -349,7 +349,7 @@ previousBtn.addEventListener('click', () => {
         addHiddenClass(questionTheme); 
     }
     fillQuestionTitleTheme(previousQuestionData);*/
-    questionTitle.textContent = currentQuestion.question; 
+    questionTitle.textContent = previousQuestionData.question; 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 	deleteOldValue(); 
     if (previousQuestionData.id === 0) {
@@ -366,7 +366,7 @@ function firstQuestion() {
     const firstQuestionData = questionsData.find(question => question.id === questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
 
-    questionTitle.textContent = currentQuestion.question;
+    questionTitle.textContent = firstQuestionData.question;
     //fillQuestionTitleTheme(firstQuestionData);   
        
     showQuestion(firstQuestionData); 
@@ -428,14 +428,15 @@ function getNextQuestion() {
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     setItemStorage('indexCurrentQuestion', currentQuestionData.id)
 
-    if (currentQuestionData.theme) {
+    /*if (currentQuestionData.theme) {
         questionTitle.textContent = currentQuestion.question;
-        //fillQuestionTitleTheme(currentQuestionData); 
+        fillQuestionTitleTheme(currentQuestionData); 
     } else {
         questionTitle.textContent = currentQuestionData.question; 
         addHiddenClass(questionTheme); 
-    }
+    }*/
      
+    questionTitle.textContent = currentQuestionData.question;
     showQuestion(currentQuestionData); 
 }
 
