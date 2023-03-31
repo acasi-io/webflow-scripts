@@ -354,7 +354,6 @@ function fillQuestionTitleTheme(currentQuestion) {
 previousBtn.addEventListener('click', () => {
 	const previousQuestion = localStorage.getItem('previousQuestion');
     const previousQuestionData = questionsData.find(question => question.question === previousQuestion);
-    console.log(previousQuestionData)
     showQuestion(previousQuestionData); 
     if (previousQuestionData.theme) {
         fillQuestionTitleTheme(previousQuestionData); 
@@ -365,7 +364,6 @@ previousBtn.addEventListener('click', () => {
     fillQuestionTitleTheme(previousQuestionData); 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 	deleteOldValue(); 
-    console.log(resultArray); 
     if (previousQuestionData.id === 0) {
         addHiddenClass(previousBtn); 
     } else {
@@ -424,7 +422,6 @@ function showQuestion(currentQuestion) {
             });
             e.currentTarget.parentNode.classList.add('simulator-checked');
             nextQuestion(); 
-            console.log(resultArray); 
             console.log(previousQuestionArray); 
         });
     }); 
@@ -492,8 +489,10 @@ function storeResult() {
 function updatePreviousQuestionArray(currentQuestion, currentChoice) {
     const newValue = new Object(); 
     newValue.question = `${currentQuestion.question}`; 
+    newValue.question = `${currentQuestion.questionTree}`; 
     newValue.value = `${currentChoice.value}`; 
     setItemStorage('previousQuestion', currentQuestion.question); 
+    console.log(localStorage.getItem('previousQuestion')); 
     previousQuestionArray.push(newValue); 
 }
 
