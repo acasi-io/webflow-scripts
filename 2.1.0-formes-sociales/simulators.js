@@ -132,12 +132,12 @@ const questionsData = [
                 value: "Moins de 77 700€ par an",
                 image: "💰",
                 result: true,
-                resultValue: "moins de 35k",
+                resultValue: "moins de 77k",
                 hubspotValue: 'En dessous du seuil maximal pour une ME',
             }, 
             {
                 id: 2, 
-                value: "Plus de 35k par an", 
+                value: "Plus de 77 700€ par an", 
                 image: "💰💰",
                 hubspotValue: 'Au dessus du seuil maximal pour une ME',
             }
@@ -425,7 +425,7 @@ function showForm() {
     const resultInput = document.getElementById('result');
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
     const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
-    const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 35k'); 
+    const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 77k'); 
     const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
     const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
 
