@@ -303,7 +303,7 @@ function showQuestion(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild;
     const simulatorBlock = document.getElementById('simulator-block'); 
     simulatorBlock.innerHTML = '';
-    hubspotPropertiesBlock.append(`<div data-hubspot-property="${currentQuestion.property}" style='visibility: hidden'><label>${currentQuestion.property}</label><input type='text'/></div>`)
+    hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${currentQuestion.property}" style='visibility: hidden; height: 0'><label>${currentQuestion.property}</label><input type='text'/></div>`)
 
     currentQuestion.choices.forEach((choice, index) => {
         const cloneAnswerBlock = answerBlock.cloneNode(true); 
