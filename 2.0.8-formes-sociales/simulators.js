@@ -11,28 +11,28 @@ const questionsData = [
                 value: "Salarié",
                 image: "💼", 
                 highlight: true,
-                hubspotValue: 'employed',
+                hubspotValue: 'Salarié',
             }, 
             {
                 id: 2, 
                 value: "Bénéficiaire du chômage",
                 image: "🌴", 
                 highlight: true,
-                hubspotValue: 'unemployed',
+                hubspotValue: 'Chômage',
             }, 
             {
                 id: 3, 
                 value: "Micro-entrepreneur", 
                 image: "🚗", 
                 highlight: true,
-                hubspotValue: 'micro',
+                hubspotValue: 'Micro',
             }, 
             {
                 id: 4, 
                 value: "Entrepreneur (EI, SAS/SASU, SARL/EURL)", 
                 image: "🚀", 
                 highlight: true,
-                hubspotValue: 'enterprise',
+                hubspotValue: 'Entrepreneur',
             }
         ]
     }, 
@@ -93,30 +93,30 @@ const questionsData = [
                 id: 1, 
                 value: "Profession réglementée (avocats, médecins...)", 
                 image: "👩‍⚕️",
-                hubspotValue: 'liberal',
+                hubspotValue: 'Profession réglementée',
             }, 
             {
                 id: 2, 
                 value: "Prestation de service / conseil", 
                 image: "👩‍💻",
-                hubspotValue: 'services',
+                hubspotValue: 'Services',
             },
             {
                 id: 3, 
                 value: "Vente de biens et de marchandises", 
                 image: "🏠",
-                hubspotValue: 'merchandising',
+                hubspotValue: 'Achat/Vente',
             }, 
             {
                 id: 4, 
                 value: "Artisanat", 
                 image: "🚕",
-                hubspotValue: 'trade',
+                hubspotValue: 'Artisanat',
             }, 
             {
                 id: 5, 
                 value: "Autre",
-                hubspotValue: 'other',
+                hubspotValue: 'Autre',
             }
         ]
     }, 
@@ -129,22 +129,22 @@ const questionsData = [
         choices: [
             {
                 id: 1, 
-                value: "Moins de 35k par an", 
+                value: "Moins de 77 700€ par an",
                 image: "💰",
                 result: true,
                 resultValue: "moins de 35k",
-                hubspotValue: 'under_35k',
+                hubspotValue: 'En dessous du seuil maximal pour une ME',
             }, 
             {
                 id: 2, 
                 value: "Plus de 35k par an", 
                 image: "💰💰",
-                hubspotValue: 'over_35k',
+                hubspotValue: 'Au dessus du seuil maximal pour une ME',
             }
         ]
-    }, 
+    },
     {
-        id: 5, 
+        id: 5,
         question: "Combien de charges prévoyez-vous ?", 
         theme: "Données financières",
         property: "estimated_charges",
@@ -167,8 +167,8 @@ const questionsData = [
             }, 
             {
                 id: 4, 
-                value: "plus de 50% du chiffre d'affaires",
-                hubspotValue: 'over_50%',
+                value: "Plus de 50% du chiffre d'affaires",
+                hubspotValue: 'Plus de 50%',
             }
         ]
     },
@@ -184,14 +184,14 @@ const questionsData = [
                 value: "Je souhaite me verser un salaire tous les mois", 
                 result: true, 
                 resultValue: "salaire",
-                hubspotValue: 'salary',
+                hubspotValue: 'Salaire',
             }, 
             {
                 id: 2, 
                 value: "Je souhaite me rémunérer en dividendes 1 fois par an", 
                 result: true,
                 resultValue: "dividendes",
-                hubspotValue: 'dividends',
+                hubspotValue: 'Dividendes',
             }
         ]
     }
