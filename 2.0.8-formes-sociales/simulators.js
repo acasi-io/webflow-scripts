@@ -303,7 +303,7 @@ function showQuestion(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild;
     const simulatorBlock = document.getElementById('simulator-block'); 
     simulatorBlock.innerHTML = '';
-    hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${currentQuestion.property}" style='visibility: hidden; height: 0'><label>${currentQuestion.property}</label><input type='text'/></div>`)
+    appendHubspotProperty(currentQuestion);
 
     currentQuestion.choices.forEach((choice, index) => {
         const cloneAnswerBlock = answerBlock.cloneNode(true); 
@@ -344,6 +344,13 @@ function showQuestion(currentQuestion) {
             nextQuestion(); 
         });
     }); 
+}
+
+function appendHubspotProperty(currentQuestion) {
+    const property = currentQuestion.property;
+    if (property) {
+        hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property}" style='visibility: hidden; height: 0'><label>${property}</label><input type='text'/></div>`)
+    }
 }
 
    
