@@ -2,73 +2,84 @@ const questionsData = [
     {   
         id: 0, 
         question: "Quel est votre type d'activité ?", 
-        questionTree: "Quel est votre type d'activité ?", 
+        questionTree: "Quel est votre type d'activité ?",
+        property: "company_creation_activity",
         choices: [
             {
                 id: 1, 
                 value: "Vente de marchandises", 
                 image: "🏠", 
                 highlight: true, 
-                nextQuestion: 1
+                nextQuestion: 1,
+                hubspotValue: 'Achat/Vente',
             }, 
             {
                 id: 2, 
                 value: "Prestation de services",
                 image: "👩‍💻", 
                 highlight: true, 
-                nextQuestion: 6
+                nextQuestion: 6,
+                hubspotValue: 'Services',
             }
         ]
     }, 
     {
         id: 1,
         question: "Cette année, vous allez réaliser", 
-        questionTree: "Marchandises - Cette année vous allez réaliser", 
+        questionTree: "Marchandises - Cette année vous allez réaliser",
+        property: "estimated_revenue",
         choices: [
             {
                 id: 1, 
                 value: "Moins de 91 900€ de CA", 
                 image: "💰", 
-                nextQuestion: 2
+                nextQuestion: 2,
+                hubspotValue: 'Franchise de TVA',
             }, 
             {
                 id: 2, 
                 value: "Entre 91 900€ et 101 000€ de CA", 
                 image: "💰💰", 
-                nextQuestion: 3
+                nextQuestion: 3,
+                hubspotValue: 'Seuil majoré de TVA',
             }, 
             {
                 id: 3, 
                 value: "Plus de 101 000€ de CA", 
                 image: "💰💰💰", 
-                nextQuestion: 4
+                nextQuestion: 4,
+                hubspotValue: 'Sortie de la franchise de TVA',
             }, 
             {
                 id: 4, 
                 value: "Plus de 188 700€ de CA", 
                 image: "💰💰💰💰", 
-                nextQuestion: 5
+                nextQuestion: 5,
+                hubspotValue: 'Dépassement du seuil maximal',
             }
         ]
     },
     {
         id: 2,
         question: "Vos charges représentent", 
-        questionTree: "Marchandises - vos charges réprésentent", 
+        questionTree: "Marchandises - vos charges représentent",
+        property: "over_allowance_threshold",
         choices: [
             {
                 id: 1, 
                 value: "Plus de 34% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
-                resultValue: "Plus de 34% de votre CA"
+                resultValue: "Plus de 34% de votre CA",
+                hubspotValue: true,
             }, 
             {
                 id: 2, 
                 value: "Moins de 34% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
-                resultValue: "Moins de 34% de votre CA"
+                resultValue: "Moins de 34% de votre CA",
+                hubspotValue: false,
             }
         ]
     },
@@ -76,6 +87,7 @@ const questionsData = [
         id: 3,
         question: "L'année dernière vous avez réalisé", 
         questionTree: "Marchandises - L'année dernière vous avez réalisé",
+        property: "previous_revenue",
         choices: [
             {
                 id: 1, 
@@ -83,19 +95,22 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true, 
-                resultValue: "Plus de 91 900€"
+                resultValue: "Plus de 91 900€",
+                hubspotValue: 'Dépassement du seuil de franchise de TVA',
             }, 
             {
                 id: 2, 
                 value: "Moins de 91 900€", 
                 image: "💰", 
-                nextQuestion: 2 
+                nextQuestion: 2,
+                hubspotValue: 'Franchise de TVA',
             },
             {
                 id: 3, 
                 value: "C'est ma premère année d'activité", 
                 image: "🚀", 
-                nextQuestion: 2
+                nextQuestion: 2,
+                hubspotValue: "1ère année d'activité",
             }
         ]
     }, 
@@ -103,6 +118,7 @@ const questionsData = [
         id: 4, 
         question: "Vos clients sont majoritairement des", 
         questionTree: "Marchandises - vos clients sont majoritairement des",
+        property: "professional_customers",
         choices: [
             {
                 id: 1, 
@@ -110,7 +126,8 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "👩‍💼", 
                 result: true, 
-                resultValue: "Particuliers"
+                resultValue: "Particuliers",
+                hubspotValue: false,
             }, 
             {
                 id: 2, 
@@ -118,20 +135,23 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "🏭", 
                 result: true, 
-                resultValue: "Professionnels"
+                resultValue: "Professionnels",
+                hubspotValue: true,
             }
         ]
     }, 
     {
         id: 5, 
-        question: "L'année dernière vous avez réalisé ", 
-        questionTree: "Marchandises - l'année dernière vous avez réalisé ",
+        question: "L'année dernière vous avez réalisé", 
+        questionTree: "Marchandises - l'année dernière vous avez réalisé",
+        property: "previous_revenue_above_threshold",
         choices: [
             {
                 id: 1, 
                 value: "Moins de 188 700€", 
                 image: "💰", 
-                nextQuestion: 2
+                nextQuestion: 2,
+                hubspotValue: false,
             }, 
             {
                 id: 2, 
@@ -139,7 +159,8 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true,
-                resultValue: "Plus de 188 700€"
+                resultValue: "Plus de 188 700€",
+                hubspotValue: true,
             }
         ]
     },
@@ -147,51 +168,59 @@ const questionsData = [
         id: 6,
         question: "Cette année, vous allez réaliser", 
         questionTree: "Services - cette année, vous allez réaliser",
+        property: "estimated_revenue",
         choices: [
             {
                 id: 1, 
                 value: "Moins de 36 800€ de CA", 
                 image: "💰", 
-                nextQuestion: 7
+                nextQuestion: 7,
+                hubspotValue: 'Franchise de TVA',
             }, 
             {
                 id: 2, 
                 value: "Entre 36 800€ et 39 100€ de CA", 
                 image: "💰💰", 
-                nextQuestion: 8
+                nextQuestion: 8,
+                hubspotValue: 'Seuil majoré de TVA',
             }, 
             {
                 id: 3, 
                 value: "Plus de 39 100€ de CA", 
                 image: "💰💰💰", 
-                nextQuestion: 9
+                nextQuestion: 9,
+                hubspotValue: 'Dépassement du seuil de franchise de TVA',
             }, 
             {
                 id: 4, 
                 value: "Plus de 77 700€ de CA", 
                 image: "💰💰💰💰", 
-                nextQuestion: 10
+                nextQuestion: 10,
+                hubspotValue: 'Dépassement du seuil maximal',
             }
         ]
     },
     {
         id: 7,
         question: "Vos charges représentent", 
-        questionTree: "Services - vos charges réprésentent",
+        questionTree: "Services - vos charges représentent",
+        property: "over_allowance_threshold",
         choices: [
             {
                 id: 1, 
                 value: "Plus de 50% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
-                resultValue: "Plus de 50% de votre CA"
+                resultValue: "Plus de 50% de votre CA",
+                hubspotValue: true,
             }, 
             {
                 id: 2, 
                 value: "Moins de 50% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
-                resultValue: "Moins de 50% de votre CA"
+                resultValue: "Moins de 50% de votre CA",
+                hubspotValue: false,
             }
         ]
     },
@@ -199,6 +228,7 @@ const questionsData = [
         id: 8,
         question: "L'année dernière vous avez réalisé", 
         questionTree: "Services - l'année dernière vous avez réalisé",
+        property: "previous_revenue",
         choices: [
             {
                 id: 1, 
@@ -206,19 +236,22 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true, 
-                resultValue: "Plus de 36 800€"
+                resultValue: "Plus de 36 800€",
+                hubspotValue: "Dépassement du seuil de franchise de TVA",
             }, 
             {
                 id: 2, 
                 value: "Moins de 36 800€", 
                 image: "💰", 
-                nextQuestion: 7 
+                nextQuestion: 7,
+                hubspotValue: "Franchise de TVA",
             },
             {
                 id: 3, 
                 value: "C'est ma premère année d'activité", 
                 image: "🚀", 
-                nextQuestion: 7
+                nextQuestion: 7,
+                hubspotValue: "1ère année d'activité",
             }
         ]
     }, 
@@ -226,6 +259,7 @@ const questionsData = [
         id: 9, 
         question: "Vos clients sont majoritairement des", 
         questionTree: "Services - vos clients sont majoritairement des",
+        property: "professional_customers",
         choices: [
             {
                 id: 1, 
@@ -233,7 +267,8 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "👩‍💼", 
                 result: true, 
-                resultValue: "Particuliers"
+                resultValue: "Particuliers",
+                hubspotValue: false,
             }, 
             {
                 id: 2, 
@@ -241,7 +276,8 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "🏭", 
                 result: true, 
-                resultValue: "Professionnels"
+                resultValue: "Professionnels",
+                hubspotValue: true,
             }
         ]
     }, 
@@ -249,12 +285,14 @@ const questionsData = [
         id: 10, 
         question: "L'année dernière vous avez réalisé ", 
         questionTree: "Services - l'année dernière vous avez réalisé ",
+        property: "previous_revenue_above_threshold",
         choices: [
             {
                 id: 1, 
                 value: "Moins de 77 700€", 
                 image: "💰", 
-                nextQuestion: 7
+                nextQuestion: 7,
+                hubspotValue: false
             }, 
             {
                 id: 2, 
@@ -262,7 +300,8 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true,
-                resultValue: "Plus de 77 700€"
+                resultValue: "Plus de 77 700€",
+                hubspotValue: true
             }
         ]
     }
