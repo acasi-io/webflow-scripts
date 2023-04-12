@@ -310,10 +310,11 @@ function showQuestion(currentQuestion) {
         simulatorBlock.appendChild(cloneAnswerBlock); 
         const answer = simulatorBlock.children[index];
    
-        const { id, value, image } = choice; 
+        const { id, value, image, hubspotValue } = choice;
         const input = answer.querySelector('.simulator-radio'); 
         input.setAttribute('id', id); 
-        input.setAttribute('value', id); 
+        input.setAttribute('value', id);
+        input.setAttribute('data-hubspot-value', hubspotValue);
    
         const label = answer.querySelector('.simulator-answer'); 
         label.textContent = value; 
@@ -339,7 +340,7 @@ function showQuestion(currentQuestion) {
             });
             e.currentTarget.parentNode.classList.add('simulator-checked');
             const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
-            hubspotPropertyBlock.querySelector('input').value = e.currentTarget.value;
+            hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
             nextQuestion(); 
         });
     }); 
