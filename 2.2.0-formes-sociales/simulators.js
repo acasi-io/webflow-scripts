@@ -4,7 +4,6 @@ const questionsData = [
         question: "Quel est votre statut actuel ?", 
         theme: "Votre statut",
         property: "status",
-        nextQuestion: 1,
         choices: [
             {
                 id: 1, 
@@ -12,6 +11,7 @@ const questionsData = [
                 image: "💼", 
                 highlight: true,
                 hubspotValue: 'Salarié',
+                nextQuestion: 1
             }, 
             {
                 id: 2, 
@@ -19,6 +19,7 @@ const questionsData = [
                 image: "🌴", 
                 highlight: true,
                 hubspotValue: 'Chômage',
+                nextQuestion: 1
             }, 
             {
                 id: 3, 
@@ -26,6 +27,7 @@ const questionsData = [
                 image: "🚗", 
                 highlight: true,
                 hubspotValue: 'Micro',
+                nextQuestion: 1
             }, 
             {
                 id: 4, 
@@ -33,6 +35,7 @@ const questionsData = [
                 image: "🚀", 
                 highlight: true,
                 hubspotValue: 'Entrepreneur',
+                nextQuestion: 1
             }
         ]
     }, 
@@ -50,6 +53,7 @@ const questionsData = [
                 result: true, 
                 resultValue: "société seul",
                 hubspotValue: false,
+                nextQuestion: 2
             }, 
             {
                 id: 2, 
@@ -58,6 +62,7 @@ const questionsData = [
                 result: true, 
                 resultValue: "société à plusieurs",
                 hubspotValue: true,
+                nextQuestion: 2
             }
         ]
     },
@@ -73,12 +78,14 @@ const questionsData = [
                 value: "Oui", 
                 image: "✅",
                 hubspotValue: true,
+                nextQuestion: 3
             }, 
             {
                 id: 2, 
                 value: "Non", 
                 image: "❌",
                 hubspotValue: false,
+                nextQuestion: 3
             }
         ]
     },
@@ -94,29 +101,34 @@ const questionsData = [
                 value: "Profession réglementée (avocats, médecins...)", 
                 image: "👩‍⚕️",
                 hubspotValue: 'Profession réglementée',
+                nextQuestion: 4
             }, 
             {
                 id: 2, 
                 value: "Prestation de service / conseil", 
                 image: "👩‍💻",
                 hubspotValue: 'Services',
+                nextQuestion: 4
             },
             {
                 id: 3, 
                 value: "Vente de biens et de marchandises", 
                 image: "🏠",
                 hubspotValue: 'Achat/Vente',
+                nextQuestion: 4
             }, 
             {
                 id: 4, 
                 value: "Artisanat", 
                 image: "🚕",
                 hubspotValue: 'Artisanat',
+                nextQuestion: 4
             }, 
             {
                 id: 5, 
                 value: "Autre",
                 hubspotValue: 'Autre',
+                nextQuestion: 4
             }
         ]
     }, 
@@ -134,12 +146,14 @@ const questionsData = [
                 result: true,
                 resultValue: "moins de 77k",
                 hubspotValue: 'En dessous du seuil maximal pour une ME',
+                nextQuestion: 5
             }, 
             {
                 id: 2, 
                 value: "Plus de 77 700€ par an", 
                 image: "💰💰",
                 hubspotValue: 'Au dessus du seuil maximal pour une ME',
+                nextQuestion: 5
             }
         ]
     },
@@ -154,21 +168,25 @@ const questionsData = [
                 id: 1, 
                 value: "10% du chiffre d'affaires",
                 hubspotValue: '10%',
+                nextQuestion: 6
             }, 
             {
                 id: 2, 
                 value: "20% du chiffre d'affaires",
                 hubspotValue: '20%',
+                nextQuestion: 6
             }, 
             {
                 id: 3, 
                 value: "40% du chiffre d'affaires",
                 hubspotValue: '40%',
+                nextQuestion: 6
             }, 
             {
                 id: 4, 
                 value: "Plus de 50% du chiffre d'affaires",
                 hubspotValue: 'Plus de 50%',
+                nextQuestion: 6
             }
         ]
     },
@@ -185,6 +203,7 @@ const questionsData = [
                 result: true, 
                 resultValue: "salaire",
                 hubspotValue: 'Salaire',
+                nextQuestion: 'emailForm'
             }, 
             {
                 id: 2, 
@@ -192,6 +211,7 @@ const questionsData = [
                 result: true,
                 resultValue: "dividendes",
                 hubspotValue: 'Dividendes',
+                nextQuestion: 'emailForm'
             }
         ]
     }
@@ -247,7 +267,7 @@ previousBtn.addEventListener('click', () => {
 }); 
    
    
-function showQuestion(currentQuestion) {
+/*function showQuestion(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild; 
     simulatorBlock.innerHTML = '';
     appendHubspotProperty(currentQuestion);
@@ -278,7 +298,8 @@ function showQuestion(currentQuestion) {
    
         answer.addEventListener('click', () => { 
             setItemStorage('indexCurrentChoice', input.id); 
-            setItemStorage('indexNextQuestion', currentQuestion.nextQuestion); 
+            updateLocalStorage(currentQuestion); 
+            //setItemStorage('indexNextQuestion', currentQuestion.nextQuestion); 
         });
 
         input.addEventListener('click', (e) => {
@@ -300,14 +321,11 @@ function appendHubspotProperty(currentQuestion) {
     }
 }
 
-   
-/*function firstQuestion() {
-    const firstQuestionData = questionsData.find(question => question.id === questionIndex);
-    setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
 
-    fillQuestionTitleTheme(firstQuestionData); 
-       
-    showQuestion(firstQuestionData); 
+function updateLocalStorage(currentQuestion) {
+    const currentChoiceIndex = parseInt(localStorage.getItem('indexCurrentChoice')); 
+    const currentChoiceData = currentQuestion.choices.find(data => data.id === currentChoiceIndex)
+    setItemStorage('indexNextQuestion', currentChoiceData.nextQuestion);
 }*/
    
    

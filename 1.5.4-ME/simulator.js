@@ -351,24 +351,14 @@ previousBtn.addEventListener('click', () => {
 });
 
 
-/*function firstQuestion() {
-    const firstQuestionData = questionsData.find(question => question.id === questionIndex);
-    setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
-
-    questionTitle.textContent = firstQuestionData.question; 
-       
-    showQuestion(firstQuestionData); 
-}*/
-
-
-function showQuestion(currentQuestion) {
+/*function showQuestion(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild;
     simulatorBlock.innerHTML = ''; 
    
     currentQuestion.choices.forEach((choice, index) => {
         const cloneAnswerBlock = answerBlock.cloneNode(true); 
         simulatorBlock.appendChild(cloneAnswerBlock); 
-        answer = simulatorBlock.children[index];
+        const answer = simulatorBlock.children[index];
    
         const { id, value, image } = choice; 
         const input = answer.querySelector('.simulator-radio'); 
@@ -408,7 +398,7 @@ function updateLocalStorage(currentQuestion) {
     const currentChoiceIndex = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const currentChoiceData = currentQuestion.choices.find(data => data.id === currentChoiceIndex)
     setItemStorage('indexNextQuestion', currentChoiceData.nextQuestion);
-}
+}*/
 
 
 function getNextQuestion() {
