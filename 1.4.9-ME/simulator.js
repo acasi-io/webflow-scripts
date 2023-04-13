@@ -446,9 +446,9 @@ function updateLocalStorage(currentQuestion) {
 
 
 function getNextQuestion() {
-    /*const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    setItemStorage('indexCurrentQuestion', currentQuestionData.id);*/
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id);
      
     questionTitle.textContent = currentQuestionData.question;
     showQuestion(currentQuestionData); 

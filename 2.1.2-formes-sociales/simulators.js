@@ -344,10 +344,10 @@ function firstQuestion() {
    
    
 function getNextQuestion() {
-    /*const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    setItemStorage('indexCurrentQuestion', currentQuestionData.id);*/
-    getCurrentQuestionForNextQuestion(currentQuestionData); 
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id);
+    //getCurrentQuestionForNextQuestion(currentQuestionData); 
 
     fillQuestionTitleTheme(currentQuestionData); 
      
