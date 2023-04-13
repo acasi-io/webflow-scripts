@@ -351,56 +351,6 @@ previousBtn.addEventListener('click', () => {
 });
 
 
-/*function showQuestion(currentQuestion) {
-    const answerBlock = document.getElementById('answer-block').firstChild;
-    simulatorBlock.innerHTML = ''; 
-   
-    currentQuestion.choices.forEach((choice, index) => {
-        const cloneAnswerBlock = answerBlock.cloneNode(true); 
-        simulatorBlock.appendChild(cloneAnswerBlock); 
-        const answer = simulatorBlock.children[index];
-   
-        const { id, value, image } = choice; 
-        const input = answer.querySelector('.simulator-radio'); 
-        input.setAttribute('id', id); 
-        input.setAttribute('value', id); 
-   
-        const label = answer.querySelector('.simulator-answer'); 
-        label.textContent = value; 
-        label.setAttribute('for', id); 
-     
-        const emoji = answer.querySelector('.simulator-emoji');
-        if (image) { 
-            emoji.textContent = image; 
-        } else {
-            emoji.remove(); 
-        }
-
-        highlightCards(choice, answer); 
-   
-        answer.addEventListener('click', () => { 
-            setItemStorage('indexCurrentChoice', input.id); 
-            updateLocalStorage(currentQuestion); 
-        }); 
-
-        input.addEventListener('click', (e) => {
-            [...document.querySelectorAll('.simulator-answer-btn')].forEach(element => {
-                element.classList.remove('simulator-checked'); 
-            });
-            e.currentTarget.parentNode.classList.add('simulator-checked');
-            nextQuestion(); 
-        });
-    }); 
-}
-
-
-function updateLocalStorage(currentQuestion) {
-    const currentChoiceIndex = parseInt(localStorage.getItem('indexCurrentChoice')); 
-    const currentChoiceData = currentQuestion.choices.find(data => data.id === currentChoiceIndex)
-    setItemStorage('indexNextQuestion', currentChoiceData.nextQuestion);
-}*/
-
-
 function getNextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
