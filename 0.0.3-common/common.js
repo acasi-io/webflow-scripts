@@ -109,6 +109,24 @@ function nextQuestion() {
 }
 
 
+function fillQuestionTitleTheme(currentQuestion) {
+    questionTitle.textContent = currentQuestion.question; 
+    questionTheme.textContent = currentQuestion.theme; 
+}
+
+
+function getNextQuestion() {
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
+    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id);
+    //getCurrentQuestionForNextQuestion(currentQuestionData); 
+
+    fillQuestionTitleTheme(currentQuestionData); 
+     
+    showQuestion(currentQuestionData); 
+}
+
+
 function appendHubspotProperty(currentQuestion) {
     const property = currentQuestion.property;
     if (property) {

@@ -223,10 +223,10 @@ function removeHiddenClass(elementProperty) {
     elementProperty.classList.remove('simulator-hidden'); 
 }*/
 
-function fillQuestionTitleTheme(currentQuestion) {
+/*function fillQuestionTitleTheme(currentQuestion) {
     questionTitle.textContent = currentQuestion.question; 
     questionTheme.textContent = currentQuestion.theme; 
-}
+}*/
 
 
 //const startBtn = document.getElementById('start-button');
@@ -343,7 +343,7 @@ function firstQuestion() {
 }
    
    
-function getNextQuestion() {
+/*function getNextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     setItemStorage('indexCurrentQuestion', currentQuestionData.id);
@@ -352,7 +352,7 @@ function getNextQuestion() {
     fillQuestionTitleTheme(currentQuestionData); 
      
     showQuestion(currentQuestionData); 
-}
+}*/
    
    
 function getPreviousQuestion() { 
