@@ -351,15 +351,14 @@ previousBtn.addEventListener('click', () => {
 });
 
 
-function firstQuestion() {
+/*function firstQuestion() {
     const firstQuestionData = questionsData.find(question => question.id === questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
 
-    questionTitle.textContent = firstQuestionData.question;
-    //fillQuestionTitleTheme(firstQuestionData);   
+    questionTitle.textContent = firstQuestionData.question; 
        
     showQuestion(firstQuestionData); 
-}
+}*/
 
 
 function showQuestion(currentQuestion) {

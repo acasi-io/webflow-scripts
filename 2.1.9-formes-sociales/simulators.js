@@ -301,14 +301,14 @@ function appendHubspotProperty(currentQuestion) {
 }
 
    
-function firstQuestion() {
+/*function firstQuestion() {
     const firstQuestionData = questionsData.find(question => question.id === questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
 
     fillQuestionTitleTheme(firstQuestionData); 
        
     showQuestion(firstQuestionData); 
-}
+}*/
    
    
 function getNextQuestion() {

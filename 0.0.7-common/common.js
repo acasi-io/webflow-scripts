@@ -34,6 +34,21 @@ startBtn.addEventListener('click', () => {
 });
 
 
+function firstQuestion() {
+    const firstQuestionData = questionsData.find(question => question.id === questionIndex);
+    setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
+
+    questionTitle.textContent = firstQuestionData.question;
+    
+    if (firstQuestionData.theme) {
+        questionTheme.textContent = firstQuestionData.theme; 
+    }
+    //fillQuestionTitleTheme(firstQuestionData);   
+       
+    showQuestion(firstQuestionData); 
+}
+
+
 /*function updateLocalStorage(currentQuestion) {
     const currentChoiceIndex = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const currentChoiceData = currentQuestion.choices.find(data => data.id === currentChoiceIndex)
