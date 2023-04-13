@@ -279,7 +279,7 @@ previousBtn.addEventListener('click', () => {
 }); 
    
    
-/*function showQuestion(currentQuestion) {
+function showQuestion(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild; 
     simulatorBlock.innerHTML = '';
     appendHubspotProperty(currentQuestion);
@@ -330,7 +330,7 @@ function appendHubspotProperty(currentQuestion) {
     if (property) {
         hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property}" style='visibility: hidden; height: 0'><label>${property}</label><input type='text'/></div>`)
     }
-}*/
+}
 
    
 function firstQuestion() {
@@ -373,7 +373,7 @@ function setIndexPreviousQuestion() {
 }
 
    
-/*function updateResultArray(currentChoice, currentQuestion) {
+function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
         const newResult = new Object(); 
         newResult.question = `${currentQuestion.question}`;
@@ -381,7 +381,7 @@ function setIndexPreviousQuestion() {
         resultArray.push(newResult); 
         setItemStorage('result', currentChoice.resultValue); 
     }
-}*/
+}
    
 function storeResult() {
     const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
@@ -394,14 +394,14 @@ function storeResult() {
     
    
 function showForm() {
-    /*simulatorOptions.innerHTML = ''; 
+    simulatorOptions.innerHTML = ''; 
     questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
     questionTheme.innerHTML = 'Résultat';
     const formTemplate = document.querySelector('.simulator-form-block'); 
     addHiddenClass(nextBtn); 
     removeHiddenClass(formTemplate);  
-    addHiddenClass(document.getElementById('simulator-information'));*/
-    forShowForm(formTemplate)
+    addHiddenClass(document.getElementById('simulator-information'));
+    //forShowForm(formTemplate)
 
     const resultInput = document.getElementById('result');
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 

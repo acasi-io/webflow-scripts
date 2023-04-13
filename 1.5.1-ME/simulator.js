@@ -395,7 +395,7 @@ function firstQuestion() {
 }
 
 
-/*function showQuestion(currentQuestion) {
+function showQuestion(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild;
     simulatorBlock.innerHTML = ''; 
    
@@ -442,14 +442,14 @@ function updateLocalStorage(currentQuestion) {
     const currentChoiceIndex = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const currentChoiceData = currentQuestion.choices.find(data => data.id === currentChoiceIndex)
     setItemStorage('indexNextQuestion', currentChoiceData.nextQuestion);
-}*/
+}
 
 
 function getNextQuestion() {
-    /*const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    setItemStorage('indexCurrentQuestion', currentQuestionData.id);*/
-    getCurrentQuestionForNextQuestion(currentQuestionData, questionsData); 
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id);
+    //getCurrentQuestionForNextQuestion(currentQuestionData, questionsData); 
 
     questionTitle.textContent = currentQuestionData.question;
     showQuestion(currentQuestionData); 
@@ -457,14 +457,14 @@ function getNextQuestion() {
 
 
 function showForm() { 
-	/*simulatorOptions.innerHTML = '';
+	simulatorOptions.innerHTML = '';
     questionTitle.textContent = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
 	questionTheme.textContent = 'Résultat'; 
     const formTemplate = document.getElementById('simulator-form-block');  
     addHiddenClass(nextBtn); 
     removeHiddenClass(formTemplate);
-    addHiddenClass(document.getElementById('simulator-information'));*/
-    forShowForm(formTemplate); 
+    addHiddenClass(document.getElementById('simulator-information'));
+    //forShowForm(formTemplate); 
 
     addHiddenClass(previousBtn); 
     removeHiddenClass(questionTheme); 
@@ -473,7 +473,7 @@ function showForm() {
 }
 
 
-/*function updateResultArray(currentChoice, currentQuestion) {
+function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
         const newResult = new Object(); 
         newResult.question = `${currentQuestion.question}`;
@@ -481,15 +481,15 @@ function showForm() {
         resultArray.push(newResult); 
         setItemStorage('result', currentChoice.resultValue); 
     }
-}*/
+}
    
 function storeResult() {
-    /*const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
+    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
-	updateResultArray(currentChoiceData, currentQuestionData);*/
-    findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData); 
+	updateResultArray(currentChoiceData, currentQuestionData);
+    //findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData); 
     updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
 }
 

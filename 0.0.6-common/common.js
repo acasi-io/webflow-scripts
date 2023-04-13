@@ -34,14 +34,14 @@ startBtn.addEventListener('click', () => {
 });
 
 
-function updateLocalStorage(currentQuestion) {
+/*function updateLocalStorage(currentQuestion) {
     const currentChoiceIndex = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const currentChoiceData = currentQuestion.choices.find(data => data.id === currentChoiceIndex)
     setItemStorage('indexNextQuestion', currentChoiceData.nextQuestion);
-}
+}*/
 
 
-function showQuestion(currentQuestion) {
+/*function showQuestion(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild; 
     simulatorBlock.innerHTML = '';
     appendHubspotProperty(currentQuestion);
@@ -85,7 +85,7 @@ function showQuestion(currentQuestion) {
             nextQuestion(); 
         });
     }); 
-}
+}*/
 
 
 /*function nextQuestion() {
@@ -127,12 +127,12 @@ function getNextQuestion() {
 }*/
 
 
-function appendHubspotProperty(currentQuestion) {
+/*function appendHubspotProperty(currentQuestion) {
     const property = currentQuestion.property;
     if (property) {
         hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property}" style='visibility: hidden; height: 0'><label>${property}</label><input type='text'/></div>`)
     }
-}
+}*/
 
 /*let currentQuestionData; 
 function getCurrentQuestionForNextQuestion(currentQuestionData, questionsData) {
@@ -142,7 +142,7 @@ function getCurrentQuestionForNextQuestion(currentQuestionData, questionsData) {
 }*/
 
 
-function updateResultArray(currentChoice, currentQuestion) {
+/*function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
         const newResult = new Object(); 
         newResult.question = `${currentQuestion.question}`;
@@ -150,7 +150,7 @@ function updateResultArray(currentChoice, currentQuestion) {
         resultArray.push(newResult); 
         setItemStorage('result', currentChoice.resultValue); 
     }
-}
+}*/
 
  
 /*let currentChoiceData
@@ -163,7 +163,7 @@ function findQuestionForStoreResult (currentQuestionData, currentChoiceData, que
 }*/
 
 
-let formTemplate; 
+/*let formTemplate; 
 function forShowForm(formTemplate) {
     simulatorOptions.innerHTML = '';
     questionTitle.textContent = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
@@ -172,7 +172,7 @@ function forShowForm(formTemplate) {
     addHiddenClass(nextBtn); 
     removeHiddenClass(formTemplate);
     addHiddenClass(document.getElementById('simulator-information')); 
-}
+}*/
 
 
 function highlightCards(choice, answer) {
