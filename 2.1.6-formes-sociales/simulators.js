@@ -344,10 +344,10 @@ function firstQuestion() {
    
    
 function getNextQuestion() {
-    /*const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    setItemStorage('indexCurrentQuestion', currentQuestionData.id);*/
-    getCurrentQuestionForNextQuestion(currentQuestionData, questionsData); 
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id);
+    //getCurrentQuestionForNextQuestion(currentQuestionData, questionsData); 
 
     fillQuestionTitleTheme(currentQuestionData); 
      
@@ -384,12 +384,12 @@ function setIndexPreviousQuestion() {
 }*/
    
 function storeResult() {
-    /*const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
+    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
-    updateResultArray(currentChoiceData, currentQuestionData);*/
-    findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData); 
+    updateResultArray(currentChoiceData, currentQuestionData);
+    //findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData); 
 }
     
    

@@ -134,12 +134,12 @@ function appendHubspotProperty(currentQuestion) {
     }
 }
 
-let currentQuestionData; 
+/*let currentQuestionData; 
 function getCurrentQuestionForNextQuestion(currentQuestionData, questionsData) {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     setItemStorage('indexCurrentQuestion', currentQuestionData.id); 
-}
+}*/
 
 
 function updateResultArray(currentChoice, currentQuestion) {
@@ -153,14 +153,14 @@ function updateResultArray(currentChoice, currentQuestion) {
 }
 
  
-let currentChoiceData
+/*let currentChoiceData
 function findQuestionForStoreResult (currentQuestionData, currentChoiceData, questionsData) {
     const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
 	updateResultArray(currentChoiceData, currentQuestionData);
-}
+}*/
 
 
 let formTemplate; 
