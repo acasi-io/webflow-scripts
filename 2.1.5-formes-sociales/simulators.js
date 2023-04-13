@@ -223,10 +223,10 @@ function removeHiddenClass(elementProperty) {
     elementProperty.classList.remove('simulator-hidden'); 
 }*/
 
-/*function fillQuestionTitleTheme(currentQuestion) {
+function fillQuestionTitleTheme(currentQuestion) {
     questionTitle.textContent = currentQuestion.question; 
     questionTheme.textContent = currentQuestion.theme; 
-}*/
+}
 
 
 //const startBtn = document.getElementById('start-button');
@@ -242,7 +242,7 @@ function removeHiddenClass(elementProperty) {
 });*/
 
 
-/*function nextQuestion() {
+function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     storeResult();
 
@@ -260,7 +260,7 @@ function removeHiddenClass(elementProperty) {
         addHiddenClass(document.getElementById('simulator-block')); 
         simulatorInformation.textContent = ''; 
     } 
-}*/
+}
 
 
 previousBtn.addEventListener('click', () => {
@@ -343,16 +343,16 @@ function firstQuestion() {
 }
    
    
-/*function getNextQuestion() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
+function getNextQuestion() {
+    /*const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    setItemStorage('indexCurrentQuestion', currentQuestionData.id);
-    //getCurrentQuestionForNextQuestion(currentQuestionData); 
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id);*/
+    getCurrentQuestionForNextQuestion(currentQuestionData, questionsData); 
 
     fillQuestionTitleTheme(currentQuestionData); 
      
     showQuestion(currentQuestionData); 
-}*/
+}
    
    
 function getPreviousQuestion() { 
@@ -389,7 +389,7 @@ function storeResult() {
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
     updateResultArray(currentChoiceData, currentQuestionData);*/
-    findQuestionForStoreResult(currentQuestionData, currentChoiceData); 
+    findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData); 
 }
     
    

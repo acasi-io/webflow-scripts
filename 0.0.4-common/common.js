@@ -88,7 +88,7 @@ function showQuestion(currentQuestion) {
 }
 
 
-function nextQuestion() {
+/*function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     storeResult();
 
@@ -124,7 +124,7 @@ function getNextQuestion() {
     fillQuestionTitleTheme(currentQuestionData); 
      
     showQuestion(currentQuestionData); 
-}
+}*/
 
 
 function appendHubspotProperty(currentQuestion) {
@@ -134,12 +134,12 @@ function appendHubspotProperty(currentQuestion) {
     }
 }
 
-/*let currentQuestionData; 
-function getCurrentQuestionForNextQuestion(currentQuestionData) {
+let currentQuestionData; 
+function getCurrentQuestionForNextQuestion(currentQuestionData, questionsData) {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     setItemStorage('indexCurrentQuestion', currentQuestionData.id); 
-}*/
+}
 
 
 function updateResultArray(currentChoice, currentQuestion) {
@@ -152,10 +152,9 @@ function updateResultArray(currentChoice, currentQuestion) {
     }
 }
 
-
-let currentQuestionData; 
+ 
 let currentChoiceData
-function findQuestionForStoreResult (currentQuestionData, currentChoiceData) {
+function findQuestionForStoreResult (currentQuestionData, currentChoiceData, questionsData) {
     const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 

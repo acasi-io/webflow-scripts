@@ -446,10 +446,11 @@ function updateLocalStorage(currentQuestion) {
 
 
 function getNextQuestion() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
+    /*const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    setItemStorage('indexCurrentQuestion', currentQuestionData.id);
-     
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id);*/
+    getCurrentQuestionForNextQuestion(currentQuestionData, questionsData); 
+
     questionTitle.textContent = currentQuestionData.question;
     showQuestion(currentQuestionData); 
 }
@@ -488,7 +489,7 @@ function storeResult() {
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
 	updateResultArray(currentChoiceData, currentQuestionData);*/
-    findQuestionForStoreResult(currentQuestionData, currentChoiceData); 
+    findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData); 
     updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
 }
 
