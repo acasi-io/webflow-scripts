@@ -242,7 +242,7 @@ function fillQuestionTitleTheme(currentQuestion) {
 });*/
 
 
-function nextQuestion() {
+/*function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     storeResult();
 
@@ -260,7 +260,7 @@ function nextQuestion() {
         addHiddenClass(document.getElementById('simulator-block')); 
         simulatorInformation.textContent = ''; 
     } 
-}
+}*/
 
 
 previousBtn.addEventListener('click', () => {

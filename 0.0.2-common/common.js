@@ -88,6 +88,27 @@ function showQuestion(currentQuestion) {
 }
 
 
+function nextQuestion() {
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    storeResult();
+
+    if (indexCurrentQuestion !== totalQuestions - 1) {
+        previousBtn.classList.remove('simulator-hidden');
+        getNextQuestion();
+    }
+    setIndexPreviousQuestion();
+   
+    if (indexCurrentQuestion === totalQuestions - 1) {
+        showForm();
+        addHiddenClass(previousBtn)
+        setItemStorage('indexPreviousQuestion', totalQuestions - 1); 
+        setItemStorage('indexCurrentQuestion', 'emailForm'); 
+        addHiddenClass(document.getElementById('simulator-block')); 
+        simulatorInformation.textContent = ''; 
+    } 
+}
+
+
 function appendHubspotProperty(currentQuestion) {
     const property = currentQuestion.property;
     if (property) {
