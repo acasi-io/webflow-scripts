@@ -198,48 +198,16 @@ const questionsData = [
 ]; 
    
 
-//const nextBtn = document.getElementById('next-button'); 
 const previousBtn = document.querySelector('.previous-button'); 
-//const questionTitle = document.getElementById('question'); 
-//const questionIndex = 0; 
-//const simulatorOptions = document.getElementById('simulator-options');
-//let resultArray = [];
-//const questionTheme = document.querySelector('.simulator-theme');
 const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
 const hubspotPropertiesBlock = document.getElementById('hubspot-properties');
-//const simulatorBlock = document.getElementById('simulator-block');
 
-
-/*function setItemStorage(key, value) {
-    localStorage.setItem(key, value); 
-}
-
-function addHiddenClass(elementProperty) {
-    elementProperty.classList.add('simulator-hidden'); 
-}
-
-function removeHiddenClass(elementProperty) {
-    elementProperty.classList.remove('simulator-hidden'); 
-}*/
 
 function fillQuestionTitleTheme(currentQuestion) {
     questionTitle.textContent = currentQuestion.question; 
     questionTheme.textContent = currentQuestion.theme; 
 }
-
-
-//const startBtn = document.getElementById('start-button');
-/*startBtn.addEventListener('click', () => {
-    setItemStorage('indexPreviousQuestion', 0); 
-    setItemStorage('indexCurrentChoice', 0); 
-    setItemStorage('indexCurrentQuestion', 0); 
-    removeHiddenClass(document.getElementById('form-question')); 
-    addHiddenClass(document.querySelector('.simulator-start')); 
-    addHiddenClass(document.querySelector('.simulator-start-image')); 
-    removeHiddenClass(document.querySelector('.simulator-questions-image'));
-    firstQuestion();
-});*/
 
 
 function nextQuestion() {
@@ -445,13 +413,6 @@ function deleteOldValue() {
   
     resultArray.splice(indexAnswerToFind, 1); 
 }
-
-
-/*function highlightCards(choice, answer) {
-    if (choice.highlight === true) {
-        answer.style.boxShadow = "0px 0px 10px #132966"; 
-    }
-}*/
 
 
 

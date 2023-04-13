@@ -308,42 +308,9 @@ const questionsData = [
 ];
 
 
-//let questionIndex = 0; 
 const previousBtn = document.getElementById('previous-button'); 
-//const nextBtn = document.getElementById('next-button'); 
-//const questionTitle = document.getElementById('question');
-//const questionTheme = document.querySelector('.simulator-theme'); 
-//let resultArray = []; 
-//const startBtn = document.getElementById('start-button'); 
-//const simulatorOptions = document.getElementById('simulator-options'); 
-//const simulatorBlock = document.getElementById('simulator-block');
 let previousQuestionArray = []; 
 let previousQuestionArrayLength = Object.keys(previousQuestionArray).length; 
-
-
-/*function setItemStorage(key, value) {
-    localStorage.setItem(key, value); 
-}
-
-function addHiddenClass(elementProperty) {
-    elementProperty.classList.add('simulator-hidden'); 
-}
-
-function removeHiddenClass(elementProperty) {
-	elementProperty.classList.remove('simulator-hidden'); 
-}*/
-
-
-/*startBtn.addEventListener('click', () => {
-	setItemStorage('indexPreviousQuestion', 0); 
-    setItemStorage('indexCurrentChoice', 0); 
-    setItemStorage('indexCurrentQuestion', 0);
-    removeHiddenClass(document.getElementById('form-question')); 
-    addHiddenClass(document.querySelector('.simulator-start')); 
-    addHiddenClass(document.querySelector('.simulator-start-image')); 
-    removeHiddenClass(document.querySelector('.simulator-questions-image')); 
-    firstQuestion();
-});*/
 
 
 function nextQuestion() {
@@ -513,12 +480,6 @@ function deleteOldValue() {
     previousQuestionArray.splice(indexAnswerToFind, 1); 
 } 
 
-
-/*function highlightCards(choice, answer) {
-    if (choice.highlight === true) {
-        answer.style.boxShadow = "0px 0px 10px #132966"; 
-    }
-}*/
 
 
 
