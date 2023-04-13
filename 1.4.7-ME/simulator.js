@@ -308,20 +308,20 @@ const questionsData = [
 ];
 
 
-let questionIndex = 0; 
+//let questionIndex = 0; 
 const previousBtn = document.getElementById('previous-button'); 
-const nextBtn = document.getElementById('next-button'); 
-const questionTitle = document.getElementById('question');
-const questionTheme = document.querySelector('.simulator-theme'); 
-let resultArray = []; 
-const startBtn = document.querySelector('.simulator-start-button'); 
-const simulatorOptions = document.getElementById('simulator-options'); 
-const simulatorBlock = document.getElementById('simulator-block');
+//const nextBtn = document.getElementById('next-button'); 
+//const questionTitle = document.getElementById('question');
+//const questionTheme = document.querySelector('.simulator-theme'); 
+//let resultArray = []; 
+//const startBtn = document.getElementById('start-button'); 
+//const simulatorOptions = document.getElementById('simulator-options'); 
+//const simulatorBlock = document.getElementById('simulator-block');
 let previousQuestionArray = []; 
 let previousQuestionArrayLength = Object.keys(previousQuestionArray).length; 
 
 
-function setItemStorage(key, value) {
+/*function setItemStorage(key, value) {
     localStorage.setItem(key, value); 
 }
 
@@ -331,10 +331,10 @@ function addHiddenClass(elementProperty) {
 
 function removeHiddenClass(elementProperty) {
 	elementProperty.classList.remove('simulator-hidden'); 
-}
+}*/
 
 
-startBtn.addEventListener('click', () => {
+/*startBtn.addEventListener('click', () => {
 	setItemStorage('indexPreviousQuestion', 0); 
     setItemStorage('indexCurrentChoice', 0); 
     setItemStorage('indexCurrentQuestion', 0);
@@ -343,23 +343,6 @@ startBtn.addEventListener('click', () => {
     addHiddenClass(document.querySelector('.simulator-start-image')); 
     removeHiddenClass(document.querySelector('.simulator-questions-image')); 
     firstQuestion();
-});
-
-
-/*nextBtn.addEventListener('click', () => {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
-    storeResult(); 
-    removeHiddenClass(previousBtn);
-    console.log(previousQuestionArrayLength); 
-
-    if (indexNextQuestion === 'emailForm') {
-				simulatorBlock.innerHTML = '';
-        questionTitle.textContent = '';
-        showForm(); 
-    } else {
-        getNextQuestion(); 
-    }
 });*/
 
 
@@ -412,7 +395,7 @@ function firstQuestion() {
 }
 
 
-function showQuestion(currentQuestion) {
+/*function showQuestion(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild;
     simulatorBlock.innerHTML = ''; 
    
@@ -459,21 +442,13 @@ function updateLocalStorage(currentQuestion) {
     const currentChoiceIndex = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const currentChoiceData = currentQuestion.choices.find(data => data.id === currentChoiceIndex)
     setItemStorage('indexNextQuestion', currentChoiceData.nextQuestion);
-}
+}*/
 
 
 function getNextQuestion() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
+    /*const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    setItemStorage('indexCurrentQuestion', currentQuestionData.id)
-
-    /*if (currentQuestionData.theme) {
-        questionTitle.textContent = currentQuestion.question;
-        fillQuestionTitleTheme(currentQuestionData); 
-    } else {
-        questionTitle.textContent = currentQuestionData.question; 
-        addHiddenClass(questionTheme); 
-    }*/
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id);*/
      
     questionTitle.textContent = currentQuestionData.question;
     showQuestion(currentQuestionData); 
@@ -481,21 +456,23 @@ function getNextQuestion() {
 
 
 function showForm() { 
-	simulatorOptions.innerHTML = '';
+	/*simulatorOptions.innerHTML = '';
     questionTitle.textContent = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
 	questionTheme.textContent = 'Résultat'; 
     const formTemplate = document.getElementById('simulator-form-block');  
     addHiddenClass(nextBtn); 
-    addHiddenClass(previousBtn);
-    removeHiddenClass(formTemplate); 
+    removeHiddenClass(formTemplate);
+    addHiddenClass(document.getElementById('simulator-information'));*/
+    forShowForm(formTemplate); 
+
+    addHiddenClass(previousBtn); 
     removeHiddenClass(questionTheme); 
-    addHiddenClass(document.getElementById('simulator-information')); 
 
     simulatorOptions.append(formTemplate); 
 }
 
 
-function updateResultArray(currentChoice, currentQuestion) {
+/*function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
         const newResult = new Object(); 
         newResult.question = `${currentQuestion.question}`;
@@ -503,14 +480,15 @@ function updateResultArray(currentChoice, currentQuestion) {
         resultArray.push(newResult); 
         setItemStorage('result', currentChoice.resultValue); 
     }
-}
+}*/
    
 function storeResult() {
-    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
+    /*const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
-	updateResultArray(currentChoiceData, currentQuestionData); 
+	updateResultArray(currentChoiceData, currentQuestionData);*/
+    findQuestionForStoreResult(currentQuestionData, currentChoiceData); 
     updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
 }
 
@@ -535,11 +513,11 @@ function deleteOldValue() {
 } 
 
 
-function highlightCards(choice, answer) {
+/*function highlightCards(choice, answer) {
     if (choice.highlight === true) {
         answer.style.boxShadow = "0px 0px 10px #132966"; 
     }
-}
+}*/
 
 
 

@@ -198,19 +198,20 @@ const questionsData = [
 ]; 
    
 
-const nextBtn = document.getElementById('next-button'); 
+//const nextBtn = document.getElementById('next-button'); 
 const previousBtn = document.querySelector('.previous-button'); 
-const questionTitle = document.getElementById('question'); 
-const questionIndex = 0; 
-const simulatorOptions = document.getElementById('simulator-options');
-let resultArray = [];
-const questionTheme = document.querySelector('.simulator-theme');
+//const questionTitle = document.getElementById('question'); 
+//const questionIndex = 0; 
+//const simulatorOptions = document.getElementById('simulator-options');
+//let resultArray = [];
+//const questionTheme = document.querySelector('.simulator-theme');
 const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
 const hubspotPropertiesBlock = document.getElementById('hubspot-properties');
+//const simulatorBlock = document.getElementById('simulator-block');
 
 
-function setItemStorage(key, value) {
+/*function setItemStorage(key, value) {
     localStorage.setItem(key, value); 
 }
 
@@ -220,7 +221,7 @@ function addHiddenClass(elementProperty) {
 
 function removeHiddenClass(elementProperty) {
     elementProperty.classList.remove('simulator-hidden'); 
-}
+}*/
 
 function fillQuestionTitleTheme(currentQuestion) {
     questionTitle.textContent = currentQuestion.question; 
@@ -228,8 +229,8 @@ function fillQuestionTitleTheme(currentQuestion) {
 }
 
 
-const startBtn = document.getElementById('start-button');
-startBtn.addEventListener('click', () => {
+//const startBtn = document.getElementById('start-button');
+/*startBtn.addEventListener('click', () => {
     setItemStorage('indexPreviousQuestion', 0); 
     setItemStorage('indexCurrentChoice', 0); 
     setItemStorage('indexCurrentQuestion', 0); 
@@ -238,27 +239,6 @@ startBtn.addEventListener('click', () => {
     addHiddenClass(document.querySelector('.simulator-start-image')); 
     removeHiddenClass(document.querySelector('.simulator-questions-image'));
     firstQuestion();
-});
-
-
-/*nextBtn.addEventListener('click', () => {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion'));
-    storeResult();
-
-    if (indexCurrentQuestion !== totalQuestions - 1) {
-        previousBtn.classList.remove('simulator-hidden');
-        getNextQuestion();
-    }
-    setIndexPreviousQuestion();
-
-    if (indexCurrentQuestion === totalQuestions - 1) {
-        showForm();
-        addHiddenClass(previousBtn)
-        setItemStorage('indexPreviousQuestion', totalQuestions - 1);
-        setItemStorage('indexCurrentQuestion', 'emailForm');
-        addHiddenClass(document.getElementById('simulator-block'));
-        simulatorInformation.textContent = '';
-    }
 });*/
 
 
@@ -299,9 +279,8 @@ previousBtn.addEventListener('click', () => {
 }); 
    
    
-function showQuestion(currentQuestion) {
-    const answerBlock = document.getElementById('answer-block').firstChild;
-    const simulatorBlock = document.getElementById('simulator-block'); 
+/*function showQuestion(currentQuestion) {
+    const answerBlock = document.getElementById('answer-block').firstChild; 
     simulatorBlock.innerHTML = '';
     appendHubspotProperty(currentQuestion);
 
@@ -351,7 +330,7 @@ function appendHubspotProperty(currentQuestion) {
     if (property) {
         hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property}" style='visibility: hidden; height: 0'><label>${property}</label><input type='text'/></div>`)
     }
-}
+}*/
 
    
 function firstQuestion() {
@@ -365,10 +344,10 @@ function firstQuestion() {
    
    
 function getNextQuestion() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
+    /*const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    setItemStorage('indexCurrentQuestion', currentQuestionData.id); 
-    //setItemStorage('indexNextQuestion', currentQuestionData.id + 1); 
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id);*/
+    getCurrentQuestionForNextQuestion(currentQuestionData); 
 
     fillQuestionTitleTheme(currentQuestionData); 
      
@@ -394,7 +373,7 @@ function setIndexPreviousQuestion() {
 }
 
    
-function updateResultArray(currentChoice, currentQuestion) {
+/*function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
         const newResult = new Object(); 
         newResult.question = `${currentQuestion.question}`;
@@ -402,25 +381,27 @@ function updateResultArray(currentChoice, currentQuestion) {
         resultArray.push(newResult); 
         setItemStorage('result', currentChoice.resultValue); 
     }
-}
+}*/
    
 function storeResult() {
-    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
+    /*const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
-    updateResultArray(currentChoiceData, currentQuestionData); 
+    updateResultArray(currentChoiceData, currentQuestionData);*/
+    findQuestionForStoreResult(currentQuestionData, currentChoiceData); 
 }
     
    
 function showForm() {
-    simulatorOptions.innerHTML = ''; 
+    /*simulatorOptions.innerHTML = ''; 
     questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
     questionTheme.innerHTML = 'Résultat';
     const formTemplate = document.querySelector('.simulator-form-block'); 
     addHiddenClass(nextBtn); 
     removeHiddenClass(formTemplate);  
-    addHiddenClass(document.getElementById('simulator-information')); 
+    addHiddenClass(document.getElementById('simulator-information'));*/
+    forShowForm(formTemplate)
 
     const resultInput = document.getElementById('result');
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
@@ -466,11 +447,11 @@ function deleteOldValue() {
 }
 
 
-function highlightCards(choice, answer) {
+/*function highlightCards(choice, answer) {
     if (choice.highlight === true) {
         answer.style.boxShadow = "0px 0px 10px #132966"; 
     }
-}
+}*/
 
 
 
