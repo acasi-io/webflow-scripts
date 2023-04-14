@@ -112,6 +112,17 @@ function updateLocalStorage(currentQuestion) {
 }
 
 
+function updateResultArray(currentChoice, currentQuestion) {
+    if (currentChoice.result === true) {
+        const newResult = new Object(); 
+        newResult.question = `${currentQuestion.question}`;
+        newResult.result = `${currentChoice.resultValue}`;
+        resultArray.push(newResult); 
+        setItemStorage('result', currentChoice.resultValue); 
+    }
+}
+
+
 
 /*function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
@@ -151,13 +162,6 @@ function getNextQuestion() {
     showQuestion(currentQuestionData); 
 }*/
 
-
-/*function appendHubspotProperty(currentQuestion) {
-    const property = currentQuestion.property;
-    if (property) {
-        hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property}" style='visibility: hidden; height: 0'><label>${property}</label><input type='text'/></div>`)
-    }
-}*/
 
 /*let currentQuestionData; 
 function getCurrentQuestionForNextQuestion(currentQuestionData, questionsData) {
