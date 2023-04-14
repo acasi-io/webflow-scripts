@@ -141,6 +141,7 @@ function findQuestionForStoreResult(currentQuestionData, currentChoiceData, ques
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
+    updateResultArray(currentChoiceData, currentQuestionData);
 }
 
 

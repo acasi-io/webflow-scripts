@@ -303,8 +303,6 @@ function storeResult() {
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); */
     findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData);
-    updateResultArray(currentChoiceData, currentQuestionData);
-    findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData); 
 }
     
    
