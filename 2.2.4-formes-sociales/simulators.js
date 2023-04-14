@@ -298,23 +298,18 @@ function setIndexPreviousQuestion() {
 
    
 function storeResult() {
-    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
+    /*const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
+    const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); */
+    findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData);
     updateResultArray(currentChoiceData, currentQuestionData);
-    //findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData); 
+    findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData); 
 }
     
    
 function showForm() {
-    /*simulatorOptions.innerHTML = ''; 
-    questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
-    questionTheme.innerHTML = 'Résultat';*/
     const formTemplate = document.querySelector('.simulator-form-block'); 
-    /*addHiddenClass(nextBtn); 
-    removeHiddenClass(formTemplate);  
-    addHiddenClass(document.getElementById('simulator-information'));*/
     forShowForm(formTemplate)
 
     const resultInput = document.getElementById('result');
