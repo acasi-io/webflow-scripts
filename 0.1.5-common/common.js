@@ -145,6 +145,21 @@ function findQuestionForStoreResult(questionsData) {
 }
 
 
+function getNextQuestion(questionsData) {
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
+    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
+    setItemStorage('indexCurrentQuestion', currentQuestionData.id);
+
+    questionTitle.textContent = currentQuestionData.question;
+
+    if (currentQuestionData.theme) {
+        questionTheme.textContent = currentQuestionData.theme; 
+    }
+
+    showQuestion(currentQuestionData); 
+}
+
+
 /*function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     storeResult();
@@ -163,12 +178,6 @@ function findQuestionForStoreResult(questionsData) {
         addHiddenClass(document.getElementById('simulator-block')); 
         simulatorInformation.textContent = ''; 
     } 
-}
-
-
-function fillQuestionTitleTheme(currentQuestion) {
-    questionTitle.textContent = currentQuestion.question; 
-    questionTheme.textContent = currentQuestion.theme; 
 }
 
 

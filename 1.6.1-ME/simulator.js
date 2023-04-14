@@ -322,7 +322,7 @@ function nextQuestion() {
 		simulatorBlock.innerHTML = '';
         showForm(); 
     } else {
-        getNextQuestion(); 
+        getNextQuestion(questionsData); 
     }
 }
 
@@ -351,15 +351,14 @@ previousBtn.addEventListener('click', () => {
 });
 
 
-function getNextQuestion() {
+/*function getNextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     setItemStorage('indexCurrentQuestion', currentQuestionData.id);
-    //getCurrentQuestionForNextQuestion(currentQuestionData, questionsData); 
 
     questionTitle.textContent = currentQuestionData.question;
     showQuestion(currentQuestionData); 
-}
+}*/
 
 
 function showForm() { 
@@ -374,10 +373,6 @@ function showForm() {
 
    
 function storeResult() {
-    /*const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); */
     findQuestionForStoreResult(questionsData); 
     updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
 }
