@@ -136,7 +136,7 @@ function forShowForm(formTemplate) {
 let currentChoiceData; 
 let currentQuestionData; 
 
-function findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData) {
+function findQuestionForStoreResult(questionsData) {
     const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 

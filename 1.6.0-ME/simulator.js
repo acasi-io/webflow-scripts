@@ -378,7 +378,7 @@ function storeResult() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     const currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); */
-    findQuestionForStoreResult(currentQuestionData, currentChoiceData, questionsData); 
+    findQuestionForStoreResult(questionsData); 
     updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
 }
 
