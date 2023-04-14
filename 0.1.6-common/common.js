@@ -81,7 +81,6 @@ function showQuestion(currentQuestion) {
         answer.addEventListener('click', () => { 
             setItemStorage('indexCurrentChoice', input.id); 
             updateLocalStorage(currentQuestion); 
-            //setItemStorage('indexNextQuestion', currentQuestion.nextQuestion); 
         });
 
         input.addEventListener('click', (e) => {
@@ -158,57 +157,6 @@ function getNextQuestion(questionsData) {
 
     showQuestion(currentQuestionData); 
 }
-
-
-/*function nextQuestion() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    storeResult();
-
-    if (indexCurrentQuestion !== totalQuestions - 1) {
-        previousBtn.classList.remove('simulator-hidden');
-        getNextQuestion();
-    }
-    setIndexPreviousQuestion();
-   
-    if (indexCurrentQuestion === totalQuestions - 1) {
-        showForm();
-        addHiddenClass(previousBtn)
-        setItemStorage('indexPreviousQuestion', totalQuestions - 1); 
-        setItemStorage('indexCurrentQuestion', 'emailForm'); 
-        addHiddenClass(document.getElementById('simulator-block')); 
-        simulatorInformation.textContent = ''; 
-    } 
-}
-
-
-function getNextQuestion() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
-    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    setItemStorage('indexCurrentQuestion', currentQuestionData.id);
-    //getCurrentQuestionForNextQuestion(currentQuestionData); 
-
-    fillQuestionTitleTheme(currentQuestionData); 
-     
-    showQuestion(currentQuestionData); 
-}*/
-
-
-/*let currentQuestionData; 
-function getCurrentQuestionForNextQuestion(currentQuestionData, questionsData) {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
-    currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    setItemStorage('indexCurrentQuestion', currentQuestionData.id); 
-}*/
-
- 
-/*let currentChoiceData
-function findQuestionForStoreResult (currentQuestionData, currentChoiceData, questionsData) {
-    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
-	updateResultArray(currentChoiceData, currentQuestionData);
-}*/
 
 
 function highlightCards(choice, answer) {

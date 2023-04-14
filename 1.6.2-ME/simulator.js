@@ -331,13 +331,6 @@ previousBtn.addEventListener('click', () => {
 	const previousQuestion = localStorage.getItem('previousQuestion');
     const previousQuestionData = questionsData.find(question => question.questionTree === previousQuestion);
     showQuestion(previousQuestionData); 
-    /*if (previousQuestionData.theme) {
-        fillQuestionTitleTheme(previousQuestionData); 
-    } else {
-        questionTitle.textContent = previousQuestionData.question; 
-        addHiddenClass(questionTheme); 
-    }
-    fillQuestionTitleTheme(previousQuestionData);*/
     questionTitle.textContent = previousQuestionData.question; 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 	deleteOldValue(); 
@@ -349,16 +342,6 @@ previousBtn.addEventListener('click', () => {
         setItemStorage('previousQuestion', newPreviousQuestion);
     } 
 });
-
-
-/*function getNextQuestion() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
-    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    setItemStorage('indexCurrentQuestion', currentQuestionData.id);
-
-    questionTitle.textContent = currentQuestionData.question;
-    showQuestion(currentQuestionData); 
-}*/
 
 
 function showForm() { 
@@ -449,7 +432,7 @@ if (resultStorage === "Plus de 91 900€" || resultStorage === "Plus de 36 800�
   	fillAnswer('four');
 } else if (resultStorage === "Plus de 50% de votre CA") {
 	resultHeading.innerHTML = '👉 Vos charges sont supérieures à 50%. La micro-entreprise n’est pas adaptée pour vous';
-  fillAnswer('six');
+    fillAnswer('six');
 } else if (resultStorage === "Moins de 50% de votre CA") {
 	resultTitle.innerHTML = 'La micro-entreprise est adaptée à votre situation pour le moment';
   	resultHeading.innerHTML = '👉 Vos charges représentent moins de 50% de votre CA.';
@@ -470,26 +453,26 @@ function showAnswers() {
 
 nextBtn.addEventListener('click', () => {  
 	if (resultStorage === "Moins de 34% de votre CA" || resultStorage === "Moins de 50% de votre CA") {
-  	rendezvous(); 
-  } else if (resultStorage === "Professionnels") {
-  	showAnswers(); 
-  	resultTitle.textContent = "Vous souhaitez qu'Acasi vous aide à préparer votre transition vers la TVA ?";
+  	    rendezvous(); 
+    } else if (resultStorage === "Professionnels") {
+  	    showAnswers(); 
+  	    resultTitle.textContent = "Vous souhaitez qu'Acasi vous aide à préparer votre transition vers la TVA ?";
 	} else if (resultStorage === "Plus de 188 700€" || resultStorage === "Plus de 77 700€") {
-  	showAnswers(); 
-    resultTitle.textContent = "Vous souhaitez avoir de l'aide pour la transition vers un autre statut juridique ?";
-  } else {
-  	showAnswers(); 
-    resultTitle.textContent = "Vous souhaitez qu'Acasi vous aide à choisir votre nouveau statut ?";
-	} 
+  	    showAnswers(); 
+        resultTitle.textContent = "Vous souhaitez avoir de l'aide pour la transition vers un autre statut juridique ?";
+    } else {
+  	    showAnswers(); 
+        resultTitle.textContent = "Vous souhaitez qu'Acasi vous aide à choisir votre nouveau statut ?";
+    } 
 });
 
 
 previousBtn.addEventListener('click', () => { 
-  removeHiddenClass(nextBtn); 
+    removeHiddenClass(nextBtn); 
  	removeHiddenClass(resultContainer); 
-  removeHiddenClass(resultWrapper); 
+    removeHiddenClass(resultWrapper); 
  	addHiddenClass(answers);
-  addHiddenClass(rendezvousLink);
+    addHiddenClass(rendezvousLink);
 });
 
 
@@ -513,18 +496,18 @@ function rendezvous() {
 	addHiddenClass(resultContainer);
 	removeHiddenClass(document.getElementById('simulator-non-answer-final'));  
 	addHiddenClass(resultTitle);
-  addHiddenClass(rendezvousLink);
+    addHiddenClass(rendezvousLink);
 }
 
 
 function showCalendly() {
 	addHiddenClass(resultWrapper); 
  	addHiddenClass(answers);
-  addHiddenClass(rendezvousLink); 
+    addHiddenClass(rendezvousLink); 
  	addHiddenClass(document.getElementById('rocket-img')); 
-  removeHiddenClass(document.getElementById('coach-calendly-img')); 
+    removeHiddenClass(document.getElementById('coach-calendly-img')); 
 	removeHiddenClass(document.getElementById('title-calendly')); 
-  addHiddenClass(document.getElementById('result-title')); 
+    addHiddenClass(document.getElementById('result-title')); 
 	removeHiddenClass(document.getElementById('simulator-calendly')); 
 }
 
