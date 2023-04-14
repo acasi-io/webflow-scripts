@@ -379,7 +379,7 @@ function showForm() {
 }
 
 
-function updateResultArray(currentChoice, currentQuestion) {
+/*function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
         const newResult = new Object(); 
         newResult.question = `${currentQuestion.question}`;
@@ -387,7 +387,7 @@ function updateResultArray(currentChoice, currentQuestion) {
         resultArray.push(newResult); 
         setItemStorage('result', currentChoice.resultValue); 
     }
-}
+}*/
    
 function storeResult() {
     const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
