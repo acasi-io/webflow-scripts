@@ -123,6 +123,16 @@ function updateResultArray(currentChoice, currentQuestion) {
 }
 
 
+function forShowForm(formTemplate) {
+    simulatorOptions.innerHTML = ''; 
+    questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
+    questionTheme.innerHTML = 'Résultat'; 
+    addHiddenClass(nextBtn); 
+    removeHiddenClass(formTemplate);  
+    addHiddenClass(document.getElementById('simulator-information'));
+}
+
+
 
 /*function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
@@ -168,17 +178,6 @@ function getCurrentQuestionForNextQuestion(currentQuestionData, questionsData) {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion')); 
     currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     setItemStorage('indexCurrentQuestion', currentQuestionData.id); 
-}*/
-
-
-/*function updateResultArray(currentChoice, currentQuestion) {
-    if (currentChoice.result === true) {
-        const newResult = new Object(); 
-        newResult.question = `${currentQuestion.question}`;
-        newResult.result = `${currentChoice.resultValue}`;
-        resultArray.push(newResult); 
-        setItemStorage('result', currentChoice.resultValue); 
-    }
 }*/
 
  

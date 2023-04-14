@@ -297,16 +297,6 @@ function setIndexPreviousQuestion() {
 }
 
    
-/*function updateResultArray(currentChoice, currentQuestion) {
-    if (currentChoice.result === true) {
-        const newResult = new Object(); 
-        newResult.question = `${currentQuestion.question}`;
-        newResult.result = `${currentChoice.resultValue}`;
-        resultArray.push(newResult); 
-        setItemStorage('result', currentChoice.resultValue); 
-    }
-}*/
-   
 function storeResult() {
     const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
@@ -318,14 +308,14 @@ function storeResult() {
     
    
 function showForm() {
-    simulatorOptions.innerHTML = ''; 
+    /*simulatorOptions.innerHTML = ''; 
     questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
-    questionTheme.innerHTML = 'Résultat';
+    questionTheme.innerHTML = 'Résultat';*/
     const formTemplate = document.querySelector('.simulator-form-block'); 
-    addHiddenClass(nextBtn); 
+    /*addHiddenClass(nextBtn); 
     removeHiddenClass(formTemplate);  
-    addHiddenClass(document.getElementById('simulator-information'));
-    //forShowForm(formTemplate)
+    addHiddenClass(document.getElementById('simulator-information'));*/
+    forShowForm(formTemplate)
 
     const resultInput = document.getElementById('result');
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
