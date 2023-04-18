@@ -344,7 +344,6 @@ function showForm() {
     const formTemplate = document.getElementById('simulator-form-block');  
     forShowForm(formTemplate); 
 
-    addHiddenClass(previousBtn); 
     removeHiddenClass(questionTheme); 
 
     simulatorOptions.append(formTemplate); 

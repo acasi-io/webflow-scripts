@@ -226,12 +226,6 @@ const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
 
 
-function fillQuestionTitleTheme(currentQuestion) {
-    questionTitle.textContent = currentQuestion.question; 
-    questionTheme.textContent = currentQuestion.theme; 
-}
-
-
 function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     storeResult();
@@ -296,6 +290,13 @@ function showForm() {
     const formTemplate = document.querySelector('.simulator-form-block'); 
     forShowForm(formTemplate)
 
+    conditionForm(); 
+   
+    simulatorOptions.append(formTemplate); 
+}
+
+
+function conditionForm() {
     const resultInput = document.getElementById('result');
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
     const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
@@ -316,8 +317,6 @@ function showForm() {
     } else {
         return;
     }
-   
-    simulatorOptions.append(formTemplate); 
 }
 
 

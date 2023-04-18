@@ -143,6 +143,7 @@ function forShowForm(formTemplate) {
     questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
     questionTheme.innerHTML = 'Résultat'; 
     addHiddenClass(nextBtn); 
+    addHiddenClass(previousBtn); 
     removeHiddenClass(formTemplate);  
     addHiddenClass(document.getElementById('simulator-information'));
 }
