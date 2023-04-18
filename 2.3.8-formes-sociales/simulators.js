@@ -255,22 +255,7 @@ function nextQuestion() {
 
 
 previousBtn.addEventListener('click', () => {
-    const previousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
-    const previousQuestionData = questionsData.find(question => questionTree = previousQuestion); 
-    generateQuestion(previousQuestionData); 
-    questionTitle.textContent = previousQuestionData.question;
-    setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
-    deleteOldValueResultArray(); 
-    deleteOldValuePreviousArray(); 
-    if (previousQuestionData.id === 0) {
-        addHiddenClass(previousBtn); 
-    } else {
-        const lastQuestion = previousQuestionArray.length - 1; 
-        const newPreviousQuestion = previousQuestionArray[lastQuestion].question; 
-        setItemStorage('previousQuestion', newPreviousQuestion);
-    } 
-
-    /*getPreviousQuestion(); 
+    getPreviousQuestion(); 
     setIndexPreviousQuestion();
     deleteOldValue();
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
@@ -281,11 +266,11 @@ previousBtn.addEventListener('click', () => {
         removeHiddenClass(document.getElementById('simulator-block')); 
         addHiddenClass(document.querySelector('.simulator-form-block')); 
         removeHiddenClass(nextBtn);  
-    }*/
+    }
 }); 
    
    
-/*function getPreviousQuestion() { 
+function getPreviousQuestion() { 
     let indexPreviousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
     const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
 
@@ -293,14 +278,14 @@ previousBtn.addEventListener('click', () => {
    
     generateQuestion(previousQuestionData); 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
-}*/
+}
 
    
-/*function setIndexPreviousQuestion() {
+function setIndexPreviousQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     let indexPreviousQuestion = indexCurrentQuestion - 1; 
     setItemStorage('indexPreviousQuestion', indexPreviousQuestion); 
-}*/
+}
 
    
 function storeResult() {

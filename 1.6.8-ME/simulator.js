@@ -356,13 +356,13 @@ function storeResult() {
 }
 
 
-/*function updatePreviousQuestionArray(currentQuestion, currentChoice) {
+function updatePreviousQuestionArray(currentQuestion, currentChoice) {
     const newValue = new Object();  
     newValue.question = `${currentQuestion.questionTree}`; 
     newValue.value = `${currentChoice.value}`; 
     setItemStorage('previousQuestion', currentQuestion.questionTree); 
     previousQuestionArray.push(newValue); 
-}*/
+}
 
 
 function deleteOldValue() {

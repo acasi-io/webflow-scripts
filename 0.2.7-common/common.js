@@ -95,8 +95,6 @@ function showQuestion(answerBlock, currentQuestion, choice, index, answer) {
 function computeQuestion(currentQuestion, input, answer) {
     answer.addEventListener('click', () => { 
         setItemStorage('indexCurrentChoice', input.id);   
-        console.log(resultArray); 
-        console.log(previousQuestionArray); 
     });
 
     input.addEventListener('click', (e) => {
@@ -108,7 +106,6 @@ function computeQuestion(currentQuestion, input, answer) {
         hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
         updateLocalStorage(currentQuestion);
         const currentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
-        updatePreviousQuestionArray(currentQuestion, currentChoice); 
         nextQuestion(); 
     });
 }
@@ -181,10 +178,10 @@ function highlightCards(currentQuestion, answer) {
 }
 
 
-function updatePreviousQuestionArray(currentQuestion, currentChoice) {
+/*function updatePreviousQuestionArray(currentQuestion, currentChoice) {
     const newValue = new Object();  
     newValue.question = `${currentQuestion.questionTree}`; 
     newValue.value = `${currentChoice.value}`; 
     setItemStorage('indexPreviousQuestion', currentQuestion.questionTree); 
     previousQuestionArray.push(newValue); 
-}
+}*/
