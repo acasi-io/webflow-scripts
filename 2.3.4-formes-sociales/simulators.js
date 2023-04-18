@@ -261,6 +261,7 @@ previousBtn.addEventListener('click', () => {
     questionTitle.textContent = previousQuestionData.question;
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
     deleteOldValueResultArray(); 
+    deleteOldValuePreviousArray(); 
     if (previousQuestionData.id === 0) {
         addHiddenClass(previousBtn); 
     } else {
@@ -303,8 +304,7 @@ previousBtn.addEventListener('click', () => {
 
    
 function storeResult() {
-    findQuestionForStoreResult(questionsData, currentQuestionData, currentChoiceData);
-    updatePreviousQuestionArray(currentQuestionData, currentChoiceData);
+    findQuestionForStoreResult(questionsData);
 }
     
    

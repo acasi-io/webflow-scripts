@@ -149,12 +149,13 @@ function forShowForm(formTemplate) {
 let currentChoiceData; 
 let currentQuestionData; 
 
-function findQuestionForStoreResult(questionsData, currentQuestionData, currentChoiceData) {
+function findQuestionForStoreResult(questionsData) {
     const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
     updateResultArray(currentChoiceData, currentQuestionData);
+    updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
 }
 
 

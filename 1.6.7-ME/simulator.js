@@ -352,8 +352,7 @@ function showForm() {
 
    
 function storeResult() {
-    findQuestionForStoreResult(questionsData, currentQuestionData, currentChoiceData); 
-    updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
+    findQuestionForStoreResult(questionsData); 
 }
 
 
