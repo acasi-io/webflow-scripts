@@ -54,6 +54,7 @@ function generateQuestion(currentQuestion) {
     appendHubspotProperty(currentQuestion);
 
     currentQuestion.choices.forEach((choice, index) => {
+        let answer; 
         showQuestion(answerBlock, currentQuestion, choice, index, answer)
     }); 
 }
@@ -62,7 +63,7 @@ function generateQuestion(currentQuestion) {
 function showQuestion(answerBlock, currentQuestion, choice, index, answer) {
     const cloneAnswerBlock = answerBlock.cloneNode(true); 
     simulatorBlock.appendChild(cloneAnswerBlock); 
-    const answer = simulatorBlock.children[index];
+    answer = simulatorBlock.children[index];
 
     const { id, value, image, hubspotValue } = choice;
     const input = answer.querySelector('.simulator-radio'); 
