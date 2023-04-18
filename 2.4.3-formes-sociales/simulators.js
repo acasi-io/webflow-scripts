@@ -228,6 +228,11 @@ const simulatorInformation = document.getElementById('simulator-information');
 
 function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const currentQuestion = questionsData.find(question => question.id === indexCurrentQuestion); 
+    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
+    const currentChoice = currentQuestion.choices.find(choice => choice.id === indexCurrentChoice); 
+    updatePreviousQuestionArray(currentQuestion, currentChoice); 
+    console.log(previousQuestionArray); 
     storeResult();
 
     if (indexCurrentQuestion !== totalQuestions - 1) {
@@ -348,4 +353,13 @@ function deleteOldValuePreviousArray() {
     let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
   
     previousQuestionArray.splice(indexAnswerToFind, 1); 
+}
+
+
+function updatePreviousQuestionArray(currentQuestion, currentChoice) {
+    const newValue = new Object();  
+    newValue.question = `${currentQuestion.questionTree}`; 
+    newValue.value = `${currentChoice.value}`; 
+    setItemStorage('indexPreviousQuestion', currentQuestion.questionTree); 
+    previousQuestionArray.push(newValue); 
 }

@@ -354,7 +354,6 @@ function storeResult() {
     findQuestionForStoreResult(questionsData); 
 }
 
-
 function updatePreviousQuestionArray(currentQuestion, currentChoice) {
     const newValue = new Object();  
     newValue.question = `${currentQuestion.questionTree}`; 
