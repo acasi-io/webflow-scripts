@@ -283,6 +283,7 @@ function setIndexPreviousQuestion() {
    
 function storeResult() {
     findQuestionForStoreResult(questionsData, currentQuestionData, currentChoiceData);
+    updatePreviousQuestionArray(currentQuestion, currentChoice);
 }
     
    

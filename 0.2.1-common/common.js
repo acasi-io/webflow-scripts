@@ -174,3 +174,12 @@ function highlightCards(currentQuestion, answer) {
         answer.style.boxShadow = "0px 0px 10px #132966"; 
     }
 }
+
+
+function updatePreviousQuestionArray(currentQuestion, currentChoice) {
+    const newValue = new Object();  
+    newValue.question = `${currentQuestion.questionTree}`; 
+    newValue.value = `${currentChoice.value}`; 
+    setItemStorage('indexPreviousQuestion', currentQuestion.questionTree); 
+    previousQuestionArray.push(newValue); 
+}
