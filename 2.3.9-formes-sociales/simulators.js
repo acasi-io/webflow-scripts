@@ -235,13 +235,13 @@ function fillQuestionTitleTheme(currentQuestion) {
 
 function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    //storeResult();
+    storeResult();
 
     if (indexCurrentQuestion !== totalQuestions - 1) {
         previousBtn.classList.remove('simulator-hidden');
         getNextQuestion(questionsData);
     }
-    //setIndexPreviousQuestion();
+    setIndexPreviousQuestion();
    
     if (indexCurrentQuestion === totalQuestions - 1) {
         showForm();
