@@ -94,9 +94,7 @@ function showQuestion(answerBlock, currentQuestion, choice, index, answer) {
 
 function computeQuestion(currentQuestion, input, answer) {
     answer.addEventListener('click', () => { 
-        setItemStorage('indexCurrentChoice', input.id); 
-        updateLocalStorage(currentQuestion); 
-        localStorage.setItem('indexNextQuestion', answer.nextQuestion); 
+        setItemStorage('indexCurrentChoice', input.id);   
         console.log(resultArray); 
         console.log(previousQuestionArray); 
     });
@@ -108,6 +106,7 @@ function computeQuestion(currentQuestion, input, answer) {
         e.currentTarget.parentNode.classList.add('simulator-checked');
         const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
         hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
+        updateLocalStorage(currentQuestion);
         nextQuestion(); 
     });
 }
