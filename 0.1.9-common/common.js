@@ -6,6 +6,8 @@ let resultArray = [];
 const startBtn = document.getElementById('start-button'); 
 const simulatorBlock = document.getElementById('simulator-block');
 const simulatorOptions = document.getElementById('simulator-options');
+const previousBtn = document.getElementById('previous-button');
+let previousQuestionArray = []; 
 
 
 
@@ -19,6 +21,13 @@ function addHiddenClass(elementProperty) {
 
 function removeHiddenClass(elementProperty) {
     elementProperty.classList.remove('simulator-hidden'); 
+}
+
+function fillQuestionTitleTheme(currentQuestion) {
+    questionTitle.textContent = currentQuestion.question; 
+    if (currentQuestion.theme) {
+        questionTheme.textContent = currentQuestion.theme; 
+    } 
 }
 
 
@@ -38,11 +47,7 @@ function firstQuestion() {
     const firstQuestionData = questionsData.find(question => question.id === questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
 
-    questionTitle.textContent = firstQuestionData.question;
-    
-    if (firstQuestionData.theme) {
-        questionTheme.textContent = firstQuestionData.theme; 
-    }   
+    fillQuestionTitleTheme(firstQuestionData);  
        
     generateQuestion(firstQuestionData); 
 }
@@ -158,11 +163,7 @@ function getNextQuestion(questionsData) {
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     setItemStorage('indexCurrentQuestion', currentQuestionData.id);
 
-    questionTitle.textContent = currentQuestionData.question;
-
-    if (currentQuestionData.theme) {
-        questionTheme.textContent = currentQuestionData.theme; 
-    }
+    fillQuestionTitleTheme(currentQuestionData); 
 
     generateQuestion(currentQuestionData); 
 }
