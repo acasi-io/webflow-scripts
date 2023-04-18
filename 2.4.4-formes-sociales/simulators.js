@@ -224,6 +224,7 @@ const questionsData = [
 
 const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
+const previousBtn = document.getElementById('previous-button');
 
 
 function nextQuestion() {
