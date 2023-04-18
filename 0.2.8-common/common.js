@@ -6,6 +6,7 @@ let resultArray = [];
 const startBtn = document.getElementById('start-button'); 
 const simulatorBlock = document.getElementById('simulator-block');
 const simulatorOptions = document.getElementById('simulator-options');
+const hubspotPropertiesBlock = document.getElementById('hubspot-properties');
 const previousBtn = document.getElementById('previous-button');
 let previousQuestionArray = []; 
 

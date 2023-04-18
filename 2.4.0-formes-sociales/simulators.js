@@ -224,7 +224,6 @@ const questionsData = [
 
 const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
-const hubspotPropertiesBlock = document.getElementById('hubspot-properties');
 
 
 function fillQuestionTitleTheme(currentQuestion) {
