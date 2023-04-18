@@ -4,12 +4,12 @@ const questionsData = [
         question: "Quel est votre statut actuel ?", 
         theme: "Votre statut",
         property: "status",
+        highlight: true, 
         choices: [
             {
                 id: 1, 
                 value: "Salarié",
                 image: "💼", 
-                highlight: true,
                 hubspotValue: 'Salarié',
                 nextQuestion: 1
             }, 
@@ -17,7 +17,6 @@ const questionsData = [
                 id: 2, 
                 value: "Bénéficiaire du chômage",
                 image: "🌴", 
-                highlight: true,
                 hubspotValue: 'Chômage',
                 nextQuestion: 1
             }, 
@@ -25,7 +24,6 @@ const questionsData = [
                 id: 3, 
                 value: "Micro-entrepreneur", 
                 image: "🚗", 
-                highlight: true,
                 hubspotValue: 'Micro',
                 nextQuestion: 1
             }, 
@@ -33,7 +31,6 @@ const questionsData = [
                 id: 4, 
                 value: "Entrepreneur (EI, SAS/SASU, SARL/EURL)", 
                 image: "🚀", 
-                highlight: true,
                 hubspotValue: 'Entrepreneur',
                 nextQuestion: 1
             }
@@ -273,7 +270,7 @@ function getPreviousQuestion() {
 
     fillQuestionTitleTheme(previousQuestionData); 
    
-    showQuestion(previousQuestionData); 
+    generateQuestion(previousQuestionData); 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 }
 

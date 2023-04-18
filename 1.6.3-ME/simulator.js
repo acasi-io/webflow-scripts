@@ -4,12 +4,12 @@ const questionsData = [
         question: "Quel est votre type d'activité ?", 
         questionTree: "Quel est votre type d'activité ?",
         property: "company_creation_activity",
+        highlight: true, 
         choices: [
             {
                 id: 1, 
                 value: "Vente de marchandises", 
                 image: "🏠", 
-                highlight: true, 
                 nextQuestion: 1,
                 hubspotValue: 'Achat/Vente',
             }, 
@@ -17,7 +17,6 @@ const questionsData = [
                 id: 2, 
                 value: "Prestation de services",
                 image: "👩‍💻", 
-                highlight: true, 
                 nextQuestion: 6,
                 hubspotValue: 'Services',
             }
@@ -310,7 +309,6 @@ const questionsData = [
 
 const previousBtn = document.getElementById('previous-button'); 
 let previousQuestionArray = []; 
-let previousQuestionArrayLength = Object.keys(previousQuestionArray).length; 
 
 
 function nextQuestion() {
@@ -330,7 +328,7 @@ function nextQuestion() {
 previousBtn.addEventListener('click', () => {
 	const previousQuestion = localStorage.getItem('previousQuestion');
     const previousQuestionData = questionsData.find(question => question.questionTree === previousQuestion);
-    showQuestion(previousQuestionData); 
+    generateQuestion(previousQuestionData); 
     questionTitle.textContent = previousQuestionData.question; 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 	deleteOldValue(); 

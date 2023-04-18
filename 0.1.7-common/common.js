@@ -42,57 +42,65 @@ function firstQuestion() {
     
     if (firstQuestionData.theme) {
         questionTheme.textContent = firstQuestionData.theme; 
-    }
-    //fillQuestionTitleTheme(firstQuestionData);   
+    }   
        
-    showQuestion(firstQuestionData); 
+    generateQuestion(firstQuestionData); 
 }
 
 
-function showQuestion(currentQuestion) {
+function generateQuestion(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild; 
     simulatorBlock.innerHTML = '';
     appendHubspotProperty(currentQuestion);
 
     currentQuestion.choices.forEach((choice, index) => {
-        const cloneAnswerBlock = answerBlock.cloneNode(true); 
-        simulatorBlock.appendChild(cloneAnswerBlock); 
-        const answer = simulatorBlock.children[index];
-   
-        const { id, value, image, hubspotValue } = choice;
-        const input = answer.querySelector('.simulator-radio'); 
-        input.setAttribute('id', id); 
-        input.setAttribute('value', id);
-        input.setAttribute('data-hubspot-value', hubspotValue);
-   
-        const label = answer.querySelector('.simulator-answer'); 
-        label.textContent = value; 
-        label.setAttribute('for', id); 
-     
-        const emoji = answer.querySelector('.simulator-emoji');
-        if (image) { 
-            emoji.textContent = image; 
-        } else {
-            emoji.remove(); 
-        }
-
-        highlightCards(choice, answer); 
-   
-        answer.addEventListener('click', () => { 
-            setItemStorage('indexCurrentChoice', input.id); 
-            updateLocalStorage(currentQuestion); 
-        });
-
-        input.addEventListener('click', (e) => {
-            [...document.querySelectorAll('.simulator-answer-btn')].forEach(element => {
-                element.classList.remove('simulator-checked'); 
-            });
-            e.currentTarget.parentNode.classList.add('simulator-checked');
-            const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
-            hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
-            nextQuestion(); 
-        });
+        showQuestion(answerBlock, currentQuestion, choice, index, answer)
     }); 
+}
+
+
+function showQuestion(answerBlock, currentQuestion, choice, index, answer) {
+    const cloneAnswerBlock = answerBlock.cloneNode(true); 
+    simulatorBlock.appendChild(cloneAnswerBlock); 
+    const answer = simulatorBlock.children[index];
+
+    const { id, value, image, hubspotValue } = choice;
+    const input = answer.querySelector('.simulator-radio'); 
+    input.setAttribute('id', id); 
+    input.setAttribute('value', id);
+    input.setAttribute('data-hubspot-value', hubspotValue);
+
+    const label = answer.querySelector('.simulator-answer'); 
+    label.textContent = value; 
+    label.setAttribute('for', id); 
+ 
+    const emoji = answer.querySelector('.simulator-emoji');
+    if (image) { 
+        emoji.textContent = image; 
+    } else {
+        emoji.remove(); 
+    }
+
+    highlightCards(currentQuestion, answer);
+    computeQuestion(currentQuestion, input, answer); 
+}
+
+
+function computeQuestion(currentQuestion, input, answer) {
+    answer.addEventListener('click', () => { 
+        setItemStorage('indexCurrentChoice', input.id); 
+        updateLocalStorage(currentQuestion); 
+    });
+
+    input.addEventListener('click', (e) => {
+        [...document.querySelectorAll('.simulator-answer-btn')].forEach(element => {
+            element.classList.remove('simulator-checked'); 
+        });
+        e.currentTarget.parentNode.classList.add('simulator-checked');
+        const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
+        hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
+        nextQuestion(); 
+    });
 }
 
 
@@ -113,7 +121,7 @@ function updateLocalStorage(currentQuestion) {
 
 function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
-        const newResult = new Object(); 
+        const newResult = {}; 
         newResult.question = `${currentQuestion.question}`;
         newResult.result = `${currentChoice.resultValue}`;
         resultArray.push(newResult); 
@@ -155,12 +163,12 @@ function getNextQuestion(questionsData) {
         questionTheme.textContent = currentQuestionData.theme; 
     }
 
-    showQuestion(currentQuestionData); 
+    generateQuestion(currentQuestionData); 
 }
 
 
-function highlightCards(choice, answer) {
-    if (choice.highlight === true) {
+function highlightCards(currentQuestion, answer) {
+    if (currentQuestion.highlight === true) {
         answer.style.boxShadow = "0px 0px 10px #132966"; 
     }
 }
