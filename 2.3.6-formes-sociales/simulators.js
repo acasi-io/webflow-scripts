@@ -353,7 +353,6 @@ function deleteOldValueResultArray() {
     let indexAnswerToFind = resultArray.indexOf(answerToFind); 
   
     resultArray.splice(indexAnswerToFind, 1); 
-    console.log(resultArray); 
 }
 
 
@@ -366,5 +365,4 @@ function deleteOldValuePreviousArray() {
     let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
   
     previousQuestionArray.splice(indexAnswerToFind, 1); 
-    console.log(previousQuestionArray); 
 }

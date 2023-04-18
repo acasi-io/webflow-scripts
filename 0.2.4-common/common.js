@@ -96,6 +96,7 @@ function computeQuestion(currentQuestion, input, answer) {
     answer.addEventListener('click', () => { 
         setItemStorage('indexCurrentChoice', input.id); 
         updateLocalStorage(currentQuestion); 
+        localStorage.setItem('indexNextQuestion', answer.nextQuestion); 
         console.log(resultArray); 
         console.log(previousQuestionArray); 
     });
