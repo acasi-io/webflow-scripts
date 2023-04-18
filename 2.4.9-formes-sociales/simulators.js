@@ -228,18 +228,18 @@ const simulatorInformation = document.getElementById('simulator-information');
 
 function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    const currentQuestion = questionsData.find(question => question.id === indexCurrentQuestion); 
+    /*const currentQuestion = questionsData.find(question => question.id === indexCurrentQuestion); 
     const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const currentChoice = currentQuestion.choices.find(choice => choice.id === indexCurrentChoice); 
     updatePreviousQuestionArray(currentQuestion, currentChoice); 
-    console.log(previousQuestionArray); 
+    console.log(previousQuestionArray); */
     storeResult();
 
     if (indexCurrentQuestion !== totalQuestions - 1) {
         previousBtn.classList.remove('simulator-hidden');
         getNextQuestion(questionsData);
     }
-    //setIndexPreviousQuestion();
+    setIndexPreviousQuestion();
    
     if (indexCurrentQuestion === totalQuestions - 1) {
         showForm();
@@ -254,7 +254,7 @@ function nextQuestion() {
 
 previousBtn.addEventListener('click', () => {
     getPreviousQuestion(); 
-    //setIndexPreviousQuestion();
+    setIndexPreviousQuestion();
     deleteOldValueResultArray();
     deleteOldValuePreviousArray(); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
