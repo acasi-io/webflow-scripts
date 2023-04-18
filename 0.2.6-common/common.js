@@ -107,6 +107,8 @@ function computeQuestion(currentQuestion, input, answer) {
         const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
         hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
         updateLocalStorage(currentQuestion);
+        const currentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
+        updatePreviousQuestionArray(currentQuestion, currentChoice); 
         nextQuestion(); 
     });
 }
@@ -157,7 +159,7 @@ function findQuestionForStoreResult(questionsData) {
     currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
     updateResultArray(currentChoiceData, currentQuestionData);
-    updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
+    //updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
 }
 
 
