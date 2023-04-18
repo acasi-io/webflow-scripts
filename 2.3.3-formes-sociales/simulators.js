@@ -5,6 +5,7 @@ const questionsData = [
         theme: "Votre statut",
         property: "status",
         highlight: true, 
+        //questionTree: 1, 
         choices: [
             {
                 id: 1, 
@@ -41,7 +42,8 @@ const questionsData = [
         question: "Vous vous lancez seul ou à plusieurs ?", 
         theme: "Votre statut",
         property: "multiple_shareholders",
-        nextQuestion: 2, 
+        //nextQuestion: 2, 
+        questionTree: 2, 
         choices: [
             {
                 id: 1, 
@@ -68,7 +70,8 @@ const questionsData = [
         question: "Comptez-vous embaucher des salariés ?", 
         theme: "Votre projet",
         property: "with_employees",
-        nextQuestion: 3,
+        //nextQuestion: 3,
+        questionTree: 3, 
         choices: [
             {
                 id: 1, 
@@ -91,7 +94,8 @@ const questionsData = [
         question: "Quelle est la nature de votre projet ?", 
         theme: "Votre projet",
         property: "company_creation_activity",
-        nextQuestion: 4,
+        //nextQuestion: 4,
+        questionTree: 4, 
         choices: [
             {
                 id: 1, 
@@ -134,7 +138,8 @@ const questionsData = [
         question: "Quel chiffre d'affaires envisagez-vous ?", 
         theme: "Données financières",
         property: "estimated_revenue",
-        nextQuestion: 5,
+        //nextQuestion: 5,
+        questionTree: 5, 
         choices: [
             {
                 id: 1, 
@@ -159,7 +164,8 @@ const questionsData = [
         question: "Combien de charges prévoyez-vous ?", 
         theme: "Données financières",
         property: "estimated_charges",
-        nextQuestion: 6,
+        //nextQuestion: 6,
+        questionTree: 6, 
         choices: [
             {
                 id: 1, 
@@ -192,7 +198,8 @@ const questionsData = [
         question: "Combien souhaitez-vous vous rémunérer ?", 
         theme: "Rémunération du dirigeant",
         property: "revenue_type",
-        nextQuestion: 'emailForm',
+        //nextQuestion: 'emailForm',
+        questionTree: 7, 
         choices: [
             {
                 id: 1, 
@@ -248,7 +255,21 @@ function nextQuestion() {
 
 
 previousBtn.addEventListener('click', () => {
-    getPreviousQuestion(); 
+    const previousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
+    const previousQuestionData = questionsData.find(question => questionTree = previousQuestion); 
+    generateQuestion(previousQuestionData); 
+    questionTitle.textContent = previousQuestionData.question;
+    setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
+    deleteOldValueResultArray(); 
+    if (previousQuestionData.id === 0) {
+        addHiddenClass(previousBtn); 
+    } else {
+        const lastQuestion = previousQuestionArray.length - 1; 
+        const newPreviousQuestion = previousQuestionArray[lastQuestion].question; 
+        setItemStorage('previousQuestion', newPreviousQuestion);
+    } 
+
+    /*getPreviousQuestion(); 
     setIndexPreviousQuestion();
     deleteOldValue();
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
@@ -259,11 +280,11 @@ previousBtn.addEventListener('click', () => {
         removeHiddenClass(document.getElementById('simulator-block')); 
         addHiddenClass(document.querySelector('.simulator-form-block')); 
         removeHiddenClass(nextBtn);  
-    }
+    }*/
 }); 
    
    
-function getPreviousQuestion() { 
+/*function getPreviousQuestion() { 
     let indexPreviousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
     const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
 
@@ -271,19 +292,19 @@ function getPreviousQuestion() {
    
     generateQuestion(previousQuestionData); 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
-}
+}*/
 
    
-function setIndexPreviousQuestion() {
+/*function setIndexPreviousQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     let indexPreviousQuestion = indexCurrentQuestion - 1; 
     setItemStorage('indexPreviousQuestion', indexPreviousQuestion); 
-}
+}*/
 
    
 function storeResult() {
     findQuestionForStoreResult(questionsData, currentQuestionData, currentChoiceData);
-    updatePreviousQuestionArray(currentQuestion, currentChoice);
+    updatePreviousQuestionArray(currentQuestionData, currentChoiceData);
 }
     
    
@@ -323,7 +344,7 @@ simulatorSubmitBtn.addEventListener('click', () => {
 });
 
 
-function deleteOldValue() {
+function deleteOldValueResultArray() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
   
@@ -332,4 +353,16 @@ function deleteOldValue() {
     let indexAnswerToFind = resultArray.indexOf(answerToFind); 
   
     resultArray.splice(indexAnswerToFind, 1); 
+}
+
+
+function deleteOldValuePreviousArray() {
+    const previousQuestion = localStorage.getItem('indexPreviousQuestion'); 
+    const currentQuestionData = questionsData.find(question => question.questionTree === previousQuestion); 
+  
+    const answerToFind = previousQuestionArray.find(answer => answer.question === currentQuestionData.questionTree);
+  
+    let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
+  
+    previousQuestionArray.splice(indexAnswerToFind, 1); 
 }
