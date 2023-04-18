@@ -5,7 +5,7 @@ const questionsData = [
         theme: "Votre statut",
         property: "status",
         highlight: true, 
-        //questionTree: 1, 
+        questionTree: 1, 
         choices: [
             {
                 id: 1, 
@@ -239,7 +239,7 @@ function nextQuestion() {
         previousBtn.classList.remove('simulator-hidden');
         getNextQuestion(questionsData);
     }
-    setIndexPreviousQuestion();
+    //setIndexPreviousQuestion();
    
     if (indexCurrentQuestion === totalQuestions - 1) {
         showForm();
@@ -254,8 +254,9 @@ function nextQuestion() {
 
 previousBtn.addEventListener('click', () => {
     getPreviousQuestion(); 
-    setIndexPreviousQuestion();
+    //setIndexPreviousQuestion();
     deleteOldValueResultArray();
+    deleteOldValuePreviousArray(); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
     if (indexCurrentQuestion === 0) {
