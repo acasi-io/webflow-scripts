@@ -226,13 +226,13 @@ const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
 
 
-function nextQuestion() {
+/*function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     /*const currentQuestion = questionsData.find(question => question.id === indexCurrentQuestion); 
     const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
     const currentChoice = currentQuestion.choices.find(choice => choice.id === indexCurrentChoice); 
     updatePreviousQuestionArray(currentQuestion, currentChoice); 
-    console.log(previousQuestionArray); */
+    console.log(previousQuestionArray);
     storeResult();
 
     if (indexCurrentQuestion !== totalQuestions - 1) {
@@ -254,10 +254,10 @@ function nextQuestion() {
         addHiddenClass(document.getElementById('simulator-block')); 
         simulatorInformation.textContent = ''; 
     } 
-}
+}*/
 
 
-previousBtn.addEventListener('click', () => {
+/*previousBtn.addEventListener('click', () => {
     getPreviousQuestion(); 
     //setIndexPreviousQuestion();
     deleteOldValueResultArray();
@@ -271,10 +271,10 @@ previousBtn.addEventListener('click', () => {
         addHiddenClass(document.querySelector('.simulator-form-block')); 
         removeHiddenClass(nextBtn);  
     }
-}); 
+}); */
    
    
-function getPreviousQuestion() { 
+/*function getPreviousQuestion() { 
     let indexPreviousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
     const previousQuestionData = questionsData.find(question => question.questionTree === indexPreviousQuestion); 
 
@@ -368,4 +368,113 @@ function updatePreviousQuestionArray(currentQuestion, currentChoice) {
     newValue.value = `${currentChoice.value}`; 
     setItemStorage('indexPreviousQuestion', currentQuestion.questionTree); 
     previousQuestionArray.push(newValue); 
+}*/
+
+
+
+function nextQuestion() {
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    storeResult();
+
+    if (indexCurrentQuestion !== totalQuestions - 1) {
+        previousBtn.classList.remove('simulator-hidden');
+        getNextQuestion(questionsData);
+    }
+    setIndexPreviousQuestion();
+   
+    if (indexCurrentQuestion === totalQuestions - 1) {
+        showForm();
+        addHiddenClass(previousBtn)
+        setItemStorage('indexPreviousQuestion', totalQuestions - 1); 
+        setItemStorage('indexCurrentQuestion', 'emailForm'); 
+        addHiddenClass(document.getElementById('simulator-block')); 
+        simulatorInformation.textContent = ''; 
+    } 
+}
+
+
+previousBtn.addEventListener('click', () => {
+    getPreviousQuestion(); 
+    setIndexPreviousQuestion();
+    deleteOldValue();
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
+    if (indexCurrentQuestion === 0) {
+        previousBtn.classList.add('simulator-hidden'); 
+    } else if (indexNextQuestion === 'emailForm') {
+        removeHiddenClass(document.getElementById('simulator-block')); 
+        addHiddenClass(document.querySelector('.simulator-form-block')); 
+        removeHiddenClass(nextBtn);  
+    }
+}); 
+   
+   
+function getPreviousQuestion() { 
+    let indexPreviousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
+    const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
+
+    fillQuestionTitleTheme(previousQuestionData); 
+   
+    showQuestion(previousQuestionData); 
+    setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
+}
+
+   
+function setIndexPreviousQuestion() {
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    let indexPreviousQuestion = indexCurrentQuestion - 1; 
+    setItemStorage('indexPreviousQuestion', indexPreviousQuestion); 
+}
+
+   
+function storeResult() {
+    findQuestionForStoreResult(questionsData);
+}
+    
+   
+function showForm() {
+    const formTemplate = document.querySelector('.simulator-form-block'); 
+    forShowForm(formTemplate)
+
+    const resultInput = document.getElementById('result');
+    const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
+    const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
+    const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 77k'); 
+    const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
+    const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
+
+    if (microEntrepriseAnswer) {
+        resultInput.value = 'micro-entreprise';
+    } else if (seulAnswer && dividendesAnswer) {
+        resultInput.value = 'SASU';
+    } else if (plusieursAnswer && dividendesAnswer) {
+        resultInput.value = 'SAS'; 
+    } else if (salaireAnswer && plusieursAnswer) {
+        resultInput.value = 'SARL ou SAS'; 
+    } else if (seulAnswer && salaireAnswer) {
+        resultInput.value = 'EURL ou SASU'; 
+    } else {
+        return;
+    }
+   
+    simulatorOptions.append(formTemplate); 
+}
+
+
+const simulatorSubmitBtn = document.getElementById('simulator-submit-button'); 
+simulatorSubmitBtn.addEventListener('click', () => {
+    const resultInputValue = document.getElementById('result').value; 
+    setItemStorage('result', resultInputValue);  
+});
+
+
+function deleteOldValue() {
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
+  
+    const answerToFind = resultArray.find(answer => answer.question === currentQuestionData.question);
+  
+    let indexAnswerToFind = resultArray.indexOf(answerToFind); 
+  
+    resultArray.splice(indexAnswerToFind, 1); 
 }
