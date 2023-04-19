@@ -354,7 +354,7 @@ function deleteOldValuePreviousArray() {
     const previousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
     const currentQuestionData = questionsData.find(question => question.questionTree === previousQuestion); 
   
-    const answerToFind = previousQuestionArray.find(answer => answer.quetion === currentQuestionData.questionTree);
+    const answerToFind = previousQuestionArray.find(answer => answer.question === currentQuestionData.questionTree);
   
     let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
   
