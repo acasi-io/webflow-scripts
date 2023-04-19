@@ -49,7 +49,6 @@ const questionsData = [
                 value: "Je souhaite créer une société seul", 
                 image: "👩",
                 result: true, 
-                resultValue: "société seul",
                 hubspotValue: false,
                 nextQuestion: 2
             }, 
@@ -58,7 +57,6 @@ const questionsData = [
                 value: "Je souhaite créer une société à plusieurs", 
                 image: "👱‍♀️👩👨",
                 result: true, 
-                resultValue: "société à plusieurs",
                 hubspotValue: true,
                 nextQuestion: 2
             }
@@ -142,7 +140,6 @@ const questionsData = [
                 value: "Moins de 77 700€ par an",
                 image: "💰",
                 result: true,
-                resultValue: "moins de 77k",
                 hubspotValue: 'En dessous du seuil maximal pour une ME',
                 nextQuestion: 5
             }, 
@@ -199,7 +196,6 @@ const questionsData = [
                 id: 1, 
                 value: "Je souhaite me verser un salaire tous les mois", 
                 result: true, 
-                resultValue: "salaire",
                 hubspotValue: 'Salaire',
                 nextQuestion: 'emailForm'
             }, 
@@ -207,7 +203,6 @@ const questionsData = [
                 id: 2, 
                 value: "Je souhaite me rémunérer en dividendes 1 fois par an", 
                 result: true,
-                resultValue: "dividendes",
                 hubspotValue: 'Dividendes',
                 nextQuestion: 'emailForm'
             }

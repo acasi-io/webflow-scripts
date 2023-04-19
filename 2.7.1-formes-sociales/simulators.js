@@ -62,7 +62,6 @@ function computeForm() {
 }
 
 
-const simulatorSubmitBtn = document.getElementById('simulator-submit-button'); 
 simulatorSubmitBtn.addEventListener('click', () => {
     const resultInputValue = document.getElementById('result').value; 
     setItemStorage('result', resultInputValue);  

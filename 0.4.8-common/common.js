@@ -9,6 +9,7 @@ const simulatorOptions = document.getElementById('simulator-options');
 const hubspotPropertiesBlock = document.getElementById('hubspot-properties');
 const previousBtn = document.getElementById('previous-button');
 let previousQuestionArray = []; 
+const simulatorSubmitBtn = document.getElementById('simulator-submit-button'); 
 
 
 window.addEventListener('load', () => {
