@@ -276,7 +276,7 @@ previousBtn.addEventListener('click', () => {
    
 function getPreviousQuestion() { 
     let indexPreviousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
-    const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
+    const previousQuestionData = questionsData.find(question => question.questionTree === indexPreviousQuestion); 
 
     fillQuestionTitleTheme(previousQuestionData); 
    

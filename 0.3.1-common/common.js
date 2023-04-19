@@ -180,10 +180,10 @@ function highlightCards(currentQuestion, answer) {
 }
 
 
-function updatePreviousQuestionArray(currentQuestion, currentChoice) {
+/*function updatePreviousQuestionArray(currentQuestion, currentChoice) {
     const newValue = new Object();  
     newValue.question = `${currentQuestion.questionTree}`; 
     newValue.value = `${currentChoice.value}`; 
     setItemStorage('indexPreviousQuestion', currentQuestion.questionTree); 
     previousQuestionArray.push(newValue); 
-}
+}*/
