@@ -80,7 +80,7 @@ function firstQuestion() {
 function showQuestion(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild; 
     simulatorBlock.innerHTML = '';
-    //appendHubspotProperty(currentQuestion);
+    appendHubspotProperty(currentQuestion);
 
     currentQuestion.choices.forEach((choice, index) => {
         const cloneAnswerBlock = answerBlock.cloneNode(true); 
@@ -116,20 +116,20 @@ function showQuestion(currentQuestion) {
                 element.classList.remove('simulator-checked'); 
             });
             e.currentTarget.parentNode.classList.add('simulator-checked');
-            /*const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
-            hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);*/
+            const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
+            hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
             nextQuestion(); 
         });
     }); 
 }
 
 
-/*function appendHubspotProperty(currentQuestion) {
+function appendHubspotProperty(currentQuestion) {
     const property = currentQuestion.property;
     if (property) {
         hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property}" style='visibility: hidden; height: 0'><label>${property}</label><input type='text'/></div>`)
     }
-}*/
+}
 
 
 function updateLocalStorage(currentQuestion) {
