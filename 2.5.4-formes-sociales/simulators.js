@@ -429,6 +429,7 @@ function setIndexPreviousQuestion() {
    
 function storeResult() {
     findQuestionForStoreResult(questionsData);
+    updatePreviousQuestionArray(currentQuestionData, currentChoiceData);
 }
     
    
@@ -477,4 +478,13 @@ function deleteOldValue() {
     let indexAnswerToFind = resultArray.indexOf(answerToFind); 
   
     resultArray.splice(indexAnswerToFind, 1); 
+}
+
+
+function updatePreviousQuestionArray(currentQuestion, currentChoice) {
+    const newValue = new Object();  
+    newValue.question = `${currentQuestion.questionTree}`; 
+    newValue.value = `${currentChoice.value}`; 
+    setItemStorage('previousQuestion', currentQuestion.questionTree); 
+    previousQuestionArray.push(newValue); 
 }

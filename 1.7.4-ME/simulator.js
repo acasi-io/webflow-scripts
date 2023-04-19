@@ -362,6 +362,7 @@ function updatePreviousQuestionArray(currentQuestion, currentChoice) {
     newValue.value = `${currentChoice.value}`; 
     setItemStorage('previousQuestion', currentQuestion.questionTree); 
     previousQuestionArray.push(newValue); 
+    console.log(previousQuestionArray);
 }
 
 function deleteOldValue() {
