@@ -149,13 +149,24 @@ function updateLocalStorage(currentQuestion) {
 }
 
 
-function updateResultArray(currentChoice, currentQuestion) {
+/*function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
         const newResult = {}; 
         newResult.question = `${currentQuestion.question}`;
         newResult.result = `${currentChoice.resultValue}`;
         resultArray.push(newResult); 
         setItemStorage('result', currentChoice.resultValue); 
+    }
+}*/
+
+
+function updateResultArray(currentChoice, currentQuestion) {
+    if (currentChoice.result === true) {
+        const newResult = {}; 
+        newResult.question = `${currentQuestion.id}`;
+        newResult.result = `${currentChoice.hubspotValue}`;
+        resultArray.push(newResult); 
+        setItemStorage('result', currentChoice.hubspotValue); 
     }
 }
 
@@ -168,18 +179,6 @@ function showForm(formTemplate) {
     addHiddenClass(previousBtn);
     removeHiddenClass(formTemplate);  
     addHiddenClass(document.getElementById('simulator-information'));
-}
-
-
-let currentChoiceData; 
-let currentQuestionData; 
-
-function findQuestionForStoreResult(questionsData) {
-    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-    currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
-    updateResultArray(currentChoiceData, currentQuestionData);
 }
 
 
@@ -213,6 +212,18 @@ function highlightCards(currentQuestion, answer) {
     if (currentQuestion.highlight === true) {
         answer.style.boxShadow = "0px 0px 10px #132966"; 
     }
+}
+
+
+let currentChoiceData; 
+let currentQuestionData; 
+
+function findQuestionForStoreResult(questionsData) {
+    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
+    currentChoiceData = currentQuestionData.choices.find(choice => choice.id === indexCurrentChoice); 
+    updateResultArray(currentChoiceData, currentQuestionData);
 }
 
 
