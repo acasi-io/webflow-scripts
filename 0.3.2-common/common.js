@@ -57,7 +57,7 @@ function firstQuestion() {
 function generateQuestion(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild; 
     simulatorBlock.innerHTML = '';
-    appendHubspotProperty(currentQuestion);
+    //appendHubspotProperty(currentQuestion);
 
     currentQuestion.choices.forEach((choice, index) => {
         let answer; 
@@ -103,8 +103,8 @@ function computeQuestion(currentQuestion, input, answer) {
             element.classList.remove('simulator-checked'); 
         });
         e.currentTarget.parentNode.classList.add('simulator-checked');
-        const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
-        hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
+        /*const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
+        hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);*/
         updateLocalStorage(currentQuestion);
         const currentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
         nextQuestion(); 
