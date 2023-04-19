@@ -239,7 +239,12 @@ function nextQuestion() {
         previousBtn.classList.remove('simulator-hidden');
         getNextQuestion(questionsData);
     }
-    setIndexPreviousQuestion();
+    //setIndexPreviousQuestion();
+    const currentQuestion = questionsData.find(question => question.id === indexCurrentQuestion); 
+    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
+    const currentChoice = currentQuestion.choices.find(choice => choice.id === indexCurrentChoice); 
+    updatePreviousQuestionArray(currentQuestion, currentChoice); 
+    console.log(previousQuestionArray);
    
     if (indexCurrentQuestion === totalQuestions - 1) {
         showForm();
@@ -254,7 +259,7 @@ function nextQuestion() {
 
 previousBtn.addEventListener('click', () => {
     getPreviousQuestion(); 
-    setIndexPreviousQuestion();
+    //setIndexPreviousQuestion();
     deleteOldValueResultArray();
     deleteOldValuePreviousArray(); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
