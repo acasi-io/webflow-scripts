@@ -332,11 +332,11 @@ previousBtn.addEventListener('click', () => {
 	deleteOldValue(); 
     if (previousQuestionData.id === 0) {
         addHiddenClass(previousBtn); 
-    } else {
+    } /*else {
         const lastQuestion = previousQuestionArray.length - 1; 
         const newPreviousQuestion = previousQuestionArray[lastQuestion].question; 
         setItemStorage('previousQuestion', newPreviousQuestion);
-    } 
+    } */
 });
 
 
