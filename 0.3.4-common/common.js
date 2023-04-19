@@ -193,12 +193,7 @@ function firstQuestion() {
     const firstQuestionData = questionsData.find(question => question.id === questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
 
-    questionTitle.textContent = firstQuestionData.question;
-    
-    if (firstQuestionData.theme) {
-        questionTheme.textContent = firstQuestionData.theme; 
-    }
-    //fillQuestionTitleTheme(firstQuestionData);   
+    fillQuestionTitleTheme(firstQuestionData);   
        
     showQuestion(firstQuestionData); 
 }
