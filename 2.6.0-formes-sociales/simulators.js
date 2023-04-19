@@ -42,7 +42,6 @@ const questionsData = [
         question: "Vous vous lancez seul ou à plusieurs ?", 
         theme: "Votre statut",
         property: "multiple_shareholders",
-        //nextQuestion: 2, 
         questionTree: 1, 
         choices: [
             {
@@ -70,7 +69,6 @@ const questionsData = [
         question: "Comptez-vous embaucher des salariés ?", 
         theme: "Votre projet",
         property: "with_employees",
-        //nextQuestion: 3,
         questionTree: 2, 
         choices: [
             {
@@ -94,7 +92,6 @@ const questionsData = [
         question: "Quelle est la nature de votre projet ?", 
         theme: "Votre projet",
         property: "company_creation_activity",
-        //nextQuestion: 4,
         questionTree: 3, 
         choices: [
             {
@@ -138,7 +135,6 @@ const questionsData = [
         question: "Quel chiffre d'affaires envisagez-vous ?", 
         theme: "Données financières",
         property: "estimated_revenue",
-        //nextQuestion: 5,
         questionTree: 4, 
         choices: [
             {
@@ -164,7 +160,6 @@ const questionsData = [
         question: "Combien de charges prévoyez-vous ?", 
         theme: "Données financières",
         property: "estimated_charges",
-        //nextQuestion: 6,
         questionTree: 5, 
         choices: [
             {
@@ -198,7 +193,6 @@ const questionsData = [
         question: "Combien souhaitez-vous vous rémunérer ?", 
         theme: "Rémunération du dirigeant",
         property: "revenue_type",
-        //nextQuestion: 'emailForm',
         questionTree: 6, 
         choices: [
             {
@@ -246,7 +240,6 @@ function nextQuestion() {
         previousBtn.classList.remove('simulator-hidden');
         getNextQuestion(questionsData);
     }
-    //setIndexPreviousQuestion();
    
     if (indexCurrentQuestion === totalQuestions - 1) {
         showForm();
@@ -257,13 +250,6 @@ function nextQuestion() {
         simulatorInformation.textContent = ''; 
     } 
 }
-
-   
-/*function setIndexPreviousQuestion() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    let indexPreviousQuestion = indexCurrentQuestion - 1; 
-    setItemStorage('indexPreviousQuestion', indexPreviousQuestion); 
-}*/
     
    
 function showForm() {
