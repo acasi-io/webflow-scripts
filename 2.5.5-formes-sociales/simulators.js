@@ -5,7 +5,7 @@ const questionsData = [
         theme: "Votre statut",
         property: "status",
         highlight: true, 
-        questionTree: 1, 
+        questionTree: 0, 
         choices: [
             {
                 id: 1, 
@@ -43,7 +43,7 @@ const questionsData = [
         theme: "Votre statut",
         property: "multiple_shareholders",
         //nextQuestion: 2, 
-        questionTree: 2, 
+        questionTree: 1, 
         choices: [
             {
                 id: 1, 
@@ -71,7 +71,7 @@ const questionsData = [
         theme: "Votre projet",
         property: "with_employees",
         //nextQuestion: 3,
-        questionTree: 3, 
+        questionTree: 2, 
         choices: [
             {
                 id: 1, 
@@ -95,7 +95,7 @@ const questionsData = [
         theme: "Votre projet",
         property: "company_creation_activity",
         //nextQuestion: 4,
-        questionTree: 4, 
+        questionTree: 3, 
         choices: [
             {
                 id: 1, 
@@ -139,7 +139,7 @@ const questionsData = [
         theme: "Données financières",
         property: "estimated_revenue",
         //nextQuestion: 5,
-        questionTree: 5, 
+        questionTree: 4, 
         choices: [
             {
                 id: 1, 
@@ -165,7 +165,7 @@ const questionsData = [
         theme: "Données financières",
         property: "estimated_charges",
         //nextQuestion: 6,
-        questionTree: 6, 
+        questionTree: 5, 
         choices: [
             {
                 id: 1, 
@@ -199,7 +199,7 @@ const questionsData = [
         theme: "Rémunération du dirigeant",
         property: "revenue_type",
         //nextQuestion: 'emailForm',
-        questionTree: 7, 
+        questionTree: 6, 
         choices: [
             {
                 id: 1, 
@@ -380,7 +380,7 @@ function nextQuestion() {
         previousBtn.classList.remove('simulator-hidden');
         getNextQuestion(questionsData);
     }
-    setIndexPreviousQuestion();
+    //setIndexPreviousQuestion();
    
     if (indexCurrentQuestion === totalQuestions - 1) {
         showForm();
@@ -395,8 +395,9 @@ function nextQuestion() {
 
 previousBtn.addEventListener('click', () => {
     getPreviousQuestion(); 
-    setIndexPreviousQuestion();
-    deleteOldValue();
+    //setIndexPreviousQuestion();
+    deleteOldValueResultArray();
+    deleteOldValuePreviousArray();
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
     if (indexCurrentQuestion === 0) {
@@ -420,11 +421,11 @@ function getPreviousQuestion() {
 }
 
    
-function setIndexPreviousQuestion() {
+/*function setIndexPreviousQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     let indexPreviousQuestion = indexCurrentQuestion - 1; 
     setItemStorage('indexPreviousQuestion', indexPreviousQuestion); 
-}
+}*/
 
    
 function storeResult() {
@@ -469,7 +470,7 @@ simulatorSubmitBtn.addEventListener('click', () => {
 });
 
 
-function deleteOldValue() {
+function deleteOldValueResultArray() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
   
@@ -487,4 +488,17 @@ function updatePreviousQuestionArray(currentQuestion, currentChoice) {
     newValue.value = `${currentChoice.value}`; 
     setItemStorage('previousQuestion', currentQuestion.questionTree); 
     previousQuestionArray.push(newValue); 
+    console.log(previousQuestionArray); 
 }
+
+
+function deleteOldValuePreviousArray() {
+    const previousQuestion = parseInt(localStorage.getItem('previousQuestion')); 
+    const currentQuestionData = questionsData.find(question => question.questionTree === previousQuestion); 
+  
+    const answerToFind = previousQuestionArray.find(answer => answer.question === currentQuestionData.questionTree);
+  
+    let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
+  
+    previousQuestionArray.splice(indexAnswerToFind, 1); 
+} 
