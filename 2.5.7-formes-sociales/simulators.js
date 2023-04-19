@@ -398,6 +398,7 @@ previousBtn.addEventListener('click', () => {
     //setIndexPreviousQuestion();
     deleteOldValueResultArray();
     deleteOldValuePreviousArray();
+    getLastElement(); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
     if (indexCurrentQuestion === 0) {
@@ -502,3 +503,10 @@ function deleteOldValuePreviousArray() {
   
     previousQuestionArray.splice(indexAnswerToFind, 1); 
 } 
+
+
+function getLastElement() {
+    let previousQuestionArrayLength = Object.keys(previousQuestionArray).length; 
+    const lastElement = previousQuestionArray[previousQuestionArrayLength - 1]; 
+    localStorage.setItem('previousQuestion', lastElement.question); 
+}
