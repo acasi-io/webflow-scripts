@@ -340,7 +340,7 @@ previousBtn.addEventListener('click', (e) => {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const indexNextQuestion = localStorage.getItem('indexNextQuestion');
     const indexPreviousQuestion = parseInt(localStorage.getItem('previousQuestion'));  
-    while (indexCurrentQuestion > 0) {
+    if (indexCurrentQuestion > 0) {
         getLastElement(); 
     }
     if (indexPreviousQuestion === 0) {
