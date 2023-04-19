@@ -372,4 +372,6 @@ function deleteOldValue() {
     let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
   
     previousQuestionArray.splice(indexAnswerToFind, 1); 
+    localStorage.setItem('previousQuestion', indexAnswerToFind - 1); 
+    console.log(previousQuestionArray); 
 } 
