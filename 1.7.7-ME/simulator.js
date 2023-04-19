@@ -350,7 +350,7 @@ previousBtn.addEventListener('click', () => {
 })
 
 
-previousBtn.addEventListener('click', () => {
+/*previousBtn.addEventListener('click', () => {
 	const previousQuestion = localStorage.getItem('previousQuestion');
     const previousQuestionData = questionsData.find(question => question.questionTree === previousQuestion);
     showQuestion(previousQuestionData); 
@@ -364,7 +364,7 @@ previousBtn.addEventListener('click', () => {
         const newPreviousQuestion = previousQuestionArray[lastQuestion].question; 
         setItemStorage('previousQuestion', newPreviousQuestion);
     } 
-});
+});*/
 
 
 function getPreviousQuestion() { 
