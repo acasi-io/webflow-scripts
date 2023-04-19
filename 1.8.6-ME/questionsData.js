@@ -2,7 +2,6 @@ const questionsData = [
     {   
         id: 0, 
         question: "Quel est votre type d'activité ?", 
-        //questionTree: "Quel est votre type d'activité ?",
         questionTree: 0,
         property: "company_creation_activity",
         highlight: true, 
@@ -26,7 +25,6 @@ const questionsData = [
     {
         id: 1,
         question: "Cette année, vous allez réaliser", 
-        //questionTree: "Marchandises - Cette année vous allez réaliser",
         property: "estimated_revenue",
         questionTree: 1,
         choices: [
@@ -63,7 +61,6 @@ const questionsData = [
     {
         id: 2,
         question: "Vos charges représentent", 
-        //questionTree: "Marchandises - vos charges représentent",
         questionTree: 2,
         property: "over_allowance_threshold",
         choices: [
@@ -88,7 +85,6 @@ const questionsData = [
     { 
         id: 3,
         question: "L'année dernière vous avez réalisé", 
-        //questionTree: "Marchandises - L'année dernière vous avez réalisé",
         questionTree: 3,
         property: "previous_revenue",
         choices: [
@@ -120,7 +116,6 @@ const questionsData = [
     {
         id: 4, 
         question: "Vos clients sont majoritairement des", 
-        //questionTree: "Marchandises - vos clients sont majoritairement des",
         questionTree: 4,
         property: "professional_customers",
         choices: [
@@ -147,7 +142,6 @@ const questionsData = [
     {
         id: 5, 
         question: "L'année dernière vous avez réalisé", 
-        //questionTree: "Marchandises - l'année dernière vous avez réalisé",
         questionTree: 5,
         property: "previous_revenue_above_threshold",
         choices: [
@@ -172,7 +166,6 @@ const questionsData = [
     {
         id: 6,
         question: "Cette année, vous allez réaliser", 
-        //questionTree: "Services - cette année, vous allez réaliser",
         questionTree: 6,
         property: "estimated_revenue",
         choices: [
@@ -209,7 +202,6 @@ const questionsData = [
     {
         id: 7,
         question: "Vos charges représentent", 
-        //questionTree: "Services - vos charges représentent",
         questionTree: 7,
         property: "over_allowance_threshold",
         choices: [
@@ -234,7 +226,6 @@ const questionsData = [
     { 
         id: 8,
         question: "L'année dernière vous avez réalisé", 
-        //questionTree: "Services - l'année dernière vous avez réalisé",
         questionTree: 8,
         property: "previous_revenue",
         choices: [
@@ -266,7 +257,6 @@ const questionsData = [
     {
         id: 9, 
         question: "Vos clients sont majoritairement des", 
-        //questionTree: "Services - vos clients sont majoritairement des",
         questionTree: 9,
         property: "professional_customers",
         choices: [
@@ -293,7 +283,6 @@ const questionsData = [
     {
         id: 10, 
         question: "L'année dernière vous avez réalisé ", 
-        //questionTree: "Services - l'année dernière vous avez réalisé ",
         questionTree: 10,
         property: "previous_revenue_above_threshold",
         choices: [
@@ -316,27 +305,3 @@ const questionsData = [
         ]
     }
 ];
-
-function nextQuestion() {
-    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
-    storeResult(questionsData); 
-    removeHiddenClass(previousBtn);
-
-    if (indexNextQuestion === 'emailForm') {
-		simulatorBlock.innerHTML = '';
-        showForm(); 
-    } else {
-        getNextQuestion(questionsData); 
-    }
-}
-
-
-function showForm() { 
-    const formTemplate = document.getElementById('simulator-form-block');  
-    forShowForm(formTemplate); 
-
-    addHiddenClass(previousBtn); 
-    removeHiddenClass(questionTheme); 
-
-    simulatorOptions.append(formTemplate); 
-}
