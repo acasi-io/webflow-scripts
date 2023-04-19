@@ -40,10 +40,10 @@ function generateForm() {
 function computeForm() {
     const resultInput = document.getElementById('result');
     
-    const plusieursAnswer = resultArray.find(answer => answer.question === '0' && answer.result === 'true'); 
+    const plusieursAnswer = resultArray.find(answer => answer.question === '1' && answer.result === 'true'); 
     const dividendesAnswer = resultArray.find(answer => answer.question === '6' && answer.result === "Dividendes"); 
     const microEntrepriseAnswer = resultArray.find(answer => answer.question === '4' && answer.result === 'En dessous du seuil maximal pour une ME'); 
-    const seulAnswer = resultArray.find(answer => answer.question === '0' && answer.result === 'false'); 
+    const seulAnswer = resultArray.find(answer => answer.question === '1' && answer.result === 'false'); 
     const salaireAnswer = resultArray.find(answer => answer.question === '6' && answer.result === "Salaire");
 
     if (microEntrepriseAnswer) {
