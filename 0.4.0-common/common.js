@@ -11,6 +11,12 @@ const previousBtn = document.getElementById('previous-button');
 let previousQuestionArray = []; 
 
 
+window.addEventListener('load', () => {
+    setItemStorage('previousQuestion', 0); 
+    setItemStorage('indexNextQuestion', 0);
+    setItemStorage('indexCurrentChoice', 0); 
+    setItemStorage('indexCurrentQuestion', 0);
+}); 
 
 function setItemStorage(key, value) {
     localStorage.setItem(key, value); 
@@ -32,10 +38,7 @@ function fillQuestionTitleTheme(currentQuestion) {
 }
 
 
-startBtn.addEventListener('click', () => {
-    setItemStorage('indexPreviousQuestion', 0); 
-    setItemStorage('indexCurrentChoice', 0); 
-    setItemStorage('indexCurrentQuestion', 0); 
+startBtn.addEventListener('click', () => { 
     removeHiddenClass(document.getElementById('form-question')); 
     addHiddenClass(document.querySelector('.simulator-start')); 
     addHiddenClass(document.querySelector('.simulator-start-image')); 
