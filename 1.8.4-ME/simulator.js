@@ -317,8 +317,6 @@ const questionsData = [
     }
 ];
 
-
-
 function nextQuestion() {
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
     storeResult(questionsData); 
@@ -333,11 +331,85 @@ function nextQuestion() {
 }
 
 
+/*previousBtn.addEventListener('click', () => {
+	const previousQuestion = localStorage.getItem('previousQuestion');
+    const previousQuestionData = questionsData.find(question => question.questionTree === previousQuestion);
+    showQuestion(previousQuestionData); 
+    questionTitle.textContent = previousQuestionData.question; 
+    setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
+	deleteOldValue(); 
+    if (previousQuestionData.id === 0) {
+        addHiddenClass(previousBtn); 
+    } else {
+        const lastQuestion = previousQuestionArray.length - 1; 
+        const newPreviousQuestion = previousQuestionArray[lastQuestion].question; 
+        setItemStorage('previousQuestion', newPreviousQuestion);
+    } 
+});*/
+
+
 function showForm() { 
     const formTemplate = document.getElementById('simulator-form-block');  
     forShowForm(formTemplate); 
 
+    addHiddenClass(previousBtn); 
     removeHiddenClass(questionTheme); 
 
     simulatorOptions.append(formTemplate); 
 }
+
+
+
+/*function nextQuestion() {
+    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
+    storeResult(); 
+    removeHiddenClass(previousBtn);
+    if (indexNextQuestion === 'emailForm') {
+		simulatorBlock.innerHTML = '';
+        showForm(); 
+    } else {
+        getNextQuestion(questionsData); 
+    }
+}
+previousBtn.addEventListener('click', () => {
+	const previousQuestion = localStorage.getItem('previousQuestion');
+    const previousQuestionData = questionsData.find(question => question.questionTree === previousQuestion);
+    generateQuestion(previousQuestionData); 
+    questionTitle.textContent = previousQuestionData.question; 
+    setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
+	deleteOldValue(); 
+    if (previousQuestionData.id === 0) {
+        addHiddenClass(previousBtn); 
+    } /*else {
+        const lastQuestion = previousQuestionArray.length - 1; 
+        const newPreviousQuestion = previousQuestionArray[lastQuestion].question; 
+        setItemStorage('previousQuestion', newPreviousQuestion);
+    } 
+});
+function showForm() { 
+    const formTemplate = document.getElementById('simulator-form-block');  
+    forShowForm(formTemplate); 
+    removeHiddenClass(questionTheme); 
+    simulatorOptions.append(formTemplate); 
+}
+   
+function storeResult() {
+    findQuestionForStoreResult(questionsData); 
+}
+function updatePreviousQuestionArray(currentQuestion, currentChoice) {
+    const newValue = new Object();  
+    newValue.question = `${currentQuestion.questionTree}`; 
+    newValue.value = `${currentChoice.value}`; 
+    setItemStorage('previousQuestion', currentQuestion.questionTree); 
+    previousQuestionArray.push(newValue); 
+}
+function deleteOldValue() {
+    const previousQuestion = localStorage.getItem('previousQuestion'); 
+    const currentQuestionData = questionsData.find(question => question.questionTree === previousQuestion); 
+  
+    const answerToFind = previousQuestionArray.find(answer => answer.question === currentQuestionData.questionTree);
+  
+    let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
+  
+    previousQuestionArray.splice(indexAnswerToFind, 1); 
+} */
