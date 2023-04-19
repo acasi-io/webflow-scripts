@@ -150,11 +150,12 @@ function updateResultArray(currentChoice, currentQuestion) {
 }
 
 
-function forShowForm(formTemplate) {
+function showForm(formTemplate) {
     simulatorOptions.innerHTML = ''; 
     questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
     questionTheme.innerHTML = 'Résultat'; 
     addHiddenClass(nextBtn); 
+    addHiddenClass(previousBtn);
     removeHiddenClass(formTemplate);  
     addHiddenClass(document.getElementById('simulator-information'));
 }
@@ -248,4 +249,18 @@ function getLastElement() {
     let previousQuestionArrayLength = Object.keys(previousQuestionArray).length; 
     const lastElement = previousQuestionArray[previousQuestionArrayLength - 1]; 
     localStorage.setItem('previousQuestion', lastElement.question); 
+}
+
+
+function nextQuestion() {
+    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
+    storeResult(questionsData); 
+    removeHiddenClass(previousBtn);
+
+    if (indexNextQuestion === 'emailForm') {
+		simulatorBlock.innerHTML = '';
+        generateForm(); 
+    } else {
+        getNextQuestion(questionsData); 
+    }
 }

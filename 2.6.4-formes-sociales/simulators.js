@@ -1,20 +1,7 @@
 const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
 
-
-/*startBtn.addEventListener('click', () => {
-    setItemStorage('indexPreviousQuestion', 0); 
-    setItemStorage('indexCurrentChoice', 0); 
-    setItemStorage('indexCurrentQuestion', 0); 
-    removeHiddenClass(document.getElementById('form-question')); 
-    addHiddenClass(document.querySelector('.simulator-start')); 
-    addHiddenClass(document.querySelector('.simulator-start-image')); 
-    removeHiddenClass(document.querySelector('.simulator-questions-image'));
-    firstQuestion();
-});*/
-
-
-function nextQuestion() {
+/*function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     storeResult(questionsData);
 
@@ -24,20 +11,27 @@ function nextQuestion() {
     }
    
     if (indexCurrentQuestion === totalQuestions - 1) {
-        showForm();
+        generateForm();
         addHiddenClass(previousBtn)
-        setItemStorage('indexPreviousQuestion', totalQuestions - 1); 
+        //setItemStorage('indexPreviousQuestion', totalQuestions - 1); 
         setItemStorage('indexCurrentQuestion', 'emailForm'); 
         addHiddenClass(document.getElementById('simulator-block')); 
         simulatorInformation.textContent = ''; 
     } 
-}
+}*/
     
    
-function showForm() {
+function generateForm() {
     const formTemplate = document.querySelector('.simulator-form-block'); 
-    forShowForm(formTemplate)
+    showForm(formTemplate)
 
+    computeForm(); 
+   
+    simulatorOptions.append(formTemplate); 
+}
+
+
+function computeForm() {
     const resultInput = document.getElementById('result');
     const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
     const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
@@ -58,8 +52,6 @@ function showForm() {
     } else {
         return;
     }
-   
-    simulatorOptions.append(formTemplate); 
 }
 
 
