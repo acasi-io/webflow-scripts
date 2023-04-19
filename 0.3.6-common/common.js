@@ -48,9 +48,12 @@ previousBtn.addEventListener('click', () => {
     getPreviousQuestion(); 
     deleteOldValueResultArray();
     deleteOldValuePreviousArray();
-    getLastElement(); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
+    const indexPreviousQuestion = parseInt(localStorage.getItem('previousQuestion')); 
+    if (indexPreviousQuestion > 0) {
+        getLastElement(); 
+    } 
     if (indexCurrentQuestion === 0) {
         previousBtn.classList.add('simulator-hidden'); 
     } else if (indexNextQuestion === 'emailForm') {
