@@ -337,10 +337,13 @@ function nextQuestion() {
 previousBtn.addEventListener('click', (e) => {
     getPreviousQuestion(); 
     deleteOldValue(); 
-    getLastElement(); 
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
-    if (indexCurrentQuestion === 0) {
+    const indexNextQuestion = localStorage.getItem('indexNextQuestion');
+    const indexPreviousQuestion = parseInt(localStorage.getItem('previousQuestion'));  
+    while (indexCurrentQuestion > 0) {
+        getLastElement(); 
+    }
+    if (indexPreviousQuestion === 0) {
         addHiddenClass(e.target);  
     } else if (indexNextQuestion === 'emailForm') {
         removeHiddenClass(document.getElementById('simulator-block')); 
