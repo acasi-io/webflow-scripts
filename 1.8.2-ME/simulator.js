@@ -321,7 +321,7 @@ const questionsData = [
 
 function nextQuestion() {
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
-    storeResult(); 
+    storeResult(questionsData); 
     removeHiddenClass(previousBtn);
 
     if (indexNextQuestion === 'emailForm') {
@@ -331,26 +331,6 @@ function nextQuestion() {
         getNextQuestion(questionsData); 
     }
 }
-
-
-
-previousBtn.addEventListener('click', (e) => {
-    getPreviousQuestion(); 
-    deleteOldValue(); 
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    const indexNextQuestion = localStorage.getItem('indexNextQuestion');
-    const indexPreviousQuestion = parseInt(localStorage.getItem('previousQuestion'));  
-    if (indexCurrentQuestion > 0) {
-        getLastElement(); 
-    }
-    if (indexPreviousQuestion === 0) {
-        addHiddenClass(e.target);  
-    } else if (indexNextQuestion === 'emailForm') {
-        removeHiddenClass(document.getElementById('simulator-block')); 
-        addHiddenClass(document.querySelector('.simulator-form-block')); 
-        removeHiddenClass(nextBtn);  
-    }
-})
 
 
 /*previousBtn.addEventListener('click', () => {
@@ -370,17 +350,6 @@ previousBtn.addEventListener('click', (e) => {
 });*/
 
 
-function getPreviousQuestion() { 
-    let indexPreviousQuestion = parseInt(localStorage.getItem('previousQuestion')); 
-    const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
-
-    fillQuestionTitleTheme(previousQuestionData); 
-   
-    showQuestion(previousQuestionData); 
-    setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
-}
-
-
 function showForm() { 
     const formTemplate = document.getElementById('simulator-form-block');  
     forShowForm(formTemplate); 
@@ -389,40 +358,6 @@ function showForm() {
     removeHiddenClass(questionTheme); 
 
     simulatorOptions.append(formTemplate); 
-}
-
-   
-function storeResult() {
-    findQuestionForStoreResult(questionsData); 
-    updatePreviousQuestionArray(currentQuestionData, currentChoiceData); 
-}
-
-
-function updatePreviousQuestionArray(currentQuestion, currentChoice) {
-    const newValue = new Object();  
-    newValue.question = `${currentQuestion.questionTree}`; 
-    newValue.value = `${currentChoice.value}`; 
-    setItemStorage('previousQuestion', currentQuestion.questionTree); 
-    previousQuestionArray.push(newValue); 
-    console.log(previousQuestionArray);
-}
-
-function deleteOldValue() {
-    const previousQuestion = parseInt(localStorage.getItem('previousQuestion')); 
-    const currentQuestionData = questionsData.find(question => question.questionTree === previousQuestion); 
-  
-    const answerToFind = previousQuestionArray.find(answer => answer.question === currentQuestionData.questionTree);
-  
-    let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
-  
-    previousQuestionArray.splice(indexAnswerToFind, 1); 
-} 
-
-
-function getLastElement() {
-    let previousQuestionArrayLength = Object.keys(previousQuestionArray).length; 
-    const lastElement = previousQuestionArray[previousQuestionArrayLength - 1]; 
-    localStorage.setItem('previousQuestion', lastElement.question); 
 }
 
 

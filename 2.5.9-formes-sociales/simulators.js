@@ -238,155 +238,9 @@ startBtn.addEventListener('click', () => {
 });
 
 
-/*function nextQuestion() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    /*const currentQuestion = questionsData.find(question => question.id === indexCurrentQuestion); 
-    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
-    const currentChoice = currentQuestion.choices.find(choice => choice.id === indexCurrentChoice); 
-    updatePreviousQuestionArray(currentQuestion, currentChoice); 
-    console.log(previousQuestionArray);
-    storeResult();
-
-    if (indexCurrentQuestion !== totalQuestions - 1) {
-        previousBtn.classList.remove('simulator-hidden');
-        getNextQuestion(questionsData);
-    }
-    //setIndexPreviousQuestion();
-    const currentQuestion = questionsData.find(question => question.id === indexCurrentQuestion); 
-    const indexCurrentChoice = parseInt(localStorage.getItem('indexCurrentChoice')); 
-    const currentChoice = currentQuestion.choices.find(choice => choice.id === indexCurrentChoice); 
-    updatePreviousQuestionArray(currentQuestion, currentChoice); 
-    console.log(previousQuestionArray);
-   
-    if (indexCurrentQuestion === totalQuestions - 1) {
-        showForm();
-        addHiddenClass(previousBtn)
-        setItemStorage('indexPreviousQuestion', totalQuestions - 1); 
-        setItemStorage('indexCurrentQuestion', 'emailForm'); 
-        addHiddenClass(document.getElementById('simulator-block')); 
-        simulatorInformation.textContent = ''; 
-    } 
-}*/
-
-
-/*previousBtn.addEventListener('click', () => {
-    getPreviousQuestion(); 
-    //setIndexPreviousQuestion();
-    deleteOldValueResultArray();
-    deleteOldValuePreviousArray(); 
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
-    if (indexCurrentQuestion === 0) {
-        previousBtn.classList.add('simulator-hidden'); 
-    } else if (indexNextQuestion === 'emailForm') {
-        removeHiddenClass(document.getElementById('simulator-block')); 
-        addHiddenClass(document.querySelector('.simulator-form-block')); 
-        removeHiddenClass(nextBtn);  
-    }
-}); */
-   
-   
-/*function getPreviousQuestion() { 
-    let indexPreviousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
-    const previousQuestionData = questionsData.find(question => question.questionTree === indexPreviousQuestion); 
-
-    fillQuestionTitleTheme(previousQuestionData); 
-   
-    generateQuestion(previousQuestionData); 
-    setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
-}
-
-   
-function setIndexPreviousQuestion() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    let indexPreviousQuestion = indexCurrentQuestion - 1; 
-    setItemStorage('indexPreviousQuestion', indexPreviousQuestion); 
-}
-
-   
-function storeResult() {
-    findQuestionForStoreResult(questionsData);
-}
-    
-   
-function showForm() {
-    const formTemplate = document.querySelector('.simulator-form-block'); 
-    forShowForm(formTemplate)
-
-    conditionForm(); 
-   
-    simulatorOptions.append(formTemplate); 
-}
-
-
-function conditionForm() {
-    const resultInput = document.getElementById('result');
-    const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
-    const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
-    const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 77k'); 
-    const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
-    const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
-
-    if (microEntrepriseAnswer) {
-        resultInput.value = 'micro-entreprise';
-    } else if (seulAnswer && dividendesAnswer) {
-        resultInput.value = 'SASU';
-    } else if (plusieursAnswer && dividendesAnswer) {
-        resultInput.value = 'SAS'; 
-    } else if (salaireAnswer && plusieursAnswer) {
-        resultInput.value = 'SARL ou SAS'; 
-    } else if (seulAnswer && salaireAnswer) {
-        resultInput.value = 'EURL ou SASU'; 
-    } else {
-        return;
-    }
-}
-
-
-const simulatorSubmitBtn = document.getElementById('simulator-submit-button'); 
-simulatorSubmitBtn.addEventListener('click', () => {
-    const resultInputValue = document.getElementById('result').value; 
-    setItemStorage('result', resultInputValue);  
-});
-
-
-function deleteOldValueResultArray() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-  
-    const answerToFind = resultArray.find(answer => answer.question === currentQuestionData.question);
-  
-    let indexAnswerToFind = resultArray.indexOf(answerToFind); 
-  
-    resultArray.splice(indexAnswerToFind, 1); 
-}
-
-
-function deleteOldValuePreviousArray() {
-    const previousQuestion = parseInt(localStorage.getItem('indexPreviousQuestion')); 
-    const currentQuestionData = questionsData.find(question => question.questionTree === previousQuestion); 
-  
-    const answerToFind = previousQuestionArray.find(answer => answer.question === currentQuestionData.questionTree);
-  
-    let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
-  
-    previousQuestionArray.splice(indexAnswerToFind, 1); 
-}
-
-
-function updatePreviousQuestionArray(currentQuestion, currentChoice) {
-    const newValue = new Object();  
-    newValue.question = `${currentQuestion.questionTree}`; 
-    newValue.value = `${currentChoice.value}`; 
-    setItemStorage('indexPreviousQuestion', currentQuestion.questionTree); 
-    previousQuestionArray.push(newValue); 
-}*/
-
-
-
 function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    storeResult();
+    storeResult(questionsData);
 
     if (indexCurrentQuestion !== totalQuestions - 1) {
         previousBtn.classList.remove('simulator-hidden');
@@ -402,35 +256,6 @@ function nextQuestion() {
         addHiddenClass(document.getElementById('simulator-block')); 
         simulatorInformation.textContent = ''; 
     } 
-}
-
-
-previousBtn.addEventListener('click', () => {
-    getPreviousQuestion(); 
-    //setIndexPreviousQuestion();
-    deleteOldValueResultArray();
-    deleteOldValuePreviousArray();
-    getLastElement(); 
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
-    if (indexCurrentQuestion === 0) {
-        previousBtn.classList.add('simulator-hidden'); 
-    } else if (indexNextQuestion === 'emailForm') {
-        removeHiddenClass(document.getElementById('simulator-block')); 
-        addHiddenClass(document.querySelector('.simulator-form-block')); 
-        removeHiddenClass(nextBtn);  
-    }
-}); 
-   
-   
-function getPreviousQuestion() { 
-    let indexPreviousQuestion = parseInt(localStorage.getItem('previousQuestion')); 
-    const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
-
-    fillQuestionTitleTheme(previousQuestionData); 
-   
-    showQuestion(previousQuestionData); 
-    setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 }
 
    
@@ -439,12 +264,6 @@ function getPreviousQuestion() {
     let indexPreviousQuestion = indexCurrentQuestion - 1; 
     setItemStorage('indexPreviousQuestion', indexPreviousQuestion); 
 }*/
-
-   
-function storeResult() {
-    findQuestionForStoreResult(questionsData);
-    updatePreviousQuestionArray(currentQuestionData, currentChoiceData);
-}
     
    
 function showForm() {
@@ -481,44 +300,3 @@ simulatorSubmitBtn.addEventListener('click', () => {
     const resultInputValue = document.getElementById('result').value; 
     setItemStorage('result', resultInputValue);  
 });
-
-
-function deleteOldValueResultArray() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
-  
-    const answerToFind = resultArray.find(answer => answer.question === currentQuestionData.question);
-  
-    let indexAnswerToFind = resultArray.indexOf(answerToFind); 
-  
-    resultArray.splice(indexAnswerToFind, 1); 
-}
-
-
-function updatePreviousQuestionArray(currentQuestion, currentChoice) {
-    const newValue = new Object();  
-    newValue.question = `${currentQuestion.questionTree}`; 
-    newValue.value = `${currentChoice.value}`; 
-    setItemStorage('previousQuestion', currentQuestion.questionTree); 
-    previousQuestionArray.push(newValue); 
-    console.log(previousQuestionArray); 
-}
-
-
-function deleteOldValuePreviousArray() {
-    const previousQuestion = parseInt(localStorage.getItem('previousQuestion')); 
-    const currentQuestionData = questionsData.find(question => question.questionTree === previousQuestion); 
-  
-    const answerToFind = previousQuestionArray.find(answer => answer.question === currentQuestionData.questionTree);
-  
-    let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
-  
-    previousQuestionArray.splice(indexAnswerToFind, 1); 
-} 
-
-
-function getLastElement() {
-    let previousQuestionArrayLength = Object.keys(previousQuestionArray).length; 
-    const lastElement = previousQuestionArray[previousQuestionArrayLength - 1]; 
-    localStorage.setItem('previousQuestion', lastElement.question); 
-}

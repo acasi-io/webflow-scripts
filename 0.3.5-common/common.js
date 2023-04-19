@@ -44,6 +44,23 @@ startBtn.addEventListener('click', () => {
 });
 
 
+previousBtn.addEventListener('click', () => {
+    getPreviousQuestion(); 
+    deleteOldValueResultArray();
+    deleteOldValuePreviousArray();
+    getLastElement(); 
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
+    if (indexCurrentQuestion === 0) {
+        previousBtn.classList.add('simulator-hidden'); 
+    } else if (indexNextQuestion === 'emailForm') {
+        removeHiddenClass(document.getElementById('simulator-block')); 
+        addHiddenClass(document.querySelector('.simulator-form-block')); 
+        removeHiddenClass(nextBtn);  
+    }
+}); 
+
+
 /*function firstQuestion() {
     const firstQuestionData = questionsData.find(question => question.id === questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
@@ -309,8 +326,65 @@ function getNextQuestion(questionsData) {
 }
 
 
-function highlightCards(choice, answer) {
-    if (choice.highlight === true) {
+function getPreviousQuestion() { 
+    let indexPreviousQuestion = parseInt(localStorage.getItem('previousQuestion')); 
+    const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
+
+    fillQuestionTitleTheme(previousQuestionData); 
+   
+    showQuestion(previousQuestionData); 
+    setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
+}
+
+
+function highlightCards(currentQuestion, answer) {
+    if (currentQuestion.highlight === true) {
         answer.style.boxShadow = "0px 0px 10px #132966"; 
     }
+}
+
+
+function storeResult(questionsData) {
+    findQuestionForStoreResult(questionsData);
+    updatePreviousQuestionArray(currentQuestionData, currentChoiceData);
+}
+
+
+function updatePreviousQuestionArray(currentQuestion, currentChoice) {
+    const newValue = new Object();  
+    newValue.question = `${currentQuestion.questionTree}`; 
+    newValue.value = `${currentChoice.value}`; 
+    setItemStorage('previousQuestion', currentQuestion.questionTree); 
+    previousQuestionArray.push(newValue); 
+}
+
+
+function deleteOldValuePreviousArray() {
+    const previousQuestion = parseInt(localStorage.getItem('previousQuestion')); 
+    const currentQuestionData = questionsData.find(question => question.questionTree === previousQuestion); 
+  
+    const answerToFind = previousQuestionArray.find(answer => answer.question === currentQuestionData.questionTree);
+  
+    let indexAnswerToFind = previousQuestionArray.indexOf(answerToFind); 
+  
+    previousQuestionArray.splice(indexAnswerToFind, 1); 
+} 
+
+
+function deleteOldValueResultArray() {
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
+  
+    const answerToFind = resultArray.find(answer => answer.question === currentQuestionData.question);
+  
+    let indexAnswerToFind = resultArray.indexOf(answerToFind); 
+  
+    resultArray.splice(indexAnswerToFind, 1); 
+}
+
+
+function getLastElement() {
+    let previousQuestionArrayLength = Object.keys(previousQuestionArray).length; 
+    const lastElement = previousQuestionArray[previousQuestionArrayLength - 1]; 
+    localStorage.setItem('previousQuestion', lastElement.question); 
 }
