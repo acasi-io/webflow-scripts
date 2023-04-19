@@ -64,7 +64,7 @@ previousBtn.addEventListener('click', () => {
 }); 
 
 
-/*function firstQuestion() {
+function firstQuestion() {
     const firstQuestionData = questionsData.find(question => question.id === questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
 
@@ -74,7 +74,7 @@ previousBtn.addEventListener('click', () => {
 }
 
 
-function updateResultArray(currentChoice, currentQuestion) {
+/*function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
         const newResult = {}; 
         newResult.question = `${currentQuestion.question}`;
