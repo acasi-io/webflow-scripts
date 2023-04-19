@@ -187,7 +187,7 @@ const questionsData = [
                 id: 3, 
                 value: "Plus de 39 100€ de CA", 
                 image: "💰💰💰", 
-                nextQuestion: 9,
+                nextQuestion: 4,
                 hubspotValue: 'Dépassement du seuil de franchise de TVA',
             }, 
             {
@@ -254,7 +254,7 @@ const questionsData = [
             }
         ]
     }, 
-    {
+    /*{
         id: 9, 
         question: "Vos clients sont majoritairement des", 
         questionTree: 9,
@@ -279,11 +279,11 @@ const questionsData = [
                 hubspotValue: true,
             }
         ]
-    }, 
+    },*/
     {
-        id: 10, 
+        id: 9, 
         question: "L'année dernière vous avez réalisé ", 
-        questionTree: 10,
+        questionTree: 9,
         property: "previous_revenue_above_threshold",
         choices: [
             {

@@ -1,5 +1,4 @@
-const resultText = document.getElementById('simulator-result-explanation-container');
-const resultStorage = localStorage.getItem('result');  
+const resultText = document.getElementById('simulator-result-explanation-container');  
 const nextBtn = document.getElementById('next-button');
 const previousBtn = document.getElementById('previous-button'); 
 const resultWrapper = document.getElementById('simulator-result-wrapper');
@@ -7,7 +6,8 @@ const answers = document.getElementById('simulator-two-answers');
 const resultHeading = document.getElementById('simulator-big-result'); 
 const resultTitle = document.getElementById('simulator-result-title'); 
 const rendezvousLink = document.getElementById('simulator-rendezvous-link'); 
-const resultContainer = document.getElementById('simulator-result-container'); 
+const resultContainer = document.getElementById('simulator-result-container');
+const resultStorage = JSON.parse(localStorage.getItem('result')); 
 
 
 function addHiddenClass(elementProperty) {
@@ -26,7 +26,39 @@ function fillAnswer(number) {
 }
 
 
-if (resultStorage === "Plus de 91 900€" || resultStorage === "Plus de 36 800€" || resultStorage === "Particuliers") {
+function getResult(valueQuestion, valueResult) {
+	resultStorage.question === valueQuestion && resultStorage.result === valueResult; 
+}
+
+
+if (getResult('3', 'true') || getResult('8', 'true') || getResult('4', 'false')) {
+	resultHeading.innerHTML = '👉 Vous allez dépasser le seuil de la franchise de TVA cette année.';
+  	fillAnswer('first');
+} else if (getResult('2', 'true')) { 
+	resultHeading.innerHTML = '👉 Vos charges sont supérieures à 34%. La micro-entreprise n’est pas adaptée pour vous';
+  	fillAnswer('two');
+} else if (getResult('2', 'false')) {
+	resultTitle.innerHTML = 'La micro-entreprise est adaptée à votre situation pour le moment';
+  	resultHeading.innerHTML = '👉 Vos charges représentent moins de 34% de votre CA.'; 
+  	fillAnswer('three'); 
+} else if (getResult('4', 'true')) {
+	resultHeading.innerHTML = '👉 Vous allez dépasser le seuil de la franchise de TVA cette année.'; 
+  	fillAnswer('four');
+} else if (getResult('7', 'true')) {
+	resultHeading.innerHTML = '👉 Vos charges sont supérieures à 50%. La micro-entreprise n’est pas adaptée pour vous';
+    fillAnswer('six');
+} else if (getResult('7', 'false')) {
+	resultTitle.innerHTML = 'La micro-entreprise est adaptée à votre situation pour le moment';
+  	resultHeading.innerHTML = '👉 Vos charges représentent moins de 50% de votre CA.';
+  	fillAnswer('seven');
+} else {
+	resultHeading.innerHTML = '👉 Attention ! Vous êtes sur le point de dépasser les seuils de CA durant deux années consécutives';
+  	fillAnswer('five'); 
+}
+
+
+
+/*if (resultStorage === "Plus de 91 900€" || resultStorage === "Plus de 36 800€" || resultStorage === "Particuliers") {
 	resultHeading.innerHTML = '👉 Vous allez dépasser le seuil de la franchise de TVA cette année.';
   	fillAnswer('first');
 } else if (resultStorage === "Plus de 34% de votre CA") { 
@@ -49,7 +81,7 @@ if (resultStorage === "Plus de 91 900€" || resultStorage === "Plus de 36 800�
 } else {
 	resultHeading.innerHTML = '👉 Attention ! Vous êtes sur le point de dépasser les seuils de CA durant deux années consécutives';
   	fillAnswer('five'); 
-}
+}*/ 
 
 
 function showAnswers() {
