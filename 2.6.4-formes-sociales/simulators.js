@@ -1,26 +1,7 @@
 const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
-
-/*function nextQuestion() {
-    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
-    storeResult(questionsData);
-
-    if (indexCurrentQuestion !== totalQuestions - 1) {
-        previousBtn.classList.remove('simulator-hidden');
-        getNextQuestion(questionsData);
-    }
-   
-    if (indexCurrentQuestion === totalQuestions - 1) {
-        generateForm();
-        addHiddenClass(previousBtn)
-        //setItemStorage('indexPreviousQuestion', totalQuestions - 1); 
-        setItemStorage('indexCurrentQuestion', 'emailForm'); 
-        addHiddenClass(document.getElementById('simulator-block')); 
-        simulatorInformation.textContent = ''; 
-    } 
-}*/
     
-   
+
 function generateForm() {
     const formTemplate = document.querySelector('.simulator-form-block'); 
     showForm(formTemplate)
