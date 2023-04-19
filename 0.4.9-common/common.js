@@ -150,17 +150,6 @@ function updateLocalStorage(currentQuestion) {
 }
 
 
-/*function updateResultArray(currentChoice, currentQuestion) {
-    if (currentChoice.result === true) {
-        const newResult = {}; 
-        newResult.question = `${currentQuestion.question}`;
-        newResult.result = `${currentChoice.resultValue}`;
-        resultArray.push(newResult); 
-        setItemStorage('result', currentChoice.resultValue); 
-    }
-}*/
-
-
 function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
         const newResult = {}; 
