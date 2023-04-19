@@ -220,17 +220,6 @@ const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
 
 
-startBtn.addEventListener('click', () => {
-    setItemStorage('indexPreviousQuestion', 0); 
-    setItemStorage('indexCurrentChoice', 0); 
-    setItemStorage('indexCurrentQuestion', 0); 
-    removeHiddenClass(document.getElementById('form-question')); 
-    addHiddenClass(document.querySelector('.simulator-start')); 
-    addHiddenClass(document.querySelector('.simulator-start-image')); 
-    removeHiddenClass(document.querySelector('.simulator-questions-image'));
-    firstQuestion();
-});
-
 
 function nextQuestion() {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
