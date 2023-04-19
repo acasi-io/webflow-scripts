@@ -32,3 +32,6 @@ function showExplanation(result, explanationContainer) {
 	explanationText.classList.remove('simulator-hidden');
 	explanationContainer.append(explanationText);
 }
+
+
+//créer un tableau résultat avec un id qui correspond à l'id de la question et l'hubspotValue de la réponse sélectionné 

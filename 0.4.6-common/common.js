@@ -73,54 +73,64 @@ function firstQuestion() {
 
     fillQuestionTitleTheme(firstQuestionData);   
        
-    showQuestion(firstQuestionData); 
+    generateQuestion(firstQuestionData); 
 }
 
 
-function showQuestion(currentQuestion) {
+function generateQuestion(currentQuestion) {
     const answerBlock = document.getElementById('answer-block').firstChild; 
     simulatorBlock.innerHTML = '';
     appendHubspotProperty(currentQuestion);
 
     currentQuestion.choices.forEach((choice, index) => {
-        const cloneAnswerBlock = answerBlock.cloneNode(true); 
-        simulatorBlock.appendChild(cloneAnswerBlock); 
-        const answer = simulatorBlock.children[index];
-   
-        const { id, value, image, hubspotValue } = choice;
-        const input = answer.querySelector('.simulator-radio'); 
-        input.setAttribute('id', id); 
-        input.setAttribute('value', id);
-        input.setAttribute('data-hubspot-value', hubspotValue);
-   
-        const label = answer.querySelector('.simulator-answer'); 
-        label.textContent = value; 
-        label.setAttribute('for', id); 
-     
-        const emoji = answer.querySelector('.simulator-emoji');
-        if (image) { 
-            emoji.textContent = image; 
-        } else {
-            emoji.remove(); 
-        }
-
-        highlightCards(choice, answer); 
-   
-        answer.addEventListener('click', () => { 
-            setItemStorage('indexCurrentChoice', input.id); 
-            updateLocalStorage(currentQuestion); 
-        });
-
-        input.addEventListener('click', (e) => {
-            [...document.querySelectorAll('.simulator-answer-btn')].forEach(element => {
-                element.classList.remove('simulator-checked'); 
-            });
-            e.currentTarget.parentNode.classList.add('simulator-checked');
-            const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
-            hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
-            nextQuestion(); 
-        });
+        let answer; 
+        showQuestion(currentQuestion, answerBlock, answer, choice, index); 
     }); 
+}
+
+
+function showQuestion(currentQuestion, answerBlock, answer, choice, index) {
+    const cloneAnswerBlock = answerBlock.cloneNode(true); 
+    simulatorBlock.appendChild(cloneAnswerBlock); 
+    answer = simulatorBlock.children[index];
+
+    const { id, value, image, hubspotValue } = choice;
+    const input = answer.querySelector('.simulator-radio'); 
+    input.setAttribute('id', id); 
+    input.setAttribute('value', id);
+    input.setAttribute('data-hubspot-value', hubspotValue);
+
+    const label = answer.querySelector('.simulator-answer'); 
+    label.textContent = value; 
+    label.setAttribute('for', id); 
+ 
+    const emoji = answer.querySelector('.simulator-emoji');
+    if (image) { 
+        emoji.textContent = image; 
+    } else {
+        emoji.remove(); 
+    }
+
+    highlightCards(choice, answer); 
+    computeQuestion(currentQuestion, answer, input); 
+}
+
+
+function computeQuestion(currentQuestion, answer, input) {
+    answer.addEventListener('click', () => { 
+        setItemStorage('indexCurrentChoice', input.id); 
+        updateLocalStorage(currentQuestion); 
+    });
+
+    input.addEventListener('click', (e) => {
+        [...document.querySelectorAll('.simulator-answer-btn')].forEach(element => {
+            element.classList.remove('simulator-checked'); 
+        });
+        e.currentTarget.parentNode.classList.add('simulator-checked');
+        const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
+        hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
+        nextQuestion(); 
+    });
 }
 
 
@@ -184,7 +194,7 @@ function getNextQuestion(questionsData) {
         questionTheme.textContent = currentQuestionData.theme; 
     }
 
-    showQuestion(currentQuestionData); 
+    generateQuestion(currentQuestionData); 
 }
 
 
@@ -194,7 +204,7 @@ function getPreviousQuestion() {
 
     fillQuestionTitleTheme(previousQuestionData); 
    
-    showQuestion(previousQuestionData); 
+    generateQuestion(previousQuestionData); 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
 }
 
