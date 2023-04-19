@@ -188,11 +188,11 @@ function showQuestion(answerBlock, currentQuestion, choice, index, answer) {
     }
 
     highlightCards(currentQuestion, answer);
-    computeQuestion(currentQuestion, input, answer); 
+    computeQuestion(input, answer); 
 }
 
 
-function computeQuestion(currentQuestion, input, answer) {
+function computeQuestion(input, answer) {
     answer.addEventListener('click', () => { 
         setItemStorage('indexCurrentChoice', input.id);   
     });
@@ -202,8 +202,8 @@ function computeQuestion(currentQuestion, input, answer) {
             element.classList.remove('simulator-checked'); 
         });
         e.currentTarget.parentNode.classList.add('simulator-checked');
-        const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
-        hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
+        /*const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
+        hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);*/
         nextQuestion(); 
     });
 }
