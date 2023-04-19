@@ -26,28 +26,27 @@ function fillAnswer(number) {
 }
 
 
-function getResult(valueQuestion, valueResult) {
-	resultStorage.question === valueQuestion && resultStorage.result === valueResult; 
-}
-
-
-if (getResult('3', 'true') || getResult('8', 'true') || getResult('4', 'false')) {
+if (
+	resultStorage[0].question === '3' && resultStorage[0].result === 'true' ||
+	resultStorage[0].question === '8' && resultStorage[0].result === 'Dépassement du seuil de franchise de TVA' ||
+	resultStorage[0].question === '4' && resultStorage[0].result === 'false') 
+	{
 	resultHeading.innerHTML = '👉 Vous allez dépasser le seuil de la franchise de TVA cette année.';
   	fillAnswer('first');
-} else if (getResult('2', 'true')) { 
+} else if (resultStorage[0].question === '2' && resultStorage[0].result === 'true') { 
 	resultHeading.innerHTML = '👉 Vos charges sont supérieures à 34%. La micro-entreprise n’est pas adaptée pour vous';
   	fillAnswer('two');
-} else if (getResult('2', 'false')) {
+} else if (resultStorage[0].question === '2' && resultStorage[0].result === 'false') {
 	resultTitle.innerHTML = 'La micro-entreprise est adaptée à votre situation pour le moment';
   	resultHeading.innerHTML = '👉 Vos charges représentent moins de 34% de votre CA.'; 
   	fillAnswer('three'); 
-} else if (getResult('4', 'true')) {
+} else if (resultStorage[0].question === '4' && resultStorage[0].result === 'true') {
 	resultHeading.innerHTML = '👉 Vous allez dépasser le seuil de la franchise de TVA cette année.'; 
   	fillAnswer('four');
-} else if (getResult('7', 'true')) {
+} else if (resultStorage[0].question === '7' && resultStorage[0].result === 'true') {
 	resultHeading.innerHTML = '👉 Vos charges sont supérieures à 50%. La micro-entreprise n’est pas adaptée pour vous';
     fillAnswer('six');
-} else if (getResult('7', 'false')) {
+} else if (resultStorage[0].question === '7' && resultStorage[0].result === 'false') {
 	resultTitle.innerHTML = 'La micro-entreprise est adaptée à votre situation pour le moment';
   	resultHeading.innerHTML = '👉 Vos charges représentent moins de 50% de votre CA.';
   	fillAnswer('seven');
@@ -93,6 +92,25 @@ function showAnswers() {
 
 
 nextBtn.addEventListener('click', () => {  
+	if (
+		resultStorage[0].question === '2' && resultStorage[0].result === 'false' || 
+		resultStorage[0].question === '7' && resultStorage[0].result === 'false') {
+  	    rendezvous(); 
+    } else if (resultStorage[0].question === '2' && resultStorage[0].result === 'true') {
+  	    showAnswers(); 
+  	    resultTitle.textContent = "Vous souhaitez qu'Acasi vous aide à préparer votre transition vers la TVA ?";
+	} else if (
+		resultStorage[0].question === '5' && resultStorage[0].result === 'true' || 
+		resultStorage[0].question === '9' && resultStorage[0].result === 'true') {
+  	    showAnswers(); 
+        resultTitle.textContent = "Vous souhaitez avoir de l'aide pour la transition vers un autre statut juridique ?";
+    } else {
+  	    showAnswers(); 
+        resultTitle.textContent = "Vous souhaitez qu'Acasi vous aide à choisir votre nouveau statut ?";
+    } 
+});
+
+/*nextBtn.addEventListener('click', () => {  
 	if (resultStorage === "Moins de 34% de votre CA" || resultStorage === "Moins de 50% de votre CA") {
   	    rendezvous(); 
     } else if (resultStorage === "Professionnels") {
@@ -105,7 +123,7 @@ nextBtn.addEventListener('click', () => {
   	    showAnswers(); 
         resultTitle.textContent = "Vous souhaitez qu'Acasi vous aide à choisir votre nouveau statut ?";
     } 
-});
+});*/
 
 
 previousBtn.addEventListener('click', () => { 

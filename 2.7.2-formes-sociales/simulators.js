@@ -12,31 +12,6 @@ function generateForm() {
 }
 
 
-/*function computeForm() {
-    const resultInput = document.getElementById('result');
-    
-    const plusieursAnswer = resultArray.find(answer => answer.result === 'société à plusieurs'); 
-    const dividendesAnswer = resultArray.find(answer => answer.result === 'dividendes'); 
-    const microEntrepriseAnswer = resultArray.find(answer => answer.result === 'moins de 77k'); 
-    const seulAnswer = resultArray.find(answer => answer.result === 'société seul'); 
-    const salaireAnswer = resultArray.find(answer => answer.result === 'salaire');
-
-    if (microEntrepriseAnswer) {
-        resultInput.value = 'micro-entreprise';
-    } else if (seulAnswer && dividendesAnswer) {
-        resultInput.value = 'SASU';
-    } else if (plusieursAnswer && dividendesAnswer) {
-        resultInput.value = 'SAS'; 
-    } else if (salaireAnswer && plusieursAnswer) {
-        resultInput.value = 'SARL ou SAS'; 
-    } else if (seulAnswer && salaireAnswer) {
-        resultInput.value = 'EURL ou SASU'; 
-    } else {
-        return;
-    }
-}*/
-
-
 function computeForm() {
     const resultInput = document.getElementById('result');
     

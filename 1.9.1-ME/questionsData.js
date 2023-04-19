@@ -69,7 +69,6 @@ const questionsData = [
                 value: "Plus de 34% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
-                resultValue: "Plus de 34% de votre CA",
                 hubspotValue: true,
             }, 
             {
@@ -77,7 +76,6 @@ const questionsData = [
                 value: "Moins de 34% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
-                resultValue: "Moins de 34% de votre CA",
                 hubspotValue: false,
             }
         ]
@@ -125,7 +123,6 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "👩‍💼", 
                 result: true, 
-                resultValue: "Particuliers",
                 hubspotValue: false,
             }, 
             {
@@ -134,7 +131,6 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "🏭", 
                 result: true, 
-                resultValue: "Professionnels",
                 hubspotValue: true,
             }
         ]
@@ -158,7 +154,6 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true,
-                resultValue: "Plus de 188 700€",
                 hubspotValue: true,
             }
         ]
@@ -210,7 +205,6 @@ const questionsData = [
                 value: "Plus de 50% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
-                resultValue: "Plus de 50% de votre CA",
                 hubspotValue: true,
             }, 
             {
@@ -218,7 +212,6 @@ const questionsData = [
                 value: "Moins de 50% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
-                resultValue: "Moins de 50% de votre CA",
                 hubspotValue: false,
             }
         ]
@@ -235,7 +228,6 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true, 
-                resultValue: "Plus de 36 800€",
                 hubspotValue: "Dépassement du seuil de franchise de TVA",
             }, 
             {
@@ -254,32 +246,6 @@ const questionsData = [
             }
         ]
     }, 
-    /*{
-        id: 9, 
-        question: "Vos clients sont majoritairement des", 
-        questionTree: 9,
-        property: "professional_customers",
-        choices: [
-            {
-                id: 1, 
-                value: "Particuliers", 
-                nextQuestion: "emailForm", 
-                image: "👩‍💼", 
-                result: true, 
-                resultValue: "Particuliers",
-                hubspotValue: false,
-            }, 
-            {
-                id: 2, 
-                value: "Professionnels (autres sociétés)", 
-                nextQuestion: "emailForm", 
-                image: "🏭", 
-                result: true, 
-                resultValue: "Professionnels",
-                hubspotValue: true,
-            }
-        ]
-    },*/
     {
         id: 9, 
         question: "L'année dernière vous avez réalisé ", 
@@ -299,7 +265,6 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true,
-                resultValue: "Plus de 77 700€",
                 hubspotValue: true
             }
         ]
