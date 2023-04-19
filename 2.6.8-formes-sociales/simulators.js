@@ -12,17 +12,6 @@ function generateForm() {
 }
 
 
-function resultArray() {
-    if (currentChoice.result === true) {
-        const newResult = {}; 
-        newResult.question = `${currentQuestion.id}`;
-        newResult.result = `${currentChoice.hubspotValue}`;
-        resultArray.push(newResult); 
-        setItemStorage('result', currentChoice.hubspotValue); 
-    }
-}
-
-
 /*function computeForm() {
     const resultInput = document.getElementById('result');
     
