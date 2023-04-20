@@ -10,6 +10,7 @@ const hubspotPropertiesBlock = document.getElementById('hubspot-properties');
 const previousBtn = document.getElementById('previous-button');
 let previousQuestionArray = []; 
 const simulatorSubmitBtn = document.getElementById('simulator-submit-button'); 
+const formTemplate = document.getElementById('simulator-form-block');
 
 
 window.addEventListener('load', () => {
@@ -163,7 +164,6 @@ function updateResultArray(currentChoice, currentQuestion) {
 
 function showForm() {
     simulatorOptions.innerHTML = ''; 
-    const formTemplate = document.getElementById('simulator-form-block');
     questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
     questionTheme.innerHTML = 'Résultat'; 
     addHiddenClass(nextBtn); 
