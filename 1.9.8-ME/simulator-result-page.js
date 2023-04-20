@@ -7,7 +7,7 @@ const resultHeading = document.getElementById('simulator-big-result');
 const resultTitle = document.getElementById('simulator-result-title'); 
 const rendezvousLink = document.getElementById('simulator-rendezvous-link'); 
 const resultContainer = document.getElementById('simulator-result-container');
-const resultStorage = JSON.parse(localStorage.getItem('result')); 
+const resultStorage = localStorage.getItem('result'); 
 
 
 function addHiddenClass(elementProperty) {
@@ -19,11 +19,11 @@ function removeHiddenClass(elementProperty) {
 }
 
 
-function fillAnswer(number) {
+/*function fillAnswer(number) {
 	const explanation = document.getElementById(`simulator-${number}-explanation`); 
   	explanation.classList.remove('simulator-hidden'); 
 	resultText.append(explanation);
-}
+}*/
 
 
 /*if (
