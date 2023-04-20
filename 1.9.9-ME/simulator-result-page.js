@@ -97,8 +97,7 @@ const EXPLANATION_TITLE = {
  
 fillAnswer(resultStorage);
 const EXPLANATION_DETAILS = {
-	above_franchise_threshold: "👉 Vous allez dépasser le seuil de la franchise de TVA cette année.",
-	private: "👉 Vous allez dépasser le seuil de la franchise de TVA cette année.", 
+	above_franchise_threshold_or_private: "👉 Vous allez dépasser le seuil de la franchise de TVA cette année.",
 	professional: "👉 Vous allez dépasser le seuil de la franchise de TVA cette année.", 
 	over_allowance_threshold_34: "👉 Vos charges sont supérieures à 34%. La micro-entreprise n'est pas adaptée pour vous",
 	under_allowance_threshold_34: "👉 Vos charges représentent moins de 34% de votre CA.", 
