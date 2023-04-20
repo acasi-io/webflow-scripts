@@ -158,6 +158,7 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true,
+                resultValue: "previous_revenue_above_threshold", 
                 hubspotValue: true,
             }
         ]
@@ -217,7 +218,7 @@ const questionsData = [
                 value: "Moins de 50% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
-                resultValue: 'under_allowance_threshold_34', 
+                resultValue: 'under_allowance_threshold_50', 
                 hubspotValue: false,
             }
         ]
@@ -272,6 +273,7 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true,
+                resultValue: "previous_revenue_above_threshold", 
                 hubspotValue: true
             }
         ]

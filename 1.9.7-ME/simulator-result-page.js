@@ -26,7 +26,7 @@ function fillAnswer(number) {
 }
 
 
-if (
+/*if (
 	resultStorage[0].question === '3' && resultStorage[0].result === 'true' ||
 	resultStorage[0].question === '8' && resultStorage[0].result === 'Dépassement du seuil de franchise de TVA' ||
 	resultStorage[0].question === '4' && resultStorage[0].result === 'false') 
@@ -53,7 +53,7 @@ if (
 } else {
 	resultHeading.innerHTML = '👉 Attention ! Vous êtes sur le point de dépasser les seuils de CA durant deux années consécutives';
   	fillAnswer('five'); 
-}
+}*/
 
 
 
@@ -84,18 +84,31 @@ if (
 
 
 function fillAnswer(explanationLabel) {
-	const explanation = document.querySelector(`.simulator-explanation[data-answer='${explanationLabel}']`); 
+	const explanation = document.querySelector(`.simulator-result-explanation[data-answer='${explanationLabel}']`); 
 	explanation.classList.remove('simulator-hidden'); 
 	resultText.append(explanation);
- }
+}
+
+const EXPLANATION_TITLE = {
+	under_allowance_threshold_34: 'La micro-entreprise est adaptée à votre situation pour le moment', 
+	under_allowance_threshold_50: 'La micro-entreprise est adaptée à votre situation pour le moment'
+}
  
  
 fillAnswer(resultStorage);
 const EXPLANATION_DETAILS = {
 	above_franchise_threshold: "👉 Vous allez dépasser le seuil de la franchise de TVA cette année.",
-	charges_above_threshold: "👉 Vos charges sont supérieures à 34%. La micro-entreprise n'est pas adaptée pour vous",
+	private: "👉 Vous allez dépasser le seuil de la franchise de TVA cette année.", 
+	professional: "👉 Vous allez dépasser le seuil de la franchise de TVA cette année.", 
+	over_allowance_threshold_34: "👉 Vos charges sont supérieures à 34%. La micro-entreprise n'est pas adaptée pour vous",
+	under_allowance_threshold_34: "👉 Vos charges représentent moins de 34% de votre CA.", 
+	over_allowance_threshold_50: "👉 Vos charges sont supérieures à 50%. La micro-entreprise n'est pas adaptée pour vous",
+	under_allowance_threshold_50: "👉 Vos charges représentent moins de 50% de votre CA.", 
+	previous_revenue_above_threshold: "👉 Attention ! Vous êtes sur le point de dépasser les seuils de CA durant deux années consécutives"
 }
+
 resultHeading.innerHTML = EXPLANATION_DETAILS[resultStorage];
+
 if (EXPLANATION_TITLE[resultStorage]) {
 	resultTitle.innerHTML = EXPLANATION_TITLE[resultStorage];
 }
@@ -109,7 +122,7 @@ function showAnswers() {
 }
 
 
-nextBtn.addEventListener('click', () => {  
+/*nextBtn.addEventListener('click', () => {  
 	if (
 		resultStorage[0].question === '2' && resultStorage[0].result === 'false' || 
 		resultStorage[0].question === '7' && resultStorage[0].result === 'false') {
@@ -120,6 +133,22 @@ nextBtn.addEventListener('click', () => {
 	} else if (
 		resultStorage[0].question === '5' && resultStorage[0].result === 'true' || 
 		resultStorage[0].question === '9' && resultStorage[0].result === 'true') {
+  	    showAnswers(); 
+        resultTitle.textContent = "Vous souhaitez avoir de l'aide pour la transition vers un autre statut juridique ?";
+    } else {
+  	    showAnswers(); 
+        resultTitle.textContent = "Vous souhaitez qu'Acasi vous aide à choisir votre nouveau statut ?";
+    } 
+});*/
+
+
+nextBtn.addEventListener('click', () => {  
+	if (resultStorage.startsWith === "under_allowance_threshold_" ) {
+  	    rendezvous(); 
+    } else if (resultStorage === "professional") {
+  	    showAnswers(); 
+  	    resultTitle.textContent = "Vous souhaitez qu'Acasi vous aide à préparer votre transition vers la TVA ?";
+	} else if (resultStorage === "previous_revenue_above_threshold") {
   	    showAnswers(); 
         resultTitle.textContent = "Vous souhaitez avoir de l'aide pour la transition vers un autre statut juridique ?";
     } else {
