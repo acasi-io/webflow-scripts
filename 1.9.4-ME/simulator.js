@@ -7,6 +7,6 @@ function generateForm() {
 }
 
 
-simulatorSubmitBtn.addEventListener('click', () => {
+/*simulatorSubmitBtn.addEventListener('click', () => {
     localStorage.setItem('result', JSON.stringify(resultArray)); 
-});
+});*/

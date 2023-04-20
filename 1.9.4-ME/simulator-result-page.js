@@ -83,6 +83,24 @@ if (
 }*/ 
 
 
+function fillAnswer(explanationLabel) {
+	const explanation = document.querySelector(`.simulator-explanation[data-answer='${explanationLabel}']`); 
+	explanation.classList.remove('simulator-hidden'); 
+	resultText.append(explanation);
+ }
+ 
+ 
+fillAnswer(resultStorage);
+const EXPLANATION_DETAILS = {
+	above_franchise_threshold: "👉 Vous allez dépasser le seuil de la franchise de TVA cette année.",
+	charges_above_threshold: "👉 Vos charges sont supérieures à 34%. La micro-entreprise n'est pas adaptée pour vous",
+}
+resultHeading.innerHTML = EXPLANATION_DETAILS[resultStorage];
+if (EXPLANATION_TITLE[resultStorage]) {
+	resultTitle.innerHTML = EXPLANATION_TITLE[resultStorage];
+}
+
+
 function showAnswers() {
 	addHiddenClass(resultWrapper); 
   	removeHiddenClass(answers);
