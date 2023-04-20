@@ -155,9 +155,14 @@ function updateResultArray(currentChoice, currentQuestion) {
     if (currentChoice.result === true) {
         const newResult = {}; 
         newResult.question = `${currentQuestion.id}`;
-        newResult.result = `${currentChoice.hubspotValue}`;
+        if (currentChoice.resultValue) {
+            newResult.result = `${currentChoice.resultValue}`; 
+            setItemStorage('result', currentChoice.resultValue);
+        } else {
+            newResult.result = `${currentChoice.hubspotValue}`;
+            setItemStorage('result', currentChoice.hubspotValue);
+        }
         resultArray.push(newResult); 
-        setItemStorage('result', currentChoice.hubspotValue); 
     }
 }
 

@@ -69,6 +69,7 @@ const questionsData = [
                 value: "Plus de 34% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
+                resultValue: 'over_allowance_threshold_34', 
                 hubspotValue: true,
             }, 
             {
@@ -76,6 +77,7 @@ const questionsData = [
                 value: "Moins de 34% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
+                resultValue: 'under_allowance_threshold_34', 
                 hubspotValue: false,
             }
         ]
@@ -92,7 +94,7 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true, 
-                resultValue: "Plus de 91 900€",
+                resultValue: "above_franchise_threshold",
                 hubspotValue: 'Dépassement du seuil de franchise de TVA',
             }, 
             {
@@ -123,6 +125,7 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "👩‍💼", 
                 result: true, 
+                resultValue: 'private', 
                 hubspotValue: false,
             }, 
             {
@@ -131,6 +134,7 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "🏭", 
                 result: true, 
+                resultValue: 'professional', 
                 hubspotValue: true,
             }
         ]
@@ -205,6 +209,7 @@ const questionsData = [
                 value: "Plus de 50% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
+                resultValue: 'over_allowance_threshold_50', 
                 hubspotValue: true,
             }, 
             {
@@ -212,6 +217,7 @@ const questionsData = [
                 value: "Moins de 50% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
+                resultValue: 'under_allowance_threshold_34', 
                 hubspotValue: false,
             }
         ]
@@ -228,6 +234,7 @@ const questionsData = [
                 nextQuestion: "emailForm", 
                 image: "💰💰", 
                 result: true, 
+                resultValue: 'above_franchise_threshold', 
                 hubspotValue: "Dépassement du seuil de franchise de TVA",
             }, 
             {
