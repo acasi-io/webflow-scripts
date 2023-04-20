@@ -161,8 +161,9 @@ function updateResultArray(currentChoice, currentQuestion) {
 }
 
 
-function showForm(formTemplate) {
+function showForm() {
     simulatorOptions.innerHTML = ''; 
+    const formTemplate = document.getElementById('simulator-form-block');
     questionTitle.innerHTML = 'Entrez vos coordonnées pour afficher le résultat de la simulation';
     questionTheme.innerHTML = 'Résultat'; 
     addHiddenClass(nextBtn); 

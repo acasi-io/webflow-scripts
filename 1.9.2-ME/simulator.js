@@ -1,6 +1,5 @@
-function generateForm() { 
-    const formTemplate = document.getElementById('simulator-form-block');  
-    showForm(formTemplate); 
+function generateForm() {  
+    showForm(); 
 
     removeHiddenClass(questionTheme); 
 

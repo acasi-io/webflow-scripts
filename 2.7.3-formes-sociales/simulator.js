@@ -2,9 +2,8 @@ const totalQuestions = Object.keys(questionsData).length;
 const simulatorInformation = document.getElementById('simulator-information');
     
 
-function generateForm() {
-    const formTemplate = document.querySelector('.simulator-form-block'); 
-    showForm(formTemplate)
+function generateForm() { 
+    showForm();
 
     computeForm(); 
    

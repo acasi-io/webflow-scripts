@@ -28,7 +28,7 @@ if (result === 'multiple_shareholder' || result === 'unique_shareholder') {
     const resultText = document.getElementById('simulator-result-text');
     resultText.innerHTML = `${displayedResult[result]}`; 
     const explanationContainer = document.querySelector('.simulator-result-explanation-container');
-    showExplanation(result, explanationContainer); 
+    showExplanation(displayedResult[result], explanationContainer); 
 }
 
 
