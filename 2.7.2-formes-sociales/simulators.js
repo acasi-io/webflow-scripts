@@ -22,15 +22,15 @@ function computeForm() {
     const salaireAnswer = resultArray.find(answer => answer.question === '6' && answer.result === "Salaire");
 
     if (microEntrepriseAnswer) {
-        resultInput.value = 'micro-entreprise';
+        resultInput.value = 'micro';
     } else if (seulAnswer && dividendesAnswer) {
-        resultInput.value = 'SASU';
+        resultInput.value = 'sasu';
     } else if (plusieursAnswer && dividendesAnswer) {
-        resultInput.value = 'SAS'; 
+        resultInput.value = 'sas'; 
     } else if (salaireAnswer && plusieursAnswer) {
-        resultInput.value = 'SARL ou SAS'; 
+        resultInput.value = 'multiple_shareholder'; 
     } else if (seulAnswer && salaireAnswer) {
-        resultInput.value = 'EURL ou SASU'; 
+        resultInput.value = 'unique_shareholder'; 
     } else {
         return;
     }

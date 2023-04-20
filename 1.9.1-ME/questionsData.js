@@ -189,7 +189,7 @@ const questionsData = [
                 id: 4, 
                 value: "Plus de 77 700€ de CA", 
                 image: "💰💰💰💰", 
-                nextQuestion: 10,
+                nextQuestion: 9,
                 hubspotValue: 'Dépassement du seuil maximal',
             }
         ]
