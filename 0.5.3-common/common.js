@@ -189,6 +189,10 @@ function getNextQuestion(questionsData) {
         questionTheme.textContent = currentQuestionData.theme; 
     }
 
+    if (currentQuestionData.precision) {
+        removeHiddenClass(document.getElementById('precision_charges_container')); 
+    }
+
     generateQuestion(currentQuestionData); 
 }
 

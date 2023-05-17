@@ -62,6 +62,7 @@ const questionsData = [
         id: 2,
         question: "Vos charges représentent", 
         questionTree: 2,
+        precision: true,
         property: "over_allowance_threshold",
         choices: [
             {
@@ -203,6 +204,7 @@ const questionsData = [
         id: 7,
         question: "Vos charges représentent", 
         questionTree: 7,
+        precision: true,
         property: "over_allowance_threshold",
         choices: [
             {
