@@ -3,7 +3,7 @@ const questionsData = [
         id: 0, 
         question: "Quel est votre type d'activité ?", 
         questionTree: 0,
-        property: "company_creation_activity",
+        property: "micro_activity",
         highlight: true, 
         choices: [
             {
@@ -25,7 +25,7 @@ const questionsData = [
     {
         id: 1,
         question: "Cette année, vous allez réaliser", 
-        property: "estimated_revenue",
+        property: "micro_estimated_revenue",
         questionTree: 1,
         choices: [
             {
@@ -86,7 +86,7 @@ const questionsData = [
         id: 3,
         question: "L'année dernière vous avez réalisé", 
         questionTree: 3,
-        property: "previous_revenue",
+        property: "micro_previous_revenue",
         choices: [
             {
                 id: 1, 
@@ -167,7 +167,7 @@ const questionsData = [
         id: 6,
         question: "Cette année, vous allez réaliser", 
         questionTree: 6,
-        property: "estimated_revenue",
+        property: "micro_estimated_revenue",
         choices: [
             {
                 id: 1, 
@@ -227,7 +227,7 @@ const questionsData = [
         id: 8,
         question: "L'année dernière vous avez réalisé", 
         questionTree: 8,
-        property: "previous_revenue",
+        property: "micro_previous_revenue",
         choices: [
             {
                 id: 1, 
