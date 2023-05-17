@@ -202,6 +202,12 @@ function getPreviousQuestion() {
     const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
 
     fillQuestionTitleTheme(previousQuestionData); 
+
+    if (previousQuestionData.precision) {
+        removeHiddenClass(document.getElementById('precision_charges_container')); 
+    } else {
+        addHiddenClass(document.getElementById('precision_charges_container'));
+    }
    
     generateQuestion(previousQuestionData); 
     setItemStorage('indexCurrentQuestion', previousQuestionData.id); 
