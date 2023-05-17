@@ -3,7 +3,7 @@ const questionsData = [
         id: 0, 
         question: "Quel est votre type d'activité ?", 
         questionTree: 0,
-        property: "micro_activity",
+        property: "company_creation_activity",
         highlight: true, 
         choices: [
             {
@@ -25,7 +25,7 @@ const questionsData = [
     {
         id: 1,
         question: "Cette année, vous allez réaliser", 
-        property: "micro_estimated_revenue",
+        property: "estimated_revenue",
         questionTree: 1,
         choices: [
             {
@@ -86,7 +86,7 @@ const questionsData = [
         id: 3,
         question: "L'année dernière vous avez réalisé", 
         questionTree: 3,
-        property: "micro_previous_revenue",
+        property: "previous_revenue",
         choices: [
             {
                 id: 1, 
@@ -167,7 +167,7 @@ const questionsData = [
         id: 6,
         question: "Cette année, vous allez réaliser", 
         questionTree: 6,
-        property: "micro_estimated_revenue",
+        property: "estimated_revenue",
         choices: [
             {
                 id: 1, 
@@ -207,7 +207,7 @@ const questionsData = [
         choices: [
             {
                 id: 1, 
-                value: "Plus de 50% de votre CA", 
+                value: "Plus de 34% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
                 resultValue: 'over_allowance_threshold_50', 
@@ -215,7 +215,7 @@ const questionsData = [
             }, 
             {
                 id: 2, 
-                value: "Moins de 50% de votre CA", 
+                value: "Moins de 34% de votre CA", 
                 nextQuestion: "emailForm", 
                 result: true, 
                 resultValue: 'under_allowance_threshold_50', 
@@ -227,7 +227,7 @@ const questionsData = [
         id: 8,
         question: "L'année dernière vous avez réalisé", 
         questionTree: 8,
-        property: "micro_previous_revenue",
+        property: "previous_revenue",
         choices: [
             {
                 id: 1, 
