@@ -1,4 +1,4 @@
-const questionsData = [
+/*const questionsData = [
     {   
         id: 0, 
         question: "Avez-vous une société ?", 
@@ -287,4 +287,4 @@ const questionsData = [
             }
         ]
     }
-];
+];*/

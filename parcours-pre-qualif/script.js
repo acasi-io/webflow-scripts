@@ -115,7 +115,7 @@ function firstQuestion() {
 
 function generateQuestion(currentQuestion) {
     //const answerBlock = document.getElementById('answer-block').firstChild; 
-    const answerBlock = document.querySelector('.simulator-answer-btn');
+    const answerBlock = document.querySelector('.pre-qualif-answer');
     simulatorBlock.innerHTML = '';
     // appendHubspotProperty(currentQuestion);
 
