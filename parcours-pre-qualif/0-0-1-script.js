@@ -39,7 +39,7 @@ window.addEventListener('load', () => {
     setItemStorage('indexNextQuestion', 0);
     setItemStorage('indexCurrentChoice', 0); 
     setItemStorage('indexCurrentQuestion', 0);
-    setItemStorage('url', window.location.href);
+    //setItemStorage('url', window.location.href);
     firstQuestion();
 }); 
 
@@ -222,7 +222,7 @@ function getNextQuestion(questionsData) {
 
     let url = localStorage.getItem('url');
 
-    if (currentQuestionData.dependsOnMetiers === true && url.includes('index')) {
+    if (currentQuestionData.dependsOnMetiers === true && url.includes('metiers')) {
         currentQuestionData = questionsData.find(question => question.id === currentQuestionData.nextQuestionMetiers);
     }
 
