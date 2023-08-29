@@ -186,7 +186,7 @@ function getNextQuestion(questionsData) {
 
     let url = localStorage.getItem('url');
 
-    if (currentQuestionData.dependsOnMetiers === true && url.includes('metiers')) {
+    if (currentQuestionData.dependsOnMetiers === true && (url.includes('metiers') || url.includes('avocats'))) {
         currentQuestionData = questionsData.find(question => question.id === currentQuestionData.nextQuestionMetiers);
     }
 
