@@ -67,9 +67,9 @@ function firstQuestion() {
     let firstQuestionData = questionsData.find(question => question.id === questionIndex);
     setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
 
-    if (firstQuestionData.dependsOnMetiers === true && (url.includes('sas-sasu') || url.includes('eurl-sarl') || url.includes('entreprise-individuelle'))) {
-        firstQuestionData = questionsData.find(question => question.id === firstQuestionData.nextQuestionMetiers);
-        setItemStorage('indexCurrentQuestion', firstQuestionData.nextQuestionMetiers); 
+    if (firstQuestionData.dependsOnForme === true && (url.includes('sas-sasu') || url.includes('eurl-sarl') || url.includes('entreprise-individuelle'))) {
+        firstQuestionData = questionsData.find(question => question.id === firstQuestionData.nextQuestionForme);
+        setItemStorage('indexCurrentQuestion', firstQuestionData.nextQuestionForme); 
     }
 
     questionTitle.textContent = firstQuestionData.question  
@@ -186,8 +186,8 @@ function getNextQuestion(questionsData) {
 
     let url = localStorage.getItem('url');
 
-    if (currentQuestionData.dependsOnForme === true && (url.includes('metiers') || url.includes('avocats'))) {
-        currentQuestionData = questionsData.find(question => question.id === currentQuestionData.nextQuestionForme);
+    if (currentQuestionData.dependsOnMetiers === true && (url.includes('metiers') || url.includes('avocats'))) {
+        currentQuestionData = questionsData.find(question => question.id === currentQuestionData.nextQuestionMetiers);
     }
 
     questionTitle.textContent = currentQuestionData.question;
