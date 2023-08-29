@@ -69,7 +69,7 @@ function firstQuestion() {
 
     if (firstQuestionData.dependsOnForme === true && (url.includes('sas-sasu') || url.includes('eurl-sarl') || url.includes('entreprise-individuelle'))) {
         firstQuestionData = questionsData.find(question => question.id === firstQuestionData.nextQuestionForme);
-        setItemStorage('indexCurrentQuestion', firstQuestionData.nextQuestionForme); 
+        setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
     }
 
     questionTitle.textContent = firstQuestionData.question  
