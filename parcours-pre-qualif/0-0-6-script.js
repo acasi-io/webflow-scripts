@@ -188,6 +188,7 @@ function getNextQuestion(questionsData) {
 
     if (currentQuestionData.dependsOnMetiers === true && (url.includes('metiers') || url.includes('avocats'))) {
         currentQuestionData = questionsData.find(question => question.id === currentQuestionData.nextQuestionMetiers);
+        setItemStorage(indexCurrentQuestion, currentQuestionData.id);
     }
 
     questionTitle.textContent = currentQuestionData.question;
