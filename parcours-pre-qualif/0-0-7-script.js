@@ -1,7 +1,7 @@
 const nextBtn = document.getElementById('next-button'); 
 const questionTitle = document.getElementById('question-title');
 let resultArray = []; 
-const startBtn = document.getElementById('start-button'); 
+//const startBtn = document.getElementById('start-button'); 
 const simulatorBlock = document.getElementById('simulator-block');
 const simulatorOptions = document.getElementById('simulator-options');
 // const hubspotPropertiesBlock = document.getElementById('hubspot-properties');
@@ -9,6 +9,10 @@ const previousBtn = document.getElementById('previous-button');
 let previousQuestionArray = []; 
 const simulatorSubmitBtn = document.getElementById('simulator-submit-button'); 
 
+const progressContainer = document.getElementById('pre-qualif-progress-container');
+const progressBar = document.getElementById('pre-qualif-progress-bar');
+let steps = questionsData.length;
+let currentStep;
 
 
 window.addEventListener('load', () => {
@@ -30,6 +34,17 @@ function addHiddenClass(elementProperty) {
 function removeHiddenClass(elementProperty) {
     elementProperty.classList.remove('simulator-hidden'); 
 }
+
+
+function updateProgressBar(currentStep) {
+    const percentage = (currentStep / steps) * 100;
+    progressBar.style.width = percentage + "%";
+}
+
+
+nextBtn.addEventListener('click', () => {
+    nextQuestion();
+});
 
 
 previousBtn.addEventListener('click', () => {
@@ -71,6 +86,9 @@ function firstQuestion() {
         firstQuestionData = questionsData.find(question => question.id === firstQuestionData.nextQuestionForme);
         setItemStorage('indexCurrentQuestion', firstQuestionData.id); 
     }
+
+    currentStep = firstQuestionData.id + 1;
+    updateProgressBar(currentStep);
 
     questionTitle.textContent = firstQuestionData.question  
        
@@ -125,15 +143,15 @@ function computeQuestion(currentQuestion, answer, input) {
         updateLocalStorage(currentQuestion); 
     });
 
-    input.addEventListener('click', (e) => {
+    /*input.addEventListener('click', (e) => {
         [...document.querySelectorAll('.simulator-answer-btn')].forEach(element => {
             element.classList.remove('simulator-checked'); 
         });
         e.currentTarget.parentNode.classList.add('simulator-checked');
-        //const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
-        //hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
+        const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
+        hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
         nextQuestion(); 
-    });
+    });*/
 }
 
 
@@ -179,7 +197,7 @@ function updateResultArray(currentChoice, currentQuestion) {
 }*/
 
 
-function getNextQuestion(questionsData) {
+function getNextQuestion(questionsData, currentStep) {
     const indexCurrentQuestion = parseInt(localStorage.getItem('indexNextQuestion'));
     let currentQuestionData = questionsData.find(question => question.id === indexCurrentQuestion); 
     setItemStorage('indexCurrentQuestion', currentQuestionData.id);
@@ -191,6 +209,9 @@ function getNextQuestion(questionsData) {
         setItemStorage(indexCurrentQuestion, currentQuestionData.id);
     }
 
+    currentStep = currentQuestionData.id + 1;
+    updateProgressBar(currentStep);
+
     questionTitle.textContent = currentQuestionData.question;
 
     generateQuestion(currentQuestionData); 
@@ -200,6 +221,9 @@ function getNextQuestion(questionsData) {
 function getPreviousQuestion() { 
     let indexPreviousQuestion = parseInt(localStorage.getItem('previousQuestion')); 
     const previousQuestionData = questionsData.find(question => question.id === indexPreviousQuestion); 
+
+    currentStep = indexPreviousQuestion + 1;
+    updateProgressBar(currentStep);
 
     questionTitle.textContent = previousQuestionData.question;
    
@@ -266,7 +290,7 @@ function getLastElement() {
 }
 
 
-function nextQuestion() {
+function nextQuestion(currentStep) {
     const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
     storeResult(questionsData); 
     //removeHiddenClass(previousBtn);
@@ -278,7 +302,7 @@ function nextQuestion() {
     } else if (indexNextQuestion === 'link signup') {
         questionTitle.textContent = 'SIGN-UP'
     } else {
-        getNextQuestion(questionsData); 
+        getNextQuestion(questionsData, currentStep); 
     }
 
     /*if (indexNextQuestion === 'emailForm') {
