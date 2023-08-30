@@ -20,6 +20,7 @@ window.addEventListener('load', () => {
     setItemStorage('indexNextQuestion', 0);
     setItemStorage('indexCurrentChoice', 0); 
     setItemStorage('indexCurrentQuestion', 0);
+    localStorage.setItem('url', window.location.href);
     firstQuestion();
 }); 
 
@@ -42,7 +43,8 @@ function updateProgressBar(currentStep) {
 }
 
 
-nextBtn.addEventListener('click', () => {
+nextBtn.addEventListener('click', (e) => {
+    e.preventDefault();
     nextQuestion();
 });
 
@@ -143,15 +145,15 @@ function computeQuestion(currentQuestion, answer, input) {
         updateLocalStorage(currentQuestion); 
     });
 
-    /*input.addEventListener('click', (e) => {
+    input.addEventListener('click', (e) => {
         [...document.querySelectorAll('.simulator-answer-btn')].forEach(element => {
             element.classList.remove('simulator-checked'); 
         });
         e.currentTarget.parentNode.classList.add('simulator-checked');
-        const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
-        hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
-        nextQuestion(); 
-    });*/
+        //const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
+        //hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
+        //nextQuestion(); 
+    });
 }
 
 
