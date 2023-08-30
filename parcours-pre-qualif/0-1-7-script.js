@@ -25,6 +25,29 @@ window.addEventListener('load', () => {
     firstQuestion();
 }); 
 
+
+window.addEventListener('popstate', () => {
+    getPreviousQuestion(); 
+    deleteOldValueResultArray();
+    deleteOldValuePreviousArray();
+    const indexCurrentQuestion = parseInt(localStorage.getItem('indexCurrentQuestion')); 
+    const indexNextQuestion = localStorage.getItem('indexNextQuestion'); 
+    const indexPreviousQuestion = parseInt(localStorage.getItem('previousQuestion')); 
+    if (indexPreviousQuestion > 0) {
+        getLastElement(); 
+    } 
+    /*if (indexCurrentQuestion === 0) {
+        //previousBtn.classList.add('simulator-hidden'); 
+    }*/ if (indexNextQuestion === 'emailForm') {
+        removeHiddenClass(document.getElementById('simulator-block')); 
+        addHiddenClass(document.querySelector('.simulator-form-block')); 
+        removeHiddenClass(nextBtn);  
+    }
+
+    disabledNextButton.classList.remove('parcours-hidden');
+    nextBtn.classList.add('parcours-hidden');
+});
+
 function setItemStorage(key, value) {
     localStorage.setItem(key, value); 
 }
