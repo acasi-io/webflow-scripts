@@ -46,6 +46,8 @@ function updateProgressBar(currentStep) {
 
 nextBtn.addEventListener('click', (e) => {
     e.preventDefault();
+    e.classList.add('parcours-hidden');
+    disabledNextButton.classList.remove('parcours-hidden');
     nextQuestion();
 });
 
@@ -149,8 +151,6 @@ function computeQuestion(currentQuestion, answer, input) {
     input.addEventListener('click', (e) => {
         [...document.querySelectorAll('.pre-qualif-answer')].forEach(element => {
             element.classList.remove('simulator-checked'); 
-            nextBtn.classList.add('parcours-hidden');
-            disabledNextButton.classList.remove('parcours-hidden');
         });
         e.currentTarget.parentNode.classList.add('simulator-checked');
         nextBtn.classList.remove('parcours-hidden');
