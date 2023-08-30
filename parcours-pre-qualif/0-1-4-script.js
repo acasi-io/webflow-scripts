@@ -46,9 +46,9 @@ function updateProgressBar(currentStep) {
 
 nextBtn.addEventListener('click', (e) => {
     e.preventDefault();
+    nextQuestion();
     e.classList.add('parcours-hidden');
     disabledNextButton.classList.remove('parcours-hidden');
-    nextQuestion();
 });
 
 
