@@ -69,6 +69,9 @@ previousBtn.addEventListener('click', () => {
         addHiddenClass(document.querySelector('.simulator-form-block')); 
         removeHiddenClass(nextBtn);  
     }
+
+    disabledNextButton.classList.remove('parcours-hidden');
+    nextBtn.classList.add('parcours-hidden');
 });
 
 
