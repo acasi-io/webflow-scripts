@@ -149,16 +149,12 @@ function computeQuestion(currentQuestion, answer, input) {
     input.addEventListener('click', (e) => {
         [...document.querySelectorAll('.pre-qualif-answer')].forEach(element => {
             element.classList.remove('simulator-checked'); 
+            nextBtn.classList.add('parcours-hidden');
+            disabledNextButton.classList.remove('parcours-hidden');
         });
         e.currentTarget.parentNode.classList.add('simulator-checked');
-        nextBtn.style.backgroundColor = '#4f4f4f';
-        nextBtn.style.backgroundImage = "url('./cta-arrow-black.png')";
-        nextBtn.style.backgroundSize = '30px';
-        nextBtn.style.backgroundPosition = '92% 50%';
-
-        nextBtn.addEventListener('mouseover', (e) => {
-            e.classList.add('hover-btn');
-        });
+        nextBtn.classList.remove('parcours-hidden');
+        disabledNextButton.classList.add('parcours-hidden');
         //const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
         //hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
         //nextQuestion(); 
