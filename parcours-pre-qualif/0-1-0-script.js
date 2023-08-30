@@ -1,4 +1,5 @@
-const nextBtn = document.getElementById('next-button'); 
+const nextBtn = document.getElementById('next-button');
+const disabledNextButton = document.getElementById('disabled-button');
 const questionTitle = document.getElementById('question-title');
 let resultArray = []; 
 //const startBtn = document.getElementById('start-button'); 
@@ -150,6 +151,14 @@ function computeQuestion(currentQuestion, answer, input) {
             element.classList.remove('simulator-checked'); 
         });
         e.currentTarget.parentNode.classList.add('simulator-checked');
+        nextBtn.style.backgroundColor = '#4f4f4f';
+        nextBtn.style.backgroundImage = "url('cta-arrow-black.svg')";
+        nextBtn.style.backgroundSize = '30px';
+        nextBtn.style.backgroundPosition = '92% 50%';
+
+        nextBtn.addEventListener('mouseover', (e) => {
+            e.style.backgroundColor = '#343434';
+        });
         //const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`)
         //hubspotPropertyBlock.querySelector('input').setAttribute("value", e.currentTarget.dataset.hubspotValue);
         //nextQuestion(); 
