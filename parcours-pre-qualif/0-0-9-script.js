@@ -59,9 +59,9 @@ previousBtn.addEventListener('click', () => {
     if (indexPreviousQuestion > 0) {
         getLastElement(); 
     } 
-    if (indexCurrentQuestion === 0) {
-        previousBtn.classList.add('simulator-hidden'); 
-    } else if (indexNextQuestion === 'emailForm') {
+    /*if (indexCurrentQuestion === 0) {
+        //previousBtn.classList.add('simulator-hidden'); 
+    }*/ if (indexNextQuestion === 'emailForm') {
         removeHiddenClass(document.getElementById('simulator-block')); 
         addHiddenClass(document.querySelector('.simulator-form-block')); 
         removeHiddenClass(nextBtn);  
@@ -146,7 +146,7 @@ function computeQuestion(currentQuestion, answer, input) {
     });
 
     input.addEventListener('click', (e) => {
-        [...document.querySelectorAll('.simulator-answer-btn')].forEach(element => {
+        [...document.querySelectorAll('.pre-qualif-answer')].forEach(element => {
             element.classList.remove('simulator-checked'); 
         });
         e.currentTarget.parentNode.classList.add('simulator-checked');
