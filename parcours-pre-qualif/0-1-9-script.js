@@ -128,7 +128,7 @@ function firstQuestion() {
 
 
 function generateQuestion(currentQuestion) {
-    const answerBlock = document.querySelector('.pre-qualif-answer');
+    const answerBlock = document.querySelector('.pre-qualif-answers');
     simulatorBlock.innerHTML = '';
     // appendHubspotProperty(currentQuestion);
 
