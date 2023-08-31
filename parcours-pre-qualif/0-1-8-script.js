@@ -147,7 +147,7 @@ function showQuestion(currentQuestion, answerBlock, answer, choice, index) {
 
     //const { id, value, image, hubspotValue } = choice;
     const { id, value } = choice;
-    const input = answer.querySelector('.simulator-radio'); 
+    const input = answer.querySelector('.pre-qualif-radio'); 
     input.setAttribute('id', id); 
     input.setAttribute('value', id);
     //input.setAttribute('data-hubspot-value', hubspotValue);
@@ -175,7 +175,7 @@ function computeQuestion(currentQuestion, answer, input) {
     });
 
     input.addEventListener('click', (e) => {
-        [...document.querySelectorAll('.pre-qualif-answer')].forEach(element => {
+        [...document.querySelectorAll('.pre-qualif-answers')].forEach(element => {
             element.classList.remove('simulator-checked'); 
         });
         e.currentTarget.parentNode.classList.add('simulator-checked');
