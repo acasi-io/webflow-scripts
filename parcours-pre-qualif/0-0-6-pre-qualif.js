@@ -65,7 +65,9 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 		document.querySelectorAll('.pre-qualif-answers').forEach(otherAnswer => {
 			otherAnswer.classList.remove('input-checked');
 			storageAnswers = JSON.parse(localStorage.getItem('currentChoice'));
-			storageAnswers.slice(0, -1);
+			if (storageAnswers.length > 0) {
+				storageAnswers.slice(0, -1);
+			}
 		});
     
     answer.classList.add('input-checked');
