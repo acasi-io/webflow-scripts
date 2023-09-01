@@ -64,6 +64,7 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 		});
     
     answer.classList.add('input-checked');
+	storageAnswers.slice(0, -1);
 	let currentChoice = {
 		question: question.question,
 		answer: answer.id
