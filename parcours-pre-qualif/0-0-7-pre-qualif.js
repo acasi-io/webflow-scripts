@@ -2,11 +2,9 @@ const nextBtn = document.getElementById('next-button');
 const disabledNextButton = document.getElementById('disabled-button');
 const headingPreQualif = document.getElementById('heading-pre-qualif');
 const url = localStorage.getItem('url');
-const question = document.getElementById('question-title');
-let storageAnswers = [];
 
 
-localStorage.setItem('currentChoice', JSON.stringify(storageAnswers));
+storageAnswers = JSON.parse(localStorage.getItem('currentChoice'));
 
 
 
@@ -64,22 +62,31 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 	answer.addEventListener('click', () => {
 		document.querySelectorAll('.pre-qualif-answers').forEach(otherAnswer => {
 			otherAnswer.classList.remove('input-checked');
-			storageAnswers = JSON.parse(localStorage.getItem('currentChoice'));
-			if (storageAnswers.length > 0) {
-				storageAnswers.slice(0, -1);
-			}
 		});
     
     answer.classList.add('input-checked');
+    const question = document.getElementById('question-title');
 	let currentChoice = {
-		question: question.question,
+		question: question.textContent,
 		answer: answer.id
 	}
-	storageAnswers.push(currentChoice);
-	localStorage.setItem('currentChoice', JSON.stringify(storageAnswers));
-	console.log(storageAnswers);
-    //localStorage.setItem('currentChoice', answer.id);
+  localStorage.setItem('choice', answer.id);
+  ajouterObjetUniqueParQuestion(storageAnswers, currentChoice);
+  localStorage.setItem('currentChoice', JSON.stringify(storageAnswers));
     disabledNextButton.classList.add('hidden');
     nextBtn.classList.remove('hidden');
 	});
 });
+
+function ajouterObjetUniqueParQuestion(tableau, nouvelObjet) {
+    const question = nouvelObjet.question;
+    const indexDoublon = tableau.findIndex(objet => objet.question === question);
+
+    if (indexDoublon !== -1) {
+        // Une question identique existe déjà, remplacez l'objet existant par le nouvel objet
+        tableau[indexDoublon] = nouvelObjet;
+    } else {
+        // Ajoutez simplement le nouvel objet au tableau
+        tableau.push(nouvelObjet);
+    }
+}
