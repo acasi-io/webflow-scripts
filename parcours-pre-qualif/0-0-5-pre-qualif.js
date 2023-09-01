@@ -6,6 +6,9 @@ const question = document.getElementById('question-title');
 let storageAnswers = [];
 
 
+localStorage.setItem('currentChoice', JSON.stringify(storageAnswers));
+
+
 
 document.getElementById('previous-button').addEventListener('click', () => {
     history.back();
@@ -61,6 +64,7 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 	answer.addEventListener('click', () => {
 		document.querySelectorAll('.pre-qualif-answers').forEach(otherAnswer => {
 			otherAnswer.classList.remove('input-checked');
+			storageAnswers = JSON.parse(localStorage.getItem('currentChoice'));
 			storageAnswers.slice(0, -1);
 		});
     
@@ -77,4 +81,3 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
     nextBtn.classList.remove('hidden');
 	});
 });
-
