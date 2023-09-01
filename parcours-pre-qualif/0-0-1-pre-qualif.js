@@ -40,6 +40,10 @@ if (url.includes('metiers')) {
 	fillHeading('Comptabilité pour avocats');
 } else if (url.includes('creation')) {
 	fillHeading('Création de société');
+    if (creation === true) {
+        threeQuestionsBar.classList.remove('hidden');
+        fourQuestionsBar.classList.add('hidden');
+    }
 } else if (url.includes('sas-sasu')) {
 	fillHeading('Comptabilité pour SAS - SASU');
 } else if (url.includes('eurl-sarl')) {
