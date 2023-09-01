@@ -2,6 +2,8 @@ const nextBtn = document.getElementById('next-button');
 const disabledNextButton = document.getElementById('disabled-button');
 const headingPreQualif = document.getElementById('heading-pre-qualif');
 const url = localStorage.getItem('url');
+const question = document.getElementById('question-title');
+let storageAnswers = [];
 
 
 
@@ -62,7 +64,14 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 		});
     
     answer.classList.add('input-checked');
-    localStorage.setItem('currentChoice', answer.id);
+	let currentChoice = {
+		question: question.question,
+		answer: answer.id
+	}
+	storageAnswers.push(currentChoice);
+	localStorage.setItem('currentChoice', JSON.stringify(storageAnswers));
+	console.log(storageAnswers);
+    //localStorage.setItem('currentChoice', answer.id);
     disabledNextButton.classList.add('hidden');
     nextBtn.classList.remove('hidden');
 	});
