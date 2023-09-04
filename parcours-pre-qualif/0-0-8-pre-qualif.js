@@ -64,29 +64,32 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 			otherAnswer.classList.remove('input-checked');
 		});
     
-    answer.classList.add('input-checked');
-    const question = document.getElementById('question-title');
-	let currentChoice = {
-		question: question.textContent,
-		answer: answer.id
-	}
-  localStorage.setItem('choice', answer.id);
-  ajouterObjetUniqueParQuestion(storageAnswers, currentChoice);
-  localStorage.setItem('currentChoice', JSON.stringify(storageAnswers));
-    disabledNextButton.classList.add('hidden');
-    nextBtn.classList.remove('hidden');
+        answer.classList.add('input-checked');
+        const question = document.getElementById('question-title');
+        let currentChoice = {
+            question: question.textContent,
+            answer: answer.id
+        }
+        localStorage.setItem('choice', answer.id);
+        ajouterObjetUniqueParQuestion(storageAnswers, currentChoice);
+        localStorage.setItem('currentChoice', JSON.stringify(storageAnswers));
+        disabledNextButton.classList.add('hidden');
+        nextBtn.classList.remove('hidden');
+
+        setTimeout(() => {
+            document.getElementById('chat_wait').classList.add('hidden');
+            document.getElementById('coach_answer').classList.remove('hidden');
+        }, 2000);
 	});
 });
 
-function ajouterObjetUniqueParQuestion(tableau, nouvelObjet) {
-    const question = nouvelObjet.question;
-    const indexDoublon = tableau.findIndex(objet => objet.question === question);
+function ajouterObjetUniqueParQuestion(array, newObject) {
+    const question = newObject.question;
+    const indexDoublon = array.findIndex(objet => objet.question === question);
 
     if (indexDoublon !== -1) {
-        // Une question identique existe déjà, remplacez l'objet existant par le nouvel objet
-        tableau[indexDoublon] = nouvelObjet;
+        array[indexDoublon] = newObject;
     } else {
-        // Ajoutez simplement le nouvel objet au tableau
-        tableau.push(nouvelObjet);
+        array.push(newObject);
     }
 }
