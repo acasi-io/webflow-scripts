@@ -83,7 +83,7 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
             document.getElementById('chat_wait').classList.add('hidden');
             showCoachAnswer();
             document.getElementById('coach_answer').classList.remove('hidden');
-        }, 2000);
+        }, 1000);
 	});
 });
 
