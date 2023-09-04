@@ -81,6 +81,7 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 
         setTimeout(() => {
             document.getElementById('chat_wait').classList.add('hidden');
+            showCoachAnswer();
             document.getElementById('coach_answer').classList.remove('hidden');
         }, 2000);
 	});
