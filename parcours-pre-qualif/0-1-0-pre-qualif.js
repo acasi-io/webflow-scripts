@@ -76,8 +76,8 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
         disabledNextButton.classList.add('hidden');
         nextBtn.classList.remove('hidden');
 
-        document.getElementById('container-coach-answer').classList.remove('hidden');
-        document.getElementById('container-coach').classList.add('test');
+        document.getElementById('wrapper-coach-answer').classList.remove('hidden');
+        document.getElementById('container-coach-image').classList.add('opacity-0');
 
         setTimeout(() => {
             document.getElementById('chat_wait').classList.add('hidden');
