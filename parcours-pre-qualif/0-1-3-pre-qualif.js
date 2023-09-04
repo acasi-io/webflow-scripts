@@ -78,10 +78,10 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 
         document.getElementById('wrapper-coach-answer').classList.remove('hidden');
         document.getElementById('container-coach-image').classList.add('opacity-0');
+        showCoachAnswer();
 
         setTimeout(() => {
             document.getElementById('chat_wait').classList.add('hidden');
-            showCoachAnswer();
             document.getElementById('coach_answer').classList.remove('hidden');
         }, 1000);
 	});
