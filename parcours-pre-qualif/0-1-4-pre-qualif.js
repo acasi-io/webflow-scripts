@@ -73,8 +73,6 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
         localStorage.setItem('choice', answer.id);
         ajouterObjetUniqueParQuestion(storageAnswers, currentChoice);
         localStorage.setItem('currentChoice', JSON.stringify(storageAnswers));
-        disabledNextButton.classList.add('hidden');
-        nextBtn.classList.remove('hidden');
 
         document.getElementById('wrapper-coach-answer').classList.remove('hidden');
         document.getElementById('container-coach-image').classList.add('opacity-0');
@@ -83,6 +81,8 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
         setTimeout(() => {
             document.getElementById('chat_wait').classList.add('hidden');
             document.getElementById('coach_answer').classList.remove('hidden');
+            disabledNextButton.classList.add('hidden');
+            nextBtn.classList.remove('hidden');
         }, 1000);
 	});
 });
