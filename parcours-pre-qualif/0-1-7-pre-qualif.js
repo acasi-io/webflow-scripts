@@ -75,14 +75,13 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
         localStorage.setItem('currentChoice', JSON.stringify(storageAnswers));
 
         document.getElementById('wrapper-coach-answer').classList.remove('hidden');
-        //document.getElementById('container-coach-image').classList.add('opacity-0');
         showCoachAnswer();
 
         setTimeout(() => {
             document.getElementById('chat_wait').classList.add('hidden');
             document.getElementById('coach_answer').classList.remove('hidden');
-            //disabledNextButton.classList.add('hidden');
-            //nextBtn.classList.remove('hidden');
+            disabledNextButton.classList.add('hidden');
+            nextBtn.classList.remove('hidden');
         }, 1000);
 	});
 });
