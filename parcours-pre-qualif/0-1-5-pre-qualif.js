@@ -75,7 +75,7 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
         localStorage.setItem('currentChoice', JSON.stringify(storageAnswers));
 
         document.getElementById('wrapper-coach-answer').classList.remove('hidden');
-        document.getElementById('container-coach-image').classList.add('opacity-0');
+        //document.getElementById('container-coach-image').classList.add('opacity-0');
         showCoachAnswer();
 
         setTimeout(() => {
