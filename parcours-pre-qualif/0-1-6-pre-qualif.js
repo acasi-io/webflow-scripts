@@ -81,8 +81,8 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
         setTimeout(() => {
             document.getElementById('chat_wait').classList.add('hidden');
             document.getElementById('coach_answer').classList.remove('hidden');
-            disabledNextButton.classList.add('hidden');
-            nextBtn.classList.remove('hidden');
+            //disabledNextButton.classList.add('hidden');
+            //nextBtn.classList.remove('hidden');
         }, 1000);
 	});
 });
