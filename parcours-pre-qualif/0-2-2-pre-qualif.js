@@ -39,14 +39,14 @@ if (url.includes('metiers')) {
   } else if (url.includes('agent-immobilier')) {
   	fillHeading('Comptabilité pour agents immobiliers');
   }
-  const urlParts = url.split('/');
+  /*const urlParts = url.split('/');
   const job = urlParts[urlParts.length - 1];
   let currentChoice = {
     Hubspot_property: 'what_job',
     value: `${job}`
   }
   storageAnswers.push(currentChoice);
-  localStorage.setItem('choices', JSON.stringify(storageAnswers));
+  localStorage.setItem('choices', JSON.stringify(storageAnswers));*/
 } else if (url.includes('avocat')) {
 	fillHeading('Comptabilité pour avocats');
 } else if (url.includes('creation')) {
