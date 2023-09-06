@@ -87,8 +87,8 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 });
 
 function ajouterObjetUniqueParQuestion(array, newObject) {
-    const question = newObject.question;
-    const indexDoublon = array.findIndex(objet => objet.question === question);
+    const question = newObject.Hubspot_property;
+    const indexDoublon = array.findIndex(objet => objet.Hubspot_property === question);
 
     if (indexDoublon !== -1) {
         array[indexDoublon] = newObject;
