@@ -4,7 +4,7 @@ const headingPreQualif = document.getElementById('heading-pre-qualif');
 const url = localStorage.getItem('url');
 
 
-storageAnswers = JSON.parse(localStorage.getItem('currentChoice'));
+storageAnswers = JSON.parse(localStorage.getItem('choices'));
 
 
 
@@ -70,9 +70,9 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
             Hubspot_property: question.id,
             value: answer.id
         }
-        localStorage.setItem('choice', answer.id);
+        localStorage.setItem('currentChoice', answer.id);
         ajouterObjetUniqueParQuestion(storageAnswers, currentChoice);
-        localStorage.setItem('currentChoice', JSON.stringify(storageAnswers));
+        localStorage.setItem('choices', JSON.stringify(storageAnswers));
 
         document.getElementById('wrapper-coach-answer').classList.remove('hidden');
         showCoachAnswer();
