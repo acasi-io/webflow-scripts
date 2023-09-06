@@ -65,10 +65,10 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 		});
     
         answer.classList.add('input-checked');
-        const question = document.getElementById('question-title');
+        const question = document.querySelector('.question-title');
         let currentChoice = {
-            question: question.textContent,
-            answer: answer.id
+            Hubspot_property: question.id,
+            value: answer.id
         }
         localStorage.setItem('choice', answer.id);
         ajouterObjetUniqueParQuestion(storageAnswers, currentChoice);
