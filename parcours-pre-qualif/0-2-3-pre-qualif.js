@@ -2,6 +2,9 @@ const nextBtn = document.getElementById('next-button');
 const disabledNextButton = document.getElementById('disabled-button');
 const headingPreQualif = document.getElementById('heading-pre-qualif');
 const url = localStorage.getItem('url');
+const screenWidth = window.innerWidth;
+const coachMobile = document.getElementById('image-coach-mobile');
+const coachImage = document.getElementById("container-coach-image");
 
 
 storageAnswers = JSON.parse(localStorage.getItem('choices'));
@@ -39,14 +42,6 @@ if (url.includes('metiers')) {
   } else if (url.includes('agent-immobilier')) {
   	fillHeading('Comptabilité pour agents immobiliers');
   }
-  /*const urlParts = url.split('/');
-  const job = urlParts[urlParts.length - 1];
-  let currentChoice = {
-    Hubspot_property: 'what_job',
-    value: `${job}`
-  }
-  storageAnswers.push(currentChoice);
-  localStorage.setItem('choices', JSON.stringify(storageAnswers));*/
 } else if (url.includes('avocat')) {
 	fillHeading('Comptabilité pour avocats');
 } else if (url.includes('creation')) {
@@ -83,6 +78,13 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
         localStorage.setItem('choices', JSON.stringify(storageAnswers));
 
         document.getElementById('wrapper-coach-answer').classList.remove('hidden');
+  
+        resize();
+
+        window.addEventListener("resize", () => {
+            resize();
+        });
+
         showCoachAnswer();
 
         setTimeout(() => {
@@ -102,5 +104,15 @@ function ajouterObjetUniqueParQuestion(array, newObject) {
         array[indexDoublon] = newObject;
     } else {
         array.push(newObject);
+    }
+}
+
+
+function resize() {
+    if (screenWidth <= 768) {
+        coachImage.style.display = 'none';
+        coachMobile.style.display = 'flex';
+    } else {
+        coachImage.style.top = "320px";
     }
 }
