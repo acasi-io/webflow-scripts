@@ -119,6 +119,7 @@ function resize() {
 
 function resizeZero() {
     if (screenWidth <= 768) {
+        coachImage.style.top = "0px";
         coachImage.style.display = 'flex';
         coachMobile.style.display = 'none';
     } else {
