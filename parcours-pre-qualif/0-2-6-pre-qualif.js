@@ -90,8 +90,7 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
         setTimeout(() => {
             document.getElementById('chat_wait').classList.add('hidden');
             document.getElementById('coach_answer').classList.remove('hidden');
-            disabledNextButton.classList.add('hidden');
-            nextBtn.classList.remove('hidden');
+            nextBtn.classList.add('next-button');
         }, 1000);
 	});
 });
