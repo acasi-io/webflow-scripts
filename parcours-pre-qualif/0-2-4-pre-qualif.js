@@ -116,3 +116,12 @@ function resize() {
         coachImage.style.top = "320px";
     }
 }
+
+function resizeZero() {
+    if (screenWidth <= 768) {
+        coachImage.style.display = 'flex';
+        coachMobile.style.display = 'none';
+    } else {
+        coachImage.style.top = "0px";
+    }
+}
