@@ -71,20 +71,6 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
         answer.classList.add('input-checked');
 
         localStorage.setItem('currentChoice', answer.dataset.hubspotPropertyValue);
-        
-        let currentChoice
-
-        if (question.dataset.hubspotProperty) {
-            currentChoice = {
-                hubspot_property: question.dataset.hubspotProperty,
-                value: answer.dataset.hubspotPropertyValue
-            }
-        } else {
-            return
-        }
-
-        addUniqueObject(storageAnswers, currentChoice);
-        localStorage.setItem('choices', JSON.stringify(storageAnswers));
 
         document.getElementById('wrapper-coach-answer').classList.remove('hidden');
   
@@ -101,6 +87,20 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
             document.getElementById('coach_answer').classList.remove('hidden');
             nextBtn.classList.add('next-button');
         }, 1000);
+        
+        let currentChoice
+
+        if (question.dataset.hubspotProperty) {
+            currentChoice = {
+                hubspot_property: question.dataset.hubspotProperty,
+                value: answer.dataset.hubspotPropertyValue
+            }
+        } else {
+            return
+        }
+
+        addUniqueObject(storageAnswers, currentChoice);
+        localStorage.setItem('choices', JSON.stringify(storageAnswers));
 	});
 });
 
