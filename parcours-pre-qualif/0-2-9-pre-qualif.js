@@ -5,6 +5,8 @@ const url = localStorage.getItem('url');
 const screenWidth = window.innerWidth;
 const coachMobile = document.getElementById('image-coach-mobile');
 const coachImage = document.getElementById("container-coach-image");
+const hubspotPropertiesBlock = document.getElementById('hubspot-properties');
+const question = document.querySelector('.question-title');
 
 
 storageAnswers = JSON.parse(localStorage.getItem('choices'));
@@ -18,6 +20,12 @@ document.getElementById('previous-button').addEventListener('click', () => {
 
 document.querySelector('.cta-previous-pre-qualif-mobile').addEventListener('click', () => {
     history.back();
+});
+
+
+window.addEventListener('load', () => {
+    localStorage.setItem('currentQuestion', question.id);
+    appendHubspotProperty();
 });
 
 
@@ -68,16 +76,18 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 		});
     
         answer.classList.add('input-checked');
-        const question = document.querySelector('.question-title');
         let currentChoice = {
-            Hubspot_property: question.id,
+            hubspot_property: question.id,
             value: answer.id
         }
         localStorage.setItem('currentChoice', answer.id);
-        ajouterObjetUniqueParQuestion(storageAnswers, currentChoice);
+        addUniqueObject(storageAnswers, currentChoice);
         localStorage.setItem('choices', JSON.stringify(storageAnswers));
 
         document.getElementById('wrapper-coach-answer').classList.remove('hidden');
+
+        const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`);
+        hubspotPropertyBlock.querySelector('input').setAttribute("value", answer.id);
   
         resize();
 
@@ -95,9 +105,10 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 	});
 });
 
-function ajouterObjetUniqueParQuestion(array, newObject) {
-    const question = newObject.Hubspot_property;
-    const indexDoublon = array.findIndex(objet => objet.Hubspot_property === question);
+
+function addUniqueObject(array, newObject) {
+    const question = newObject.hubspot_property;
+    const indexDoublon = array.findIndex(objet => objet.hubspot_property === question);
 
     if (indexDoublon !== -1) {
         array[indexDoublon] = newObject;
@@ -123,5 +134,14 @@ function resizeZero() {
         coachMobile.style.display = 'none';
     } else {
         coachImage.style.top = "0px";
+    }
+}
+
+
+function appendHubspotProperty() {
+    const property = localStorage.getItem('currentQuestion');
+    //const property = currentQuestion.hubspot_property;
+    if (property) {
+        hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property}" style='visibility: hidden; height: 0'><label>${property}</label><input type='text'/></div>`)
     }
 }
