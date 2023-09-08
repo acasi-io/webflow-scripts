@@ -5,7 +5,6 @@ const url = localStorage.getItem('url');
 const screenWidth = window.innerWidth;
 const coachMobile = document.getElementById('image-coach-mobile');
 const coachImage = document.getElementById("container-coach-image");
-const hubspotPropertiesBlock = document.getElementById('hubspot-properties');
 const question = document.querySelector('.question-title');
 
 
@@ -71,8 +70,8 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
     
         answer.classList.add('input-checked');
         let currentChoice = {
-            hubspot_property: question.id,
-            value: answer.id
+            hubspot_property: question.data.hubspotProperty,
+            value: answer.dataset.hubspotPropertyValue
         }
         localStorage.setItem('currentChoice', answer.id);
         addUniqueObject(storageAnswers, currentChoice);
@@ -130,14 +129,10 @@ function resizeZero() {
 }
 
 
-function appendHubspotProperty() {
+/*function appendHubspotProperty() {
     const properties = JSON.parse(localStorage.getItem('choices'));
 
     properties.forEach(property => {
         hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property.hubspot_property}" style='visibility: hidden; height: 0'><label>${property.hubspot_property}</label><input type='text' ${property.value} /></div>`);
     });
-
-    /*if (property.hubspot_property) {
-        hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property.hubspot_property}" style='visibility: hidden; height: 0'><label>${property.hubspot_property}</label><input type='text' ${property.value} /></div>`);
-    }*/
-}
+}*/
