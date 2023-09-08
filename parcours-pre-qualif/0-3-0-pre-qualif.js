@@ -23,12 +23,6 @@ document.querySelector('.cta-previous-pre-qualif-mobile').addEventListener('clic
 });
 
 
-window.addEventListener('load', () => {
-    localStorage.setItem('currentQuestion', question.id);
-    appendHubspotProperty();
-});
-
-
 function fillHeading(heading) {
 	headingPreQualif.textContent = heading;
 }
@@ -85,9 +79,6 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
         localStorage.setItem('choices', JSON.stringify(storageAnswers));
 
         document.getElementById('wrapper-coach-answer').classList.remove('hidden');
-
-        const hubspotPropertyBlock = hubspotPropertiesBlock.querySelector(`[data-hubspot-property='${currentQuestion.property}']`);
-        hubspotPropertyBlock.querySelector('input').setAttribute("value", answer.id);
   
         resize();
 
@@ -127,6 +118,7 @@ function resize() {
     }
 }
 
+
 function resizeZero() {
     if (screenWidth <= 768) {
         coachImage.style.top = "0px";
@@ -139,9 +131,13 @@ function resizeZero() {
 
 
 function appendHubspotProperty() {
-    const property = localStorage.getItem('currentQuestion');
-    //const property = currentQuestion.hubspot_property;
-    if (property) {
-        hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property}" style='visibility: hidden; height: 0'><label>${property}</label><input type='text'/></div>`)
-    }
+    const properties = JSON.parse(localStorage.getItem('choices'));
+
+    properties.forEach(property => {
+        hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property.hubspot_property}" style='visibility: hidden; height: 0'><label>${property.hubspot_property}</label><input type='text' ${property.value} /></div>`);
+    });
+
+    /*if (property.hubspot_property) {
+        hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property.hubspot_property}" style='visibility: hidden; height: 0'><label>${property.hubspot_property}</label><input type='text' ${property.value} /></div>`);
+    }*/
 }
