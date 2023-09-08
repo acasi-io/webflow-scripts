@@ -70,7 +70,7 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
     
         answer.classList.add('input-checked');
         let currentChoice = {
-            hubspot_property: question.data.hubspotProperty,
+            hubspot_property: question.dataset.hubspotProperty,
             value: answer.dataset.hubspotPropertyValue
         }
         localStorage.setItem('currentChoice', answer.id);
