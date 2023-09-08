@@ -69,6 +69,8 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 		});
     
         answer.classList.add('input-checked');
+
+        localStorage.setItem('currentChoice', answer.dataset.hubspotPropertyValue);
         
         let currentChoice
 
@@ -81,7 +83,6 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
             return
         }
 
-        localStorage.setItem('currentChoice', answer.id);
         addUniqueObject(storageAnswers, currentChoice);
         localStorage.setItem('choices', JSON.stringify(storageAnswers));
 
