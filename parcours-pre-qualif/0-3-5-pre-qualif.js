@@ -69,18 +69,10 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 		});
     
         answer.classList.add('input-checked');
-        let currentChoice; 
-
-        if (question.dataset.hubspotProperty) {
-            currentChoice = {
-                hubspot_property: question.dataset.hubspotProperty,
-                value: answer.dataset.hubspotPropertyValue
-            }
-        } else {
-            currentChoice = {
-                hubspot_property: question.id,
-                value: answer.dataset.hubspotPropertyValue
-            }
+        
+        let currentChoice = {
+            hubspot_property: question.dataset.hubspotProperty,
+            value: answer.dataset.hubspotPropertyValue
         }
 
         localStorage.setItem('currentChoice', answer.id);
