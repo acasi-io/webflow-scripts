@@ -112,7 +112,7 @@ function resize() {
         coachImage.style.display = 'none';
         coachMobile.style.display = 'flex';
     } else {
-        coachImage.style.top = "320px";
+        coachImage.style.top = "330px";
     }
 }
 
