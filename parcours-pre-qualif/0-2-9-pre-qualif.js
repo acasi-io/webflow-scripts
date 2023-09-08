@@ -110,8 +110,7 @@ function ajouterObjetUniqueParQuestion(array, newObject) {
 function resize() {
     if (screenWidth <= 768) {
         coachImage.style.display = 'none';
-        coachMobile.style.display = 'flex';
-        coachMobile.style.flexDirection = 'column';
+        coachMobile.style.display = 'block';
     } else {
         coachImage.style.top = "330px";
     }
@@ -120,9 +119,8 @@ function resize() {
 function resizeZero() {
     if (screenWidth <= 768) {
         coachImage.style.top = "0px";
-        coachImage.style.display = 'flex';
+        coachImage.style.display = 'block';
         coachMobile.style.display = 'none';
-        coachImage.style.flexDirection = 'column';
     } else {
         coachImage.style.top = "0px";
     }
