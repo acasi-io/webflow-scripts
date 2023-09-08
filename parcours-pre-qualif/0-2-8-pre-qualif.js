@@ -111,6 +111,7 @@ function resize() {
     if (screenWidth <= 768) {
         coachImage.style.display = 'none';
         coachMobile.style.display = 'flex';
+        coachMobile.style.flexDirection = 'column';
     } else {
         coachImage.style.top = "330px";
     }
@@ -121,6 +122,7 @@ function resizeZero() {
         coachImage.style.top = "0px";
         coachImage.style.display = 'flex';
         coachMobile.style.display = 'none';
+        coachImage.style.flexDirection = 'column';
     } else {
         coachImage.style.top = "0px";
     }
