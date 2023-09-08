@@ -155,4 +155,6 @@ function redirectUrl(endUrl) {
     properties.forEach(property => {
         urlRedirection.searchParams.set(property.hubspot_property, property.value)
     });
+
+    window.location.href = urlRedirection;
 }
