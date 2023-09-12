@@ -45,6 +45,7 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
             document.getElementById('chat_wait').classList.add('hidden');
             document.getElementById('coach_answer').classList.remove('hidden');
             nextBtn.classList.add('next-button');
+            nextPage();
         }, 1000);
         
         let currentChoice
