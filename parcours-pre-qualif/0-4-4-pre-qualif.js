@@ -1,5 +1,4 @@
 const nextBtn = document.getElementById('next-button');
-const disabledNextButton = document.getElementById('disabled-button');
 const screenWidth = window.innerWidth;
 const coachMobile = document.getElementById('image-coach-mobile');
 const coachImage = document.getElementById("container-coach-image");
