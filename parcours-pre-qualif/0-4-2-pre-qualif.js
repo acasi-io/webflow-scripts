@@ -146,23 +146,15 @@ function resizeZero() {
 }
 
 
-/*function appendHubspotProperty() {
-    const properties = JSON.parse(localStorage.getItem('choices'));
-
-    properties.forEach(property => {
-        hubspotPropertiesBlock.insertAdjacentHTML('beforeend', `<div data-hubspot-property="${property.hubspot_property}" style='visibility: hidden; height: 0'><label>${property.hubspot_property}</label><input type='text' ${property.value} /></div>`);
-    });
-}*/
-
-
-function redirectUrl(endUrl) {
-    const properties = JSON.parse(localStorage.getItem('choices'));
-
-    let urlRedirection = new URL(endUrl, question.dataset.url);
-
-    properties.forEach(property => {
-        urlRedirection.searchParams.set(property.hubspot_property, property.value)
-    });
+function redirectUrl() {
+    const urlRedirection = question.dataset.url;
 
     window.location.href = urlRedirection;
+    shareCookies();
+}
+
+
+function shareCookies() {
+    let answers = JSON.parse(localStorage.getItem('choices'));
+    document.cookie = `answers=${JSON.stringify(answers)}; domain=acasi.io; path=/`;
 }
