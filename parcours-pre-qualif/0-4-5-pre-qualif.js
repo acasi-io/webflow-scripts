@@ -24,6 +24,9 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 			otherAnswer.classList.remove('input-checked');
 		});
     
+        const choice = localStorage.getItem('currentChoice');
+        const coachAnswer = document.getElementById('coach_answer');
+        
         answer.classList.add('input-checked');
 
         localStorage.setItem('currentChoice', answer.dataset.hubspotPropertyValue);
@@ -36,7 +39,7 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
             resize();
         });
 
-        showCoachAnswer();
+        showCoachAnswer(choice, coachAnswer);
 
         setTimeout(() => {
             document.getElementById('chat_wait').classList.add('hidden');
