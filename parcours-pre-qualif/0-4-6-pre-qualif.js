@@ -3,6 +3,8 @@ const screenWidth = window.innerWidth;
 const coachMobile = document.getElementById('image-coach-mobile');
 const coachImage = document.getElementById("container-coach-image");
 const question = document.querySelector('.question-title');
+const choice = localStorage.getItem('currentChoice');
+const coachAnswer = document.getElementById('coach_answer');
 
 
 storageAnswers = JSON.parse(localStorage.getItem('choices'));
@@ -23,9 +25,6 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
 		document.querySelectorAll('.pre-qualif-answers').forEach(otherAnswer => {
 			otherAnswer.classList.remove('input-checked');
 		});
-    
-        const choice = localStorage.getItem('currentChoice');
-        const coachAnswer = document.getElementById('coach_answer');
         
         answer.classList.add('input-checked');
 
