@@ -54,30 +54,13 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
             } else {
                 storageAnswers[question.dataset.hubspotProperty] = answer.dataset.hubspotPropertyValue;
             }
-            /*currentChoice = {
-                hubspot_property: question.dataset.hubspotProperty,
-                value: answer.dataset.hubspotPropertyValue
-            }*/
         } else {
             return
         }
 
-        //addUniqueObject(storageAnswers, currentChoice);
         localStorage.setItem('choices', JSON.stringify(storageAnswers));
 	});
 });
-
-
-/*function addUniqueObject(array, newObject) {
-    const question = newObject.hubspot_property;
-    const indexDoublon = array.findIndex(objet => objet.hubspot_property === question);
-
-    if (indexDoublon !== -1) {
-        array[indexDoublon] = newObject;
-    } else {
-        array.push(newObject);
-    }
-}*/
 
 
 function resize() {
