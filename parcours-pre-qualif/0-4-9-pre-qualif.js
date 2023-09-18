@@ -47,25 +47,24 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
             nextBtn.classList.add('next-button');
             nextPage();
         }, 1000);
-        
-        let currentChoice
 
         if (question.dataset.hubspotProperty) {
-            currentChoice = {
+            storageAnswers[question.dataset.hubspotProperty] = answer.dataset.hubspotPropertyValue;
+            /*currentChoice = {
                 hubspot_property: question.dataset.hubspotProperty,
                 value: answer.dataset.hubspotPropertyValue
-            }
+            }*/
         } else {
             return
         }
 
-        addUniqueObject(storageAnswers, currentChoice);
+        //addUniqueObject(storageAnswers, currentChoice);
         localStorage.setItem('choices', JSON.stringify(storageAnswers));
 	});
 });
 
 
-function addUniqueObject(array, newObject) {
+/*function addUniqueObject(array, newObject) {
     const question = newObject.hubspot_property;
     const indexDoublon = array.findIndex(objet => objet.hubspot_property === question);
 
@@ -74,7 +73,7 @@ function addUniqueObject(array, newObject) {
     } else {
         array.push(newObject);
     }
-}
+}*/
 
 
 function resize() {
@@ -108,5 +107,5 @@ function redirectUrl() {
 
 function shareCookies() {
     let answers = JSON.parse(localStorage.getItem('choices'));
-    document.cookie = `answers=${JSON.stringify(answers)}; domain=acasi.io; path=/`;
+    document.cookie = `pre_qualification_workflow_data=${JSON.stringify(answers)}; domain=acasi.io; path=/`;
 }
