@@ -49,7 +49,11 @@ document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
         }, 1000);
 
         if (question.dataset.hubspotProperty) {
-            storageAnswers[question.dataset.hubspotProperty] = answer.dataset.hubspotPropertyValue;
+            if (answer.dataset.hubspotPropertyValue === 'true' || answer.dataset.hubspotPropertyValue === 'false') {
+                storageAnswers[question.dataset.hubspotProperty] = JSON.parse(answer.dataset.hubspotPropertyValue);
+            } else {
+                storageAnswers[question.dataset.hubspotProperty] = answer.dataset.hubspotPropertyValue;
+            }
             /*currentChoice = {
                 hubspot_property: question.dataset.hubspotProperty,
                 value: answer.dataset.hubspotPropertyValue
