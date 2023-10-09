@@ -94,5 +94,10 @@ function redirectUrl() {
 
 function shareCookies() {
     let answers = JSON.parse(localStorage.getItem('choices'));
+    
+    if (answers === null || answers === undefined) {
+        answers = {};
+    }
+
     document.cookie = `pre_qualification_workflow_data=${JSON.stringify(answers)}; domain=acasi.io; path=/`;
 }
