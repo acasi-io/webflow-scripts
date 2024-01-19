@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -26,8 +26,38 @@ function yearFillText(htmlTag, data) {
     document.querySelector(htmlTag).textContent = `${Math.round(dataYear)} € / an`;
 }
 
+function fillSameClassTexts(urssafData, htmlTag) {
+    const data = engine.evaluate(urssafData);
+    document.querySelectorAll(htmlTag).forEach(element => {
+        element.textContent = `${formatValue(data)}`;
+    });
+}
+
+function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag) {
+    const gainTrimester = engine.evaluate("protection sociale . retraite . trimestres");
+    document.getElementById(gainTrimesterTag).textContent = gainTrimester.nodeValue;
+
+    const pensionScheme = engine.evaluate("protection sociale . retraite . base");
+    document.getElementById(pensionSchemeTag).textContent = pensionScheme.nodeValue * 12;
+
+    const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
+    document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
+}
+
 
 /* EURL */
+function eurlResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome) {
+    eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'IS', 'non');
+
+    eurlRemuneration('.is-eurl-before', '.is-eurl-after');
+    eurlContributions();
+    eurlRetirement();
+
+    eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'IR', 'non');
+    eurlRemuneration('.ir-eurl-before', '.ir-eurl-after');
+}
+
+
 function eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, tax, singleParent) {
     engine.setSituation({
         "dirigeant . rémunération . totale": turnoverMinusCost,
@@ -42,22 +72,12 @@ function eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, househ
         "entreprise . catégorie juridique": "'SARL'",
         "impôt . méthode de calcul": "'barème standard'"
     });
-
-    const net = engine.evaluate("dirigeant . rémunération . net");
-    const eurlIsBefore = document.querySelectorAll('.is-eurl-before');
-    eurlIsBefore.forEach(element => {
-    	element.textContent = `${formatValue(net)}`;
-    });
-    
-    const afterTax = engine.evaluate("dirigeant . rémunération . net . après impôt");
-    const eurlIsAfter = document.querySelectorAll('.is-eurl-after');
-    eurlIsAfter.forEach(element => {
-    	element.textContent = `${formatValue(afterTax)}`;
-    });
-
-    eurlContributions()
 }
 
+function eurlRemuneration(taxRemunerationBefore, taxRemunerationAfter) {
+    fillSameClassTexts("dirigeant . rémunération . net", taxRemunerationBefore);
+    fillSameClassTexts("dirigeant . rémunération . net . après impôt", taxRemunerationAfter);
+}
 
 function eurlContributions() {
     fillText("dirigeant . indépendant . cotisations et contributions", '#eurl-contributions-total');
@@ -69,4 +89,8 @@ function eurlContributions() {
     fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", '#eurl-disability');
     fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", '#eurl-csg');
     fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", '#eurl-formation');
+}
+
+function eurlRetirement() {
+    retirementText('eurl-gain-trimester', 'eurl-pension-scheme', 'eurl-retirement-points');
 }
