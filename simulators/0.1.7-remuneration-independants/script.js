@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -14,8 +14,8 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
 
     eurlResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome);
     sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
-    eiResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome);
-    microResult(turnoverMinusCost, cost, situation, numberOfChild, householdIncome);
+    eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
+    microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
 });
 
 
@@ -184,32 +184,31 @@ function sasuRetirement() {
 
 
 /* EI */
-function eiResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome) {
-    eiSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'non', 'IS');
+function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
+    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
 
     eiRemuneration('.is-ei-before', '.is-ei-after');
     eiContributions();
     eiRetirement();
 
-    eiSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'non', 'IR');
+    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IR');
     eiRemuneration('.ir-ei-before', '.ir-ei-after');
 
     if(document.getElementById('checkbox-single-parent').checked) {
-        eiSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'oui', 'IS');
+        eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IS');
         eiRemuneration('.is-ei-before', '.is-ei-after');
 
-        eiSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'oui', 'IR');
+        eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IR');
         eiRemuneration('.ir-ei-before', '.ir-ei-after');
     }
 }
 
-function eiSituation(turnoverMinusCost, cost, situation, numberOfChild, householdIncome, singleParent, tax) {
+function eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, tax) {
     engine.setSituation({
         "entreprise . chiffre d'affaires": turnoverMinusCost,
         "impôt . foyer fiscal . situation de famille": `'${situation}'`,
         "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
         "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
-        "entreprise . charges": parseFloat(cost),
         "impôt . foyer fiscal . parent isolé": `${singleParent}`,
         "entreprise . imposition": `'${tax}'`,
         "entreprise . activité . nature": "'libérale'",
@@ -242,26 +241,25 @@ function eiRetirement() {
 
 
 /* MICRO */
-function microResult(turnoverMinusCost, cost, situation, numberOfChild, householdIncome) {
-    microSituation(turnoverMinusCost, cost, situation, numberOfChild, householdIncome, 'non', 'non');
+function microResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
+    microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'non');
 
     microRemuneration();
     microContributions();
     microRetirement();
 
     if(document.getElementById('checkbox-single-parent').checked) {
-        microSituation(turnoverMinusCost, cost, situation, numberOfChild, householdIncome, 'non', 'oui');
+        microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'oui');
         microRemuneration();
     }
 }
 
-function microSituation(turnoverMinusCost, cost, situation, numberOfChild, householdIncome, paymentInDischarge, singleParent) {
+function microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, paymentInDischarge, singleParent) {
     engine.setSituation({
         "dirigeant . auto-entrepreneur . chiffre d'affaires": turnoverMinusCost,
         "impôt . foyer fiscal . situation de famille": `'${situation}'`,
         "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
         "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
-        "entreprise . charges": parseFloat(cost),
         "dirigeant . auto-entrepreneur . impôt . versement libératoire": `${paymentInDischarge}`,
         "impôt . foyer fiscal . parent isolé": `${singleParent}`,
         "entreprise . activité . nature": "'libérale'",
