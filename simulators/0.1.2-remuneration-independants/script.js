@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -158,11 +158,12 @@ function sasuContributions() {
     yearFillText("salarié . cotisations . maladie . employeur", '#sasu-disease');
     yearFillText("salarié . cotisations . CSA", '#sasu-solidarity-autonomy');
     yearFillText("salarié . cotisations . ATMP", '#sasu-work-accident');
-    yearFillText("salarié . cotisations . vieillesse . employeur", '.sasu-employer-old-age');
 
     const data = engine.evaluate("salarié . cotisations . vieillesse . employeur");
     console.log(data);
     console.log(data.nodeValue);
+    yearFillText("salarié . cotisations . vieillesse . employeur", '.sasu-employer-old-age');
+
     yearFillText("salarié . cotisations . retraite complémentaire . employeur", '#sasu-employer-additional-retirement');
     yearFillText("salarié . cotisations . CEG . employeur", '#sasu-employer-general-balance');
     yearFillText("salarié . cotisations . allocations familiales", '#sasu-family-allowance');
