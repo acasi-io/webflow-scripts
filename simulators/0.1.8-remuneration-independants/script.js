@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -185,14 +185,19 @@ function sasuRetirement() {
 
 /* EI */
 function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
-    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
+    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IR');
 
-    eiRemuneration('.is-ei-before', '.is-ei-after');
+    eiRemuneration('.ir-ei-before', '.ir-ei-after');
     eiContributions();
     eiRetirement();
 
-    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IR');
-    eiRemuneration('.ir-ei-before', '.ir-ei-after');
+    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
+    eiRemuneration('.is-ei-before', '.is-ei-after');
+    const contributionsTotal = (engine.evaluate("dirigeant . indépendant . cotisations et contributions")).nodeValue;
+    const beforeIsTax = turnoverMinusCost - contributionsTotal;
+    document.querySelectorAll('.is-ei-before').forEach(element => {
+        element.textContent = `${beforeIsTax} €/an`;
+    });
 
     if(document.getElementById('checkbox-single-parent').checked) {
         eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IS');
