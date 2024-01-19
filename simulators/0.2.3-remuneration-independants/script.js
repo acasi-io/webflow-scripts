@@ -1,14 +1,23 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
+
+const situation = document.getElementById('personal-situation').value;
+const numberOfChild = parseInt(document.getElementById('child').value);
+
+singleParentConditions();
 
 document.getElementById('calcul-btn').addEventListener('click', () => {
     const turnover = parseFloat(document.getElementById('turnover').value);
     const cost = parseFloat(document.getElementById('cost').value);
-    const situation = document.getElementById('personal-situation').value;
-    const numberOfChild = parseInt(document.getElementById('child').value);
     const householdIncome = parseFloat(document.getElementById('household-income').value);
+
+    document.getElementById('micro').style.display = 'none';
+
+    if (turnover <= 50000) {
+        document.getElementById('micro').style.display = 'block';
+    }
 
     const turnoverMinusCost = turnover - cost;
 
@@ -17,6 +26,26 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
     eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
     microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
 });
+
+function singleParentConditions() {
+    const containerCheckbox = document.getElementById('container-single-parent-checkbox');
+    const situationInput = document.getElementById('personal-situation');
+    const childInput = document.getElementById('child');
+
+    containerCheckbox.style.display = 'none';
+
+    childInput.addEventListener('input', () => {
+        if ((situation === 'célibataire' || situation === 'veuf') && parseInt(numberOfChild) > 0) {
+            containerCheckbox.style.display = 'block';
+        } 
+    });
+
+    situationInput.addEventListener('change', () => {
+        if ((situation === 'célibataire' || situation === 'veuf') && parseInt(numberOfChild) > 0) {
+            containerCheckbox.style.display = 'block';
+        }
+    });
+}
 
 
 function fillText(urssafData, htmlTag) {
