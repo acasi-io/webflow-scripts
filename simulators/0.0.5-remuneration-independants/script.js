@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -22,7 +22,8 @@ function fillText(urssafData, htmlTag) {
     document.querySelector(htmlTag).textContent = `${formatValue(data)}`;
 }
 
-function yearFillText(htmlTag, data) {
+function yearFillText(urssafData, htmlTag) {
+    const data = engine.evaluate(urssafData);
     const dataYear = data.nodeValue * 12;
     document.querySelector(htmlTag).textContent = `${Math.round(dataYear)} € / an`;
 }
@@ -114,7 +115,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
 
     if(document.getElementById('checkbox-single-parent').checked) {
         sasuSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui');
-        sasuRemuneration('.is-eurl-before', '.is-eurl-after');
+        sasuRemuneration();
     }
 }
 
@@ -132,30 +133,37 @@ function sasuSituation(turnoverMinusCost, situation, numberOfChild, householdInc
 }
 
 function sasuRemuneration() {
-    fillSameClassTexts("salarié . rémunération . net . à payer avant impôt", '.sasu-before');
-    fillSameClassTexts("salarié . rémunération . net . payé après impôt", '.sasu-after');
+    const net = engine.evaluate("salarié . rémunération . net . à payer avant impôt");
+    document.querySelectorAll('.sasu-before').forEach(element => {
+        element.textContent = `${net.nodeValue * 12} €/an`;
+    });
+
+    const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
+    document.querySelectorAll('.sasu-after').forEach(element => {
+        element.textContent = `${afterTax.nodeValue * 12} €/an`;
+    });
 }
 
 function sasuContributions() {
-    fillText("dirigeant . assimilé salarié . cotisations", '#sasu-contributions-total');
+    yearFillText("dirigeant . assimilé salarié . cotisations", '#sasu-contributions-total');
 
     /* EMPLOYER */
-    fillText("salarié . cotisations . maladie . employeur", '#sasu-disease');
-    fillText("salarié . cotisations . CSA", '#sasu-solidarity-autonomy');
-    fillText("salarié . cotisations . ATMP", '#sasu-work-accident');
-    fillText("salarié . cotisations . vieillesse . employeur", '#sasu-employer-old-age');
-    fillText("salarié . cotisations . retraite complémentaire . employeur", '#sasu-employer-additional-retirement');
-    fillText("salarié . cotisations . CEG . employeur", '#sasu-employer-general-balance');
-    fillText("salarié . cotisations . allocations familiales", '#sasu-family-allowance');
-    fillText("salarié . cotisations . FNAL", '#sasu-fnal');
-    fillText("salarié . cotisations . formation professionnelle", '#sasu-formation');
-    fillText("salarié . cotisations . taxe d'apprentissage", '#sasu-learning-tax');
-    fillText("salarié . cotisations . prévoyances . employeur", '#sasu-additional-planning');
+    yearFillText("salarié . cotisations . maladie . employeur", '#sasu-disease');
+    yearFillText("salarié . cotisations . CSA", '#sasu-solidarity-autonomy');
+    yearFillText("salarié . cotisations . ATMP", '#sasu-work-accident');
+    yearFillText("salarié . cotisations . vieillesse . employeur", '#sasu-employer-old-age');
+    yearFillText("salarié . cotisations . retraite complémentaire . employeur", '#sasu-employer-additional-retirement');
+    yearFillText("salarié . cotisations . CEG . employeur", '#sasu-employer-general-balance');
+    yearFillText("salarié . cotisations . allocations familiales", '#sasu-family-allowance');
+    yearFillText("salarié . cotisations . FNAL", '#sasu-fnal');
+    yearFillText("salarié . cotisations . formation professionnelle", '#sasu-formation');
+    yearFillText("salarié . cotisations . taxe d'apprentissage", '#sasu-learning-tax');
+    yearFillText("salarié . cotisations . prévoyances . employeur", '#sasu-additional-planning');
 
     /* EMPLOYEE */
-    fillText("salarié . cotisations . vieillesse . salarié", '#sasu-employee-old-age');
-    fillText("salarié . cotisations . retraite complémentaire . salarié", '#sasu-employee-additional-retirement');
-    fillText("salarié . cotisations . CEG . salarié", '#sasu-employee-general-balance');
-    fillText("salarié . cotisations . CSG-CRDS", '#sasu-csg');
-    fillText("salarié . cotisations . prévoyances . salarié", '#sasu-employee-additional-planning');
+    yearFillText("salarié . cotisations . vieillesse . salarié", '#sasu-employee-old-age');
+    yearFillText("salarié . cotisations . retraite complémentaire . salarié", '#sasu-employee-additional-retirement');
+    yearFillText("salarié . cotisations . CEG . salarié", '#sasu-employee-general-balance');
+    yearFillText("salarié . cotisations . CSG-CRDS", '#sasu-csg');
+    yearFillText("salarié . cotisations . prévoyances . salarié", '#sasu-employee-additional-planning');
 }
