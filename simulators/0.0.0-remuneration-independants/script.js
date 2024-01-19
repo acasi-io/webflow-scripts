@@ -11,12 +11,23 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
     const householdIncome = parseFloat(document.getElementById('household-income').value);
 
     const turnoverMinusCost = turnover - cost;
-    console.log(turnoverMinusCost);
 
     eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'IS', 'non');
 });
 
 
+function fillText(urssafData, htmlTag) {
+    const data = engine.evaluate(urssafData);
+    document.querySelector(htmlTag).textContent = `${formatValue(data)}`;
+}
+
+function yearFillText(htmlTag, data) {
+    const dataYear = data.nodeValue * 12;
+    document.querySelector(htmlTag).textContent = `${Math.round(dataYear)} € / an`;
+}
+
+
+/* EURL */
 function eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, tax, singleParent) {
     engine.setSituation({
         "dirigeant . rémunération . totale": turnoverMinusCost,
@@ -43,8 +54,19 @@ function eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, househ
     eurlIsAfter.forEach(element => {
     	element.textContent = `${formatValue(afterTax)}`;
     });
-    
-    const contributionsTotal = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
-    const eurlContributions = document.getElementById('eurl-contributions');
-    eurlContributions.textContent = `${formatValue(contributionsTotal)}`;
+
+    eurlContributions()
+}
+
+
+function eurlContributions() {
+    fillText("dirigeant . indépendant . cotisations et contributions", '#eurl-contributions-total');
+    fillText("dirigeant . indépendant . cotisations et contributions . cotisations", '#eurl-contributions');
+    fillText("dirigeant . indépendant . cotisations et contributions . maladie", '#eurl-disease');
+    fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", '#eurl-base-retirement');
+    fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", '#eurl-additional-retirement');
+    fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", '#eurl-disease-allowance');
+    fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", '#eurl-disability');
+    fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", '#eurl-csg');
+    fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", '#eurl-formation');
 }
