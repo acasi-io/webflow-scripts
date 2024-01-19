@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -13,10 +13,14 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
     const cost = parseFloat(document.getElementById('cost').value);
     const householdIncome = parseFloat(document.getElementById('household-income').value);
 
-    document.getElementById('micro').style.display = 'none';
+    document.querySelectorAll('.simulator-micro').forEach(element => {
+        element.style.display = 'none';
+    });
 
     if (turnover <= 50000) {
-        document.getElementById('micro').style.display = 'block';
+        document.querySelectorAll('.simulator-micro').forEach(element => {
+            element.style.display = 'block';
+        });
     }
 
     const turnoverMinusCost = turnover - cost;
