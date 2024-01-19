@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -14,6 +14,8 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
 
     eurlResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome);
     sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
+    eiResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome);
+    microResult(turnoverMinusCost, cost, situation, numberOfChild, householdIncome);
 });
 
 
@@ -178,4 +180,108 @@ function sasuContributions() {
 
 function sasuRetirement() {
     retirementText('sasu-gain-trimester', 'sasu-pension-scheme', 'sasu-retirement-points');
+}
+
+
+/* EI */
+function eiResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome) {
+    eiSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'non', 'IS');
+
+    eiRemuneration('.is-ei-before', '.is-ei-after');
+    eiContributions();
+    eiRetirement();
+
+    eiSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'non', 'IR');
+    eiRemuneration('.ir-ei-before', '.ir-ei-after');
+
+    if(document.getElementById('checkbox-single-parent').checked) {
+        eiSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'oui', 'IS');
+        eiRemuneration('.is-ei-before', '.is-ei-after');
+
+        eiSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'oui', 'IR');
+        eiRemuneration('.ir-ei-before', '.ir-ei-after');
+    }
+}
+
+function eiSituation(turnoverMinusCost, cost, situation, numberOfChild, householdIncome, singleParent, tax) {
+    engine.setSituation({
+        "entreprise . chiffre d'affaires": turnoverMinusCost,
+        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
+        "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
+        "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
+        "entreprise . charges": parseFloat(cost),
+        "impôt . foyer fiscal . parent isolé": `${singleParent}`,
+        "entreprise . imposition": `'${tax}'`,
+        "entreprise . activité . nature": "'libérale'",
+        "situation personnelle . domiciliation fiscale à l'étranger": "non",
+        "entreprise . catégorie juridique": "'EI'",
+        "entreprise . catégorie juridique . EI . auto-entrepreneur": "non"
+    });
+}
+
+function eiRemuneration(taxRemunerationBefore, taxRemunerationAfter) {
+    fillSameClassTexts("dirigeant . rémunération . net", taxRemunerationBefore);
+    fillSameClassTexts("dirigeant . rémunération . net . après impôt", taxRemunerationAfter);
+}
+
+function eiContributions() {
+    fillText("dirigeant . indépendant . cotisations et contributions", '#ei-contributions-total');
+    fillText("dirigeant . indépendant . cotisations et contributions . cotisations", '#ei-contributions');
+    fillText("dirigeant . indépendant . cotisations et contributions . maladie", '#ei-disease');
+    fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", '#ei-base-retirement');
+    fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", '#ei-additional-retirement');
+    fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", '#ei-disease-allowance');
+    fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", '#ei-disability');
+    fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", '#ei-csg');
+    fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", '#ei-formation');
+}
+
+function eiRetirement() {
+    retirementText('ei-gain-trimester', 'ei-pension-scheme', 'ei-retirement-points');
+}
+
+
+/* MICRO */
+function microResult(turnoverMinusCost, cost, situation, numberOfChild, householdIncome) {
+    microSituation(turnoverMinusCost, cost, situation, numberOfChild, householdIncome, 'non', 'non');
+
+    microRemuneration();
+    microContributions();
+    microRetirement();
+
+    if(document.getElementById('checkbox-single-parent').checked) {
+        microSituation(turnoverMinusCost, cost, situation, numberOfChild, householdIncome, 'non', 'oui');
+        microRemuneration();
+    }
+}
+
+function microSituation(turnoverMinusCost, cost, situation, numberOfChild, householdIncome, paymentInDischarge, singleParent) {
+    engine.setSituation({
+        "dirigeant . auto-entrepreneur . chiffre d'affaires": turnoverMinusCost,
+        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
+        "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
+        "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
+        "entreprise . charges": cost,
+        "dirigeant . auto-entrepreneur . impôt . versement libératoire": `${paymentInDischarge}`,
+        "impôt . foyer fiscal . parent isolé": `${singleParent}`,
+        "entreprise . activité . nature": "'libérale'",
+        "entreprise . catégorie juridique": "'EI'",
+        "entreprise . catégorie juridique . EI . auto-entrepreneur": "oui"
+    });
+}
+
+function microRemuneration() {
+    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net", '.micro-before');
+    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net . après impôt", '.micro-after');
+}
+
+function microContributions() {
+    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions", '#micro-contributions-total');
+    fillText("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations", '#micro-contributions');
+    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . TFC", '#micro-room-tax');
+    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . CFP", '#micro-formation');
+}
+
+function microRetirement() {
+    retirementText('micro-gain-trimester', 'micro-pension-scheme', 'micro-retirement-points');
 }
