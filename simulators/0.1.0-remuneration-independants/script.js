@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.1.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -22,17 +22,17 @@ function fillText(urssafData, htmlTag) {
     document.querySelector(htmlTag).textContent = `${formatValue(data)}`;
 }
 
-function formateNumber(number) {
+/* function formateNumber(number) {
     const roundedNumber = Math.round(number);
     const formattedNumber = roundedNumber.toLocaleString('fr-FR');
 
     return formattedNumber;
-}
+} */
 
 function yearFillText(urssafData, htmlTag) {
     const data = engine.evaluate(urssafData);
-    const dataYear = data.nodeValue * 12;
-    document.querySelector(htmlTag).textContent = formateNumber(dataYear) + '€/an';
+    const dataYear = Math.round(data.nodeValue * 12);
+    document.querySelector(htmlTag).textContent = dataYear.toLocaleString('fr-FR') + '€/an';
 }
 
 function fillSameClassTexts(urssafData, htmlTag) {
