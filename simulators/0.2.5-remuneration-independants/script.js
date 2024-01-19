@@ -1,12 +1,12 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
 const situation = document.getElementById('personal-situation').value;
 const numberOfChild = parseInt(document.getElementById('child').value);
 
-singleParentConditions();
+// singleParentConditions();
 
 document.getElementById('calcul-btn').addEventListener('click', () => {
     const turnover = parseFloat(document.getElementById('turnover').value);
@@ -31,7 +31,7 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
     microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
 });
 
-function singleParentConditions() {
+/*function singleParentConditions() {
     const containerCheckbox = document.getElementById('container-single-parent-checkbox');
     const situationInput = document.getElementById('personal-situation');
     const childInput = document.getElementById('child');
@@ -49,7 +49,7 @@ function singleParentConditions() {
             containerCheckbox.style.display = 'block';
         }
     });
-}
+} */
 
 
 function fillText(urssafData, htmlTag) {
