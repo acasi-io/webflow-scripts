@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "modele-social": "^2.0.0-rc.4",
+    "publicodes": "^1.0.0-rc.7"
+  }
+}
