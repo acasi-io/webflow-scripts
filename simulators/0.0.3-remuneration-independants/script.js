@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.0.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -12,7 +12,7 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
 
     const turnoverMinusCost = turnover - cost;
 
-    eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'IS', 'non');
+    eurlResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome);
 });
 
 
@@ -55,6 +55,14 @@ function eurlResult(turnoverMinusCost, situation, cost, numberOfChild, household
 
     eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'IR', 'non');
     eurlRemuneration('.ir-eurl-before', '.ir-eurl-after');
+
+    if(document.getElementById('checkbox-single-parent').checked) {
+        eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'IS', 'oui');
+        eurlRemuneration('.is-eurl-before', '.is-eurl-after');
+
+        eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'IR', 'oui');
+        eurlRemuneration('.ir-eurl-before', '.ir-eurl-after');
+    }
 }
 
 
