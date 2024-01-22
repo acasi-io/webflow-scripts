@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -29,6 +29,8 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
     sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
     eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
     microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
+
+    compareRemuneration();
 });
 
 /*function singleParentConditions() {
@@ -86,6 +88,15 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
     document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
+}
+
+function compareRemuneration() {
+    setTimeout(() => {
+        document.querySelectorAll('.is-eurl-after').forEach(element => {
+            localStorage.setItem('eurlIs', (element.textContent).replace(/\D/g, ''));
+            console.log((element.textContent).replace(/\D/g, ''));
+        });
+    },100);
 }
 
 
