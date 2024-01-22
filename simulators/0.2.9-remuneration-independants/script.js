@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -133,8 +133,8 @@ function sasuContributions() {
 
     /* EMPLOYER */
     yearFillText("salarié . cotisations . maladie . employeur", '#sasu-disease');
-    /*fillText("salarié . cotisations . CSA", '#sasu-solidarity-autonomy');
-    fillText("salarié . cotisations . ATMP", '#sasu-work-accident');
+    yearFillText("salarié . cotisations . CSA", '#sasu-solidarity-autonomy');
+    /*fillText("salarié . cotisations . ATMP", '#sasu-work-accident');
     fillText("salarié . cotisations . vieillesse . employeur", '.sasu-employer-old-age');
     fillText("salarié . cotisations . retraite complémentaire . employeur", '#sasu-employer-additional-retirement');
     yearFillText("salarié . cotisations . CEG . employeur", '#sasu-employer-general-balance');
