@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -165,26 +165,26 @@ function eiEurlRemuneration(taxRemunerationAfter) {
 
 
 /* EURL */
-function eurlResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome) {
-    eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'IS', 'non');
+function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
+    eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'non');
 
     eiEurlRemuneration('.is-eurl-after');
     eurlContributions();
     eurlRetirement();
 
-    eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'IR', 'non');
+    eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IR', 'non');
     eiEurlRemuneration('.ir-eurl-after');
 
     if(document.getElementById('checkbox-single-parent').checked) {
-        eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'IS', 'oui');
+        eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'oui');
         eiEurlRemuneration('.is-eurl-after');
 
-        eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, 'IR', 'oui');
+        eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IR', 'oui');
         eiEurlRemuneration('.ir-eurl-after');
     }
 }
 
-function eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, householdIncome, tax, singleParent) {
+function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, tax, singleParent) {
     engine.setSituation({
         "dirigeant . rémunération . totale": turnoverMinusCost,
         "impôt . foyer fiscal . situation de famille": `'${situation}'`,
@@ -192,7 +192,6 @@ function eurlSituation(turnoverMinusCost, situation, cost, numberOfChild, househ
         "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
         "entreprise . activité . nature": "'libérale'",
         "entreprise . imposition": `'${tax}'`,
-        "entreprise . charges": cost,
         "impôt . foyer fiscal . parent isolé": `${singleParent}`,
         "entreprise . associés": "'unique'",
         "entreprise . catégorie juridique": "'SARL'",
