@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -91,19 +91,17 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
 }
 
 function compareRemuneration() {
-    setTimeout(() => {
-        document.querySelectorAll('.is-eurl-after').forEach(element => {
-            localStorage.setItem('eurlIs', ((element.textContent).replace(/\D/g, '')).toLocaleString('fr-FR'));
-        });
+    document.querySelectorAll('.is-eurl-after').forEach(element => {
+        localStorage.setItem('eurlIs', ((element.textContent).replace(/\D/g, '')));
+    });
 
-        document.querySelectorAll('.is-ei-after').forEach(element => {
-            localStorage.setItem('eiIs', ((element.textContent).replace(/\D/g, '')).toLocaleString('fr-FR'));
-        });
+    document.querySelectorAll('.is-ei-after').forEach(element => {
+        localStorage.setItem('eiIs', ((element.textContent).replace(/\D/g, '')));
+    });
 
-        document.querySelectorAll('.sasu-after').forEach(element => {
-            localStorage.setItem('sasu', ((element.textContent).replace(/\D/g, '')).toLocaleString('fr-FR'));
-        });
-    },100);
+    document.querySelectorAll('.sasu-after').forEach(element => {
+        localStorage.setItem('sasu', ((element.textContent).replace(/\D/g, '')));
+    });
 }
 
 
