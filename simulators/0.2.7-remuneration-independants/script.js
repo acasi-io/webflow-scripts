@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -94,7 +94,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non');
 
     sasuRemuneration();
-    // sasuContributions();
+    sasuContributions();
     sasuRetirement();
 
     if(document.getElementById('checkbox-single-parent').checked) {
@@ -132,24 +132,24 @@ function sasuContributions() {
     yearFillText("dirigeant . assimilé salarié . cotisations", '#sasu-contributions-total');
 
     /* EMPLOYER */
-    yearFillText("salarié . cotisations . maladie . employeur", '#sasu-disease');
-    yearFillText("salarié . cotisations . CSA", '#sasu-solidarity-autonomy');
-    yearFillText("salarié . cotisations . ATMP", '#sasu-work-accident');
-    yearFillText("salarié . cotisations . vieillesse . employeur", '.sasu-employer-old-age');
-    yearFillText("salarié . cotisations . retraite complémentaire . employeur", '#sasu-employer-additional-retirement');
-    yearFillText("salarié . cotisations . CEG . employeur", '#sasu-employer-general-balance');
+    fillText("salarié . cotisations . maladie . employeur", '#sasu-disease');
+    fillText("salarié . cotisations . CSA", '#sasu-solidarity-autonomy');
+    fillText("salarié . cotisations . ATMP", '#sasu-work-accident');
+    fillText("salarié . cotisations . vieillesse . employeur", '.sasu-employer-old-age');
+    fillText("salarié . cotisations . retraite complémentaire . employeur", '#sasu-employer-additional-retirement');
+    /*yearFillText("salarié . cotisations . CEG . employeur", '#sasu-employer-general-balance');
     yearFillText("salarié . cotisations . allocations familiales", '#sasu-family-allowance');
     yearFillText("salarié . cotisations . FNAL", '#sasu-fnal');
     yearFillText("salarié . cotisations . formation professionnelle", '#sasu-formation');
     yearFillText("salarié . cotisations . taxe d'apprentissage", '#sasu-learning-tax');
-    yearFillText("salarié . cotisations . prévoyances . employeur", '#sasu-additional-planning');
+    yearFillText("salarié . cotisations . prévoyances . employeur", '#sasu-additional-planning');*/
 
     /* EMPLOYEE */
-    yearFillText("salarié . cotisations . vieillesse . salarié", '#sasu-employee-old-age');
+    /*yearFillText("salarié . cotisations . vieillesse . salarié", '#sasu-employee-old-age');
     yearFillText("salarié . cotisations . retraite complémentaire . salarié", '#sasu-employee-additional-retirement');
     yearFillText("salarié . cotisations . CEG . salarié", '#sasu-employee-general-balance');
     yearFillText("salarié . cotisations . CSG-CRDS", '#sasu-csg');
-    yearFillText("salarié . cotisations . prévoyances . salarié", '#sasu-employee-additional-planning');
+    yearFillText("salarié . cotisations . prévoyances . salarié", '#sasu-employee-additional-planning');*/
 }
 
 function sasuRetirement() {
