@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -30,7 +30,7 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
     eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
     microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
 
-    compareRemuneration();
+    compareRemuneration(turnover);
 });
 
 /*function singleParentConditions() {
@@ -90,7 +90,7 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
     document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
 }
 
-function compareRemuneration() {
+function compareRemuneration(turnover) {
     document.querySelectorAll('.is-eurl-after').forEach(element => {
         localStorage.setItem('eurlIs', ((element.textContent).replace(/\D/g, '')));
     });
@@ -102,6 +102,39 @@ function compareRemuneration() {
     document.querySelectorAll('.sasu-after').forEach(element => {
         localStorage.setItem('sasu', ((element.textContent).replace(/\D/g, '')));
     });
+
+    document.querySelectorAll('.micro-after').forEach(element => {
+        if (turnover > 50000) {
+            localStorage.setItem('micro', 0);
+        } else {
+            localStorage.setItem('micro', ((element.textContent).replace(/\D/g, '')));
+        }
+    });
+
+    const eurlIs = parseInt(localStorage.getItem('eurlIs'));
+    const eiIs = parseInt(localStorage.getItem('eiIs'));
+    const sasu = parseInt(localStorage.getItem('sasu'));
+    const micro = parseInt(localStorage.getItem('micro'));
+
+    const bestChoice = document.getElementById('best-choice');
+
+    if (eurlIs >= eiIs && eurlIs > sasu && eurlIs > micro) {
+        if (eurlIs > eiIs) {
+            bestChoice.textContent = 'EURL';
+        } else if (eurlIs === eiIs) {
+            bestChoice.textContent = 'EURL ou EI';
+        }
+    } else if (sasu > eurlIs && sasu > eiIs && sasu > micro) {
+        bestChoice.textContent = 'SASU';
+    } else if (micro > eurlIs && micro > eiIs && micro > sasu) {
+        bestChoice.textContent = 'MICRO'
+    } else if (eiIs >= eurlIs && eiIs > sasu && eiIs > micro) {
+        if (eiIs > eurlIs) {
+            bestChoice.textContent = 'EURL';
+        } else if (eiIs === eurlIs) {
+            bestChoice.textContent = 'EURL ou EI';
+        }
+    }
 }
 
 
