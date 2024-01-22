@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -188,7 +188,7 @@ function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdInc
     engine.setSituation({
         "dirigeant . rémunération . totale": turnoverMinusCost,
         "impôt . foyer fiscal . situation de famille": `'${situation}'`,
-        "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
+        "impôt . foyer fiscal . enfants à charge": numberOfChild,
         "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
         "entreprise . activité . nature": "'libérale'",
         "entreprise . imposition": `'${tax}'`,
