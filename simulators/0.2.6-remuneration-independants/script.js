@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.2.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -119,12 +119,12 @@ function sasuSituation(turnoverMinusCost, situation, numberOfChild, householdInc
 function sasuRemuneration() {
     const net = engine.evaluate("salarié . rémunération . net . à payer avant impôt");
     document.querySelectorAll('.sasu-before').forEach(element => {
-        element.textContent = `${net.nodeValue * 12} €/an`;
+        element.textContent = `${Math.round(net.nodeValue * 12)} €/an`;
     });
 
     const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
     document.querySelectorAll('.sasu-after').forEach(element => {
-        element.textContent = `${afterTax.nodeValue * 12} €/an`;
+        element.textContent = `${Math.round(afterTax.nodeValue * 12)} €/an`;
     });
 }
 
