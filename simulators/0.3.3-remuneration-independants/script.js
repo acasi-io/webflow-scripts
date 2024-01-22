@@ -1,16 +1,16 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.3.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
-const situation = document.getElementById('personal-situation').value;
-const numberOfChild = parseInt(document.getElementById('child').value);
 
 // singleParentConditions();
 
 document.getElementById('calcul-btn').addEventListener('click', () => {
     const turnover = parseFloat(document.getElementById('turnover').value);
     const cost = parseFloat(document.getElementById('cost').value);
+    const situation = document.getElementById('personal-situation').value;
+    const numberOfChild = parseInt(document.getElementById('child').value);
     const householdIncome = parseFloat(document.getElementById('household-income').value);
 
     document.querySelectorAll('.simulator-micro').forEach(element => {
