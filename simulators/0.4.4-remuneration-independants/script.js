@@ -1,7 +1,22 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
+
+const eurlBefore = document.querySelectorAll('.eurl-before');
+const isEurlAfter = document.querySelectorAll('.is-eurl-after');
+const irEurlAfter = document.querySelectorAll('.ir-eurl-after');
+const sasuBefore = document.querySelectorAll('.sasu-before');
+const sasuAfter = document.querySelectorAll('.sasu-after');
+const eiBefore = document.querySelectorAll('.ei-before');
+const isEiBefore = document.querySelectorAll('.is-ei-after');
+const irEiBefore = document.querySelectorAll('.ir-ei-after');
+const microBefore = document.querySelectorAll('.micro-before');
+const microAfter = document.querySelectorAll('.micro-after');
+
+const green = '#6FCF97';
+const orange = '#FFB13C';
+const red = '#FF2B44';
 
 
 // singleParentConditions();
@@ -91,7 +106,8 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
     const pensionScheme = engine.evaluate("protection sociale . retraite . base");
     document.getElementById(pensionSchemeTag).textContent = `${(pensionScheme.nodeValue * 12).toLocaleString('fr-FR')}€`;
 
-    const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
+    /*const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");*/
+    const additionalRetirementValue = engine.evaluate("protection sociale . retraite . complémentaire . RCI");
     document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
 }
 
