@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -55,8 +55,9 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
 
 
 function fillText(urssafData, htmlTag) {
-    const data = engine.evaluate(urssafData);
-    document.querySelector(htmlTag).textContent = `${formatValue(data)}`;
+    const dataUrssaf = engine.evaluate(urssafData);
+    const data = dataUrssaf.nodeValue;
+    document.querySelector(htmlTag).textContent = data.toLocaleString('fr-FR') + '€';
 }
 
 /* function formateNumber(number) {
@@ -69,13 +70,14 @@ function fillText(urssafData, htmlTag) {
 function yearFillText(urssafData, htmlTag) {
     const data = engine.evaluate(urssafData);
     const dataYear = Math.round(data.nodeValue * 12);
-    document.querySelector(htmlTag).textContent = dataYear.toLocaleString('fr-FR') + '€/an';
+    document.querySelector(htmlTag).textContent = dataYear.toLocaleString('fr-FR') + '€';
 }
 
 function fillSameClassTexts(urssafData, htmlTag) {
-    const data = engine.evaluate(urssafData);
+    const dataUrssaf = engine.evaluate(urssafData);
+    const data = dataUrssaf.nodeValue;
     document.querySelectorAll(htmlTag).forEach(element => {
-        element.textContent = `${formatValue(data)}`;
+        element.textContent = data.toLocaleString('fr-FR') + '€';
     });
 }
 
@@ -84,7 +86,7 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
     document.getElementById(gainTrimesterTag).textContent = gainTrimester.nodeValue;
 
     const pensionScheme = engine.evaluate("protection sociale . retraite . base");
-    document.getElementById(pensionSchemeTag).textContent = `${(pensionScheme.nodeValue * 12).toLocaleString('fr-FR')} €/an`;
+    document.getElementById(pensionSchemeTag).textContent = `${(pensionScheme.nodeValue * 12).toLocaleString('fr-FR')}€`;
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
     document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
@@ -172,12 +174,12 @@ function sasuSituation(turnoverMinusCost, situation, numberOfChild, householdInc
 function sasuRemuneration() {
     const net = engine.evaluate("salarié . rémunération . net . à payer avant impôt");
     document.querySelectorAll('.sasu-before').forEach(element => {
-        element.textContent = `${Math.round(net.nodeValue * 12)} €/an`;
+        element.textContent = `${Math.round(net.nodeValue * 12)}€`;
     });
 
     const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
     document.querySelectorAll('.sasu-after').forEach(element => {
-        element.textContent = `${Math.round(afterTax.nodeValue * 12)} €/an`;
+        element.textContent = `${Math.round(afterTax.nodeValue * 12)}€`;
     });
 }
 
