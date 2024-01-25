@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -170,7 +170,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuContributions();
     sasuRetirement();
 
-    if(document.getElementById('checkbox-single-parent').checked) {
+    if(document.getElementById('single-parent').value === 'oui') {
         sasuSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui');
         sasuRemuneration();
     }
@@ -248,7 +248,7 @@ function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IR', 'non');
     eiEurlRemuneration('.ir-eurl-after');
 
-    if(document.getElementById('checkbox-single-parent').checked) {
+    if(document.getElementById('single-parent').value === 'oui') {
         eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'oui');
         eiEurlRemuneration('.is-eurl-after');
 
@@ -300,7 +300,7 @@ function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome) 
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IR');
     eiEurlRemuneration('.ir-ei-after');
 
-    if(document.getElementById('checkbox-single-parent').checked) {
+    if(document.getElementById('single-parent').value === 'oui') {
         eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IS');
         eiEurlRemuneration('.is-ei-after');
 
@@ -349,7 +349,7 @@ function microResult(turnoverMinusCost, situation, numberOfChild, householdIncom
     microContributions();
     microRetirement();
 
-    if(document.getElementById('checkbox-single-parent').checked) {
+    if(document.getElementById('single-parent').value === 'oui') {
         microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'oui');
         microRemuneration();
     }
