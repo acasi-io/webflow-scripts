@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -99,16 +99,15 @@ function fillSameClassTexts(urssafData, htmlTag) {
     });
 }
 
-function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPoints) {
+function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag) {
     const gainTrimester = engine.evaluate("protection sociale . retraite . trimestres");
     document.getElementById(gainTrimesterTag).textContent = gainTrimester.nodeValue;
 
     const pensionScheme = engine.evaluate("protection sociale . retraite . base");
     document.getElementById(pensionSchemeTag).textContent = `${(pensionScheme.nodeValue * 12).toLocaleString('fr-FR')}€`;
 
-    /*const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");*/
-    const additionalRetirementValue = engine.evaluate("protection sociale . retraite . complémentaire . RCI");
-    document.getElementById(retirementPoints).textContent = additionalRetirementValue.nodeValue;
+    const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
+    document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
 }
 
 function compareRemuneration(turnover) {
