@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -16,11 +16,14 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
     document.querySelectorAll('.simulator-micro').forEach(element => {
         element.style.display = 'none';
     });
+    document.querySelector('.simulator-micro-contributions').style.display = 'none';
 
     if (turnover <= 50000) {
         document.querySelectorAll('.simulator-micro').forEach(element => {
             element.style.display = 'block';
         });
+
+        document.querySelector('.simulator-micro-contributions').style.display = 'flex';
     }
 
     const turnoverMinusCost = turnover - cost;
