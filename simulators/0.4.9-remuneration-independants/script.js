@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -18,8 +18,6 @@ const green = '#6FCF97';
 const orange = '#FFB13C';
 const red = '#FF2B44';
 
-
-// singleParentConditions();
 
 document.getElementById('calcul-btn').addEventListener('click', () => {
     const turnover = parseFloat(document.getElementById('turnover').value);
@@ -51,39 +49,11 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
     compareRemuneration(turnover);
 });
 
-/*function singleParentConditions() {
-    const containerCheckbox = document.getElementById('container-single-parent-checkbox');
-    const situationInput = document.getElementById('personal-situation');
-    const childInput = document.getElementById('child');
-
-    containerCheckbox.style.display = 'none';
-
-    childInput.addEventListener('input', () => {
-        if ((situation === 'célibataire' || situation === 'veuf') && parseInt(numberOfChild) > 0) {
-            containerCheckbox.style.display = 'block';
-        } 
-    });
-
-    situationInput.addEventListener('change', () => {
-        if ((situation === 'célibataire' || situation === 'veuf') && parseInt(numberOfChild) > 0) {
-            containerCheckbox.style.display = 'block';
-        }
-    });
-} */
-
-
 function fillText(urssafData, htmlTag) {
     const dataUrssaf = engine.evaluate(urssafData);
     const data = dataUrssaf.nodeValue;
     document.querySelector(htmlTag).textContent = data.toLocaleString('fr-FR') + '€';
 }
-
-/* function formateNumber(number) {
-    const roundedNumber = Math.round(number);
-    const formattedNumber = roundedNumber.toLocaleString('fr-FR');
-
-    return formattedNumber;
-} */
 
 function yearFillText(urssafData, htmlTag) {
     const data = engine.evaluate(urssafData);
@@ -118,23 +88,41 @@ function compareRemuneration(turnover) {
     const sasu = parseInt(localStorage.getItem('sasu'));
     const micro = parseInt(localStorage.getItem('micro'));
 
-    const bestChoice = document.getElementById('best-choice');
+    const eurlContainerRecap = document.getElementById('eurl-container-recap');
+    const sasuContainerRecap = document.getElementById('sasu-container-recap');
+    const eiContainerRecap = document.getElementById('ei-container-recap');
+    const microContainerRecap = document.getElementById('micro-container-recap');
+
+    const eurlHeadingRecap = document.getElementById('eurl-heading-recap');
+    const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
+    const eiHeadingRecap = document.getElementById('ei-heading-recap');
+    const microHeadingRecap = document.getElementById('micro-heading-recap');
 
     if (eurlIs >= eiIs && eurlIs > sasu && eurlIs > micro) {
         if (eurlIs > eiIs) {
-            bestChoice.textContent = 'EURL';
+            eurlContainerRecap.classList.add('container-best-choice');
+            eurlHeadingRecap.classList.add('heading-best-choice');
         } else if (eurlIs === eiIs) {
-            bestChoice.textContent = 'EURL ou EI';
+            eurlContainerRecap.classList.add('container-best-choice');
+            eurlHeadingRecap.classList.add('heading-best-choice');
+            eiContainerRecap.classList.add('container-best-choice');
+            eiHeadingRecap.classList.add('heading-best-choice');
         }
     } else if (sasu > eurlIs && sasu > eiIs && sasu > micro) {
-        bestChoice.textContent = 'SASU';
+        sasuContainerRecap.classList.add('container-best-choice');
+        sasuHeadingRecap.classList.add('heading-best-choice');
     } else if (micro > eurlIs && micro > eiIs && micro > sasu) {
-        bestChoice.textContent = 'MICRO'
+        microContainerRecap.classList.add('container-best-choice');
+        microHeadingRecap.classList.add('heading-best-choice');
     } else if (eiIs >= eurlIs && eiIs > sasu && eiIs > micro) {
         if (eiIs > eurlIs) {
-            bestChoice.textContent = 'EI';
+            eiContainerRecap.classList.add('container-best-choice');
+            eiHeadingRecap.classList.add('heading-best-choice');
         } else if (eiIs === eurlIs) {
-            bestChoice.textContent = 'EURL ou EI';
+            eurlContainerRecap.classList.add('container-best-choice');
+            eurlHeadingRecap.classList.add('heading-best-choice');
+            eiContainerRecap.classList.add('container-best-choice');
+            eiHeadingRecap.classList.add('heading-best-choice');
         }
     }
 }
