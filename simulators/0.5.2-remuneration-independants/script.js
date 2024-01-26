@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -180,11 +180,13 @@ function calculWageAndDividends(turnoverMinusCost) {
     // max du montant de rémunération si tout est versé en rémunération
     const maxWageIfAllWage = parseInt(localStorage.getItem('sasuMaxAmountWage'));
 
+    let maxDividendsIfAllDividends;
+
     // max du montant de dividendes si tout est versé en dividendes
     if (turnoverMinusCost <= 42500) {
-        let maxDividendsIfAllDividends = turnoverMinusCost - (turnoverMinusCost * 0.15);
+        maxDividendsIfAllDividends = turnoverMinusCost - (turnoverMinusCost * 0.15);
     } else {
-        let maxDividendsIfAllDividends = turnoverMinusCost - ((42500 * 0.15) + ((turnoverMinusCost - 42500) * 0.25));
+        maxDividendsIfAllDividends = turnoverMinusCost - ((42500 * 0.15) + ((turnoverMinusCost - 42500) * 0.25));
     }
 
     console.log(maxWageIfAllWage);
