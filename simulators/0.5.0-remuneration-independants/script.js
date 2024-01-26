@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.4.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -82,6 +82,14 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
 
 function compareRemuneration(turnover) {
     storeRemuneration(turnover);
+
+    document.querySelectorAll('.heading-recap').forEach(element => {
+        element.classList.remove('heading-best-choice');
+    });
+
+    document.querySelectorAll('.container-recap').forEach(element => {
+        element.classList.remove('container-best-choice');
+    });
 
     const eurlIs = parseInt(localStorage.getItem('eurlIs'));
     const eiIs = parseInt(localStorage.getItem('eiIs'));
