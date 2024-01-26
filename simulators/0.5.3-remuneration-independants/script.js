@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -168,7 +168,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuContributions();
     sasuRetirement();
 
-    calculWageAndDividends(turnoverMinusCost);
+    calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncome, situation);
 
     if(document.getElementById('single-parent').value === 'oui') {
         sasuSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui');
@@ -176,7 +176,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     }
 }
 
-function calculWageAndDividends(turnoverMinusCost) {
+function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncome, situation) {
     // max du montant de rémunération si tout est versé en rémunération
     const maxWageIfAllWage = parseInt(localStorage.getItem('sasuMaxAmountWage'));
 
@@ -191,6 +191,10 @@ function calculWageAndDividends(turnoverMinusCost) {
 
     console.log(maxWageIfAllWage);
     console.log(maxDividendsIfAllDividends);
+
+    sasuCalculDividendsNets(maxDividendsIfAllDividends);
+
+    sasuCalculDividendsNets(maxDividendsIfAllDividends, 'non', numberOfChild, householdIncome, situation);
 }
 
 function sasuSetSituationDividendes(wage, situation, numberOfChild, householdIncome, singleParent) {
@@ -204,6 +208,36 @@ function sasuSetSituationDividendes(wage, situation, numberOfChild, householdInc
         "salarié . régimes spécifiques . DFS": "non",
         "impôt . méthode de calcul": "'barème standard'",
     });
+}
+
+function sasuCalculDividendsNets(dividends, singleParent, numberOfChild, householdIncome, situation) {
+    /* Dividendes Barème Progressif */
+    engine.setSituation({
+        "bénéficiaire . dividendes . bruts": parseInt(dividends),
+        "impôt . foyer fiscal . parent isolé": `${singleParent}`,
+        "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
+        "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
+        // "dirigeant . rémunération . net . imposable": "0 €/an",
+        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
+        "impôt . méthode de calcul": "'barème standard'",
+        "bénéficiaire": "oui",
+        "entreprise . catégorie juridique": "'SAS'"
+    });
+
+    const dividendsNetsBareme = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
+    console.log(dividendsNetsBareme);
+    
+
+    /* Dividendes PFU */
+    engine.setSituation({
+        "impôt . méthode de calcul": "'PFU'",
+        "bénéficiaire . dividendes . bruts": parseInt(dividends),
+        "bénéficiaire": "oui",
+        "entreprise . catégorie juridique": "'SAS'"
+    });
+
+    const dividendsNetsPFU = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
+    console.log(dividendsNetsPFU);
 }
 
 function sasuSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
