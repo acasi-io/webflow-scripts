@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -180,7 +180,29 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
     // max du montant de rémunération si tout est versé en rémunération
     const maxWageIfAllWage = parseInt(localStorage.getItem('sasuMaxAmountWage'));
 
-    let maxDividendsIfAllDividends;
+    const testAmount5P = maxWageIfAllWage * 0.05;
+
+    console.log(testAmount5P);
+
+    sasuSetSituation(testAmount5P, situation, numberOfChild, householdIncome, 'non');
+
+    const contributionsUrssaf = engine.evaluate("dirigeant . assimilé salarié . cotisations");
+    const contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
+    console.log(contributionsAmount);
+
+    const totalForIs = turnoverMinusCost - contributionsAmount - rémunération;
+
+    let maxDividends;
+
+    if (totalForIs <= 42500) {
+        maxDividends = totalForIs - (totalForIs * 0.15);
+    } else {
+        maxDividends = totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25));
+    }
+
+    console.log(maxDividends);
+
+    /*let maxDividendsIfAllDividends;
 
     // max du montant de dividendes si tout est versé en dividendes
     if (turnoverMinusCost <= 42500) {
@@ -192,10 +214,10 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
     console.log(maxWageIfAllWage);
     console.log(maxDividendsIfAllDividends);
 
-    sasuCalculDividendsNets(maxDividendsIfAllDividends, 'non', numberOfChild, householdIncome, situation);
+    sasuCalculDividendsNets(maxDividendsIfAllDividends, 'non', numberOfChild, householdIncome, situation);*/
 }
 
-function sasuSetSituationDividendes(wage, situation, numberOfChild, householdIncome, singleParent) {
+function sasuSetSituation(wage, situation, numberOfChild, householdIncome, singleParent) {
     engine.setSituation({
         "salarié . rémunération . net . payé après impôt": parseFloat(wage),
         "entreprise . catégorie juridique": "'SAS'",
