@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -214,6 +214,8 @@ function sasuSetSituationDividendes(wage, situation, numberOfChild, householdInc
 
 function sasuCalculDividendsNets(dividends, numberOfChild, householdIncome, situation) {
     /* Dividendes Barème Progressif */
+    console.log(numberOfChild);
+    debugger
     engine.setSituation({
         "bénéficiaire . dividendes . bruts": parseInt(dividends),
         "impôt . foyer fiscal . parent isolé": "non",
@@ -225,6 +227,7 @@ function sasuCalculDividendsNets(dividends, numberOfChild, householdIncome, situ
         "bénéficiaire": "oui",
         "entreprise . catégorie juridique": "'SAS'"
     });
+    debugger
 
     const dividendsNetsBareme = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     console.log(dividendsNetsBareme);
