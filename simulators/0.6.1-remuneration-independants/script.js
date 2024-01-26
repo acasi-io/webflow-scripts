@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -192,8 +192,6 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
     console.log(maxWageIfAllWage);
     console.log(maxDividendsIfAllDividends);
 
-    console.log(numberOfChild);
-
     sasuCalculDividendsNets(maxDividendsIfAllDividends, 'non', numberOfChild, householdIncome, situation);
 }
 
@@ -217,7 +215,7 @@ function sasuCalculDividendsNets(dividends, singleParent, numberOfChild, househo
         "impôt . foyer fiscal . parent isolé": `${singleParent}`,
         "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
         "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
-        // "dirigeant . rémunération . net . imposable": "0 €/an",
+        "dirigeant . rémunération . net . imposable": "0 €/an",
         "impôt . foyer fiscal . situation de famille": `'${situation}'`,
         "impôt . méthode de calcul": "'barème standard'",
         "bénéficiaire": "oui",
