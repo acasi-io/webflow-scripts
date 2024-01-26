@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.5.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -30,6 +30,7 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
         element.style.display = 'none';
     });
     document.querySelector('.simulator-micro-contributions').style.display = 'none';
+    document.getElementById('micro-grid-recap').style.display = 'none';
 
     if (turnover <= 50000) {
         document.querySelectorAll('.simulator-micro').forEach(element => {
@@ -37,6 +38,7 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
         });
 
         document.querySelector('.simulator-micro-contributions').style.display = 'flex';
+        document.getElementById('micro-grid-recap').style.display = 'block';
     }
 
     const turnoverMinusCost = turnover - cost;
@@ -166,10 +168,40 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuContributions();
     sasuRetirement();
 
+    calculWageAndDividends(turnoverMinusCost);
+
     if(document.getElementById('single-parent').value === 'oui') {
         sasuSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui');
         sasuRemuneration();
     }
+}
+
+function calculWageAndDividends(turnoverMinusCost) {
+    // max du montant de rémunération si tout est versé en rémunération
+    const maxWageIfAllWage = parseInt(localStorage.getItem('sasuMaxAmountWage'));
+
+    // max du montant de dividendes si tout est versé en dividendes
+    if (turnoverMinusCost <= 42500) {
+        let maxDividendsIfAllDividends = turnoverMinusCost - (turnoverMinusCost * 0.15);
+    } else {
+        let maxDividendsIfAllDividends = turnoverMinusCost - ((42500 * 0.15) + ((turnoverMinusCost - 42500) * 0.25));
+    }
+
+    console.log(maxWageIfAllWage);
+    console.log(maxDividendsIfAllDividends);
+}
+
+function sasuSetSituationDividendes(wage, situation, numberOfChild, householdIncome, singleParent) {
+    engine.setSituation({
+        "salarié . rémunération . net . payé après impôt": parseFloat(wage),
+        "entreprise . catégorie juridique": "'SAS'",
+        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
+        "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
+        "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
+        "impôt . foyer fiscal . parent isolé": `${singleParent}`,
+        "salarié . régimes spécifiques . DFS": "non",
+        "impôt . méthode de calcul": "'barème standard'",
+    });
 }
 
 function sasuSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
@@ -192,8 +224,10 @@ function sasuRemuneration() {
     });
 
     const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
+    const afterTaxAmount = Math.round(afterTax.nodeValue * 12);
+    localStorage.setItem('sasuMaxAmountWage', afterTaxAmount);
     document.querySelectorAll('.sasu-after').forEach(element => {
-        element.textContent = `${Math.round(afterTax.nodeValue * 12)}€`;
+        element.textContent = `${afterTaxAmount}€`;
     });
 }
 
