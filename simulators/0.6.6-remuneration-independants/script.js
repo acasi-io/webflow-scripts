@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -221,12 +221,12 @@ function sasuSetSituation(wage, situation, numberOfChild, householdIncome, singl
     engine.setSituation({
         "salarié . rémunération . net . payé après impôt": parseFloat(wage),
         "entreprise . catégorie juridique": "'SAS'",
-        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
+        /*"impôt . foyer fiscal . situation de famille": `'${situation}'`,
         "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
         "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
         "impôt . foyer fiscal . parent isolé": `${singleParent}`,
         "salarié . régimes spécifiques . DFS": "non",
-        "impôt . méthode de calcul": "'barème standard'",
+        "impôt . méthode de calcul": "'barème standard'",*/
     });
 }
 
