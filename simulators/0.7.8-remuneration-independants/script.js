@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -228,7 +228,7 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
 }
 
 function sasuSetSituation() {
-    const total = engine.setSituation({
+    engine.setSituation({
         "salarié . rémunération . net . payé après impôt": 20000,
         "entreprise . catégorie juridique": "'SAS'",
         /*"impôt . foyer fiscal . situation de famille": `'${situation}'`,
