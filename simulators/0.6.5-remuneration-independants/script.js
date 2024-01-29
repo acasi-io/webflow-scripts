@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.6.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -180,9 +180,9 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
     // max du montant de rémunération si tout est versé en rémunération
     const maxWageIfAllWage = parseInt(localStorage.getItem('sasuMaxAmountWage'));
 
-    const testAmount5P = maxWageIfAllWage * 0.05;
+    const testAmount5P = Math.round(maxWageIfAllWage * 0.05);
 
-    console.log(testAmount5P);
+    console.log(testAmount5P); // 1310
 
     sasuSetSituation(testAmount5P, situation, numberOfChild, householdIncome, 'non');
 
