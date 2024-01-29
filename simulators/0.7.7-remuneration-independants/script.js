@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -47,6 +47,7 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
     sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
     eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
     microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
+    calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncome, situation);
 
     compareRemuneration(turnover);
 });
@@ -168,7 +169,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuContributions();
     sasuRetirement();
 
-    calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncome, situation);
+    //calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncome, situation);
 
     if(document.getElementById('single-parent').value === 'oui') {
         sasuSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui');
@@ -181,7 +182,7 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
     const maxWageIfAllWage = parseInt(localStorage.getItem('sasuMaxAmountWage'));
     const testAmount5P = Math.round(maxWageIfAllWage * 0.05); // 1310
 
-    sasuSetSituation(situation, numberOfChild, householdIncome, 'non');
+    sasuSetSituation();
 
     const contributionsUrssaf = engine.evaluate("dirigeant . assimilé salarié . cotisations"); 
     const contributionsAmount = Math.round(contributionsUrssaf.nodeValue); // 1073
@@ -226,16 +227,16 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
     sasuCalculDividendsNets(maxDividendsIfAllDividends, 'non', numberOfChild, householdIncome, situation);*/
 }
 
-function sasuSetSituation(situation, numberOfChild, householdIncome, singleParent) {
+function sasuSetSituation() {
     const total = engine.setSituation({
         "salarié . rémunération . net . payé après impôt": 20000,
         "entreprise . catégorie juridique": "'SAS'",
-        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
+        /*"impôt . foyer fiscal . situation de famille": `'${situation}'`,
         "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
         "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
         "impôt . foyer fiscal . parent isolé": `${singleParent}`,
         "salarié . régimes spécifiques . DFS": "non",
-        "impôt . méthode de calcul": "'barème standard'",
+        "impôt . méthode de calcul": "'barème standard'",*/
     });
 }
 
