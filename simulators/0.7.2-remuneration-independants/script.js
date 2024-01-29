@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -181,12 +181,16 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
     const maxWageIfAllWage = parseInt(localStorage.getItem('sasuMaxAmountWage'));
     const testAmount5P = Math.round(maxWageIfAllWage * 0.05); // 1310
 
-    sasuSetSituation(testAmount5P, situation, numberOfChild, householdIncome, 'non');
+    /*sasuSetSituation(testAmount5P, situation, numberOfChild, householdIncome, 'non');
 
     const contributionsUrssaf = engine.evaluate("dirigeant . assimilé salarié . cotisations"); 
     const contributionsAmount = Math.round(contributionsUrssaf.nodeValue); // 1073
 
     const remunerationTotal = engine.evaluate("salarié . rémunération . brut");
+    console.log(remunerationTotal.nodeValue);*/
+
+    sasuSetSituation(situation, numberOfChild, householdIncome, singleParent);
+    const remunerationTotal = engine.evaluate("dirigeant . rémunération . totale");
     console.log(remunerationTotal.nodeValue);
 
     const totalForIs = turnoverMinusCost - contributionsAmount - testAmount5P;
@@ -218,10 +222,10 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
     sasuCalculDividendsNets(maxDividendsIfAllDividends, 'non', numberOfChild, householdIncome, situation);*/
 }
 
-function sasuSetSituation(wage, situation, numberOfChild, householdIncome, singleParent) {
+function sasuSetSituation(situation, numberOfChild, householdIncome, singleParent) {
     engine.setSituation({
-        "salarié . rémunération . net . payé après impôt": wage,
-        "entreprise . catégorie juridique": "'SAS'",
+        //"salarié . rémunération . net . payé après impôt": wage,
+        "salarié . rémunération . brut": 1991,
         "impôt . foyer fiscal . situation de famille": `'${situation}'`,
         "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
         "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
