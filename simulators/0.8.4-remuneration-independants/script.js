@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -245,8 +245,7 @@ function sasuCalculDividendsNets(dividends, singleParent, numberOfChild, househo
     });
 
     const dividendsNetsBareme = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
-    yearFillText("bénéficiaire . dividendes . nets d'impôt", '#sasu-progressive-dividends');
-    console.log((Math.round(dividendsNetsBareme.nodeValue)).toLocaleString('fr-FR'));
+    document.getElementById('sasu-progressive-dividends').textContent = (Math.round(dividendsNetsBareme.nodeValue)).toLocaleString('fr-FR');
     
 
     /* Dividendes PFU */
@@ -258,8 +257,7 @@ function sasuCalculDividendsNets(dividends, singleParent, numberOfChild, househo
     });
 
     const dividendsNetsPFU = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
-    yearFillText("bénéficiaire . dividendes . nets d'impôt", '#sasu-pfu-dividends');
-    console.log((Math.round(dividendsNetsPFU.nodeValue)).toLocaleString('fr-FR'));
+    document.getElementById('sasu-pfu-dividends').textContent = (Math.round(dividendsNetsPFU.nodeValue)).toLocaleString('fr-FR');
 }
 
 function sasuSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
