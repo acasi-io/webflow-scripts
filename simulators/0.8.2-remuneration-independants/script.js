@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -180,24 +180,24 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
 function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncome, situation) {
     // max du montant de rémunération si tout est versé en rémunération
     const maxWageIfAllWage = parseInt(localStorage.getItem('sasuMaxAmountWage'));
-    const wage = Math.round(turnoverMinusCost * 0.1);
+    const wage = Math.round(turnoverMinusCost * 0.3);
 
     sasuSetSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
     const contributionsUrssaf = engine.evaluate("dirigeant . assimilé salarié . cotisations"); 
-    const contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
+    const contributionsAmount = Math.round(contributionsUrssaf.nodeValue) * 12;
     console.log(contributionsAmount);
 
     const netBeforeTax = engine.evaluate("salarié . rémunération . net . à payer avant impôt");
-    const netAmountBefore = Math.round(netBeforeTax.nodeValue);
+    const netAmountBefore = Math.round(netBeforeTax.nodeValue) * 12;
     console.log(netAmountBefore);
 
     const tax = engine.evaluate("impôt . montant");
-    const taxAmount = Math.round(tax.nodeValue);
+    const taxAmount = Math.round(tax.nodeValue) * 12;
     console.log(taxAmount);
 
     const evaluation = engine.evaluate("salarié . rémunération . net . payé après impôt");
-    const netAfterTax = Math.round(evaluation.nodeValue);
+    const netAfterTax = Math.round(evaluation.nodeValue) * 12;
     console.log(netAfterTax);
 
     const totalForIs = turnoverMinusCost - contributionsAmount - netAfterTax;
@@ -205,26 +205,14 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
     let maxDividends;
 
     if (totalForIs <= 42500) {
-        maxDividends = totalForIs - (totalForIs * 0.15);
+        maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
     } else {
-        maxDividends = totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25));
+        maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
     }
 
     console.log(maxDividends);
 
-    /*let maxDividendsIfAllDividends;
-
-    // max du montant de dividendes si tout est versé en dividendes
-    if (turnoverMinusCost <= 42500) {
-        maxDividendsIfAllDividends = turnoverMinusCost - (turnoverMinusCost * 0.15);
-    } else {
-        maxDividendsIfAllDividends = turnoverMinusCost - ((42500 * 0.15) + ((turnoverMinusCost - 42500) * 0.25));
-    }
-
-    console.log(maxWageIfAllWage);
-    console.log(maxDividendsIfAllDividends);
-
-    sasuCalculDividendsNets(maxDividendsIfAllDividends, 'non', numberOfChild, householdIncome, situation);*/
+    sasuCalculDividendsNets(maxDividends, 'non', numberOfChild, householdIncome, situation);
 }
 
 function sasuSetSituation(wage, situation, numberOfChild, householdIncome, singleParent) {
