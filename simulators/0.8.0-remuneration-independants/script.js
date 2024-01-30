@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.7.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -190,13 +190,16 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
     console.log(contributionsAmount);
 
     const remunerationBrut = engine.evaluate("salarié . rémunération . brut");
-    console.log(remunerationBrut.nodeValue);
+    const brutAmount = Math.round(remunerationBrut.nodeValue); // 1685
+    console.log(brutAmount);
 
     const remunerationTotal = engine.evaluate("dirigeant . rémunération . totale");
-    console.log(remunerationTotal.nodeValue);
+    const netAmount = Math.round(remunerationTotal.nodeValue);
+    console.log(netAmount);
 
     const tax = engine.evaluate("impôt . montant");
-    console.log(tax.nodeValue);
+    const taxAmount = Math.round(tax.nodeValue);
+    console.log(taxAmount);
 
     const totalForIs = turnoverMinusCost - contributionsAmount - testAmount5P;
 
@@ -207,8 +210,6 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
     } else {
         maxDividends = totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25));
     }
-
-    
 
     console.log(maxDividends);
 
