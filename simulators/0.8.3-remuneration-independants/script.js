@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -54,7 +54,7 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
 
 function fillText(urssafData, htmlTag) {
     const dataUrssaf = engine.evaluate(urssafData);
-    const data = dataUrssaf.nodeValue;
+    const data = Math.round(dataUrssaf.nodeValue);
     document.querySelector(htmlTag).textContent = data.toLocaleString('fr-FR') + '€';
 }
 
@@ -212,6 +212,8 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
 
     console.log(maxDividends);
 
+    document.getElementById('sasu-gross-dividends').textContent = maxDividends.toLocaleString('fr-FR');
+
     sasuCalculDividendsNets(maxDividends, 'non', numberOfChild, householdIncome, situation);
 }
 
@@ -243,6 +245,7 @@ function sasuCalculDividendsNets(dividends, singleParent, numberOfChild, househo
     });
 
     const dividendsNetsBareme = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
+    yearFillText("bénéficiaire . dividendes . nets d'impôt", '#sasu-progressive-dividends');
     console.log((Math.round(dividendsNetsBareme.nodeValue)).toLocaleString('fr-FR'));
     
 
@@ -255,6 +258,7 @@ function sasuCalculDividendsNets(dividends, singleParent, numberOfChild, househo
     });
 
     const dividendsNetsPFU = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
+    yearFillText("bénéficiaire . dividendes . nets d'impôt", '#sasu-pfu-dividends');
     console.log((Math.round(dividendsNetsPFU.nodeValue)).toLocaleString('fr-FR'));
 }
 
