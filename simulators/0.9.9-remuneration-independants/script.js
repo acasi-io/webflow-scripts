@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -189,16 +189,9 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
 /* SASU */
 function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
 
-    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 10);
-    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 20);
-    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 30);
-    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 40);
-    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 50);
-    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 60);
-    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 70);
-    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 80);
-    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 90);
-    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 100);
+    for (let percentage = 5; percentage <= 100; percentage += 5) {
+        sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage);
+    }
     
 
     /*const wage = Math.round(turnoverMinusCost * 0.3);
