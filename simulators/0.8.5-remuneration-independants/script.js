@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -163,7 +163,8 @@ function storeRemuneration(turnover) {
 
 /* SASU */
 function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
-    sasuSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non');
+    const wage = Math.round(turnoverMinusCost * 0.3);
+    sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
     sasuRemuneration();
     sasuContributions();
