@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -165,7 +165,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
 
     sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
-    const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
+    let afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
     if (isNaN(afterTax.nodeValue)) {
         afterTax = 0;
     } else {
@@ -173,7 +173,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     }
     //const afterTaxAmount = Math.round(afterTax.nodeValue * 12);
 
-    const contributionsTotal = engine.evaluate("dirigeant . assimilé salarié . cotisations");
+    let contributionsTotal = engine.evaluate("dirigeant . assimilé salarié . cotisations");
     if (isNaN(contributionsTotal.nodeValue)) {
         contributionsTotal = 0;
     } else {
