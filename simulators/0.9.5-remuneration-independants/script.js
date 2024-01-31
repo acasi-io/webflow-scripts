@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -227,7 +227,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     }
 }
 
-function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, singleParent, maxDividends) {
+function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, singleParent) {
     const contributions = engine.evaluate("dirigeant . assimilé salarié . cotisations");
     const contributionsAmount = Math.round(contributions.nodeValue) * 12;
 
