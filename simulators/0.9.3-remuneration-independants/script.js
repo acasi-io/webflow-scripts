@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -165,7 +165,6 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     // Initialisation du montant maximum et du pourcentage correspondant
     let maxAmount = 0;
     let optimalPercentage = 0;
-    let maxDividends;
 
     // Boucle de 10% à 100% avec un pas de 10%
     for (let percentage = 10; percentage <= 100; percentage += 10) {
@@ -177,11 +176,14 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
         sasuRemuneration();
         sasuContributions();
         sasuRetirement();
-        calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'non', maxDividends);
+        calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'non');
 
         // Obtention du montant après impôt depuis sasuRemuneration()
         const afterTaxAmount = parseInt(document.querySelector('.sasu-after').textContent);
         console.log(afterTaxAmount);
+
+        const maxDividends = parseInt(localStorage.getItem('maxDividends'));
+        console.log(maxDividends);
 
         // Addition de afterTaxAmount et des dividendes
         const currentAmount = afterTaxAmount + maxDividends;
@@ -234,6 +236,8 @@ function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situ
 
     const totalForIs = turnoverMinusCost - contributionsAmount - netAfterTaxAmount;
 
+    let maxDividends;
+
     if (totalForIs <= 42500) {
         maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
     } else {
@@ -241,6 +245,7 @@ function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situ
     }
 
     document.getElementById('sasu-gross-dividends').textContent = maxDividends.toLocaleString('fr-FR');
+    localStorage.setItem('maxDividends', maxDividends);
 
     sasuCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome, singleParent);
 }
