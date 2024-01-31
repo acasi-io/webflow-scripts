@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -161,7 +161,7 @@ function storeRemuneration(turnover) {
 
 
 /* SASU */
-function calculMaxDividendsWithWithWagePercentage(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage) {
+function calculMaxDividendsWithWithWagePercentage(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, maxDividends) {
     const wage = Math.round(turnoverMinusCost * (percentage / 100));
 
     sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
@@ -182,8 +182,6 @@ function calculMaxDividendsWithWithWagePercentage(turnoverMinusCost, situation, 
 
     const totalForIs = turnoverMinusCost - contributionsTotal - afterTax;
 
-    let maxDividends;
-
     if (totalForIs <= 42500) {
         maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
     } else {
@@ -193,7 +191,9 @@ function calculMaxDividendsWithWithWagePercentage(turnoverMinusCost, situation, 
 
 
 function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, myArray) {
-    calculMaxDividendsWithWithWagePercentage(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage)
+    let maxDividends;
+
+    calculMaxDividendsWithWithWagePercentage(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, maxDividends)
 
     sasuCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome, 'non', afterTax, percentage, myArray);
 }
