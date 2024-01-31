@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -184,10 +184,13 @@ function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situ
 
     //sasuSetSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
-    const evaluation = engine.evaluate("salarié . rémunération . net . payé après impôt");
-    const netAfterTax = Math.round(evaluation.nodeValue) * 12;
+    const contributions = engine.evaluate("dirigeant . assimilé salarié . cotisations");
+    const contributionsAmount = Math.round(contributions.nodeValue) * 12;
 
-    const totalForIs = turnoverMinusCost - contributionsAmount - netAfterTax;
+    const netAfterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
+    const netAfterTaxAmount = Math.round(netAfterTax.nodeValue) * 12;
+
+    const totalForIs = turnoverMinusCost - contributionsAmount - netAfterTaxAmount;
 
     let maxDividends;
 
