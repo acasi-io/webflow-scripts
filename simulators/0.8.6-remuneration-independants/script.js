@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -47,7 +47,6 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
     sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
     eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
     microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
-    calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncome, situation);
 
     compareRemuneration(turnover);
 });
@@ -170,36 +169,23 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuContributions();
     sasuRetirement();
 
-    //calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncome, situation);
+    calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'non');
 
     if(document.getElementById('single-parent').value === 'oui') {
-        sasuSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui');
+        sasuSituation(wage, situation, numberOfChild, householdIncome, 'oui');
+        calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'oui')
         sasuRemuneration();
     }
 }
 
-function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncome, situation) {
+function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, singleParent) {
     // max du montant de rémunération si tout est versé en rémunération
-    const maxWageIfAllWage = parseInt(localStorage.getItem('sasuMaxAmountWage'));
-    const wage = Math.round(turnoverMinusCost * 0.3);
+    //const wage = Math.round(turnoverMinusCost * 0.3);
 
-    sasuSetSituation(wage, situation, numberOfChild, householdIncome, 'non');
-
-    const contributionsUrssaf = engine.evaluate("dirigeant . assimilé salarié . cotisations"); 
-    const contributionsAmount = Math.round(contributionsUrssaf.nodeValue) * 12;
-    console.log(contributionsAmount);
-
-    const netBeforeTax = engine.evaluate("salarié . rémunération . net . à payer avant impôt");
-    const netAmountBefore = Math.round(netBeforeTax.nodeValue) * 12;
-    console.log(netAmountBefore);
-
-    const tax = engine.evaluate("impôt . montant");
-    const taxAmount = Math.round(tax.nodeValue) * 12;
-    console.log(taxAmount);
+    //sasuSetSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
     const evaluation = engine.evaluate("salarié . rémunération . net . payé après impôt");
     const netAfterTax = Math.round(evaluation.nodeValue) * 12;
-    console.log(netAfterTax);
 
     const totalForIs = turnoverMinusCost - contributionsAmount - netAfterTax;
 
@@ -211,27 +197,12 @@ function calculWageAndDividends(turnoverMinusCost, numberOfChild, householdIncom
         maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
     }
 
-    console.log(maxDividends);
-
     document.getElementById('sasu-gross-dividends').textContent = maxDividends.toLocaleString('fr-FR');
 
-    sasuCalculDividendsNets(maxDividends, 'non', numberOfChild, householdIncome, situation);
+    sasuCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome, singleParent);
 }
 
-function sasuSetSituation(wage, situation, numberOfChild, householdIncome, singleParent) {
-    engine.setSituation({
-        "dirigeant . rémunération . totale": wage,
-        "entreprise . catégorie juridique": "'SAS'",
-        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
-        "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
-        "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
-        "impôt . foyer fiscal . parent isolé": `${singleParent}`,
-        "salarié . régimes spécifiques . DFS": "non",
-        "impôt . méthode de calcul": "'barème standard'",
-    });
-}
-
-function sasuCalculDividendsNets(dividends, singleParent, numberOfChild, householdIncome, situation) {
+function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdIncome, singleParent) {
     /* Dividendes Barème Progressif */
     engine.setSituation({
         "bénéficiaire . dividendes . bruts": parseInt(dividends),
@@ -261,9 +232,9 @@ function sasuCalculDividendsNets(dividends, singleParent, numberOfChild, househo
     document.getElementById('sasu-pfu-dividends').textContent = (Math.round(dividendsNetsPFU.nodeValue)).toLocaleString('fr-FR');
 }
 
-function sasuSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
+function sasuSituation(wage, situation, numberOfChild, householdIncome, singleParent) {
     engine.setSituation({
-        "dirigeant . rémunération . totale": parseInt(turnoverMinusCost),
+        "dirigeant . rémunération . totale": parseInt(wage),
         "impôt . foyer fiscal . situation de famille": `'${situation}'`,
         "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
         "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
@@ -282,7 +253,6 @@ function sasuRemuneration() {
 
     const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
     const afterTaxAmount = Math.round(afterTax.nodeValue * 12);
-    localStorage.setItem('sasuMaxAmountWage', afterTaxAmount);
     document.querySelectorAll('.sasu-after').forEach(element => {
         element.textContent = `${afterTaxAmount}€`;
     });
