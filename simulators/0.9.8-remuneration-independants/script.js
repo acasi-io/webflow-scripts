@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -163,17 +163,13 @@ function storeRemuneration(turnover) {
 function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage) {
     const wage = Math.round(turnoverMinusCost * (percentage / 100));
 
-    console.log(wage);
-
     sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
     const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
     const afterTaxAmount = Math.round(afterTax.nodeValue * 12);
-    console.log(afterTaxAmount);
 
     const contributionsTotal = engine.evaluate("dirigeant . assimilé salarié . cotisations");
     const contributionsTotalAmount = Math.round(contributionsTotal.nodeValue * 12);
-    console.log(contributionsTotalAmount);
 
     const totalForIs = turnoverMinusCost - contributionsTotalAmount - afterTaxAmount;
 
@@ -185,8 +181,6 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
         maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
     }
 
-    console.log(maxDividends);
-
     const remunerationPlusDividendsAmount = afterTaxAmount + maxDividends;
     console.log(remunerationPlusDividendsAmount);
 }
@@ -196,6 +190,15 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
 function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
 
     sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 10);
+    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 20);
+    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 30);
+    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 40);
+    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 50);
+    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 60);
+    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 70);
+    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 80);
+    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 90);
+    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 100);
     
 
     /*const wage = Math.round(turnoverMinusCost * 0.3);
