@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -165,6 +165,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     // Initialisation du montant maximum et du pourcentage correspondant
     let maxAmount = 0;
     let optimalPercentage = 0;
+    let maxDividends;
 
     // Boucle de 10% à 100% avec un pas de 10%
     for (let percentage = 10; percentage <= 100; percentage += 10) {
@@ -176,14 +177,14 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
         sasuRemuneration();
         sasuContributions();
         sasuRetirement();
-        const currentDividends = calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'non');
+        calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'non', maxDividends);
 
         // Obtention du montant après impôt depuis sasuRemuneration()
         const afterTaxAmount = parseInt(document.querySelector('.sasu-after').textContent);
         console.log(afterTaxAmount);
 
         // Addition de afterTaxAmount et des dividendes
-        const currentAmount = afterTaxAmount + currentDividends;
+        const currentAmount = afterTaxAmount + maxDividends;
         console.log(currentAmount);
 
         // Comparaison et mise à jour du montant maximum et du pourcentage correspondant
@@ -224,7 +225,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     }
 }
 
-function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, singleParent) {
+function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, singleParent, maxDividends) {
     const contributions = engine.evaluate("dirigeant . assimilé salarié . cotisations");
     const contributionsAmount = Math.round(contributions.nodeValue) * 12;
 
@@ -232,8 +233,6 @@ function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situ
     const netAfterTaxAmount = Math.round(netAfterTax.nodeValue) * 12;
 
     const totalForIs = turnoverMinusCost - contributionsAmount - netAfterTaxAmount;
-
-    let maxDividends;
 
     if (totalForIs <= 42500) {
         maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
@@ -261,7 +260,8 @@ function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdI
     });
 
     const dividendsNetsBareme = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
-    document.getElementById('sasu-progressive-dividends').textContent = (Math.round(dividendsNetsBareme.nodeValue)).toLocaleString('fr-FR');
+    const dividendsNetsBaremeAmount = (Math.round(dividendsNetsBareme.nodeValue));
+    document.getElementById('sasu-progressive-dividends').textContent = dividendsNetsBaremeAmount.toLocaleString('fr-FR');
     
 
     /* Dividendes PFU */
@@ -273,7 +273,8 @@ function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdI
     });
 
     const dividendsNetsPFU = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
-    document.getElementById('sasu-pfu-dividends').textContent = (Math.round(dividendsNetsPFU.nodeValue)).toLocaleString('fr-FR');
+    const dividendsNetsPFUAmount = (Math.round(dividendsNetsPFU.nodeValue));
+    document.getElementById('sasu-pfu-dividends').textContent = dividendsNetsPFUAmount.toLocaleString('fr-FR');
 }
 
 function sasuSituation(wage, situation, numberOfChild, householdIncome, singleParent) {
