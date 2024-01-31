@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -179,7 +179,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
         calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'non');
 
         // Obtention du montant après impôt depuis sasuRemuneration()
-        const afterTaxAmount = parseInt(document.querySelector('.sasu-after').textContent);
+        const afterTaxAmount = parseInt(localStorage.getItem('afterTaxAmount'));
         console.log(afterTaxAmount);
 
         const maxDividendsAmount = parseInt(localStorage.getItem('maxDividends'));
@@ -305,6 +305,7 @@ function sasuRemuneration() {
 
     const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
     const afterTaxAmount = Math.round(afterTax.nodeValue * 12);
+    localStorage.setItem('afterTaxAmount', afterTaxAmount);
     document.querySelectorAll('.sasu-after').forEach(element => {
         element.textContent = `${afterTaxAmount}€`;
         console.log(afterTax);
