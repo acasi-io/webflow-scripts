@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -202,6 +202,26 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     for (let percentage = 0; percentage <= 100; percentage += 5) {
         sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, myArray);
     }
+
+    myArray = JSON.parse(localStorage.getItem('myArray')); 
+
+    let maxRemunerationPlusDividends = myArray[0].remunerationPlusDividendsAmount;
+    let maxRemunerationObject = 0;
+    let maxRemunerationPercentage = myArray[0].percentage;
+
+    for (let i = 1; i < myArray.length; i++) {
+        const currentRemunerationPlusDividends = myArray[i].remunerationPlusDividendsAmount;
+
+        if (currentRemunerationPlusDividends > maxRemunerationPlusDividends) {
+            maxRemunerationPlusDividends = currentRemunerationPlusDividends;
+            maxRemunerationObject = i;
+            maxRemunerationPercentage = myArray[i].percentage;
+        }
+    }
+
+    console.log("La plus haute valeur de remunerationPlusDividendsAmount est :", maxRemunerationPlusDividends);
+    console.log("L'objet correspondant est :", myArray[maxRemunerationObject]);
+    console.log("Le percentage correspondant est :", maxRemunerationPercentage);
     
 
     /*const wage = Math.round(turnoverMinusCost * 0.3);
