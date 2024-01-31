@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -179,11 +179,6 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
 }
 
 function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, singleParent) {
-    // max du montant de rémunération si tout est versé en rémunération
-    //const wage = Math.round(turnoverMinusCost * 0.3);
-
-    //sasuSetSituation(wage, situation, numberOfChild, householdIncome, 'non');
-
     const contributions = engine.evaluate("dirigeant . assimilé salarié . cotisations");
     const contributionsAmount = Math.round(contributions.nodeValue) * 12;
 
@@ -252,12 +247,16 @@ function sasuRemuneration() {
     const net = engine.evaluate("salarié . rémunération . net . à payer avant impôt");
     document.querySelectorAll('.sasu-before').forEach(element => {
         element.textContent = `${Math.round(net.nodeValue * 12)}€`;
+        console.log(net);
+        console.log(net.nodeValue);
     });
 
     const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
     const afterTaxAmount = Math.round(afterTax.nodeValue * 12);
     document.querySelectorAll('.sasu-after').forEach(element => {
         element.textContent = `${afterTaxAmount}€`;
+        console.log(afterTax);
+        console.log(afterTaxAmount);
     });
 }
 
