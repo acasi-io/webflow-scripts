@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -229,8 +229,13 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     let bestWage = Math.round(turnoverMinusCost * (maxRemunerationPercentage / 100));
 
     sasuSituation(bestWage, situation, numberOfChild, householdIncome, 'non');
+    sasuRemuneration();
+    sasuContributions();
+    sasuRetirement();
 
     sasuCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome);
+    const sasuGrossDividends = document.getElementById('sasu-gross-dividends');
+    sasuGrossDividends.textContent = maxDividends.toLocaleString('fr-FR');
     
 
     /*const wage = Math.round(turnoverMinusCost * 0.3);
