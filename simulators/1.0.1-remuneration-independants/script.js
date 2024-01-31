@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -174,7 +174,6 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     const totalForIs = turnoverMinusCost - contributionsTotalAmount - afterTaxAmount;
 
     let maxDividends;
-    let dividendsNetsPFUAmount;
 
     if (totalForIs <= 42500) {
         maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
@@ -182,10 +181,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
         maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
     }
 
-    sasuCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome, 'non', dividendsNetsPFUAmount)
-
-    const remunerationPlusDividendsAmount = afterTaxAmount + dividendsNetsPFUAmount;
-    console.log(remunerationPlusDividendsAmount);
+    sasuCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome, 'non', afterTaxAmount);
 }
 
 
@@ -246,7 +242,7 @@ function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situ
     sasuCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome, singleParent);
 }
 
-function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdIncome, singleParent, dividendsNetsPFUAmount) {
+function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdIncome, singleParent, afterTaxAmount) {
     /* Dividendes Barème Progressif */
     engine.setSituation({
         "bénéficiaire . dividendes . bruts": parseInt(dividends),
@@ -274,8 +270,11 @@ function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdI
     });
 
     const dividendsNetsPFU = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
-    dividendsNetsPFUAmount = (Math.round(dividendsNetsPFU.nodeValue));
+    const dividendsNetsPFUAmount = (Math.round(dividendsNetsPFU.nodeValue));
     document.getElementById('sasu-pfu-dividends').textContent = dividendsNetsPFUAmount.toLocaleString('fr-FR');
+
+    const remunerationPlusDividendsAmount = afterTaxAmount + dividendsNetsPFUAmount;
+    console.log(remunerationPlusDividendsAmount);
 }
 
 function sasuSituation(wage, situation, numberOfChild, householdIncome, singleParent) {
