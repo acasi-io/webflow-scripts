@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -288,16 +288,13 @@ function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdI
     console.log(remunerationPlusDividendsAmount);
 
     let myObject = {
-        percentage: `${percentage}`,
+        maxDividends: parseInt(dividends),
+        afterTaxAmount: parseInt(afterTax),
+        percentage: parseInt(percentage),
         remunerationPlusDividendsAmount: parseInt(remunerationPlusDividendsAmount)
     }
 
-    console.log(myObject);
-
     myArray.push(myObject);
-
-    console.log(myArray);
-
     localStorage.setItem('myArray', JSON.stringify(myArray));
 }
 
