@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -160,45 +160,43 @@ function storeRemuneration(turnover) {
 }
 
 
-/* SASU */
-function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
-    // Initialisation du montant maximum et du pourcentage correspondant
-    let maxAmount = 0;
-    let optimalPercentage = 0;
+function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage) {
+    const wage = Math.round(turnoverMinusCost * (percentage / 100));
 
-    // Boucle de 10% à 100% avec un pas de 10%
-    for (let percentage = 10; percentage <= 100; percentage += 10) {
-        // Calcul du montant pour le pourcentage actuel
-        const currentWage = Math.round(turnoverMinusCost * (percentage / 100));
+    console.log(wage);
 
-        // Appels aux fonctions avec le pourcentage actuel
-        sasuSituation(currentWage, situation, numberOfChild, householdIncome, 'non');
-        sasuRemuneration();
-        sasuContributions();
-        sasuRetirement();
-        calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'non');
+    sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
-        // Obtention du montant après impôt depuis sasuRemuneration()
-        const afterTaxAmount = parseInt(localStorage.getItem('afterTaxAmount'));
-        console.log(afterTaxAmount);
+    const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
+    const afterTaxAmount = Math.round(afterTax.nodeValue * 12);
+    console.log(afterTaxAmount);
 
-        const maxDividendsAmount = parseInt(localStorage.getItem('maxDividends'));
-        console.log(maxDividendsAmount);
+    const contributionsTotal = engine.evaluate("dirigeant . assimilé salarié . cotisations");
+    const contributionsTotalAmount = Math.round(contributionsTotal.nodeValue * 12);
+    console.log(contributionsTotalAmount);
 
-        // Addition de afterTaxAmount et des dividendes
-        const currentAmount = afterTaxAmount + maxDividendsAmount;
-        console.log(currentAmount);
+    const totalForIs = turnoverMinusCost - contributionsTotalAmount - afterTaxAmount;
 
-        // Comparaison et mise à jour du montant maximum et du pourcentage correspondant
-        if (currentAmount > maxAmount) {
-            maxAmount = currentAmount;
-            optimalPercentage = percentage;
-        }
+    let maxDividends;
+
+    if (totalForIs <= 42500) {
+        maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
+    } else {
+        maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
     }
 
-    // À ce stade, maxAmount contient le montant maximum obtenu
-    // optimalPercentage contient le pourcentage correspondant
-    console.log(`Le montant maximum est de ${maxAmount}€ pour un pourcentage de ${optimalPercentage}%.`);
+    console.log(maxDividends);
+
+    const remunerationPlusDividendsAmount = afterTaxAmount + maxDividends;
+    console.log(remunerationPlusDividendsAmount);
+}
+
+
+/* SASU */
+function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
+
+    sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, 10);
+    
 
     /*const wage = Math.round(turnoverMinusCost * 0.3);
     sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
@@ -209,8 +207,8 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
 
     calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'non');*/
 
-    if(document.getElementById('single-parent').value === 'oui') {
-        sasuSituation(wage, situation, numberOfChild, householdIncome, 'oui');
+    /*if(document.getElementById('single-parent').value === 'oui') {
+        sasuSituation(wage, situation, numberOfChild, householdIncome, 'oui');*/
         /*engine.setSituation({
             "bénéficiaire . dividendes . bruts": wage,
             "impôt . foyer fiscal . parent isolé": 'oui',
@@ -222,9 +220,9 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
             "bénéficiaire": "oui",
             "entreprise . catégorie juridique": "'SAS'"
         });*/
-        calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'oui')
+        /*calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'oui')
         sasuRemuneration();
-    }
+    }*/
 }
 
 function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, singleParent) {
@@ -245,7 +243,6 @@ function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situ
     }
 
     document.getElementById('sasu-gross-dividends').textContent = maxDividends.toLocaleString('fr-FR');
-    localStorage.setItem('maxDividends', maxDividends);
 
     sasuCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome, singleParent);
 }
@@ -305,7 +302,6 @@ function sasuRemuneration() {
 
     const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
     const afterTaxAmount = Math.round(afterTax.nodeValue * 12);
-    localStorage.setItem('afterTaxAmount', afterTaxAmount);
     document.querySelectorAll('.sasu-after').forEach(element => {
         element.textContent = `${afterTaxAmount}€`;
         console.log(afterTax);
