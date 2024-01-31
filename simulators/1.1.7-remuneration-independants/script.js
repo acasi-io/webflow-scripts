@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -194,7 +194,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     const dividendsNetsPFU = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsNetsPFUAmount = (Math.round(dividendsNetsPFU.nodeValue));
 
-    sasuPushInArray(afterTax, dividendsNetsPFUAmount);
+    sasuPushInArray(afterTax, dividendsNetsPFUAmount, maxDividends, percentage, myArray);
 
     //sasuCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome, 'non', afterTax, percentage, myArray);
 }
@@ -326,7 +326,7 @@ function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdI
     localStorage.setItem('myArray', JSON.stringify(myArray));
 }
 
-function sasuPushInArray(afterTax, dividendsNetsPFUAmount) {
+function sasuPushInArray(afterTax, dividendsNetsPFUAmount, dividends, percentage, myArray) {
     const remunerationPlusDividendsAmount = afterTax + dividendsNetsPFUAmount;
 
     let myObject = {
