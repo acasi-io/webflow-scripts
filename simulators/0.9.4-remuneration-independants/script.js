@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.9.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -182,11 +182,11 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
         const afterTaxAmount = parseInt(document.querySelector('.sasu-after').textContent);
         console.log(afterTaxAmount);
 
-        const maxDividends = parseInt(localStorage.getItem('maxDividends'));
-        console.log(maxDividends);
+        const maxDividendsAmount = parseInt(localStorage.getItem('maxDividends'));
+        console.log(maxDividendsAmount);
 
         // Addition de afterTaxAmount et des dividendes
-        const currentAmount = afterTaxAmount + maxDividends;
+        const currentAmount = afterTaxAmount + maxDividendsAmount;
         console.log(currentAmount);
 
         // Comparaison et mise à jour du montant maximum et du pourcentage correspondant
