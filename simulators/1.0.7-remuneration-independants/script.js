@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -160,7 +160,7 @@ function storeRemuneration(turnover) {
 }
 
 
-function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, myObject) {
+function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, myArray) {
     const wage = Math.round(turnoverMinusCost * (percentage / 100));
 
     sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
