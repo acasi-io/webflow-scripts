@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -254,8 +254,6 @@ function calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situ
 }
 
 function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdIncome, singleParent, afterTax, percentage, myArray) {
-    myArray = JSON.parse(localStorage.getItem('myArray'));
-
     /* Dividendes Barème Progressif */
     engine.setSituation({
         "bénéficiaire . dividendes . bruts": parseInt(dividends),
