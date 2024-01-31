@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -247,6 +247,10 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
             maxRemunerationPercentage = myArray[i].percentage;
         }
     }
+
+    console.log("La plus haute valeur de remunerationPlusDividendsAmount est :", maxRemunerationPlusDividends);
+    console.log("L'objet correspondant est :", myArray[maxRemunerationObject]);
+    console.log("Le percentage correspondant est :", maxRemunerationPercentage);
 
     let bestWage = Math.round(turnoverMinusCost * (maxRemunerationPercentage / 100));
 
