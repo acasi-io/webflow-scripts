@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.0.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -166,12 +166,22 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
     const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
-    const afterTaxAmount = Math.round(afterTax.nodeValue * 12);
+    if (isNaN(afterTax.nodeValue)) {
+        afterTax = 0;
+    } else {
+        afterTax = Math.round(afterTax.nodeValue * 12);
+    }
+    //const afterTaxAmount = Math.round(afterTax.nodeValue * 12);
 
     const contributionsTotal = engine.evaluate("dirigeant . assimilé salarié . cotisations");
-    const contributionsTotalAmount = Math.round(contributionsTotal.nodeValue * 12);
+    if (isNaN(contributionsTotal.nodeValue)) {
+        contributionsTotal = 0;
+    } else {
+        contributionsTotal = Math.round(contributionsTotal.nodeValue * 12);
+    }
+    //const contributionsTotalAmount = Math.round(contributionsTotal.nodeValue * 12);
 
-    const totalForIs = turnoverMinusCost - contributionsTotalAmount - afterTaxAmount;
+    const totalForIs = turnoverMinusCost - contributionsTotal - afterTax;
 
     let maxDividends;
 
@@ -180,7 +190,6 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     } else {
         maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
     }
-    console.log(maxDividends);
 
     sasuCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome, 'non', afterTaxAmount);
 }
