@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/0.8.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -172,7 +172,17 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'non');
 
     if(document.getElementById('single-parent').value === 'oui') {
-        sasuSituation(wage, situation, numberOfChild, householdIncome, 'oui');
+        engine.setSituation({
+            "bénéficiaire . dividendes . bruts": wage,
+            "impôt . foyer fiscal . parent isolé": 'oui',
+            "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
+            "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
+            "dirigeant . rémunération . net . imposable": "0 €/an",
+            "impôt . foyer fiscal . situation de famille": `'${situation}'`,
+            "impôt . méthode de calcul": "'barème standard'",
+            "bénéficiaire": "oui",
+            "entreprise . catégorie juridique": "'SAS'"
+        });
         calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'oui')
         sasuRemuneration();
     }
