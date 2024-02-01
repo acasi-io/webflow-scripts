@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -14,16 +14,9 @@ const irEiBefore = document.querySelectorAll('.ir-ei-after');
 const microBefore = document.querySelectorAll('.micro-before');
 const microAfter = document.querySelectorAll('.micro-after');
 
-const calculBtn = document.getElementById('calcul-btn');
-
 const green = '#6FCF97';
 const orange = '#FFB13C';
 const red = '#FF2B44';
-
-
-calculBtn.addEventListener('click', () => {
-    document.getElementById('loader').style.display = 'block';
-});
 
 
 calculBtn.addEventListener('click', () => {
