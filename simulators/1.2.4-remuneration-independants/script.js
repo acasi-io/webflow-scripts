@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -20,6 +20,8 @@ const red = '#FF2B44';
 
 
 document.getElementById('calcul-btn').addEventListener('click', () => {
+    document.getElementById('loader').style.display = 'block';
+
     const turnover = parseFloat(document.getElementById('turnover').value);
     const cost = parseFloat(document.getElementById('cost').value);
     const situation = document.getElementById('personal-situation').value;
@@ -190,12 +192,10 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     let maxDividends;
 
     if (totalForIs <= 42500) {
-        maxDividends = totalForIs - (totalForIs * 0.15);
+        maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
     } else {
-        maxDividends = totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25));
+        maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
     }
-
-    maxDividends = Math.round(maxDividends);
 
     /*sasuSituationPfuDividends(maxDividends);
     const dividendsNetsPFU = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
@@ -321,18 +321,14 @@ function sasuSituation(wage, situation, numberOfChild, householdIncome, singlePa
 function sasuRemuneration() {
     const net = engine.evaluate("salarié . rémunération . net . à payer avant impôt");
     let netAmount = Math.round(net.nodeValue * 12);
-    if (isNaN(netAmount)) {
-        netAmount = 0;
-    }
+    verifyIsNaN(netAmount);
     document.querySelectorAll('.sasu-before').forEach(element => {
         element.textContent = `${netAmount}€`;
     });
 
     const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
     let afterTaxAmount = Math.round(afterTax.nodeValue * 12);
-    if (isNaN(afterTaxAmount)) {
-        afterTaxAmount = 0;
-    }
+    verifyIsNaN(afterTaxAmount);
     document.querySelectorAll('.sasu-after').forEach(element => {
         element.textContent = `${afterTaxAmount}€`;
     });
