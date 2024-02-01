@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -233,7 +233,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
 function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
     let myArray = [];
 
-    for (let percentage = 0; percentage <= 100; percentage += 5) {
+    for (let percentage = 0; percentage <= 100; percentage += 10) {
         sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, myArray);
     }
 
