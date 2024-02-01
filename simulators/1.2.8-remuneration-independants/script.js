@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -18,37 +18,53 @@ const green = '#6FCF97';
 const orange = '#FFB13C';
 const red = '#FF2B44';
 
+const calculBtn = document.getElementById('calcul-btn');
+
+function showLoader() {
+    document.getElementById('loader').style.display = 'block';
+}
+
+function hideLoader() {
+    document.getElementById('loader').style.display = 'none';
+}
+
 
 calculBtn.addEventListener('click', () => {
-    const turnover = parseFloat(document.getElementById('turnover').value);
-    const cost = parseFloat(document.getElementById('cost').value);
-    const situation = document.getElementById('personal-situation').value;
-    const numberOfChild = parseInt(document.getElementById('child').value);
-    const householdIncome = parseFloat(document.getElementById('household-income').value);
+    showLoader();
 
-    document.querySelectorAll('.simulator-micro').forEach(element => {
-        element.style.display = 'none';
-    });
-    document.querySelector('.simulator-micro-contributions').style.display = 'none';
-    document.getElementById('micro-grid-recap').style.display = 'none';
+    setTimeout(() => {
+        const turnover = parseFloat(document.getElementById('turnover').value);
+        const cost = parseFloat(document.getElementById('cost').value);
+        const situation = document.getElementById('personal-situation').value;
+        const numberOfChild = parseInt(document.getElementById('child').value);
+        const householdIncome = parseFloat(document.getElementById('household-income').value);
 
-    if (turnover <= 50000) {
         document.querySelectorAll('.simulator-micro').forEach(element => {
-            element.style.display = 'block';
+            element.style.display = 'none';
         });
+        document.querySelector('.simulator-micro-contributions').style.display = 'none';
+        document.getElementById('micro-grid-recap').style.display = 'none';
 
-        document.querySelector('.simulator-micro-contributions').style.display = 'flex';
-        document.getElementById('micro-grid-recap').style.display = 'block';
-    }
+        if (turnover <= 50000) {
+            document.querySelectorAll('.simulator-micro').forEach(element => {
+                element.style.display = 'block';
+            });
 
-    const turnoverMinusCost = turnover - cost;
+            document.querySelector('.simulator-micro-contributions').style.display = 'flex';
+            document.getElementById('micro-grid-recap').style.display = 'block';
+        }
 
-    eurlResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome);
-    sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
-    eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
-    microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
+        const turnoverMinusCost = turnover - cost;
 
-    compareRemuneration(turnover);
+        eurlResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome);
+        sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
+        eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
+        microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
+
+        compareRemuneration(turnover);
+
+        hideLoader();
+    }, 0);
 });
 
 function verifyIsNaN(data) {
