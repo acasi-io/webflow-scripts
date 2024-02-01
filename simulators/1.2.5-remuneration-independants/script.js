@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -14,14 +14,19 @@ const irEiBefore = document.querySelectorAll('.ir-ei-after');
 const microBefore = document.querySelectorAll('.micro-before');
 const microAfter = document.querySelectorAll('.micro-after');
 
+const calculBtn = document.getElementById('calcul-btn');
+
 const green = '#6FCF97';
 const orange = '#FFB13C';
 const red = '#FF2B44';
 
 
-document.getElementById('calcul-btn').addEventListener('click', () => {
+calculBtn.addEventListener('click', () => {
     document.getElementById('loader').style.display = 'block';
+});
 
+
+calculBtn.addEventListener('click', () => {
     const turnover = parseFloat(document.getElementById('turnover').value);
     const cost = parseFloat(document.getElementById('cost').value);
     const situation = document.getElementById('personal-situation').value;
@@ -180,14 +185,20 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
     let afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
-    let afterTaxAmount = Math.round(afterTax.nodeValue * 12);
-    verifyIsNaN(afterTaxAmount);
+    if (isNaN(afterTax.nodeValue)) {
+        afterTax = 0;
+    } else {
+        afterTax = Math.round(afterTax.nodeValue * 12);
+    }
 
     let contributionsTotal = engine.evaluate("dirigeant . assimilé salarié . cotisations");
-    let contributionsTotalAmount = Math.round(contributionsTotal.nodeValue * 12);
-    verifyIsNaN(contributionsTotalAmount);
+    if (isNaN(contributionsTotal.nodeValue)) {
+        contributionsTotal = 0;
+    } else {
+        Math.round(contributionsTotal.nodeValue * 12);
+    }
 
-    const totalForIs = turnoverMinusCost - contributionsTotalAmount - afterTaxAmount;
+    const totalForIs = turnoverMinusCost - contributionsTotal - afterTax;
 
     let maxDividends;
 
@@ -205,7 +216,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     const dividendsNetsProgressive = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsNetsProgressiveAmount = (Math.round(dividendsNetsProgressive.nodeValue));
 
-    sasuPushInArray(afterTaxAmount, dividendsNetsProgressiveAmount, maxDividends, percentage, myArray);
+    sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, maxDividends, percentage, myArray);
 }
 
 function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
