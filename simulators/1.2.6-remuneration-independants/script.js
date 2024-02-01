@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -195,7 +195,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     if (isNaN(contributionsTotal.nodeValue)) {
         contributionsTotal = 0;
     } else {
-        Math.round(contributionsTotal.nodeValue * 12);
+        contributionsTotal = Math.round(contributionsTotal.nodeValue * 12);
     }
 
     const totalForIs = turnoverMinusCost - contributionsTotal - afterTax;
