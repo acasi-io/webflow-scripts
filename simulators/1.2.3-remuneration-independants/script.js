@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -51,27 +51,30 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
     compareRemuneration(turnover);
 });
 
+function verifyIsNaN(data) {
+    if (isNaN(data)) {
+        data = 0;
+    }
+}
+
 function fillText(urssafData, htmlTag) {
     const dataUrssaf = engine.evaluate(urssafData);
-    const data = Math.round(dataUrssaf.nodeValue);
+    let data = Math.round(dataUrssaf.nodeValue);
+    verifyIsNaN(data);
     document.querySelector(htmlTag).textContent = data.toLocaleString('fr-FR') + '€';
 }
 
 function yearFillText(urssafData, htmlTag) {
     const data = engine.evaluate(urssafData);
     let dataYear = Math.round(data.nodeValue * 12);
-    if (isNaN(dataYear)) {
-        dataYear = 0;
-    }
+    verifyIsNaN(dataYear);
     document.querySelector(htmlTag).textContent = dataYear.toLocaleString('fr-FR') + '€';
 }
 
 function fillSameClassTexts(urssafData, htmlTag) {
     const dataUrssaf = engine.evaluate(urssafData);
     let data = dataUrssaf.nodeValue;
-    if (isNaN(data)) {
-        data = 0;
-    }
+    verifyIsNaN(data);
     document.querySelectorAll(htmlTag).forEach(element => {
         element.textContent = data.toLocaleString('fr-FR') + '€';
     });
@@ -83,9 +86,7 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
 
     const pensionScheme = engine.evaluate("protection sociale . retraite . base");
     let pensionSchemeAmount = Math.round(pensionScheme.nodeValue * 12);
-    if (isNaN(pensionSchemeAmount)) {
-        pensionSchemeAmount = 0;
-    }
+    verifyIsNaN(pensionSchemeAmount);
     document.getElementById(pensionSchemeTag).textContent = `${pensionSchemeAmount.toLocaleString('fr-FR')}€`;
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
@@ -177,28 +178,24 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
     let afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
-    if (isNaN(afterTax.nodeValue)) {
-        afterTax = 0;
-    } else {
-        afterTax = Math.round(afterTax.nodeValue * 12);
-    }
+    let afterTaxAmount = Math.round(afterTax.nodeValue * 12);
+    verifyIsNaN(afterTaxAmount);
 
     let contributionsTotal = engine.evaluate("dirigeant . assimilé salarié . cotisations");
-    if (isNaN(contributionsTotal.nodeValue)) {
-        contributionsTotal = 0;
-    } else {
-        contributionsTotal = Math.round(contributionsTotal.nodeValue * 12);
-    }
+    let contributionsTotalAmount = Math.round(contributionsTotal.nodeValue * 12);
+    verifyIsNaN(contributionsTotalAmount);
 
-    const totalForIs = turnoverMinusCost - contributionsTotal - afterTax;
+    const totalForIs = turnoverMinusCost - contributionsTotalAmount - afterTaxAmount;
 
     let maxDividends;
 
     if (totalForIs <= 42500) {
-        maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
+        maxDividends = totalForIs - (totalForIs * 0.15);
     } else {
-        maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
+        maxDividends = totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25));
     }
+
+    maxDividends = Math.round(maxDividends);
 
     /*sasuSituationPfuDividends(maxDividends);
     const dividendsNetsPFU = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
@@ -208,7 +205,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     const dividendsNetsProgressive = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsNetsProgressiveAmount = (Math.round(dividendsNetsProgressive.nodeValue));
 
-    sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, maxDividends, percentage, myArray);
+    sasuPushInArray(afterTaxAmount, dividendsNetsProgressiveAmount, maxDividends, percentage, myArray);
 }
 
 function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
@@ -250,33 +247,6 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome);
     const sasuGrossDividends = document.getElementById('sasu-gross-dividends');
     sasuGrossDividends.textContent = maxDividends.toLocaleString('fr-FR');
-    
-
-    /*const wage = Math.round(turnoverMinusCost * 0.3);
-    sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
-
-    sasuRemuneration();
-    sasuContributions();
-    sasuRetirement();
-
-    calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'non');*/
-
-    /*if(document.getElementById('single-parent').value === 'oui') {
-        sasuSituation(wage, situation, numberOfChild, householdIncome, 'oui');*/
-        /*engine.setSituation({
-            "bénéficiaire . dividendes . bruts": wage,
-            "impôt . foyer fiscal . parent isolé": 'oui',
-            "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
-            "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
-            "dirigeant . rémunération . net . imposable": "0 €/an",
-            "impôt . foyer fiscal . situation de famille": `'${situation}'`,
-            "impôt . méthode de calcul": "'barème standard'",
-            "bénéficiaire": "oui",
-            "entreprise . catégorie juridique": "'SAS'"
-        });*/
-        /*calculDividends(turnoverMinusCost, numberOfChild, householdIncome, situation, 'oui')
-        sasuRemuneration();
-    }*/
 }
 
 function sasuSituationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, singleParent) {
