@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -67,30 +67,30 @@ calculBtn.addEventListener('click', () => {
     }, 0);
 });
 
-function verifyIsNaN(data) {
-    if (isNaN(data)) {
-        data = 0;
-    }
-}
-
 function fillText(urssafData, htmlTag) {
     const dataUrssaf = engine.evaluate(urssafData);
     let data = Math.round(dataUrssaf.nodeValue);
-    verifyIsNaN(data);
+    if (isNaN(data)) {
+        data = 0;
+    }
     document.querySelector(htmlTag).textContent = data.toLocaleString('fr-FR') + '€';
 }
 
 function yearFillText(urssafData, htmlTag) {
     const data = engine.evaluate(urssafData);
     let dataYear = Math.round(data.nodeValue * 12);
-    verifyIsNaN(dataYear);
+    if (isNaN(dataYear)) {
+        dataYear = 0;
+    }
     document.querySelector(htmlTag).textContent = dataYear.toLocaleString('fr-FR') + '€';
 }
 
 function fillSameClassTexts(urssafData, htmlTag) {
     const dataUrssaf = engine.evaluate(urssafData);
     let data = dataUrssaf.nodeValue;
-    verifyIsNaN(data);
+    if (isNaN(data)) {
+        data = 0;
+    }
     document.querySelectorAll(htmlTag).forEach(element => {
         element.textContent = data.toLocaleString('fr-FR') + '€';
     });
@@ -102,7 +102,9 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
 
     const pensionScheme = engine.evaluate("protection sociale . retraite . base");
     let pensionSchemeAmount = Math.round(pensionScheme.nodeValue * 12);
-    verifyIsNaN(pensionSchemeAmount);
+    if (isNaN(pensionSchemeAmount)) {
+        pensionSchemeAmount = 0;
+    }
     document.getElementById(pensionSchemeTag).textContent = `${pensionSchemeAmount.toLocaleString('fr-FR')}€`;
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
@@ -341,14 +343,18 @@ function sasuSituation(wage, situation, numberOfChild, householdIncome, singlePa
 function sasuRemuneration() {
     const net = engine.evaluate("salarié . rémunération . net . à payer avant impôt");
     let netAmount = Math.round(net.nodeValue * 12);
-    verifyIsNaN(netAmount);
+    if (isNaN(netAmount)) {
+        netAmount = 0;
+    }
     document.querySelectorAll('.sasu-before').forEach(element => {
         element.textContent = `${netAmount}€`;
     });
 
     const afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
     let afterTaxAmount = Math.round(afterTax.nodeValue * 12);
-    verifyIsNaN(afterTaxAmount);
+    if (isNaN(afterTaxAmount)) {
+        afterTaxAmount = 0;
+    }
     document.querySelectorAll('.sasu-after').forEach(element => {
         element.textContent = `${afterTaxAmount}€`;
     });
