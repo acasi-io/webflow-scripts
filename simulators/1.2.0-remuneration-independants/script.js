@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.1.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.2.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -190,11 +190,15 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
         maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
     }
 
-    sasuSituationPfuDividends(maxDividends);
+    /*sasuSituationPfuDividends(maxDividends);
     const dividendsNetsPFU = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
-    const dividendsNetsPFUAmount = (Math.round(dividendsNetsPFU.nodeValue));
+    const dividendsNetsPFUAmount = (Math.round(dividendsNetsPFU.nodeValue));*/
 
-    sasuPushInArray(afterTax, dividendsNetsPFUAmount, maxDividends, percentage, myArray);
+    sasuSituationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non');
+    const dividendsNetsProgressive = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
+    const dividendsNetsProgressiveAmount = (Math.round(dividendsNetsProgressive.nodeValue));
+
+    sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, maxDividends, percentage, myArray);
 }
 
 function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
