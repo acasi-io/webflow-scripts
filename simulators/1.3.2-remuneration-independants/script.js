@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -202,7 +202,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
         afterTax = Math.round(afterTax.nodeValue * 12);
     }
 
-    let beforeTax = engine.evaluate("salarié . rémunération . net . payé avant impôt");
+    let beforeTax = engine.evaluate("salarié . rémunération . net . à payé avant impôt");
     if (isNaN(beforeTax.nodeValue)) {
         beforeTax = 0;
     } else {
