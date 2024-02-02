@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -181,7 +181,6 @@ function storeRemuneration(turnover) {
 
     document.querySelectorAll('.sasu-after').forEach(element => {
         const sasuAmount = (element.textContent).replace(/\D/g, '');
-        localStorage.setItem('sasu', sasuAmount);
         document.getElementById('sasu-wage-recap').textContent = sasuAmount + '€';
     });
 
@@ -360,6 +359,8 @@ function sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNets
         percentage: parseInt(percentage),
         remunerationPlusDividendsBestAmount: parseInt(remunerationPlusDividendsBestAmount)
     }
+
+    localStorage.setItem('sasu', remunerationPlusDividendsBestAmount);
 
     myArray.push(myObject);
     localStorage.setItem('myArray', JSON.stringify(myArray));
