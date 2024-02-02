@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -187,14 +187,13 @@ function storeRemuneration(turnover) {
         if (turnover > 50000) {
             localStorage.setItem('micro', 0);
         } else {
-            document.getElementById('grid-recap').style.gridTemplateColumns = 'repeat(1, 4fr)';
             const microAmount = (element.textContent).replace(/\D/g, '');
             localStorage.setItem('micro', microAmount);
             document.getElementById('micro-wage-recap').textContent = microAmount + '€';
         }
     });
 
-    document.querySelectorAll('.CA-recap').forEach(element => {
+    document.querySelectorAll('.ca-recap').forEach(element => {
         element.textContent = turnover.toLocaleString('fr-FR') + '€';
     });
 
