@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -43,7 +43,7 @@ calculBtn.addEventListener('click', () => {
             element.style.display = 'none';
         });
         document.querySelector('.simulator-micro-contributions').style.display = 'none';
-        //document.getElementById('micro-grid-recap').style.display = 'none';
+        document.getElementById('micro-grid-recap').style.display = 'none';
 
         if (turnover <= 50000) {
             document.querySelectorAll('.simulator-micro').forEach(element => {
@@ -51,7 +51,7 @@ calculBtn.addEventListener('click', () => {
             });
 
             document.querySelector('.simulator-micro-contributions').style.display = 'flex';
-            //document.getElementById('micro-grid-recap').style.display = 'block';
+            document.getElementById('micro-grid-recap').style.display = 'block';
         }
 
         const turnoverMinusCost = turnover - cost;
@@ -271,19 +271,21 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
 
     myArray = JSON.parse(localStorage.getItem('myArray')); 
 
-    let maxRemunerationPlusDividends = myArray[0].remunerationPlusDividendsAmount;
+    let remunerationPlusDividendsBestAmount = myArray[0].remunerationPlusDividendsBestAmount;
     let maxRemunerationObject = 0;
     let maxRemunerationPercentage = myArray[0].percentage;
     let maxDividends = myArray[0].maxDividends;
 
     for (let i = 1; i < myArray.length; i++) {
-        const currentRemunerationPlusDividends = myArray[i].remunerationPlusDividendsAmount;
+        const currentRemunerationPlusDividends = myArray[i].remunerationPlusDividendsBestAmount;
 
-        if (currentRemunerationPlusDividends > maxRemunerationPlusDividends) {
-            maxRemunerationPlusDividends = currentRemunerationPlusDividends;
+        if (currentRemunerationPlusDividends > remunerationPlusDividendsBestAmount) {
+            remunerationPlusDividendsBestAmount = currentRemunerationPlusDividends;
             maxRemunerationObject = i;
             maxRemunerationPercentage = myArray[i].percentage;
             maxDividends = myArray[i].maxDividends;
+
+            localStorage.setItem('sasu', remunerationPlusDividendsBestAmount);
         }
     }
 
@@ -359,8 +361,6 @@ function sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNets
         percentage: parseInt(percentage),
         remunerationPlusDividendsBestAmount: parseInt(remunerationPlusDividendsBestAmount)
     }
-
-    localStorage.setItem('sasu', remunerationPlusDividendsBestAmount);
 
     myArray.push(myObject);
     localStorage.setItem('myArray', JSON.stringify(myArray));
