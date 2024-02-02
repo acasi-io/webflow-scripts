@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -127,6 +127,10 @@ function compareRemuneration(turnover) {
     const sasu = parseInt(localStorage.getItem('sasu'));
     const micro = parseInt(localStorage.getItem('micro'));
 
+    const sasuDividends = parseInt(localStorage.getItem('sasuDividends'));
+
+    const sasuTotal = sasu + sasuDividends;
+
     const eurlContainerRecap = document.getElementById('eurl-container-recap');
     const sasuContainerRecap = document.getElementById('sasu-container-recap');
     const eiContainerRecap = document.getElementById('ei-container-recap');
@@ -137,7 +141,7 @@ function compareRemuneration(turnover) {
     const eiHeadingRecap = document.getElementById('ei-heading-recap');
     const microHeadingRecap = document.getElementById('micro-heading-recap');
 
-    if (eurlIr >= eiIr && eurlIr > sasu && eurlIr > micro) {
+    if (eurlIr >= eiIr && eurlIr > sasuTotal && eurlIr > micro) {
         if (eurlIr > eiIr) {
             eurlContainerRecap.classList.add('container-best-choice');
             eurlHeadingRecap.classList.add('heading-best-choice');
@@ -147,13 +151,13 @@ function compareRemuneration(turnover) {
             eiContainerRecap.classList.add('container-best-choice');
             eiHeadingRecap.classList.add('heading-best-choice');
         }
-    } else if (sasu > eurlIr && sasu > eiIr && sasu > micro) {
+    } else if (sasuTotal > eurlIr && sasuTotal > eiIr && sasuTotal > micro) {
         sasuContainerRecap.classList.add('container-best-choice');
         sasuHeadingRecap.classList.add('heading-best-choice');
-    } else if (micro > eurlIr && micro > eiIr && micro > sasu) {
+    } else if (micro > eurlIr && micro > eiIr && micro > sasuTotal) {
         microContainerRecap.classList.add('container-best-choice');
         microHeadingRecap.classList.add('heading-best-choice');
-    } else if (eiIr >= eurlIr && eiIr > sasu && eiIr > micro) {
+    } else if (eiIr >= eurlIr && eiIr > sasuTotal && eiIr > micro) {
         if (eiIr > eurlIr) {
             eiContainerRecap.classList.add('container-best-choice');
             eiHeadingRecap.classList.add('heading-best-choice');
@@ -182,6 +186,7 @@ function storeRemuneration(turnover) {
     document.querySelectorAll('.sasu-after').forEach(element => {
         const sasuAmount = (element.textContent).replace(/\D/g, '');
         document.getElementById('sasu-wage-recap').textContent = sasuAmount + '€';
+        localStorage.setItem('sasu', sasuAmount);
     });
 
     document.querySelectorAll('.micro-after').forEach(element => {
@@ -202,6 +207,7 @@ function storeRemuneration(turnover) {
     document.getElementById('sasu-contributions-recap').textContent = sasuContributions;
     const sasuDividends = document.getElementById('sasu-progressive-dividends').textContent;
     document.getElementById('sasu-dividends-recap').textContent = sasuDividends;
+    localStorage.setItem('sasuDividends', (sasuDividends.textContent).replace(/\D/g, ''));
 
     const eurlContributions = document.getElementById('eurl-contributions-total').textContent;
     document.getElementById('eurl-contributions-recap').textContent = eurlContributions;
@@ -284,8 +290,6 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
             maxRemunerationObject = i;
             maxRemunerationPercentage = myArray[i].percentage;
             maxDividends = myArray[i].maxDividends;
-
-            localStorage.setItem('sasu', remunerationPlusDividendsBestAmount);
         }
     }
 
