@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -180,7 +180,9 @@ function storeRemuneration(turnover) {
     });
 
     document.querySelectorAll('.sasu-after').forEach(element => {
-        localStorage.setItem('sasu', ((element.textContent).replace(/\D/g, '')));
+        const sasuAmount = (element.textContent).replace(/\D/g, '');
+        localStorage.setItem('sasu', sasuAmount);
+        document.getElementById('sasu-wage-recap').textContent = sasuAmount + '€';
     });
 
     document.querySelectorAll('.micro-after').forEach(element => {
@@ -196,6 +198,11 @@ function storeRemuneration(turnover) {
     document.querySelectorAll('.ca-recap').forEach(element => {
         element.textContent = turnover.toLocaleString('fr-FR') + '€';
     });
+
+    const sasuContributions = document.getElementById('sasu-contributions-total').textContent;
+    document.getElementById('sasu-contributions-recap').textContent = sasuContributions;
+    const sasuDividends = document.getElementById('sasu-progressive-dividends').textContent;
+    document.getElementById('sasu-dividends-recap').textContent = sasuDividends;
 
     const eurlContributions = document.getElementById('eurl-contributions-total').textContent;
     document.getElementById('eurl-contributions-recap').textContent = eurlContributions;
