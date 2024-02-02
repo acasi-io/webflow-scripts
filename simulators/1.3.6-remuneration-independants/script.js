@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.3.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -122,8 +122,8 @@ function compareRemuneration(turnover) {
         element.classList.remove('container-best-choice');
     });
 
-    const eurlIs = parseInt(localStorage.getItem('eurlIs'));
-    const eiIs = parseInt(localStorage.getItem('eiIs'));
+    const eurlIr = parseInt(localStorage.getItem('eurlIr'));
+    const eiIr = parseInt(localStorage.getItem('eiIr'));
     const sasu = parseInt(localStorage.getItem('sasu'));
     const micro = parseInt(localStorage.getItem('micro'));
 
@@ -137,27 +137,27 @@ function compareRemuneration(turnover) {
     const eiHeadingRecap = document.getElementById('ei-heading-recap');
     const microHeadingRecap = document.getElementById('micro-heading-recap');
 
-    if (eurlIs >= eiIs && eurlIs > sasu && eurlIs > micro) {
-        if (eurlIs > eiIs) {
+    if (eurlIr >= eiIr && eurlIr > sasu && eurlIr > micro) {
+        if (eurlIr > eiIr) {
             eurlContainerRecap.classList.add('container-best-choice');
             eurlHeadingRecap.classList.add('heading-best-choice');
-        } else if (eurlIs === eiIs) {
+        } else if (eurlIr === eiIr) {
             eurlContainerRecap.classList.add('container-best-choice');
             eurlHeadingRecap.classList.add('heading-best-choice');
             eiContainerRecap.classList.add('container-best-choice');
             eiHeadingRecap.classList.add('heading-best-choice');
         }
-    } else if (sasu > eurlIs && sasu > eiIs && sasu > micro) {
+    } else if (sasu > eurlIr && sasu > eiIr && sasu > micro) {
         sasuContainerRecap.classList.add('container-best-choice');
         sasuHeadingRecap.classList.add('heading-best-choice');
-    } else if (micro > eurlIs && micro > eiIs && micro > sasu) {
+    } else if (micro > eurlIr && micro > eiIr && micro > sasu) {
         microContainerRecap.classList.add('container-best-choice');
         microHeadingRecap.classList.add('heading-best-choice');
-    } else if (eiIs >= eurlIs && eiIs > sasu && eiIs > micro) {
-        if (eiIs > eurlIs) {
+    } else if (eiIr >= eurlIr && eiIr > sasu && eiIr > micro) {
+        if (eiIr > eurlIr) {
             eiContainerRecap.classList.add('container-best-choice');
             eiHeadingRecap.classList.add('heading-best-choice');
-        } else if (eiIs === eurlIs) {
+        } else if (eiIr === eurlIr) {
             eurlContainerRecap.classList.add('container-best-choice');
             eurlHeadingRecap.classList.add('heading-best-choice');
             eiContainerRecap.classList.add('container-best-choice');
@@ -167,12 +167,16 @@ function compareRemuneration(turnover) {
 }
 
 function storeRemuneration(turnover) {
-    document.querySelectorAll('.is-eurl-after').forEach(element => {
-        localStorage.setItem('eurlIs', ((element.textContent).replace(/\D/g, '')));
+    document.querySelectorAll('.ir-eurl-after').forEach(element => {
+        const eurllIrAmount = (element.textContent).replace(/\D/g, '');
+        localStorage.setItem('eurlIr', eurllIrAmount);
+        document.getElementById('eurl-wage-recap').textContent = eurllIrAmount + '€';
     });
 
-    document.querySelectorAll('.is-ei-after').forEach(element => {
-        localStorage.setItem('eiIs', ((element.textContent).replace(/\D/g, '')));
+    document.querySelectorAll('.ir-ei-after').forEach(element => {
+        const eilIrAmount = (element.textContent).replace(/\D/g, '');
+        localStorage.setItem('eiIr', eilIrAmount);
+        document.getElementById('ei-wage-recap').textContent = eilIrAmount + '€';
     });
 
     document.querySelectorAll('.sasu-after').forEach(element => {
@@ -183,9 +187,25 @@ function storeRemuneration(turnover) {
         if (turnover > 50000) {
             localStorage.setItem('micro', 0);
         } else {
-            localStorage.setItem('micro', ((element.textContent).replace(/\D/g, '')));
+            document.getElementById('grid-recap').style.gridTemplateColumns = 'repeat(1, 4fr)';
+            const microAmount = (element.textContent).replace(/\D/g, '');
+            localStorage.setItem('micro', microAmount);
+            document.getElementById('micro-wage-recap').textContent = microAmount + '€';
         }
     });
+
+    document.querySelectorAll('.CA-recap').forEach(element => {
+        element.textContent = turnover.toLocaleString('fr-FR') + '€';
+    });
+
+    const eurlContributions = document.getElementById('eurl-contributions-total').textContent;
+    document.getElementById('eurl-contributions-recap').textContent = eurlContributions;
+
+    const eiContributions = document.getElementById('ei-contributions-total').textContent;
+    document.getElementById('ei-contributions-recap').textContent = eiContributions;
+
+    const microContributions = document.getElementById('micro-contributions-total').textContent;
+    document.getElementById('micro-contributions-recap').textContent = microContributions;
 }
 
 
