@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -207,7 +207,7 @@ function storeRemuneration(turnover) {
     document.getElementById('sasu-contributions-recap').textContent = sasuContributions;
     const sasuDividends = document.getElementById('sasu-progressive-dividends').textContent;
     document.getElementById('sasu-dividends-recap').textContent = sasuDividends;
-    localStorage.setItem('sasuDividends', (sasuDividends.textContent).replace(/\D/g, ''));
+    localStorage.setItem('sasuDividends', sasuDividends.replace(/\D/g, ''));
 
     const eurlContributions = document.getElementById('eurl-contributions-total').textContent;
     document.getElementById('eurl-contributions-recap').textContent = eurlContributions;
