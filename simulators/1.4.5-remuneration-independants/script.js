@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -19,6 +19,20 @@ const orange = '#FFB13C';
 const red = '#FF2B44';
 
 const calculBtn = document.getElementById('calcul-btn');
+const numberOfChildSelect = document.getElementById('child');
+
+numberOfChildSelect.addEventListener('change', (input) => {
+    const singleParentElements = document.querySelectorAll('.single-parent');
+    if (parseInt(input.value) > 0) {
+        singleParentElements.forEach(element => {
+            element.classList.remove('hidden');
+        });
+    } else {
+        singleParentElements.forEach(element => {
+            element.classList.add('hidden');
+        });
+    }
+});
 
 function showLoader() {
     document.getElementById('loader').style.display = 'block';
