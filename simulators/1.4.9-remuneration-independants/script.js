@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -482,12 +482,16 @@ function eurlCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
         afterTax = Math.round(afterTax.nodeValue * 12);
     }
 
+    console.log(`eurl after tax : ${afterTax}`);
+
     let beforeTax = engine.evaluate("dirigeant . rémunération . net");
     if (isNaN(beforeTax.nodeValue)) {
         beforeTax = 0;
     } else {
         beforeTax = Math.round(beforeTax.nodeValue * 12);
     }
+
+    console.log(`eurl before tax : ${beforeTax}`);
 
     let contributionsTotal = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
     if (isNaN(contributionsTotal.nodeValue)) {
@@ -496,7 +500,10 @@ function eurlCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
         contributionsTotal = Math.round(contributionsTotal.nodeValue * 12);
     }
 
+    console.log(`eurl contributions total : ${contributionsTotal}`);
+
     const totalForIs = turnoverMinusCost - contributionsTotal - beforeTax;
+    console.log(`total is : ${totalForIs}`);
 
     let maxDividends;
 
@@ -506,12 +513,16 @@ function eurlCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
         maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
     }
 
+    console.log(`maxDividends : ${maxDividends}`);
+
     situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
     const dividendsNetsProgressive = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsNetsProgressiveAmount = Math.round(dividendsNetsProgressive.nodeValue);
 
     const dividendsNetsPfu = maxDividends - (maxDividends * 0.128);
     const dividendsNetsPfuAmount = Math.round(dividendsNetsPfu);
+
+    console.log(`dividendsPFU : ${dividendsNetsPfuAmount}`);
 
     eurlPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNetsPfuAmount, maxDividends, percentage, myArray);
 }
@@ -537,6 +548,8 @@ function eurlPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNets
 
     myArray.push(myObject);
     localStorage.setItem('myArrayEurl', JSON.stringify(myArray));
+
+    console.log(myArray);
 }
 
 
@@ -567,6 +580,8 @@ function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome
 
     let bestWage = Math.round(turnoverMinusCost * (maxRemunerationPercentage / 100));
 
+    console.log(`best wage : ${bestWage}`);
+
     eurlSituation(bestWage, situation, numberOfChild, householdIncome, 'IS', 'non');
     fillSameClassTexts("dirigeant . rémunération . net", '.eurl-is-before-tax');
     fillSameClassTexts("dirigeant . rémunération . net . après impôt", 'is-eurl-after');
@@ -575,6 +590,7 @@ function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome
 
     eurlCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome);
     const eurlGrossDividends = document.getElementById('eurl-gross-dividends');
+    console.log(`gross dividends : ${eurlGrossDividends}`);
     eurlGrossDividends.textContent = maxDividends.toLocaleString('fr-FR') + '€';
 }
 
@@ -584,9 +600,13 @@ function eurlCalculDividendsNets(dividends, situation, numberOfChild, householdI
     const dividendsNetsBareme = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsNetsBaremeAmount = (Math.round(dividendsNetsBareme.nodeValue));
     document.getElementById('eurl-progressive-dividends').textContent = dividendsNetsBaremeAmount.toLocaleString('fr-FR') + '€';
+    console.log(`progressive dividends : ${dividendsNetsBaremeAmount}`);
 
     if(document.getElementById('single-parent').value === 'oui') {
         situationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, 'oui', 'SARL');
+        const dividendsNetsBareme = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
+        const dividendsNetsBaremeAmount = (Math.round(dividendsNetsBareme.nodeValue));
+        document.getElementById('eurl-progressive-dividends').textContent = dividendsNetsBaremeAmount.toLocaleString('fr-FR') + '€';
     }
     
 
@@ -594,6 +614,7 @@ function eurlCalculDividendsNets(dividends, situation, numberOfChild, householdI
     const dividendsNetsPFU = dividends - (dividends * 0.128);
     const dividendsNetsPFUAmount = Math.round(dividendsNetsPFU);
     document.getElementById('eurl-pfu-dividends').textContent = dividendsNetsPFUAmount.toLocaleString('fr-FR') + '€';
+    console.log(`pfu dividends : ${dividendsNetsPFUAmount}`);
 }
 
 /*function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
