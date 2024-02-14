@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -476,6 +476,7 @@ function eurlCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     eurlSituation(wage, situation, numberOfChild, householdIncome, 'IS', 'non');
 
     let afterTax = engine.evaluate("dirigeant . rémunération . net . après impôt");
+    console.log(afterTax);
     if (isNaN(afterTax.nodeValue)) {
         afterTax = 0;
     } else {
