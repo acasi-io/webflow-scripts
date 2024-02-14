@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -513,7 +513,30 @@ function eurlCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     const dividendsNetsPfu = maxDividends - (maxDividends * 0.128);
     const dividendsNetsPfuAmount = Math.round(dividendsNetsPfu);
 
-    sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNetsPfuAmount, maxDividends, percentage, myArray);
+    eurlPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNetsPfuAmount, maxDividends, percentage, myArray);
+}
+
+function eurlPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNetsPfuAmount, dividends, percentage, myArray) {
+    const remunerationPlusDividendsPregressiveAmount = afterTax + dividendsNetsProgressiveAmount;
+    const remunerationPlusDividendsPfuAmount = afterTax + dividendsNetsPfuAmount;
+
+    let remunerationPlusDividendsBestAmount;
+
+    if (remunerationPlusDividendsPregressiveAmount > remunerationPlusDividendsPfuAmount) {
+        remunerationPlusDividendsBestAmount = remunerationPlusDividendsPregressiveAmount;
+    } else if (remunerationPlusDividendsPfuAmount > remunerationPlusDividendsPregressiveAmount) {
+        remunerationPlusDividendsBestAmount = remunerationPlusDividendsPfuAmount;
+    }
+
+    let myObject = {
+        maxDividends: parseInt(dividends),
+        afterTaxAmount: parseInt(afterTax),
+        percentage: parseInt(percentage),
+        remunerationPlusDividendsBestAmount: parseInt(remunerationPlusDividendsBestAmount)
+    }
+
+    myArray.push(myObject);
+    localStorage.setItem('myArrayEurl', JSON.stringify(myArray));
 }
 
 
@@ -570,7 +593,7 @@ function eurlCalculDividendsNets(dividends, situation, numberOfChild, householdI
     /* Dividendes PFU */
     const dividendsNetsPFU = dividends - (dividends * 0.128);
     const dividendsNetsPFUAmount = Math.round(dividendsNetsPFU);
-    document.getElementById('sasu-pfu-dividends').textContent = dividendsNetsPFUAmount.toLocaleString('fr-FR') + '€';
+    document.getElementById('eurl-pfu-dividends').textContent = dividendsNetsPFUAmount.toLocaleString('fr-FR') + '€';
 }
 
 /*function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
