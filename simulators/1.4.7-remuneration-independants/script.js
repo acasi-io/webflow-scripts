@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.4.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -233,6 +233,20 @@ function storeRemuneration(turnover) {
     document.getElementById('micro-contributions-recap').textContent = microContributions;
 }
 
+function situationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, singleParent, socialForm) {
+    engine.setSituation({
+        "bénéficiaire . dividendes . bruts": parseInt(dividends),
+        "impôt . foyer fiscal . parent isolé": `${singleParent}`,
+        "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
+        "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
+        "dirigeant . rémunération . net . imposable": "0 €/an",
+        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
+        "impôt . méthode de calcul": "'barème standard'",
+        "bénéficiaire": "oui",
+        "entreprise . catégorie juridique": `${socialForm}`
+    });
+}
+
 
 /* SASU */
 function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, myArray) {
@@ -271,7 +285,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
         maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
     }
 
-    sasuSituationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non');
+    situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SAS');
     const dividendsNetsProgressive = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsNetsProgressiveAmount = (Math.round(dividendsNetsProgressive.nodeValue));
 
@@ -319,20 +333,6 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuGrossDividends.textContent = maxDividends.toLocaleString('fr-FR') + '€';
 }
 
-function sasuSituationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, singleParent) {
-    engine.setSituation({
-        "bénéficiaire . dividendes . bruts": parseInt(dividends),
-        "impôt . foyer fiscal . parent isolé": `${singleParent}`,
-        "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
-        "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
-        "dirigeant . rémunération . net . imposable": "0 €/an",
-        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
-        "impôt . méthode de calcul": "'barème standard'",
-        "bénéficiaire": "oui",
-        "entreprise . catégorie juridique": "'SAS'"
-    });
-}
-
 function sasuSituationPfuDividends(dividends) {
     engine.setSituation({
         "impôt . méthode de calcul": "'PFU'",
@@ -344,13 +344,13 @@ function sasuSituationPfuDividends(dividends) {
 
 function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdIncome) {
     /* Dividendes Barème Progressif */
-    sasuSituationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, 'non');
+    situationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, 'non', 'SAS');
     const dividendsNetsBareme = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsNetsBaremeAmount = (Math.round(dividendsNetsBareme.nodeValue));
     document.getElementById('sasu-progressive-dividends').textContent = dividendsNetsBaremeAmount.toLocaleString('fr-FR') + '€';
 
     if(document.getElementById('single-parent').value === 'oui') {
-        sasuSituationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, 'non');
+        situationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, 'oui', 'SAS');
     }
     
 
@@ -454,7 +454,126 @@ function eiEurlRemuneration(taxRemunerationAfter) {
 
 
 /* EURL */
+function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, tax, singleParent) {
+    engine.setSituation({
+        "dirigeant . rémunération . totale": turnoverMinusCost,
+        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
+        "impôt . foyer fiscal . enfants à charge": numberOfChild,
+        "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
+        "entreprise . activité . nature": "'libérale'",
+        "entreprise . imposition": `'${tax}'`,
+        "impôt . foyer fiscal . parent isolé": `${singleParent}`,
+        "entreprise . associés": "'unique'",
+        "entreprise . catégorie juridique": "'SARL'",
+        "impôt . méthode de calcul": "'barème standard'"
+    });
+}
+
+
+function eurlCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, myArray) {
+    const wage = Math.round(turnoverMinusCost * (percentage / 100));
+
+    eurlSituation(wage, situation, numberOfChild, householdIncome, 'IS', 'non');
+
+    let afterTax = engine.evaluate("dirigeant . rémunération . net . après impôt");
+    if (isNaN(afterTax.nodeValue)) {
+        afterTax = 0;
+    } else {
+        afterTax = Math.round(afterTax.nodeValue * 12);
+    }
+
+    let beforeTax = engine.evaluate("dirigeant . rémunération . net");
+    if (isNaN(beforeTax.nodeValue)) {
+        beforeTax = 0;
+    } else {
+        beforeTax = Math.round(beforeTax.nodeValue * 12);
+    }
+
+    let contributionsTotal = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
+    if (isNaN(contributionsTotal.nodeValue)) {
+        contributionsTotal = 0;
+    } else {
+        contributionsTotal = Math.round(contributionsTotal.nodeValue * 12);
+    }
+
+    const totalForIs = turnoverMinusCost - contributionsTotal - beforeTax;
+
+    let maxDividends;
+
+    if (totalForIs <= 42500) {
+        maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
+    } else {
+        maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
+    }
+
+    situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
+    const dividendsNetsProgressive = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
+    const dividendsNetsProgressiveAmount = Math.round(dividendsNetsProgressive.nodeValue);
+
+    const dividendsNetsPfu = maxDividends - (maxDividends * 0.128);
+    const dividendsNetsPfuAmount = Math.round(dividendsNetsPfu);
+
+    sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNetsPfuAmount, maxDividends, percentage, myArray);
+}
+
+
 function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
+    let myArray = [];
+
+    for (let percentage = 0; percentage <= 100; percentage += 10) {
+        eurlCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, myArray);
+    }
+
+    myArray = JSON.parse(localStorage.getItem('myArrayEurl'));
+
+    let remunerationPlusDividendsBestAmount = myArray[0].remunerationPlusDividendsBestAmount;
+    let maxRemunerationObject = 0;
+    let maxRemunerationPercentage = myArray[0].percentage;
+    let maxDividends = myArray[0].maxDividends;
+
+    for (let i = 1; i < myArray.length; i++) {
+        const currentRemunerationPlusDividends = myArray[i].remunerationPlusDividendsBestAmount;
+
+        if (currentRemunerationPlusDividends > remunerationPlusDividendsBestAmount) {
+            remunerationPlusDividendsBestAmount = currentRemunerationPlusDividends;
+            maxRemunerationObject = i;
+            maxRemunerationPercentage = myArray[i].percentage;
+            maxDividends = myArray[i].maxDividends;
+        }
+    }
+
+    let bestWage = Math.round(turnoverMinusCost * (maxRemunerationPercentage / 100));
+
+    eurlSituation(bestWage, situation, numberOfChild, householdIncome, 'IS', 'non');
+    fillSameClassTexts("dirigeant . rémunération . net", '.eurl-is-before-tax');
+    fillSameClassTexts("dirigeant . rémunération . net . après impôt", 'is-eurl-after');
+    eurlContributions();
+    eurlRetirement();
+
+    eurlCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome);
+    const eurlGrossDividends = document.getElementById('eurl-gross-dividends');
+    eurlGrossDividends.textContent = maxDividends.toLocaleString('fr-FR') + '€';
+}
+
+function eurlCalculDividendsNets(dividends, situation, numberOfChild, householdIncome) {
+    /* Dividendes Barème Progressif */
+    situationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
+    const dividendsNetsBareme = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
+    const dividendsNetsBaremeAmount = (Math.round(dividendsNetsBareme.nodeValue));
+    document.getElementById('eurl-progressive-dividends').textContent = dividendsNetsBaremeAmount.toLocaleString('fr-FR') + '€';
+
+    if(document.getElementById('single-parent').value === 'oui') {
+        situationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, 'oui', 'SARL');
+    }
+    
+
+    /* Dividendes PFU */
+    const dividendsNetsPFU = dividends - (dividends * 0.128);
+    const dividendsNetsPFUAmount = Math.round(dividendsNetsPFU);
+    document.getElementById('sasu-pfu-dividends').textContent = dividendsNetsPFUAmount.toLocaleString('fr-FR') + '€';
+}
+
+/*function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
     eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'non');
 
     eiEurlRemuneration('.is-eurl-after');
@@ -486,7 +605,7 @@ function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdInc
         "entreprise . catégorie juridique": "'SARL'",
         "impôt . méthode de calcul": "'barème standard'"
     });
-}
+}*/
 
 function eurlContributions() {
     fillText("dirigeant . indépendant . cotisations et contributions", '#eurl-contributions-total');
