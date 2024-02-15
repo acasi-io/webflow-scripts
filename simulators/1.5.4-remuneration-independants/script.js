@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -157,6 +157,24 @@ function compareRemuneration(turnover) {
     const sasuContainerRecap = document.getElementById('sasu-container-recap');
     const eiContainerRecap = document.getElementById('ei-container-recap');
     const microContainerRecap = document.getElementById('micro-container-recap');
+
+    let valeursTrie = [sasuTotal, eurlIr, eiIr, micro];
+    valeursTrie.sort(function(a, b) {
+        return b - a;
+    });
+
+    for (let i = 0; i < valeursTrie.length; i++) {
+        if (valeursTrie[i] === sasuTotal) {
+            sasuContainerRecap.style.gridColumn = i + 1;
+        } else if (valeursTrie[i] === eurlIr) {
+            eurlContainerRecap.style.gridColumn = i + 1;
+        } else if (valeursTrie[i] === eiIr) {
+            eiContainerRecap.style.gridColumn = i + 1;
+        } else if (valeursTrie[i] === micro) {
+            microContainerRecap.style.gridColumn = i + 1;
+        }
+    }
+
 
     const eurlHeadingRecap = document.getElementById('eurl-heading-recap');
     const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
