@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -158,7 +158,27 @@ function compareRemuneration(turnover) {
     const eiContainerRecap = document.getElementById('ei-container-recap');
     const microContainerRecap = document.getElementById('micro-container-recap');
 
-    let valeursTrie = [sasuTotal, eurlIr, eiIr, micro];
+    var colonnes = [
+        { id: "sasu-container-recap", remuneration: sasuTotal },
+        { id: "eurl-container-recap", remuneration: eurlIr },
+        { id: "ei-container-recap", remuneration: eiIr },
+        { id: "micro-container-recap", remuneration: micro }
+    ];
+    
+    colonnes.sort(function(a, b) {
+        return b.remuneration - a.remuneration;
+    });
+    
+    for (var i = 0; i < colonnes.length; i++) {
+        var colonne = document.getElementById(colonnes[i].id);
+        colonne.style.gridColumn = i + 1;
+    
+        if (i > 0 && colonnes[i].remuneration === colonnes[i - 1].remuneration) {
+            colonne.style.gridColumn = i + 2;
+        }
+    }
+
+    /*let valeursTrie = [sasuTotal, eurlIr, eiIr, micro];
     valeursTrie.sort(function(a, b) {
         return b - a;
     });
@@ -173,7 +193,7 @@ function compareRemuneration(turnover) {
         } else if (valeursTrie[i] === micro) {
             microContainerRecap.style.gridColumn = i + 1;
         }
-    }
+    }*/
 
 
     const eurlHeadingRecap = document.getElementById('eurl-heading-recap');
