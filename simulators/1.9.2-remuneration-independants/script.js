@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -131,6 +131,8 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
     document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
+
+    console.log('la retraite complémentaire est de : ' + (engine.evaluate("protection sociale . retraite . complémentaire . AGIRC ARRCO")).nodeValue);
 }
 
 function orderResults(sasuTotal, eurlIr, eiIr, micro) {
@@ -377,6 +379,8 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     let maxDividends = parseInt(localStorage.getItem('maxDividends'));
 
     sasuSituation(bestWage, situation, numberOfChild, householdIncome, 'non');
+    console.log(engine.evaluate("dirigeant . indépendant . assiette des cotisations"));
+    console.log('sasu : ' + (engine.evaluate("dirigeant . indépendant . assiette des cotisations")).nodeValue);
     sasuRemuneration();
     sasuContributions();
     sasuRetirement();
@@ -563,9 +567,6 @@ function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'non');
     eiEurlContributions('eurl');
     eurlRetirement();
-
-    console.log(engine.evaluate("dirigeant . indépendant . assiette des cotisations"));
-    console.log((engine.evaluate("dirigeant . indépendant . assiette des cotisations")).nodeValue);
 }
 
 function eurlSituation(wage, situation, numberOfChild, householdIncome, tax, singleParent) {
