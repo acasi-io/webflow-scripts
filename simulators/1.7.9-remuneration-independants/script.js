@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -55,28 +55,7 @@ calculBtn.addEventListener('click', () => {
         const numberOfChild = parseInt(document.getElementById('child').value);
         const householdIncome = parseFloat(document.getElementById('household-income').value);
 
-        const microRecap = document.querySelectorAll('.micro-recap');
-        const microContributions = document.querySelector('.simulator-micro-contributions');
-
-        document.querySelectorAll('.simulator-micro').forEach(element => {
-            element.style.display = 'none';
-        });
-        microContributions.style.display = 'none';
-
-        microRecap.forEach(element => {
-            element.style.display = 'none';
-        });
-
-        if (turnover <= 50000) {
-            document.querySelectorAll('.simulator-micro').forEach(element => {
-                element.style.display = 'block';
-            });
-
-            microContributions.style.display = 'flex';
-            microRecap.forEach(element => {
-                element.style.display = 'block';
-            });
-        }
+        microConditions(turnover);
 
         const turnoverMinusCost = turnover - cost;
 
@@ -90,6 +69,31 @@ calculBtn.addEventListener('click', () => {
         hideLoader();
     }, 100);
 });
+
+function microConditions(turnover) {
+    const microRecap = document.querySelectorAll('.micro-recap');
+    const microContributions = document.querySelector('.simulator-micro-contributions');
+
+    document.querySelectorAll('.simulator-micro').forEach(element => {
+        element.style.display = 'none';
+    });
+    microContributions.style.display = 'none';
+
+    microRecap.forEach(element => {
+        element.style.display = 'none';
+    });
+
+    if (turnover <= 50000) {
+        document.querySelectorAll('.simulator-micro').forEach(element => {
+            element.style.display = 'block';
+        });
+
+        microContributions.style.display = 'flex';
+        microRecap.forEach(element => {
+            element.style.display = 'block';
+        });
+    }   
+}
 
 function fillText(urssafData, htmlTag) {
     const dataUrssaf = engine.evaluate(urssafData);
