@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -353,9 +353,12 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
             } else {
                 bestDividends = myArray[i].dividendsNetsProgressiveAmount;
             }
-            localStorage.setItem('bestDividendsSasu', bestDividends);
         }
     }
+
+    console.log(bestDividends);
+
+    localStorage.setItem('bestDividendsSasu', bestDividends);
 
     let bestWage = Math.round(turnoverMinusCost * (maxRemunerationPercentage / 100));
 
