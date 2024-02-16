@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -247,9 +247,10 @@ function storeRemuneration(turnover) {
 
     const sasuContributions = document.getElementById('sasu-contributions-total').textContent;
     document.getElementById('sasu-contributions-recap').textContent = sasuContributions;
-    const sasuDividends = document.getElementById('sasu-progressive-dividends').textContent;
+    // const sasuDividends = document.getElementById('sasu-progressive-dividends').textContent;
+    const sasuDividends = parseInt(localStorage.getItem('bestDividendsSasu'));
     document.getElementById('sasu-dividends-recap').textContent = sasuDividends;
-    localStorage.setItem('sasuDividends', sasuDividends.replace(/\D/g, ''));
+    localStorage.setItem('sasuDividends', sasuDividends);
 
     const eurlContributions = document.getElementById('eurl-contributions-total').textContent;
     document.getElementById('eurl-contributions-recap').textContent = eurlContributions;
@@ -337,6 +338,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     let maxRemunerationObject = 0;
     let maxRemunerationPercentage = myArray[0].percentage;
     let maxDividends = myArray[0].maxDividends;
+    let bestDividends;
 
     for (let i = 1; i < myArray.length; i++) {
         const currentRemunerationPlusDividends = myArray[i].remunerationPlusDividendsBestAmount;
@@ -346,6 +348,12 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
             maxRemunerationObject = i;
             maxRemunerationPercentage = myArray[i].percentage;
             maxDividends = myArray[i].maxDividends;
+            if (myArray[i].dividendsNetsPfuAmount > myArray[i].dividendsNetsProgressiveAmount) {
+                bestDividends = myArray[i].dividendsNetsPfuAmount;
+            } else {
+                bestDividends = myArray[i].dividendsNetsProgressiveAmount;
+            }
+            localStorage.setItem('bestDividendsSasu', bestDividends);
         }
     }
 
