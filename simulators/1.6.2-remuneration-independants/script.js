@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -249,8 +249,8 @@ function storeRemuneration(turnover) {
     const sasuDividendsRecap = document.getElementById('sasu-dividends-recap');
     const sasuContributions = document.getElementById('sasu-contributions-total').textContent;
     sasuContributionsRecap.textContent = sasuContributions;
-    const sasuDividendsProgressive = parseInt((sasuDividendsProgressive.textContent).replace(/\D/g, ''));
-    const sasuDividendsPfu = parseInt((sasuDividendsPfu.textContent).replace(/\D/g, ''));
+    const sasuDividendsProgressive = parseInt((document.getElementById('sasu-progressive-dividends').textContent).replace(/\D/g, ''));
+    const sasuDividendsPfu = parseInt((document.getElementById('sasu-pfu-dividends').textContent).replace(/\D/g, ''));
     let bestDividends;
     if (sasuDividendsProgressive > sasuDividendsPfu) {
         bestDividends = sasuDividendsProgressive;
