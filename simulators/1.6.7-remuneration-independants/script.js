@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -524,23 +524,9 @@ function eiEurlRemuneration(taxRemunerationAfter) {
 
 /* EURL */
 function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
-    /*eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
-    eiEurlRemuneration('.is-eurl-after');*/
-
     eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'non');
     eurlContributions();
     eurlRetirement();
-
-    /*eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IR')
-    eiEurlRemuneration('.ir-eurl-after');*/
-
-    /*if(document.getElementById('single-parent').value === 'oui') {
-        eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IS');
-        eiEurlRemuneration('.is-eurl-after');
-
-        eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IR')
-        eiEurlRemuneration('.ir-eurl-after');
-    }*/
 }
 
 function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, tax, singleParent) {
