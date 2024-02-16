@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -306,7 +306,7 @@ function situationProgressiveDividends(dividends, situation, numberOfChild, hous
 
 
 /* SASU */
-function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, myArray) {
+function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, arraySasu) {
     const wage = Math.round(turnoverMinusCost * (percentage / 100));
 
     sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
@@ -350,31 +350,31 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     const dividendsNetsPfu = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsNetsPfuAmount = (Math.round(dividendsNetsPfu.nodeValue));
 
-    sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNetsPfuAmount, maxDividends, percentage, myArray);
+    sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNetsPfuAmount, maxDividends, percentage, arraySasu);
 }
 
 function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
-    let myArray = [];
+    let arraySasu = [];
 
     for (let percentage = 0; percentage <= 100; percentage += 10) {
-        sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, myArray);
+        sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, arraySasu);
     }
 
-    myArray = JSON.parse(localStorage.getItem('myArray')); 
+    arraySasu = JSON.parse(localStorage.getItem('arraySasu')); 
 
-    let remunerationPlusDividendsBestAmount = myArray[0].remunerationPlusDividendsBestAmount;
+    let remunerationPlusDividendsBestAmount = arraySasu[0].remunerationPlusDividendsBestAmount;
     let maxRemunerationObject = 0;
-    let maxRemunerationPercentage = myArray[0].percentage;
-    let maxDividends = myArray[0].maxDividends;
+    let maxRemunerationPercentage = arraySasu[0].percentage;
+    let maxDividends = arraySasu[0].maxDividends;
 
-    for (let i = 1; i < myArray.length; i++) {
-        const currentRemunerationPlusDividends = myArray[i].remunerationPlusDividendsBestAmount;
+    for (let i = 1; i < arraySasu.length; i++) {
+        const currentRemunerationPlusDividends = arraySasu[i].remunerationPlusDividendsBestAmount;
 
         if (currentRemunerationPlusDividends > remunerationPlusDividendsBestAmount) {
             remunerationPlusDividendsBestAmount = currentRemunerationPlusDividends;
             maxRemunerationObject = i;
-            maxRemunerationPercentage = myArray[i].percentage;
-            maxDividends = myArray[i].maxDividends;
+            maxRemunerationPercentage = arraySasu[i].percentage;
+            maxDividends = arraySasu[i].maxDividends;
         }
     }
 
@@ -418,7 +418,7 @@ function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdI
     document.getElementById('sasu-pfu-dividends').textContent = dividendsNetsPFUAmount.toLocaleString('fr-FR') + '€';
 }
 
-function sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNetsPfuAmount, dividends, percentage, myArray) {
+function sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNetsPfuAmount, dividends, percentage, arraySasu) {
     const remunerationPlusDividendsPregressiveAmount = afterTax + dividendsNetsProgressiveAmount;
     const remunerationPlusDividendsPfuAmount = afterTax + dividendsNetsPfuAmount;
 
@@ -439,8 +439,8 @@ function sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNets
         remunerationPlusDividendsBestAmount: parseInt(remunerationPlusDividendsBestAmount)
     }
 
-    myArray.push(myObject);
-    localStorage.setItem('myArray', JSON.stringify(myArray));
+    arraySasu.push(myObject);
+    localStorage.setItem('arraySasu', JSON.stringify(arraySasu));
 }
 
 function sasuSituation(wage, situation, numberOfChild, householdIncome, singleParent) {
