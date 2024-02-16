@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -136,7 +136,8 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
 }
 
 function compareRemuneration(turnover) {
-    storeRemuneration(turnover);
+    fillWageRecap(turnover);
+    storeRemuneration();
 
     document.querySelectorAll('.heading-recap').forEach(element => {
         element.classList.remove('heading-best-choice');
@@ -189,15 +190,6 @@ function compareRemuneration(turnover) {
             }
         }
     }
-    
-    /*for (let i = 0; i < columns.length; i++) {
-        let colonne = document.getElementById(columns[i].id);
-        colonne.style.gridColumn = i + 1;
-    
-        if (i > 0 && columns[i].remuneration === columns[i - 1].remuneration) {
-            colonne.style.gridColumn = i + 1;
-        }
-    }*/
 
     const eurlHeadingRecap = document.getElementById('eurl-heading-recap');
     const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
@@ -233,7 +225,7 @@ function compareRemuneration(turnover) {
     }
 }
 
-function storeRemuneration(turnover) {
+function fillWageRecap(turnover) {
     document.querySelectorAll('.ir-eurl-after').forEach(element => {
         const eurllIrAmount = (element.textContent).replace(/\D/g, '');
         localStorage.setItem('eurlIr', eurllIrAmount);
@@ -265,7 +257,9 @@ function storeRemuneration(turnover) {
     document.querySelectorAll('.ca-recap').forEach(element => {
         element.textContent = turnover.toLocaleString('fr-FR') + '€';
     });
+}
 
+function storeRemuneration() {
     const sasuContributionsRecap = document.getElementById('sasu-contributions-recap');
     const sasuDividendsRecap = document.getElementById('sasu-dividends-recap');
     const sasuContributions = document.getElementById('sasu-contributions-total').textContent;
