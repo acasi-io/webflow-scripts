@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -181,9 +181,9 @@ function compareRemuneration(turnover) {
 
         if (i > 0 && columns[i].remuneration === columns[i - 1].remuneration) {
             if (isMobile) {
-                column.style.gridRow = i + 2;
+                column.style.gridRow = i + 1;
             } else {
-                column.style.gridColumn = i + 2;
+                column.style.gridColumn = i + 1;
             }
         }
     }
