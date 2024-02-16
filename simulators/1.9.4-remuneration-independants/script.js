@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -542,10 +542,21 @@ function sasuContributions() {
 function sasuRetirement() {
     retirementText('sasu-gain-trimester', 'sasu-pension-scheme', 'sasu-retirement-points');
 
-    const grossWage = Math.round((engine.evaluate("salarié . rémunération . brut")).nodeValue);
-    const contributions = Math.round((engine.evaluate("dirigeant . assimilé salarié . cotisations")).nodeValue);
-    console.log(grossWage);
-    console.log(contributions);
+    const grossWage = Math.round((engine.evaluate("salarié . rémunération . brut")).nodeValue) * 12;
+    let stageOnePercentage = 0.062;
+    let stageTwoPercentage = 0.17;
+    let pointPrice = 19.6321;
+    let pointsAcquired;
+    let maxStageOne = 43992;
+    let maxStageTwo = 351936;
+
+    if (grossWage <= maxStageOne) {
+        pointsAcquired = Math.round((grossWage * stageOnePercentage) / pointPrice);
+    } else {
+        pointsAcquired = Math.round((((grossWage - maxStageOne) * stageTwoPercentage) + (maxStageOne * stageOnePercentage)) / pointPrice);
+    }
+
+    document.getElementById('sasu-retirement-points').textContent = pointsAcquired;
 }
 
 
