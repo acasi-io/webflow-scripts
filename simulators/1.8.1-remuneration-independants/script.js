@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -322,7 +322,7 @@ function situationProgressiveDividends(dividends, situation, numberOfChild, hous
 function calculEssentialsValueForDividends(wage, situation, numberOfChild, householdIncome, afterTax, turnoverMinusCost) {
     sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
-    let afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
+    afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
     if (isNaN(afterTax.nodeValue)) {
         afterTax = 0;
     } else {
