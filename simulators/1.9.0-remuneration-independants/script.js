@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -561,7 +561,7 @@ function eiEurlContributions(form) {
 /* EURL */
 function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
     eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'non');
-    eiEurlContributions(eurl);
+    eiEurlContributions('eurl');
     eurlRetirement();
 }
 
@@ -591,7 +591,7 @@ function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome) 
 
     eiEurlRemuneration('.is-ei-after');
     eiEurlRemuneration('.is-eurl-after');
-    eiEurlContributions(ei);
+    eiEurlContributions('ei');
     eiRetirement();
 
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IR');
