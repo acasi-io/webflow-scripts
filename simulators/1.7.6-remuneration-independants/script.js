@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -137,7 +137,8 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
 
 function compareRemuneration(turnover) {
     fillWageRecap(turnover);
-    storeRemuneration();
+    fillContributionsRecap();
+    fillSasuDividendsRecap();
 
     document.querySelectorAll('.heading-recap').forEach(element => {
         element.classList.remove('heading-best-choice');
@@ -259,11 +260,8 @@ function fillWageRecap(turnover) {
     });
 }
 
-function storeRemuneration() {
-    const sasuContributionsRecap = document.getElementById('sasu-contributions-recap');
+function fillSasuDividendsRecap() {
     const sasuDividendsRecap = document.getElementById('sasu-dividends-recap');
-    const sasuContributions = document.getElementById('sasu-contributions-total').textContent;
-    sasuContributionsRecap.textContent = sasuContributions;
     const sasuDividendsProgressiveAmount = parseInt((sasuDividendsProgressive.textContent).replace(/\D/g, ''));
     const sasuDividendsPfuAmount = parseInt((sasuDividendsPfu.textContent).replace(/\D/g, ''));
     let bestDividends;
@@ -275,6 +273,11 @@ function storeRemuneration() {
         sasuDividendsRecap.textContent = sasuDividendsPfuAmount + '€';
     }
     localStorage.setItem('sasuDividends', bestDividends);
+}
+
+function fillContributionsRecap() {
+    const sasuContributions = document.getElementById('sasu-contributions-total').textContent;
+    document.getElementById('sasu-contributions-recap').textContent = sasuContributions;
 
     const eurlContributions = document.getElementById('eurl-contributions-total').textContent;
     document.getElementById('eurl-contributions-recap').textContent = eurlContributions;
