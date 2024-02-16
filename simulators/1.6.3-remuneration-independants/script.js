@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -168,15 +168,34 @@ function compareRemuneration(turnover) {
     columns.sort(function(a, b) {
         return b.remuneration - a.remuneration;
     });
-    
+
+    let isMobile = window.matchMedia("(max-width: 768px)").matches;
+
     for (let i = 0; i < columns.length; i++) {
+        let column = document.getElementById(columns[i].id);
+        if (isMobile) {
+            column.style.gridRow = i + 1;
+        } else {
+            column.style.gridColumn = i + 1;
+        }
+
+        if (i > 0 && columns[i].remuneration === columns[i - 1].remuneration) {
+            if (isMobile) {
+                column.style.gridRow = i + 2;
+            } else {
+                column.style.gridColumn = i + 2;
+            }
+        }
+    }
+    
+    /*for (let i = 0; i < columns.length; i++) {
         let colonne = document.getElementById(columns[i].id);
         colonne.style.gridColumn = i + 1;
     
         if (i > 0 && columns[i].remuneration === columns[i - 1].remuneration) {
             colonne.style.gridColumn = i + 1;
         }
-    }
+    }*/
 
     const eurlHeadingRecap = document.getElementById('eurl-heading-recap');
     const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
