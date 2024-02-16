@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -312,27 +312,34 @@ function sasuCalculEssentialsAmountForDividends(wage, situation, numberOfChild, 
     sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
     afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
+    console.log(afterTax);
     if (isNaN(afterTax.nodeValue)) {
         afterTax = 0;
     } else {
         afterTax = Math.round(afterTax.nodeValue * 12);
     }
+    console.log(afterTax);
 
     beforeTax = engine.evaluate("salarié . rémunération . net . à payer avant impôt");
+    console.log(beforeTax);
     if (isNaN(beforeTax.nodeValue)) {
         beforeTax = 0;
     } else {
         beforeTax = Math.round(beforeTax.nodeValue * 12);
     }
+    console.log(beforeTax);
 
     contributionsTotal = engine.evaluate("dirigeant . assimilé salarié . cotisations");
+    console.log(contributionsTotal);
     if (isNaN(contributionsTotal.nodeValue)) {
         contributionsTotal = 0;
     } else {
         contributionsTotal = Math.round(contributionsTotal.nodeValue * 12);
     }
+    console.log(contributionsTotal);
 
     totalForIs = turnoverMinusCost - contributionsTotal - beforeTax;
+    console.log(totalForIs);
 }
 
 function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, arraySasu) {
@@ -377,6 +384,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     } else {
         maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
     }
+    console.log(maxDividends);
 
     situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SAS');
     const dividendsNetsProgressive = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
