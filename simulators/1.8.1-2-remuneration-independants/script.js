@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -350,11 +350,31 @@ function calculEssentialsValueForDividends(wage, situation, numberOfChild, house
 function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, arraySasu) {
     const wage = Math.round(turnoverMinusCost * (percentage / 100));
 
-    let afterTax;
+    sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
 
-    calculEssentialsValueForDividends(wage, situation, numberOfChild, householdIncome, afterTax, turnoverMinusCost);
+    let afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
+    if (isNaN(afterTax.nodeValue)) {
+        afterTax = 0;
+    } else {
+        afterTax = Math.round(afterTax.nodeValue * 12);
+    }
 
-    const totalForIs = parseInt(localStorage.getItem('totalForIs'));
+    let beforeTax = engine.evaluate("salarié . rémunération . net . à payer avant impôt");
+    if (isNaN(beforeTax.nodeValue)) {
+        beforeTax = 0;
+    } else {
+        beforeTax = Math.round(beforeTax.nodeValue * 12);
+    }
+
+    let contributionsTotal = engine.evaluate("dirigeant . assimilé salarié . cotisations");
+    if (isNaN(contributionsTotal.nodeValue)) {
+        contributionsTotal = 0;
+    } else {
+        contributionsTotal = Math.round(contributionsTotal.nodeValue * 12);
+    }
+
+    const totalForIs = turnoverMinusCost - contributionsTotal - beforeTax;
+
     let maxDividends;
 
     if (totalForIs <= 42500) {
