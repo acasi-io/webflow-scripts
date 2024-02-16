@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -422,8 +422,9 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     
     let bestWage = Math.round(turnoverMinusCost * (maxRemunerationPercentage / 100));*/
 
-    let bestWage;
     findSasuBestRemunerationAndDividends(turnoverMinusCost, situation, numberOfChild, householdIncome, arraySasu);
+
+    let bestWage = parseInt(localStorage.getItem('bestWage'));
 
     sasuSituation(bestWage, situation, numberOfChild, householdIncome, 'non');
     sasuRemuneration();
@@ -435,7 +436,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuGrossDividends.textContent = maxDividends.toLocaleString('fr-FR') + '€';
 }
 
-function findSasuBestRemunerationAndDividends(turnoverMinusCost, situation, numberOfChild, householdIncome, arraySasu, bestWage) {
+function findSasuBestRemunerationAndDividends(turnoverMinusCost, situation, numberOfChild, householdIncome, arraySasu) {
     for (let percentage = 0; percentage <= 100; percentage += 10) {
         sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, arraySasu);
     }
@@ -458,7 +459,8 @@ function findSasuBestRemunerationAndDividends(turnoverMinusCost, situation, numb
         }
     }
 
-    return bestWage = Math.round(turnoverMinusCost * (maxRemunerationPercentage / 100));
+    let bestWage = Math.round(turnoverMinusCost * (maxRemunerationPercentage / 100));
+    localStorage.setItem('bestWage', bestWage);
 }
 
 function sasuSituationPfuDividends(dividends) {
