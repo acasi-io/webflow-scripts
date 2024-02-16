@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -85,7 +85,7 @@ calculBtn.addEventListener('click', () => {
         eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
         microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
 
-        compareRemuneration(turnover);
+        fillRecapContainer(turnover);
 
         hideLoader();
     }, 100);
@@ -135,68 +135,53 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
     document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
 }
 
-function compareRemuneration(turnover) {
-    fillWageRecap(turnover);
-    fillContributionsRecap();
-    fillSasuDividendsRecap();
-
-    document.querySelectorAll('.heading-recap').forEach(element => {
-        element.classList.remove('heading-best-choice');
-    });
-
-    document.querySelectorAll('.container-recap').forEach(element => {
-        element.classList.remove('container-best-choice');
-    });
-
-    const eurlIr = parseInt(localStorage.getItem('eurlIr'));
-    const eiIr = parseInt(localStorage.getItem('eiIr'));
-    const sasu = parseInt(localStorage.getItem('sasu'));
-    const micro = parseInt(localStorage.getItem('micro'));
-
-    const sasuDividends = parseInt(localStorage.getItem('sasuDividends'));
-
-    const sasuTotal = sasu + sasuDividends;
-
-    const eurlContainerRecap = document.getElementById('eurl-container-recap');
-    const sasuContainerRecap = document.getElementById('sasu-container-recap');
-    const eiContainerRecap = document.getElementById('ei-container-recap');
-    const microContainerRecap = document.getElementById('micro-container-recap');
-
-    let columns = [
+function orderResults(sasuTotal, eurlIr, eiIr, micro) {
+    let results = [
         { id: "sasu-container-recap", remuneration: sasuTotal },
         { id: "eurl-container-recap", remuneration: eurlIr },
         { id: "ei-container-recap", remuneration: eiIr },
         { id: "micro-container-recap", remuneration: micro }
     ];
     
-    columns.sort(function(a, b) {
+    results.sort(function(a, b) {
         return b.remuneration - a.remuneration;
     });
 
     let isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-    for (let i = 0; i < columns.length; i++) {
-        let column = document.getElementById(columns[i].id);
+    for (let i = 0; i < results.length; i++) {
+        let result = document.getElementById(results[i].id);
         if (isMobile) {
-            column.style.gridRow = i + 1;
+            result.style.gridRow = i + 1;
         } else {
-            column.style.gridColumn = i + 1;
+            result.style.gridColumn = i + 1;
         }
 
-        if (i > 0 && columns[i].remuneration === columns[i - 1].remuneration) {
+        if (i > 0 && results[i].remuneration === results[i - 1].remuneration) {
             if (isMobile) {
-                column.style.gridRow = i + 1;
+                result.style.gridRow = i + 1;
             } else {
-                column.style.gridColumn = i + 1;
+                result.style.gridColumn = i + 1;
             }
         }
     }
+}
+
+function addStyleToResults(sasuTotal, eurlIr, eiIr, micro) {
+    const eurlContainerRecap = document.getElementById('eurl-container-recap');
+    const sasuContainerRecap = document.getElementById('sasu-container-recap');
+    const eiContainerRecap = document.getElementById('ei-container-recap');
+    const microContainerRecap = document.getElementById('micro-container-recap');
 
     const eurlHeadingRecap = document.getElementById('eurl-heading-recap');
     const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
     const eiHeadingRecap = document.getElementById('ei-heading-recap');
     const microHeadingRecap = document.getElementById('micro-heading-recap');
 
+    compareResults(sasuTotal, eurlIr, eiIr, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap);
+}
+
+function compareResults(sasuTotal, eurlIr, eiIr, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap) {
     if (eurlIr >= eiIr && eurlIr > sasuTotal && eurlIr > micro) {
         if (eurlIr > eiIr) {
             eurlContainerRecap.classList.add('container-best-choice');
@@ -224,6 +209,31 @@ function compareRemuneration(turnover) {
             eiHeadingRecap.classList.add('heading-best-choice');
         }
     }
+}
+
+function fillRecapContainer(turnover) {
+    fillWageRecap(turnover);
+    fillContributionsRecap();
+    fillSasuDividendsRecap();
+
+    document.querySelectorAll('.heading-recap').forEach(element => {
+        element.classList.remove('heading-best-choice');
+    });
+
+    document.querySelectorAll('.container-recap').forEach(element => {
+        element.classList.remove('container-best-choice');
+    });
+
+    const eurlIr = parseInt(localStorage.getItem('eurlIr'));
+    const eiIr = parseInt(localStorage.getItem('eiIr'));
+    const sasu = parseInt(localStorage.getItem('sasu'));
+    const micro = parseInt(localStorage.getItem('micro'));
+
+    const sasuDividends = parseInt(localStorage.getItem('sasuDividends'));
+    const sasuTotal = sasu + sasuDividends;
+
+    orderResults(sasuTotal, eurlIr, eiIr, micro);
+    addStyleToResults(sasuTotal, eurlIr, eiIr, micro);
 }
 
 function fillWageRecap(turnover) {
