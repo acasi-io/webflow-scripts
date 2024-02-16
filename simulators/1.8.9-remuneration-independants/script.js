@@ -1,18 +1,7 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
-
-const eurlBefore = document.querySelectorAll('.eurl-before');
-const isEurlAfter = document.querySelectorAll('.is-eurl-after');
-const irEurlAfter = document.querySelectorAll('.ir-eurl-after');
-const sasuBefore = document.querySelectorAll('.sasu-before');
-const sasuAfter = document.querySelectorAll('.sasu-after');
-const eiBefore = document.querySelectorAll('.ei-before');
-const isEiBefore = document.querySelectorAll('.is-ei-after');
-const irEiBefore = document.querySelectorAll('.ir-ei-after');
-const microBefore = document.querySelectorAll('.micro-before');
-const microAfter = document.querySelectorAll('.micro-after');
 
 const green = '#6FCF97';
 const orange = '#FFB13C';
@@ -23,6 +12,9 @@ const calculBtn = document.getElementById('calcul-btn');
 const numberOfChildSelect = document.getElementById('child');
 const sasuDividendsPfu = document.getElementById('sasu-pfu-dividends');
 const sasuDividendsProgressive = document.getElementById('sasu-progressive-dividends');
+const sasuBefore = document.querySelectorAll('.sasu-before');
+const sasuAfter = document.querySelectorAll('.sasu-after');
+
 
 numberOfChildSelect.addEventListener('change', (input) => {
     const singleParentElements = document.querySelectorAll('.single-parent');
@@ -70,6 +62,7 @@ calculBtn.addEventListener('click', () => {
         hideLoader();
     }, 100);
 });
+
 
 function microConditions(turnover) {
     const microRecap = document.querySelectorAll('.micro-recap');
@@ -254,7 +247,7 @@ function fillWageRecap(turnover) {
         document.getElementById('ei-wage-recap').textContent = eilIrAmount.toLocaleString('fr-FR') + '€';
     });
 
-    document.querySelectorAll('.sasu-after').forEach(element => {
+    sasuAfter.forEach(element => {
         const sasuAmount = (element.textContent).replace(/\D/g, '');
         document.getElementById('sasu-wage-recap').textContent = sasuAmount.toLocaleString('fr-FR') + '€';
         localStorage.setItem('sasu', sasuAmount);
@@ -356,32 +349,6 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
 
     let afterTax = parseInt(localStorage.getItem('afterTaxSasu'));
     let totalForIs = parseInt(localStorage.getItem('totalForIs'));
-
-    /*sasuSituation(wage, situation, numberOfChild, householdIncome, 'non');
-
-    let afterTax = engine.evaluate("salarié . rémunération . net . payé après impôt");
-    if (isNaN(afterTax.nodeValue)) {
-        afterTax = 0;
-    } else {
-        afterTax = Math.round(afterTax.nodeValue * 12);
-    }
-
-    let beforeTax = engine.evaluate("salarié . rémunération . net . à payer avant impôt");
-    if (isNaN(beforeTax.nodeValue)) {
-        beforeTax = 0;
-    } else {
-        beforeTax = Math.round(beforeTax.nodeValue * 12);
-    }
-
-    let contributionsTotal = engine.evaluate("dirigeant . assimilé salarié . cotisations");
-    if (isNaN(contributionsTotal.nodeValue)) {
-        contributionsTotal = 0;
-    } else {
-        contributionsTotal = Math.round(contributionsTotal.nodeValue * 12);
-    }
-
-    const totalForIs = turnoverMinusCost - contributionsTotal - beforeTax;*/
-
     let maxDividends;
 
     if (totalForIs <= 42500) {
@@ -523,7 +490,7 @@ function sasuRemuneration() {
     if (isNaN(netAmount)) {
         netAmount = 0;
     }
-    document.querySelectorAll('.sasu-before').forEach(element => {
+    sasuBefore.forEach(element => {
         element.textContent = `${netAmount}€`;
     });
 
@@ -532,7 +499,7 @@ function sasuRemuneration() {
     if (isNaN(afterTaxAmount)) {
         afterTaxAmount = 0;
     }
-    document.querySelectorAll('.sasu-after').forEach(element => {
+    sasuAfter.forEach(element => {
         element.textContent = `${afterTaxAmount}€`;
     });
 
@@ -578,11 +545,23 @@ function eiEurlRemuneration(taxRemunerationAfter) {
     fillSameClassTexts("dirigeant . rémunération . net . après impôt", taxRemunerationAfter);
 }
 
+function eiEurlContributions(form) {
+    fillText("dirigeant . indépendant . cotisations et contributions", `#${form}-contributions-total`);
+    fillText("dirigeant . indépendant . cotisations et contributions . cotisations", `#${form}-contributions`);
+    fillText("dirigeant . indépendant . cotisations et contributions . maladie", `#${form}-disease`);
+    fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", `#${form}-base-retirement`);
+    fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", `#${form}-additional-retirement`);
+    fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", `#${form}-disease-allowance`);
+    fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", `#${form}-disability`);
+    fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", `#${form}-csg`);
+    fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#${form}-formation`);
+}
+
 
 /* EURL */
 function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
     eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'non');
-    eurlContributions();
+    eiEurlContributions(eurl);
     eurlRetirement();
 }
 
@@ -601,18 +580,6 @@ function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdInc
     });
 }
 
-function eurlContributions() {
-    fillText("dirigeant . indépendant . cotisations et contributions", '#eurl-contributions-total');
-    fillText("dirigeant . indépendant . cotisations et contributions . cotisations", '#eurl-contributions');
-    fillText("dirigeant . indépendant . cotisations et contributions . maladie", '#eurl-disease');
-    fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", '#eurl-base-retirement');
-    fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", '#eurl-additional-retirement');
-    fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", '#eurl-disease-allowance');
-    fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", '#eurl-disability');
-    fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", '#eurl-csg');
-    fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", '#eurl-formation');
-}
-
 function eurlRetirement() {
     retirementText('eurl-gain-trimester', 'eurl-pension-scheme', 'eurl-retirement-points');
 }
@@ -624,7 +591,7 @@ function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome) 
 
     eiEurlRemuneration('.is-ei-after');
     eiEurlRemuneration('.is-eurl-after');
-    eiContributions();
+    eiEurlContributions(ei);
     eiRetirement();
 
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IR');
@@ -655,18 +622,6 @@ function eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncom
         "entreprise . catégorie juridique": "'EI'",
         "entreprise . catégorie juridique . EI . auto-entrepreneur": "non"
     });
-}
-
-function eiContributions() {
-    fillText("dirigeant . indépendant . cotisations et contributions", '#ei-contributions-total');
-    fillText("dirigeant . indépendant . cotisations et contributions . cotisations", '#ei-contributions');
-    fillText("dirigeant . indépendant . cotisations et contributions . maladie", '#ei-disease');
-    fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", '#ei-base-retirement');
-    fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", '#ei-additional-retirement');
-    fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", '#ei-disease-allowance');
-    fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", '#ei-disability');
-    fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", '#ei-csg');
-    fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", '#ei-formation');
 }
 
 function eiRetirement() {
