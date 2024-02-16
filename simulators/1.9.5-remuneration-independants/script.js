@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -133,6 +133,32 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
     document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
 }
 
+function fillRecapContainer(turnover) {
+    fillWageRecap(turnover);
+    fillContributionsRecap();
+    fillSasuDividendsRecap();
+    fillTextForMicro(turnover);
+
+    document.querySelectorAll('.heading-recap').forEach(element => {
+        element.classList.remove('heading-best-choice');
+    });
+
+    document.querySelectorAll('.container-recap').forEach(element => {
+        element.classList.remove('container-best-choice');
+    });
+
+    const eurlIr = parseInt(localStorage.getItem('eurlIr'));
+    const eiIr = parseInt(localStorage.getItem('eiIr'));
+    const sasu = parseInt(localStorage.getItem('sasu'));
+    const micro = parseInt(localStorage.getItem('micro'));
+
+    const sasuDividends = parseInt(localStorage.getItem('sasuDividends'));
+    const sasuTotal = sasu + sasuDividends;
+
+    orderResults(sasuTotal, eurlIr, eiIr, micro);
+    addStyleToResults(sasuTotal, eurlIr, eiIr, micro);
+}
+
 function orderResults(sasuTotal, eurlIr, eiIr, micro) {
     let results = [
         { id: "sasu-container-recap", remuneration: sasuTotal },
@@ -209,31 +235,6 @@ function compareResults(sasuTotal, eurlIr, eiIr, micro, eurlContainerRecap, sasu
     }
 }
 
-function fillRecapContainer(turnover) {
-    fillWageRecap(turnover);
-    fillContributionsRecap();
-    fillSasuDividendsRecap();
-
-    document.querySelectorAll('.heading-recap').forEach(element => {
-        element.classList.remove('heading-best-choice');
-    });
-
-    document.querySelectorAll('.container-recap').forEach(element => {
-        element.classList.remove('container-best-choice');
-    });
-
-    const eurlIr = parseInt(localStorage.getItem('eurlIr'));
-    const eiIr = parseInt(localStorage.getItem('eiIr'));
-    const sasu = parseInt(localStorage.getItem('sasu'));
-    const micro = parseInt(localStorage.getItem('micro'));
-
-    const sasuDividends = parseInt(localStorage.getItem('sasuDividends'));
-    const sasuTotal = sasu + sasuDividends;
-
-    orderResults(sasuTotal, eurlIr, eiIr, micro);
-    addStyleToResults(sasuTotal, eurlIr, eiIr, micro);
-}
-
 function fillWageRecap(turnover) {
     document.querySelectorAll('.ir-eurl-after').forEach(element => {
         const eurllIrAmount = (element.textContent).replace(/\D/g, '');
@@ -295,6 +296,13 @@ function fillContributionsRecap() {
 
     const microContributions = document.getElementById('micro-contributions-total').textContent;
     document.getElementById('micro-contributions-recap').textContent = microContributions;
+}
+
+function fillTextForMicro(turnover) {
+    const microTextRecap = document.getElementById('micro-text-recap');
+    if (turnover > 50000) {
+        microTextRecap.textContent = "Le plafond à ne pas dépasser est de 77 700€. Notre simulateur propose la micro-entreprise pour tout chiffre d'affaires ne dépassant pas 50 000€ pour anticiper la limite et offrir une marge de sécurité. Si vous dépassez ce plafond, sachez que vous pouvez conserver ce statut pendant une année supplémentaire complète après laquelle vous devrez changer de statut si votre chiffre d'affaires est toujours au-dessus de ce plafond."
+    }
 }
 
 function situationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, singleParent, socialForm) {
