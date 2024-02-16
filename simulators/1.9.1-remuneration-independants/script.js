@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -563,11 +563,14 @@ function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'non');
     eiEurlContributions('eurl');
     eurlRetirement();
+
+    console.log(engine.evaluate("dirigeant . indépendant . assiette des cotisations"));
+    console.log((engine.evaluate("dirigeant . indépendant . assiette des cotisations")).nodeValue);
 }
 
-function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, tax, singleParent) {
+function eurlSituation(wage, situation, numberOfChild, householdIncome, tax, singleParent) {
     engine.setSituation({
-        "dirigeant . rémunération . totale": turnoverMinusCost,
+        "dirigeant . rémunération . totale": wage,
         "impôt . foyer fiscal . situation de famille": `'${situation}'`,
         "impôt . foyer fiscal . enfants à charge": numberOfChild,
         "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
