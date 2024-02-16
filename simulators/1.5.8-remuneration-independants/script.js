@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.5.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -405,6 +405,8 @@ function sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNets
         maxDividends: parseInt(dividends),
         afterTaxAmount: parseInt(afterTax),
         percentage: parseInt(percentage),
+        dividendsNetsPfuAmount: parseInt(dividendsNetsPfuAmount),
+        dividendsNetsProgressiveAmount: parseInt(dividendsNetsProgressiveAmount),
         remunerationPlusDividendsBestAmount: parseInt(remunerationPlusDividendsBestAmount)
     }
 
