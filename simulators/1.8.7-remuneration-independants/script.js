@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.8.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -425,6 +425,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     findSasuBestRemunerationAndDividends(turnoverMinusCost, situation, numberOfChild, householdIncome, arraySasu);
 
     let bestWage = parseInt(localStorage.getItem('bestWage'));
+    let maxDividends = parseInt(localStorage.getItem('maxDividends'));
 
     sasuSituation(bestWage, situation, numberOfChild, householdIncome, 'non');
     sasuRemuneration();
@@ -461,6 +462,7 @@ function findSasuBestRemunerationAndDividends(turnoverMinusCost, situation, numb
 
     let bestWage = Math.round(turnoverMinusCost * (maxRemunerationPercentage / 100));
     localStorage.setItem('bestWage', bestWage);
+    localStorage.setItem('maxDividends', maxDividends);
 }
 
 function sasuSituationPfuDividends(dividends) {
