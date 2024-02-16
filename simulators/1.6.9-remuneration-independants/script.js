@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.6.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -20,6 +20,8 @@ const red = '#FF2B44';
 
 const calculBtn = document.getElementById('calcul-btn');
 const numberOfChildSelect = document.getElementById('child');
+const sasuDividendsPfu = document.getElementById('sasu-pfu-dividends');
+const sasuDividendsProgressive = document.getElementById('sasu-progressive-dividends');
 
 numberOfChildSelect.addEventListener('change', (input) => {
     const singleParentElements = document.querySelectorAll('.single-parent');
@@ -268,15 +270,15 @@ function storeRemuneration(turnover) {
     const sasuDividendsRecap = document.getElementById('sasu-dividends-recap');
     const sasuContributions = document.getElementById('sasu-contributions-total').textContent;
     sasuContributionsRecap.textContent = sasuContributions;
-    const sasuDividendsProgressive = parseInt((document.getElementById('sasu-progressive-dividends').textContent).replace(/\D/g, ''));
-    const sasuDividendsPfu = parseInt((document.getElementById('sasu-pfu-dividends').textContent).replace(/\D/g, ''));
+    const sasuDividendsProgressiveAmount = parseInt((sasuDividendsProgressive.textContent).replace(/\D/g, ''));
+    const sasuDividendsPfuAmount = parseInt((sasuDividendsPfu.textContent).replace(/\D/g, ''));
     let bestDividends;
-    if (sasuDividendsProgressive > sasuDividendsPfu) {
-        bestDividends = sasuDividendsProgressive;
-        sasuDividendsRecap.textContent = sasuDividendsProgressive + '€';
+    if (sasuDividendsProgressiveAmount > sasuDividendsPfuAmount) {
+        bestDividends = sasuDividendsProgressiveAmount;
+        sasuDividendsRecap.textContent = sasuDividendsProgressiveAmount + '€';
     } else {
-        bestDividends = sasuDividendsPfu;
-        sasuDividendsRecap.textContent = sasuDividendsPfu + '€';
+        bestDividends = sasuDividendsPfuAmount;
+        sasuDividendsRecap.textContent = sasuDividendsPfuAmount + '€';
     }
     localStorage.setItem('sasuDividends', bestDividends);
 
@@ -404,7 +406,7 @@ function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdI
     situationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, 'non', 'SAS');
     const dividendsNetsBareme = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsNetsBaremeAmount = (Math.round(dividendsNetsBareme.nodeValue));
-    document.getElementById('sasu-progressive-dividends').textContent = dividendsNetsBaremeAmount.toLocaleString('fr-FR') + '€';
+    sasuDividendsProgressive.textContent = dividendsNetsBaremeAmount.toLocaleString('fr-FR') + '€';
 
     if(document.getElementById('single-parent').value === 'oui') {
         situationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, 'oui', 'SAS');
@@ -415,7 +417,7 @@ function sasuCalculDividendsNets(dividends, situation, numberOfChild, householdI
     sasuSituationPfuDividends(dividends);
     const dividendsNetsPFU = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsNetsPFUAmount = (Math.round(dividendsNetsPFU.nodeValue));
-    document.getElementById('sasu-pfu-dividends').textContent = dividendsNetsPFUAmount.toLocaleString('fr-FR') + '€';
+    sasuDividendsPfu.textContent = dividendsNetsPFUAmount.toLocaleString('fr-FR') + '€';
 }
 
 function sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNetsPfuAmount, dividends, percentage, arraySasu) {
