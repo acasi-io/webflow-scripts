@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.7.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -230,18 +230,18 @@ function fillWageRecap(turnover) {
     document.querySelectorAll('.ir-eurl-after').forEach(element => {
         const eurllIrAmount = (element.textContent).replace(/\D/g, '');
         localStorage.setItem('eurlIr', eurllIrAmount);
-        document.getElementById('eurl-wage-recap').textContent = eurllIrAmount + '€';
+        document.getElementById('eurl-wage-recap').textContent = eurllIrAmount.toLocaleString('fr-FR') + '€';
     });
 
     document.querySelectorAll('.ir-ei-after').forEach(element => {
         const eilIrAmount = (element.textContent).replace(/\D/g, '');
         localStorage.setItem('eiIr', eilIrAmount);
-        document.getElementById('ei-wage-recap').textContent = eilIrAmount + '€';
+        document.getElementById('ei-wage-recap').textContent = eilIrAmount.toLocaleString('fr-FR') + '€';
     });
 
     document.querySelectorAll('.sasu-after').forEach(element => {
         const sasuAmount = (element.textContent).replace(/\D/g, '');
-        document.getElementById('sasu-wage-recap').textContent = sasuAmount + '€';
+        document.getElementById('sasu-wage-recap').textContent = sasuAmount.toLocaleString('fr-FR') + '€';
         localStorage.setItem('sasu', sasuAmount);
     });
 
@@ -251,7 +251,7 @@ function fillWageRecap(turnover) {
         } else {
             const microAmount = (element.textContent).replace(/\D/g, '');
             localStorage.setItem('micro', microAmount);
-            document.getElementById('micro-wage-recap').textContent = microAmount + '€';
+            document.getElementById('micro-wage-recap').textContent = microAmount.toLocaleString('fr-FR') + '€';
         }
     });
 
@@ -267,10 +267,10 @@ function fillSasuDividendsRecap() {
     let bestDividends;
     if (sasuDividendsProgressiveAmount > sasuDividendsPfuAmount) {
         bestDividends = sasuDividendsProgressiveAmount;
-        sasuDividendsRecap.textContent = sasuDividendsProgressiveAmount + '€';
+        sasuDividendsRecap.textContent = sasuDividendsProgressiveAmount.toLocaleString('fr-FR') + '€';
     } else {
         bestDividends = sasuDividendsPfuAmount;
-        sasuDividendsRecap.textContent = sasuDividendsPfuAmount + '€';
+        sasuDividendsRecap.textContent = sasuDividendsPfuAmount.toLocaleString('fr-FR') + '€';
     }
     localStorage.setItem('sasuDividends', bestDividends);
 }
