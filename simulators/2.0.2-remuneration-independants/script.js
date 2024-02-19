@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.0.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.0.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.0.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.0.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -626,12 +626,20 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     const contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
     const contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
 
+    eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'non');
     const beforeTaxUrssaf = engine.evaluate("dirigeant . rémunération . net");
     const beforeTaxAmount = Math.round(beforeTaxUrssaf.nodeValue);
-    console.log(beforeTaxAmount);
 
     // si on prend 10% du CA en rémunération
-    const wage = turnoverMinusCost * 0.10;
+    let percentage = 0;
+    let wage = turnoverMinusCost * percentage;
+    console.log(wage);
+
+    while (wage < beforeTaxAmount) {
+        percentage += 0.10;
+        wage = turnoverMinusCost * percentage;
+        console.log(wage);
+    }
 
     let totalForIs = turnoverMinusCost - contributionsAmount - wage;
 
