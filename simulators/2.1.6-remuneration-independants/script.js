@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -716,6 +716,7 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     let maxRemunerationObject = 0;
     let maxRemunerationPercentage = eurlArray[0].percentage;
     let dividends = eurlArray[0].maxDividends;
+    let wageEurl = eurlArray[0].wage;
 
     for (let i = 1; i < eurlArray.length; i++) {
         const currentRemunerationPlusDividends = eurlArray[i].bestWagePlusDividends;
@@ -725,10 +726,14 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
             maxRemunerationObject = i;
             maxRemunerationPercentage = eurlArray[i].percentage;
             dividends = eurlArray[i].maxDividends;
+            wageEurl = eurlArray[i].wage;
 
             document.getElementById('eurl-gross-dividends').textContent = dividends.toLocaleString('fr-FR') + '€';
             document.getElementById('eurl-pfu-dividends').textContent = (eurlArray[i].dividendsNetPfuAmount).toLocaleString('fr-FR') + '€';
             document.getElementById('eurl-progressive-dividends').textContent = (eurlArray[i].dividendsProgressiveAmount).toLocaleString('fr-FR') + '€';
+
+            eurlSituation(wageEurl, situation, numberOfChild, householdIncome, 'IS', 'non');
+            eiEurlRemuneration('.is-eurl-after');
         }
     }
 
@@ -741,7 +746,7 @@ function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome) 
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
 
     eiEurlRemuneration('.is-ei-after');
-    eiEurlRemuneration('.is-eurl-after');
+    // eiEurlRemuneration('.is-eurl-after');
     eiEurlContributions('ei');
     eiRetirement();
 
