@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -732,8 +732,20 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
             document.getElementById('eurl-pfu-dividends').textContent = (eurlArray[i].dividendsNetPfuAmount).toLocaleString('fr-FR') + '€';
             document.getElementById('eurl-progressive-dividends').textContent = (eurlArray[i].dividendsProgressiveAmount).toLocaleString('fr-FR') + '€';
 
-            eurlSituation(wageEurl, situation, numberOfChild, householdIncome, 'IS', 'non');
-            eiEurlRemuneration('.is-eurl-after');
+            document.querySelectorAll('.eurl-is-before').forEach(element => {
+                element.textContent = wageEurl.toLocaleString('fr-FR') + '€';
+            });
+
+            const afterTaxEurl = engine.setSituation({
+                "entreprise . imposition": "'IS'",
+                "entreprise . associés": "'unique'",
+                "entreprise . catégorie juridique": "'SARL'",
+                "dirigeant . rémunération . net": wageEurl
+            }).evaluate("dirigeant . rémunération . net . après impôt");
+
+            document.querySelectorAll('.is-eurl-after').forEach(element => {
+                element.textContent = afterTaxEurl.toLocaleString('fr-FR') + '€';
+            });
         }
     }
 
