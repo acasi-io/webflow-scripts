@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -681,6 +681,14 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
         } else {
             maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25 )));
         }
+
+        let dividendsNetPfuAmount = maxDividends - (maxDividends * 0.128);
+        console.log(dividendsNetPfuAmount);
+    
+        situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
+        const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
+        const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
+        console.log(dividendsProgressiveAmount);
 
         let dividendsProgressivePlusWage = dividendsProgressiveAmount + wage;
         let dividendsPfuPlusWage = dividendsNetPfuAmount + wage;
