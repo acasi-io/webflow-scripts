@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.0.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.0.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.0.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.0.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -631,17 +631,25 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     const beforeTaxAmount = Math.round(beforeTaxUrssaf.nodeValue);
 
     // si on prend 10% du CA en rémunération
+    let eurlArray = [];
     let percentage = 0;
     let wage = turnoverMinusCost * percentage;
     console.log(wage);
     let wageAfter = wage + (turnoverMinusCost * 0.05);
 
     while (wageAfter < beforeTaxAmount) {
+        let myObject = {
+            percentage: percentage,
+            wage: wage
+        };
+        eurlArray.push(myObject);
         percentage += 0.05;
         wage = turnoverMinusCost * percentage;
         wageAfter = wage + (turnoverMinusCost * 0.05);
         console.log(wage);
     }
+
+    localStorage.setItem('eurlArray', JSON.stringify(eurlArray));
 
     let totalForIs = turnoverMinusCost - contributionsAmount - wage;
 
