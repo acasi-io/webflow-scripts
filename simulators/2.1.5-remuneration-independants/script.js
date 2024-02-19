@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -728,7 +728,7 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
 
             document.getElementById('eurl-gross-dividends').textContent = dividends.toLocaleString('fr-FR') + '€';
             document.getElementById('eurl-pfu-dividends').textContent = (eurlArray[i].dividendsNetPfuAmount).toLocaleString('fr-FR') + '€';
-            document.getElementById('eurl-pfu-dividends').textContent = (eurlArray[i].eurl-progressive-dividends).toLocaleString('fr-FR') + '€';
+            document.getElementById('eurl-progressive-dividends').textContent = (eurlArray[i].dividendsProgressiveAmount).toLocaleString('fr-FR') + '€';
         }
     }
 
