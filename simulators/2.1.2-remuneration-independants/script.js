@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -645,15 +645,13 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     }
 
     let dividendsNetPfuAmount = maxDividends - (maxDividends * 0.128);
-    console.log(dividendsNetPfuAmount);
 
     situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
     const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
-    console.log(dividendsProgressiveAmount);
 
-    let dividendsProgressivePlusWage = dividendsProgressiveAmount + wage;
-    let dividendsPfuPlusWage = dividendsNetPfuAmount + wage;
+    let dividendsProgressivePlusWage = Math.round(dividendsProgressiveAmount + wage);
+    let dividendsPfuPlusWage = Math.round(dividendsNetPfuAmount + wage);
     let bestWageAndDividends;
 
     if (dividendsProgressivePlusWage > dividendsPfuPlusWage) {
@@ -683,15 +681,13 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
         }
 
         let dividendsNetPfuAmount = maxDividends - (maxDividends * 0.128);
-        console.log(dividendsNetPfuAmount);
     
         situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
         const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
         const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
-        console.log(dividendsProgressiveAmount);
 
-        let dividendsProgressivePlusWage = dividendsProgressiveAmount + wage;
-        let dividendsPfuPlusWage = dividendsNetPfuAmount + wage;
+        let dividendsProgressivePlusWage = Math.round(dividendsProgressiveAmount + wage);
+        let dividendsPfuPlusWage = Math.round(dividendsNetPfuAmount + wage);
         let bestWageAndDividends;
     
         if (dividendsProgressivePlusWage > dividendsPfuPlusWage) {
