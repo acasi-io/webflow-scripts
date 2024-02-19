@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -650,21 +650,12 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
 
-    let dividendsProgressivePlusWage = Math.round(dividendsProgressiveAmount + wage);
-    let dividendsPfuPlusWage = Math.round(dividendsNetPfuAmount + wage);
-    let bestWageAndDividends;
-
-    if (dividendsProgressivePlusWage > dividendsPfuPlusWage) {
-        bestWageAndDividends = dividendsProgressivePlusWage;
-    } else {
-        bestWageAndDividends = dividendsPfuPlusWage;
-    }
-
     let myObject0 = {
         percentage: percentage,
         wage: wage,
         maxDividends: maxDividends,
-        bestWageAndDividends: bestWageAndDividends
+        dividendsNetPfuAmount: dividendsNetPfuAmount,
+        dividendsProgressiveAmount: dividendsProgressiveAmount
     }
     eurlArray.push(myObject0);
 
@@ -686,21 +677,12 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
         const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
         const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
 
-        let dividendsProgressivePlusWage = Math.round(dividendsProgressiveAmount + wage);
-        let dividendsPfuPlusWage = Math.round(dividendsNetPfuAmount + wage);
-        let bestWageAndDividends;
-    
-        if (dividendsProgressivePlusWage > dividendsPfuPlusWage) {
-            bestWageAndDividends = dividendsProgressivePlusWage;
-        } else {
-            bestWageAndDividends = dividendsPfuPlusWage;
-        }
-
         let myObject = {
             percentage: percentage,
             wage: wage,
             maxDividends: maxDividends,
-            bestWageAndDividends: bestWageAndDividends
+            dividendsNetPfuAmount: dividendsNetPfuAmount,
+            dividendsProgressiveAmount: dividendsProgressiveAmount
         };
         eurlArray.push(myObject);
     }
