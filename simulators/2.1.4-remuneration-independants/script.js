@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.1.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -634,7 +634,6 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     let eurlArray = [];
     let percentage = 0;
     let wage = turnoverMinusCost * (percentage / 100);
-    console.log(wage);
     let wageAfter = wage + (turnoverMinusCost * (5 / 100));
     let totalForIs = turnoverMinusCost - contributionsAmount - wage;
     let maxDividends;
@@ -644,18 +643,29 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
         maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25 )));
     }
 
-    let dividendsNetPfuAmount = maxDividends - (maxDividends * 0.128);
+    let dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.128));
 
     situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
     const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
+
+    let dividendsProgressivePlusWage = Math.round(dividendsProgressiveAmount + wage);
+    let dividendsPfuPlusWage = Math.round(dividendsNetPfuAmount + wage);
+    let bestWagePlusDividends;
+
+    if (dividendsProgressivePlusWage > dividendsPfuPlusWage) {
+        bestWagePlusDividends = dividendsProgressivePlusWage;
+    } else {
+        bestWagePlusDividends = dividendsPfuPlusWage;
+    }
 
     let myObject0 = {
         percentage: percentage,
         wage: wage,
         maxDividends: maxDividends,
         dividendsNetPfuAmount: dividendsNetPfuAmount,
-        dividendsProgressiveAmount: dividendsProgressiveAmount
+        dividendsProgressiveAmount: dividendsProgressiveAmount,
+        bestWagePlusDividends: bestWagePlusDividends
     }
     eurlArray.push(myObject0);
 
@@ -671,23 +681,58 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
             maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25 )));
         }
 
-        let dividendsNetPfuAmount = maxDividends - (maxDividends * 0.128);
+        let dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.128));
     
         situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
         const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
         const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
+
+        let dividendsProgressivePlusWage = Math.round(dividendsProgressiveAmount + wage);
+        let dividendsPfuPlusWage = Math.round(dividendsNetPfuAmount + wage);
+        let bestWagePlusDividends;
+
+        if (dividendsProgressivePlusWage > dividendsPfuPlusWage) {
+            bestWagePlusDividends = dividendsProgressivePlusWage;
+        } else {
+            bestWagePlusDividends = dividendsPfuPlusWage;
+        }
 
         let myObject = {
             percentage: percentage,
             wage: wage,
             maxDividends: maxDividends,
             dividendsNetPfuAmount: dividendsNetPfuAmount,
-            dividendsProgressiveAmount: dividendsProgressiveAmount
+            dividendsProgressiveAmount: dividendsProgressiveAmount,
+            bestWagePlusDividends: bestWagePlusDividends
         };
         eurlArray.push(myObject);
     }
 
-    localStorage.setItem('eurlArray', JSON.stringify(eurlArray));
+    //localStorage.setItem('eurlArray', JSON.stringify(eurlArray));
+
+    //eurlArray = JSON.parse(localStorage.getItem('arraySasu')); 
+
+    let remunerationPlusDividendsBestAmount = eurlArray[0].bestWagePlusDividends;
+    let maxRemunerationObject = 0;
+    let maxRemunerationPercentage = eurlArray[0].percentage;
+    let dividends = eurlArray[0].maxDividends;
+
+    for (let i = 1; i < eurlArray.length; i++) {
+        const currentRemunerationPlusDividends = eurlArray[i].bestWagePlusDividends;
+
+        if (currentRemunerationPlusDividends > remunerationPlusDividendsBestAmount) {
+            remunerationPlusDividendsBestAmount = currentRemunerationPlusDividends;
+            maxRemunerationObject = i;
+            maxRemunerationPercentage = eurlArray[i].percentage;
+            dividends = eurlArray[i].maxDividends;
+
+            document.getElementById('eurl-gross-dividends').textContent = dividends.toLocaleString('fr-FR') + '€';
+            document.getElementById('eurl-pfu-dividends').textContent = (eurlArray[i].dividendsNetPfuAmount).toLocaleString('fr-FR') + '€';
+            document.getElementById('eurl-pfu-dividends').textContent = (eurlArray[i].eurl-progressive-dividends).toLocaleString('fr-FR') + '€';
+        }
+    }
+
+
 }
 
 
