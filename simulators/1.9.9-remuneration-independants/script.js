@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -628,7 +628,7 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     eurlSituation(afterIs, situation, numberOfChild, householdIncome, 'IS', 'non');
 
     const contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
-    const contributionsAmount = Math.round(contributionsUrssaf.nodeValue * 12);
+    const contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
 
     console.log(contributionsAmount);
 
