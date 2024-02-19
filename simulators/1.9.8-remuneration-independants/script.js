@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -56,6 +56,7 @@ calculBtn.addEventListener('click', () => {
         sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
         eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
         microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
+        eurlDividends(turnoverMinusCost, situation, numberOfChild, householdIncome);
 
         fillRecapContainer(turnover);
 
@@ -611,6 +612,42 @@ function eurlSituation(wage, situation, numberOfChild, householdIncome, tax, sin
 
 function eurlRetirement() {
     retirementText('eurl-gain-trimester', 'eurl-pension-scheme', 'eurl-retirement-points');
+}
+
+function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdIncome) {
+    let afterIs;
+
+    if (turnoverMinusCost <= 42500) {
+        afterIs = turnoverMinusCost - (turnoverMinusCost * 0.15);
+    } else {
+        afterIs = turnoverMinusCost - ((42500 * 0.15) + ((turnoverMinusCost - 42500) * 0.25 ));
+    }
+
+    console.log(afterIs);
+
+    eurlSituation(afterIs, situation, numberOfChild, householdIncome, 'IS', 'non');
+
+    const contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
+    const contributionsAmount = Math.round(contributionsUrssaf.nodeValue * 12);
+
+    console.log(contributionsAmount);
+
+    // si on prend 10% du CA en rémunération
+    const wage = turnoverMinusCost * 0.10;
+    console.log(wage);
+
+    let totalForIs = turnoverMinusCost - contributionsAmount - wage;
+    console.log(totalForIs);
+
+    let afterLastIs;
+
+    if (totalForIs <= 42500) {
+        afterLastIs = totalForIs - (totalForIs * 0.15);
+    } else {
+        afterLastIs = totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25 ));
+    }
+
+    console.log(afterLastIs);
 }
 
 
