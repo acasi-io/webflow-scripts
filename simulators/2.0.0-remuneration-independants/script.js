@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/1.9.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.0.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.0.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -616,38 +616,35 @@ function eurlRetirement() {
 
 function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdIncome) {
     let afterIs;
-
     if (turnoverMinusCost <= 42500) {
         afterIs = turnoverMinusCost - (turnoverMinusCost * 0.15);
     } else {
         afterIs = turnoverMinusCost - ((42500 * 0.15) + ((turnoverMinusCost - 42500) * 0.25 ));
     }
 
-    console.log(afterIs);
-
     eurlSituation(afterIs, situation, numberOfChild, householdIncome, 'IS', 'non');
-
     const contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
     const contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
 
-    console.log(contributionsAmount);
-
     // si on prend 10% du CA en rémunération
     const wage = turnoverMinusCost * 0.10;
-    console.log(wage);
 
     let totalForIs = turnoverMinusCost - contributionsAmount - wage;
-    console.log(totalForIs);
 
-    let afterLastIs;
-
+    let maxDividends;
     if (totalForIs <= 42500) {
-        afterLastIs = totalForIs - (totalForIs * 0.15);
+        maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
     } else {
-        afterLastIs = totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25 ));
+        maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25 )));
     }
 
-    console.log(afterLastIs);
+    let dividendsNetPfuAmount = maxDividends - (maxDividends * 0.128);
+    console.log(dividendsNetPfuAmount);
+
+    situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
+    const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
+    const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
+    console.log(dividendsProgressiveAmount);
 }
 
 
