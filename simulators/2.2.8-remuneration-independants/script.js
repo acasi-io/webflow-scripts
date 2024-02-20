@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -617,16 +617,18 @@ function eurlRetirement() {
     retirementText('eurl-gain-trimester', 'eurl-pension-scheme', 'eurl-retirement-points');
 }
 
-function eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, contributionsAmount, beforeTaxAmount) {
+function eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
     eiSituation(afterIs, situation, numberOfChild, householdIncome, singleParent, 'IS');
     let contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
-    contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
+    let contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
+    localStorage.setItem('contributionsEurlAmount', contributionsAmount);
     eiEurlContributions('eurl');
     eurlRetirement();
 
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS');
     let beforeTaxUrssaf = engine.evaluate("dirigeant . rémunération . net");
-    beforeTaxAmount = Math.round(beforeTaxUrssaf.nodeValue);
+    let beforeTaxAmount = Math.round(beforeTaxUrssaf.nodeValue);
+    localStorage.setItem('beforeTaxEurlAmount', beforeTaxAmount);
 }
 
 function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdIncome) {
@@ -637,14 +639,14 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
         afterIs = turnoverMinusCost - ((42500 * 0.15) + ((turnoverMinusCost - 42500) * 0.25 ));
     }
 
-    let contributionsAmount;
-    let beforeTaxAmount
-
     if(document.getElementById('single-parent').value === 'oui') {
-        eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', contributionsAmount, beforeTaxAmount);
+        eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui');
     } else {
-        eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', contributionsAmount, beforeTaxAmount);
+        eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, 'non');
     }
+
+    let contributionsAmount = parseInt(localStorage.getItem('contributionsEurlAmount'));
+    let beforeTaxAmount = parseInt(localStorage.getItem('beforeTaxEurlAmount'));
 
     // si on prend 10% du CA en rémunération
     let eurlArray = [];
