@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -617,7 +617,7 @@ function eurlRetirement() {
     retirementText('eurl-gain-trimester', 'eurl-pension-scheme', 'eurl-retirement-points');
 }
 
-function eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
+function eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, contributionsAmount, beforeTaxAmount) {
     eiSituation(afterIs, situation, numberOfChild, householdIncome, singleParent, 'IS');
     let contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
     contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
@@ -641,9 +641,9 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     let beforeTaxAmount
 
     if(document.getElementById('single-parent').value === 'oui') {
-        eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui');
+        eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', contributionsAmount, beforeTaxAmount);
     } else {
-        eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, 'non');
+        eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', contributionsAmount, beforeTaxAmount);
     }
 
     // si on prend 10% du CA en rémunération
