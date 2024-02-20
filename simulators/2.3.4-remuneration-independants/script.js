@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -787,24 +787,6 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
             wageEurl = eurlArray[i].wage;
             bestDividendsPfu = eurlArray[i].dividendsNetPfuAmount;
             bestDividendsProgressive = eurlArray[i].dividendsProgressiveAmount;
-
-            /*document.getElementById('eurl-gross-dividends').textContent = dividends.toLocaleString('fr-FR') + '€';
-            document.getElementById('eurl-pfu-dividends').textContent = bestDividendsPfu.toLocaleString('fr-FR') + '€';
-            document.getElementById('eurl-progressive-dividends').textContent = bestDividendsProgressive.toLocaleString('fr-FR') + '€';
-
-            document.querySelectorAll('.eurl-is-before').forEach(element => {
-                element.textContent = wageEurl.toLocaleString('fr-FR') + '€';
-            });
-
-            const eurlDividendsRecap = document.getElementById('eurl-dividends-recap');
-
-            if (bestDividendsProgressive > bestDividendsPfu) {
-                eurlDividendsRecap.textContent = bestDividendsProgressive.toLocaleString('fr-FR') + '€';
-                localStorage.setItem('eurlDividends', bestDividendsProgressive);
-            } else {
-                eurlDividendsRecap.textContent = bestDividendsPfu.toLocaleString('fr-FR') + '€';
-                localStorage.setItem('eurlDividends', bestDividendsPfu);
-            }*/
 
             eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive, wageEurl);
 
