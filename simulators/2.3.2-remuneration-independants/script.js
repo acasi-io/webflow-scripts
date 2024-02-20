@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -773,6 +773,8 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     let maxRemunerationPercentage = eurlArray[0].percentage;
     let dividends = eurlArray[0].maxDividends;
     let wageEurl = eurlArray[0].wage;
+    let bestDividendsPfu = eurlArray[0].dividendsNetPfuAmount;
+    let bestDividendsProgressive = eurlArray[0].dividendsProgressiveAmount;
 
     for (let i = 1; i < eurlArray.length; i++) {
         const currentRemunerationPlusDividends = eurlArray[i].bestWagePlusDividends;
@@ -783,10 +785,12 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
             maxRemunerationPercentage = eurlArray[i].percentage;
             dividends = eurlArray[i].maxDividends;
             wageEurl = eurlArray[i].wage;
+            bestDividendsPfu = eurlArray[i].dividendsNetPfuAmount;
+            bestDividendsProgressive = eurlArray[i].dividendsProgressiveAmount;
 
-            document.getElementById('eurl-gross-dividends').textContent = dividends.toLocaleString('fr-FR') + '€';
-            document.getElementById('eurl-pfu-dividends').textContent = (eurlArray[i].dividendsNetPfuAmount).toLocaleString('fr-FR') + '€';
-            document.getElementById('eurl-progressive-dividends').textContent = (eurlArray[i].dividendsProgressiveAmount).toLocaleString('fr-FR') + '€';
+            /*document.getElementById('eurl-gross-dividends').textContent = dividends.toLocaleString('fr-FR') + '€';
+            document.getElementById('eurl-pfu-dividends').textContent = bestDividendsPfu.toLocaleString('fr-FR') + '€';
+            document.getElementById('eurl-progressive-dividends').textContent = bestDividendsProgressive.toLocaleString('fr-FR') + '€';
 
             document.querySelectorAll('.eurl-is-before').forEach(element => {
                 element.textContent = wageEurl.toLocaleString('fr-FR') + '€';
@@ -794,13 +798,15 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
 
             const eurlDividendsRecap = document.getElementById('eurl-dividends-recap');
 
-            if (eurlArray[i].dividendsProgressiveAmount > eurlArray[i].dividendsNetPfuAmount) {
-                eurlDividendsRecap.textContent = (eurlArray[i].dividendsProgressiveAmount).toLocaleString('fr-FR') + '€';
-                localStorage.setItem('eurlDividends', eurlArray[i].dividendsProgressiveAmount);
+            if (bestDividendsProgressive > bestDividendsPfu) {
+                eurlDividendsRecap.textContent = bestDividendsProgressive.toLocaleString('fr-FR') + '€';
+                localStorage.setItem('eurlDividends', bestDividendsProgressive);
             } else {
-                eurlDividendsRecap.textContent = (eurlArray[i].dividendsNetPfuAmount).toLocaleString('fr-FR') + '€';
-                localStorage.setItem('eurlDividends', eurlArray[i].dividendsNetPfuAmount);
-            }
+                eurlDividendsRecap.textContent = bestDividendsPfu.toLocaleString('fr-FR') + '€';
+                localStorage.setItem('eurlDividends', bestDividendsPfu);
+            }*/
+
+            eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive);
 
             const afterTaxEurl = engine.setSituation({
                 "entreprise . imposition": "'IS'",
@@ -813,6 +819,26 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
                 element.textContent = (Math.round(afterTaxEurl.nodeValue)).toLocaleString('fr-FR') + '€';
             });
         }
+    }
+}
+
+function eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive) {
+    document.getElementById('eurl-gross-dividends').textContent = dividends.toLocaleString('fr-FR') + '€';
+    document.getElementById('eurl-pfu-dividends').textContent = bestDividendsPfu.toLocaleString('fr-FR') + '€';
+    document.getElementById('eurl-progressive-dividends').textContent = bestDividendsProgressive.toLocaleString('fr-FR') + '€';
+
+    document.querySelectorAll('.eurl-is-before').forEach(element => {
+        element.textContent = wageEurl.toLocaleString('fr-FR') + '€';
+    });
+
+    const eurlDividendsRecap = document.getElementById('eurl-dividends-recap');
+
+    if (bestDividendsProgressive > bestDividendsPfu) {
+        eurlDividendsRecap.textContent = bestDividendsProgressive.toLocaleString('fr-FR') + '€';
+        localStorage.setItem('eurlDividends', bestDividendsProgressive);
+    } else {
+        eurlDividendsRecap.textContent = bestDividendsPfu.toLocaleString('fr-FR') + '€';
+        localStorage.setItem('eurlDividends', bestDividendsPfu);
     }
 }
 
