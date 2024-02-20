@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -806,7 +806,7 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
                 localStorage.setItem('eurlDividends', bestDividendsPfu);
             }*/
 
-            eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive);
+            eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive, wageEurl);
 
             const afterTaxEurl = engine.setSituation({
                 "entreprise . imposition": "'IS'",
@@ -822,7 +822,7 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     }
 }
 
-function eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive) {
+function eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive, wageEurl) {
     document.getElementById('eurl-gross-dividends').textContent = dividends.toLocaleString('fr-FR') + '€';
     document.getElementById('eurl-pfu-dividends').textContent = bestDividendsPfu.toLocaleString('fr-FR') + '€';
     document.getElementById('eurl-progressive-dividends').textContent = bestDividendsProgressive.toLocaleString('fr-FR') + '€';
