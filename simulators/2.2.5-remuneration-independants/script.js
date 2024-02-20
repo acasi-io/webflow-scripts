@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -149,7 +149,7 @@ function fillRecapContainer(turnover) {
     });
 
     const eurlIs = parseInt(localStorage.getItem('eurlIs'));
-    const eurlDividends = parseInt(localStorage.setItem('eurlDividends'));
+    const eurlDividends = parseInt(localStorage.getItem('eurlDividends'));
     const eurlTotal = eurlIs + eurlDividends;
 
     const eiIr = parseInt(localStorage.getItem('eiIr'));
