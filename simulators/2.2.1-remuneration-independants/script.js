@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -622,13 +622,15 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
         afterIs = turnoverMinusCost - ((42500 * 0.15) + ((turnoverMinusCost - 42500) * 0.25 ));
     }
 
-    eurlSituation(afterIs, situation, numberOfChild, householdIncome, 'IS', 'non');
+    //eurlSituation(afterIs, situation, numberOfChild, householdIncome, 'IS', 'non');
+    eiSituation(afterIs, situation, numberOfChild, householdIncome, 'non', 'IS');
     const contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
     const contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
     eiEurlContributions('eurl');
     eurlRetirement();
 
-    eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'non');
+    //eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'non');
+    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
     const beforeTaxUrssaf = engine.evaluate("dirigeant . rémunération . net");
     const beforeTaxAmount = Math.round(beforeTaxUrssaf.nodeValue);
 
