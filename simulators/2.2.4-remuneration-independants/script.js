@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -148,7 +148,10 @@ function fillRecapContainer(turnover) {
         element.classList.remove('container-best-choice');
     });
 
-    const eurlIr = parseInt(localStorage.getItem('eurlIr'));
+    const eurlIs = parseInt(localStorage.getItem('eurlIs'));
+    const eurlDividends = parseInt(localStorage.setItem('eurlDividends'));
+    const eurlTotal = eurlIs + eurlDividends;
+
     const eiIr = parseInt(localStorage.getItem('eiIr'));
     const sasu = parseInt(localStorage.getItem('sasu'));
     const micro = parseInt(localStorage.getItem('micro'));
@@ -156,14 +159,14 @@ function fillRecapContainer(turnover) {
     const sasuDividends = parseInt(localStorage.getItem('sasuDividends'));
     const sasuTotal = sasu + sasuDividends;
 
-    orderResults(sasuTotal, eurlIr, eiIr, micro);
-    addStyleToResults(sasuTotal, eurlIr, eiIr, micro);
+    orderResults(sasuTotal, eurlTotal, eiIr, micro);
+    addStyleToResults(sasuTotal, eurlTotal, eiIr, micro);
 }
 
-function orderResults(sasuTotal, eurlIr, eiIr, micro) {
+function orderResults(sasuTotal, eurlTotal, eiIr, micro) {
     let results = [
         { id: "sasu-container-recap", remuneration: sasuTotal },
-        { id: "eurl-container-recap", remuneration: eurlIr },
+        { id: "eurl-container-recap", remuneration: eurlTotal },
         { id: "ei-container-recap", remuneration: eiIr },
         { id: "micro-container-recap", remuneration: micro }
     ];
@@ -192,7 +195,7 @@ function orderResults(sasuTotal, eurlIr, eiIr, micro) {
     }
 }
 
-function addStyleToResults(sasuTotal, eurlIr, eiIr, micro) {
+function addStyleToResults(sasuTotal, eurlTotal, eiIr, micro) {
     const eurlContainerRecap = document.getElementById('eurl-container-recap');
     const sasuContainerRecap = document.getElementById('sasu-container-recap');
     const eiContainerRecap = document.getElementById('ei-container-recap');
@@ -203,31 +206,31 @@ function addStyleToResults(sasuTotal, eurlIr, eiIr, micro) {
     const eiHeadingRecap = document.getElementById('ei-heading-recap');
     const microHeadingRecap = document.getElementById('micro-heading-recap');
 
-    compareResults(sasuTotal, eurlIr, eiIr, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap);
+    compareResults(sasuTotal, eurlTotal, eiIr, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap);
 }
 
-function compareResults(sasuTotal, eurlIr, eiIr, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap) {
-    if (eurlIr >= eiIr && eurlIr > sasuTotal && eurlIr > micro) {
-        if (eurlIr > eiIr) {
+function compareResults(sasuTotal, eurlTotal, eiIr, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap) {
+    if (eurlTotal >= eiIr && eurlTotal > sasuTotal && eurlTotal > micro) {
+        if (eurlTotal > eiIr) {
             eurlContainerRecap.classList.add('container-best-choice');
             eurlHeadingRecap.classList.add('heading-best-choice');
-        } else if (eurlIr === eiIr) {
+        } else if (eurlTotal === eiIr) {
             eurlContainerRecap.classList.add('container-best-choice');
             eurlHeadingRecap.classList.add('heading-best-choice');
             eiContainerRecap.classList.add('container-best-choice');
             eiHeadingRecap.classList.add('heading-best-choice');
         }
-    } else if (sasuTotal > eurlIr && sasuTotal > eiIr && sasuTotal > micro) {
+    } else if (sasuTotal > eurlTotal && sasuTotal > eiIr && sasuTotal > micro) {
         sasuContainerRecap.classList.add('container-best-choice');
         sasuHeadingRecap.classList.add('heading-best-choice');
-    } else if (micro > eurlIr && micro > eiIr && micro > sasuTotal) {
+    } else if (micro > eurlTotal && micro > eiIr && micro > sasuTotal) {
         microContainerRecap.classList.add('container-best-choice');
         microHeadingRecap.classList.add('heading-best-choice');
-    } else if (eiIr >= eurlIr && eiIr > sasuTotal && eiIr > micro) {
-        if (eiIr > eurlIr) {
+    } else if (eiIr >= eurlTotal && eiIr > sasuTotal && eiIr > micro) {
+        if (eiIr > eurlTotal) {
             eiContainerRecap.classList.add('container-best-choice');
             eiHeadingRecap.classList.add('heading-best-choice');
-        } else if (eiIr === eurlIr) {
+        } else if (eiIr === eurlTotal) {
             eurlContainerRecap.classList.add('container-best-choice');
             eurlHeadingRecap.classList.add('heading-best-choice');
             eiContainerRecap.classList.add('container-best-choice');
@@ -237,10 +240,10 @@ function compareResults(sasuTotal, eurlIr, eiIr, micro, eurlContainerRecap, sasu
 }
 
 function fillWageRecap(turnover) {
-    document.querySelectorAll('.ir-eurl-after').forEach(element => {
-        const eurllIrAmount = (element.textContent).replace(/\D/g, '');
-        localStorage.setItem('eurlIr', eurllIrAmount);
-        document.getElementById('eurl-wage-recap').textContent = eurllIrAmount.toLocaleString('fr-FR') + '€';
+    document.querySelectorAll('.is-eurl-after').forEach(element => {
+        const eurllIsAmount = (element.textContent).replace(/\D/g, '');
+        localStorage.setItem('eurlIs', eurllIsAmount);
+        document.getElementById('eurl-wage-recap').textContent = eurllIsAmount.toLocaleString('fr-FR') + '€';
     });
 
     document.querySelectorAll('.ir-ei-after').forEach(element => {
@@ -755,6 +758,16 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
             document.querySelectorAll('.eurl-is-before').forEach(element => {
                 element.textContent = wageEurl.toLocaleString('fr-FR') + '€';
             });
+
+            const eurlDividendsRecap = document.getElementById('eurl-dividends-recap');
+
+            if (eurlArray[i].dividendsProgressiveAmount > eurlArray[i].dividendsNetPfuAmount) {
+                eurlDividendsRecap.textContent = (eurlArray[i].dividendsProgressiveAmount).toLocaleString('fr-FR') + '€';
+                localStorage.setItem('eurlDividends', eurlArray[i].dividendsProgressiveAmount);
+            } else {
+                eurlDividendsRecap.textContent = (eurlArray[i].dividendsNetPfuAmount).toLocaleString('fr-FR') + '€';
+                localStorage.setItem('eurlDividends', eurlArray[i].dividendsNetPfuAmount);
+            }
 
             const afterTaxEurl = engine.setSituation({
                 "entreprise . imposition": "'IS'",
