@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.2.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -622,29 +622,32 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
         afterIs = turnoverMinusCost - ((42500 * 0.15) + ((turnoverMinusCost - 42500) * 0.25 ));
     }
 
+    let contributionsAmount;
+    let beforeTaxAmount
+
     if(document.getElementById('single-parent').value === 'oui') {
         eiSituation(afterIs, situation, numberOfChild, householdIncome, 'oui', 'IS');
-        const contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
-        const contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
+        let contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
+        contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
         eiEurlContributions('eurl');
         eurlRetirement();
     
         //eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'non');
         eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IS');
-        const beforeTaxUrssaf = engine.evaluate("dirigeant . rémunération . net");
-        const beforeTaxAmount = Math.round(beforeTaxUrssaf.nodeValue);
+        let beforeTaxUrssaf = engine.evaluate("dirigeant . rémunération . net");
+        beforeTaxAmount = Math.round(beforeTaxUrssaf.nodeValue);
     } else {
         //eurlSituation(afterIs, situation, numberOfChild, householdIncome, 'IS', 'non');
         eiSituation(afterIs, situation, numberOfChild, householdIncome, 'non', 'IS');
-        const contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
-        const contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
+        let contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
+        contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
         eiEurlContributions('eurl');
         eurlRetirement();
 
         //eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'IS', 'non');
         eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
-        const beforeTaxUrssaf = engine.evaluate("dirigeant . rémunération . net");
-        const beforeTaxAmount = Math.round(beforeTaxUrssaf.nodeValue);
+        let beforeTaxUrssaf = engine.evaluate("dirigeant . rémunération . net");
+        beforeTaxAmount = Math.round(beforeTaxUrssaf.nodeValue);
     }
 
     // si on prend 10% du CA en rémunération
