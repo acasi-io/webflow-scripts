@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -644,18 +644,8 @@ function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, sit
 
     let dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.128));
 
-    // situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
-    const dividendsProgressiveUrssaf = engine.setSituation({
-        "bénéficiaire . dividendes . bruts": parseInt(maxDividends),
-        "impôt . foyer fiscal . parent isolé": `non`,
-        "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
-        "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
-        "dirigeant . rémunération . net . imposable": "0 €/an",
-        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
-        "impôt . méthode de calcul": "'barème standard'",
-        "bénéficiaire": "oui",
-        "entreprise . catégorie juridique": `SARL`
-    }).evaluate("bénéficiaire . dividendes . nets d'impôt");
+    situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
+    const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
 
     let dividendsProgressivePlusWage = Math.round(dividendsProgressiveAmount + wage);
@@ -700,7 +690,7 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     let percentage = 0;
     let wage = turnoverMinusCost * (percentage / 100);
     let wageAfter = wage + (turnoverMinusCost * (5 / 100));
-    eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount);
+    eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, situation, numberOfChild, householdIncome);
     /*let totalForIs = turnoverMinusCost - contributionsAmount - wage;
     let maxDividends;
     if (totalForIs <= 42500) {
