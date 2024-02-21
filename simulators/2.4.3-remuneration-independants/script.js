@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -696,10 +696,9 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     
     while (wageAfter < beforeTaxAmount) {
         percentage += 5;
-        let wageAfter = localStorage.getItem('wageAfter');
-        /*wage = turnoverMinusCost * (percentage / 100);
-        wageAfter = wage + (turnoverMinusCost * (5 / 100));
-        let totalForIs = turnoverMinusCost - contributionsAmount - wage;
+        let wage = turnoverMinusCost * (percentage / 100);
+        let wageAfter = wage + (turnoverMinusCost * (5 / 100));
+        /*let totalForIs = turnoverMinusCost - contributionsAmount - wage;
         let maxDividends;
         if (totalForIs <= 42500) {
             maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
