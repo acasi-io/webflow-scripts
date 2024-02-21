@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -716,7 +716,7 @@ function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome
             bestDividendsPfu = eurlArray[i].dividendsNetPfuAmount;
             bestDividendsProgressive = eurlArray[i].dividendsProgressiveAmount;
 
-            eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive, wageEurl);
+            eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive);
 
             const afterTaxEurl = engine.setSituation({
                 "entreprise . imposition": "'IS'",
@@ -728,18 +728,18 @@ function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome
             document.querySelectorAll('.is-eurl-after').forEach(element => {
                 element.textContent = (Math.round(afterTaxEurl.nodeValue)).toLocaleString('fr-FR') + '€';
             });
+
+            document.querySelectorAll('.eurl-is-before').forEach(element => {
+                element.textContent = wageEurl.toLocaleString('fr-FR') + '€';
+            });
         }
     }
 }
 
-function eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive, wageEurl) {
+function eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive) {
     document.getElementById('eurl-gross-dividends').textContent = dividends.toLocaleString('fr-FR') + '€';
     document.getElementById('eurl-pfu-dividends').textContent = bestDividendsPfu.toLocaleString('fr-FR') + '€';
     document.getElementById('eurl-progressive-dividends').textContent = bestDividendsProgressive.toLocaleString('fr-FR') + '€';
-
-    document.querySelectorAll('.eurl-is-before').forEach(element => {
-        element.textContent = wageEurl.toLocaleString('fr-FR') + '€';
-    });
 
     const eurlDividendsRecap = document.getElementById('eurl-dividends-recap');
 
