@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -631,7 +631,7 @@ function eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situat
     localStorage.setItem('beforeTaxEurlAmount', beforeTaxAmount);
 }
 
-function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, situation, numberOfChild, householdIncome) {
+function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eurlArray, situation, numberOfChild, householdIncome) {
     let wage = turnoverMinusCost * (percentage / 100);
     let wageAfter = wage + (turnoverMinusCost * (5 / 100));
     let totalForIs = turnoverMinusCost - contributionsAmount - wage;
@@ -690,7 +690,7 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     let percentage = 0;
     let wage = turnoverMinusCost * (percentage / 100);
     let wageAfter = wage + (turnoverMinusCost * (5 / 100));
-    eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, situation, numberOfChild, householdIncome);
+    eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eurlArray, situation, numberOfChild, householdIncome);
     /*let totalForIs = turnoverMinusCost - contributionsAmount - wage;
     let maxDividends;
     if (totalForIs <= 42500) {
