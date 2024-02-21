@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -572,8 +572,8 @@ function sasuRetirement() {
 
 
 /* COMMON EURL - EI */
-function eiEurlRemuneration(taxRemunerationAfter) {
-    fillSameClassTexts("dirigeant . rémunération . net", '.eurl-ei-before-tax');
+function eiEurlRemuneration(taxRemunerationBefore, taxRemunerationAfter) {
+    fillSameClassTexts("dirigeant . rémunération . net", taxRemunerationBefore);
     fillSameClassTexts("dirigeant . rémunération . net . après impôt", taxRemunerationAfter);
 }
 
@@ -757,23 +757,23 @@ function eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgres
 function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
 
-    eiEurlRemuneration('.is-ei-after');
+    eiEurlRemuneration('.ei-before', '.is-ei-after');
     // eiEurlRemuneration('.is-eurl-after');
     eiEurlContributions('ei');
     eiRetirement();
 
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IR');
-    eiEurlRemuneration('.ir-ei-after');
-    eiEurlRemuneration('.ir-eurl-after');
+    eiEurlRemuneration('.ei-before', '.ir-ei-after');
+    eiEurlRemuneration('eurl-ir-before', '.ir-eurl-after');
 
     if(document.getElementById('single-parent').value === 'oui') {
         eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IS');
-        eiEurlRemuneration('.is-ei-after');
-        eiEurlRemuneration('.is-eurl-after');
+        eiEurlRemuneration('.ei-before', '.is-ei-after');
+        // eiEurlRemuneration('.is-eurl-after');
 
         eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IR');
-        eiEurlRemuneration('.ir-ei-after');
-        eiEurlRemuneration('.ir-eurl-after');
+        eiEurlRemuneration('.ei-before', '.ir-ei-after');
+        eiEurlRemuneration('eurl-ir-before', '.ir-eurl-after');
     }
 }
 
