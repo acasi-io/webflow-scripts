@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -631,7 +631,7 @@ function eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situat
     localStorage.setItem('beforeTaxEurlAmount', beforeTaxAmount);
 }
 
-/*function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, situation, numberOfChild, householdIncome) {
+function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, situation, numberOfChild, householdIncome) {
     let wage = turnoverMinusCost * (percentage / 100);
     let wageAfter = wage + (turnoverMinusCost * (5 / 100));
     let totalForIs = turnoverMinusCost - contributionsAmount - wage;
@@ -644,8 +644,18 @@ function eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situat
 
     let dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.128));
 
-    situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
-    const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
+    // situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
+    const dividendsProgressiveUrssaf = engine.setSituation({
+        "bénéficiaire . dividendes . bruts": parseInt(maxDividends),
+        "impôt . foyer fiscal . parent isolé": `non`,
+        "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
+        "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
+        "dirigeant . rémunération . net . imposable": "0 €/an",
+        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
+        "impôt . méthode de calcul": "'barème standard'",
+        "bénéficiaire": "oui",
+        "entreprise . catégorie juridique": `SARL`
+    }).evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
 
     let dividendsProgressivePlusWage = Math.round(dividendsProgressiveAmount + wage);
@@ -667,7 +677,7 @@ function eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situat
         bestWagePlusDividends: bestWagePlusDividends
     }
     eurlArray.push(myObject);
-}*/
+}
 
 function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdIncome) {
     let afterIs;
@@ -690,8 +700,8 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
     let percentage = 0;
     let wage = turnoverMinusCost * (percentage / 100);
     let wageAfter = wage + (turnoverMinusCost * (5 / 100));
-    // eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount);
-    let totalForIs = turnoverMinusCost - contributionsAmount - wage;
+    eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount);
+    /*let totalForIs = turnoverMinusCost - contributionsAmount - wage;
     let maxDividends;
     if (totalForIs <= 42500) {
         maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
@@ -723,7 +733,7 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
         dividendsProgressiveAmount: dividendsProgressiveAmount,
         bestWagePlusDividends: bestWagePlusDividends
     }
-    eurlArray.push(myObject);
+    eurlArray.push(myObject);*/
 
     while (wageAfter < beforeTaxAmount) {
         percentage += 5;
