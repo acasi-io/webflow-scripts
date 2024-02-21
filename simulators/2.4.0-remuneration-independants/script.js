@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.3.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.4.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -667,6 +667,8 @@ function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eur
         bestWagePlusDividends: bestWagePlusDividends
     }
     eurlArray.push(myObject);
+
+    return wageAfter;
 }
 
 function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdIncome) {
@@ -688,8 +690,8 @@ function eurlDividends(turnoverMinusCost, situation, numberOfChild, householdInc
 
     let eurlArray = [];
     let percentage = 0;
-    let wage = turnoverMinusCost * (percentage / 100);
-    let wageAfter = wage + (turnoverMinusCost * (5 / 100));
+    //let wage = turnoverMinusCost * (percentage / 100);
+    //let wageAfter = wage + (turnoverMinusCost * (5 / 100));
     eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eurlArray, situation, numberOfChild, householdIncome);
     
     while (wageAfter < beforeTaxAmount) {
