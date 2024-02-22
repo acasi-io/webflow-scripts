@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -696,9 +696,12 @@ function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome
         eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eurlArray, situation, numberOfChild, householdIncome);
     }
 
+    eurlCompareResults(eurlArray);
+}
+
+function eurlCompareResults(eurlArray) {
     let remunerationPlusDividendsBestAmount = eurlArray[0].bestWagePlusDividends;
     let maxRemunerationObject = 0;
-    let maxRemunerationPercentage = eurlArray[0].percentage;
     let dividends = eurlArray[0].maxDividends;
     let wageEurl = eurlArray[0].wage;
     let bestDividendsPfu = eurlArray[0].dividendsNetPfuAmount;
@@ -710,7 +713,6 @@ function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome
         if (currentRemunerationPlusDividends > remunerationPlusDividendsBestAmount) {
             remunerationPlusDividendsBestAmount = currentRemunerationPlusDividends;
             maxRemunerationObject = i;
-            maxRemunerationPercentage = eurlArray[i].percentage;
             dividends = eurlArray[i].maxDividends;
             wageEurl = eurlArray[i].wage;
             bestDividendsPfu = eurlArray[i].dividendsNetPfuAmount;
