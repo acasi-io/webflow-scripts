@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -606,100 +606,6 @@ function eurlSituation(wage, situation, numberOfChild, householdIncome, tax, sin
     });
 }
 
-function eurlRetirement() {
-    retirementText('eurl-gain-trimester', 'eurl-pension-scheme', 'eurl-retirement-points');
-}
-
-function eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
-    eiSituation(afterIs, situation, numberOfChild, householdIncome, singleParent, 'IS');
-    let contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
-    let contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
-    localStorage.setItem('contributionsEurlAmount', contributionsAmount);
-    eiEurlContributions('eurl');
-    eurlRetirement();
-
-    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS');
-    let beforeTaxUrssaf = engine.evaluate("dirigeant . rémunération . net");
-    let beforeTaxAmount = Math.round(beforeTaxUrssaf.nodeValue);
-    localStorage.setItem('beforeTaxEurlAmount', beforeTaxAmount);
-}
-
-function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eurlArray, situation, numberOfChild, householdIncome) {
-    let wage = turnoverMinusCost * (percentage / 100);
-    let wageAfter = wage + (turnoverMinusCost * (5 / 100));
-    localStorage.setItem('wageAfter', wageAfter);
-    let totalForIs = turnoverMinusCost - contributionsAmount - wage;
-    let maxDividends;
-    if (totalForIs <= 42500) {
-        maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
-    } else {
-        maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25 )));
-    }
-
-    /*let dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.128));
-
-    if(document.getElementById('single-parent').value === 'oui') {
-        situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'oui', 'SARL');
-    } else {
-        situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
-    }
-    const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
-    const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
-
-    let dividendsProgressivePlusWage = Math.round(dividendsProgressiveAmount + wage);
-    let dividendsPfuPlusWage = Math.round(dividendsNetPfuAmount + wage);
-    let bestWagePlusDividends;
-
-    if (dividendsProgressivePlusWage > dividendsPfuPlusWage) {
-        bestWagePlusDividends = dividendsProgressivePlusWage;
-    } else {
-        bestWagePlusDividends = dividendsPfuPlusWage;
-    }*/
-
-    eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome, wage);
-
-    const dividendsNetPfuAmount = parseInt(localStorage.getItem('dividendsNetPfuAmount'));
-    const dividendsProgressiveAmount = parseInt(localStorage.getItem('dividendsProgressiveAmount'));
-    const bestWagePlusDividends = parseInt(localStorage.getItem('bestWagePlusDividends'));
-
-    let myObject = {
-        percentage: percentage,
-        wage: wage,
-        maxDividends: maxDividends,
-        dividendsNetPfuAmount: dividendsNetPfuAmount,
-        dividendsProgressiveAmount: dividendsProgressiveAmount,
-        bestWagePlusDividends: bestWagePlusDividends
-    }
-    eurlArray.push(myObject);
-}
-
-function eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome, wage) {
-    let dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.128));
-
-    if(document.getElementById('single-parent').value === 'oui') {
-        situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'oui', 'SARL');
-    } else {
-        situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
-    }
-
-    const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
-    const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
-
-    let dividendsProgressivePlusWage = Math.round(dividendsProgressiveAmount + wage);
-    let dividendsPfuPlusWage = Math.round(dividendsNetPfuAmount + wage);
-    let bestWagePlusDividends;
-
-    if (dividendsProgressivePlusWage > dividendsPfuPlusWage) {
-        bestWagePlusDividends = dividendsProgressivePlusWage;
-    } else {
-        bestWagePlusDividends = dividendsPfuPlusWage;
-    }
-
-    localStorage.setItem('dividendsNetPfuAmount', dividendsNetPfuAmount);
-    localStorage.setItem('dividendsProgressiveAmount', dividendsProgressiveAmount);
-    localStorage.setItem('bestWagePlusDividends', bestWagePlusDividends);
-}
-
 function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
     let afterIs;
     if (turnoverMinusCost <= 42500) {
@@ -730,6 +636,84 @@ function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     }
 
     eurlCompareResults(eurlArray);
+}
+
+function eurlRetirement() {
+    retirementText('eurl-gain-trimester', 'eurl-pension-scheme', 'eurl-retirement-points');
+}
+
+function eurlCalculContributionsAndRetirement(afterIs, turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
+    eiSituation(afterIs, situation, numberOfChild, householdIncome, singleParent, 'IS');
+    let contributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
+    let contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
+    localStorage.setItem('contributionsEurlAmount', contributionsAmount);
+    eiEurlContributions('eurl');
+    eurlRetirement();
+
+    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS');
+    let beforeTaxUrssaf = engine.evaluate("dirigeant . rémunération . net");
+    let beforeTaxAmount = Math.round(beforeTaxUrssaf.nodeValue);
+    localStorage.setItem('beforeTaxEurlAmount', beforeTaxAmount);
+}
+
+function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eurlArray, situation, numberOfChild, householdIncome) {
+    let wage = turnoverMinusCost * (percentage / 100);
+    let wageAfter = wage + (turnoverMinusCost * (5 / 100));
+    localStorage.setItem('wageAfter', wageAfter);
+    let totalForIs = turnoverMinusCost - contributionsAmount - wage;
+    let maxDividends;
+    if (totalForIs <= 42500) {
+        maxDividends = Math.round(totalForIs - (totalForIs * 0.15));
+    } else {
+        maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25 )));
+    }
+
+    eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome, wage);
+
+    const dividendsNetPfuAmount = parseInt(localStorage.getItem('dividendsNetPfuAmount'));
+    const dividendsProgressiveAmount = parseInt(localStorage.getItem('dividendsProgressiveAmount'));
+    const bestWagePlusDividends = parseInt(localStorage.getItem('bestWagePlusDividends'));
+
+    eurlAddObjectInArray(percentage, wage, maxDividends, dividendsNetPfuAmount, dividendsProgressiveAmount, bestWagePlusDividends, eurlArray);
+}
+
+function eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome, wage) {
+    let dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.128));
+
+    if(document.getElementById('single-parent').value === 'oui') {
+        situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'oui', 'SARL');
+    } else {
+        situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SARL');
+    }
+
+    const dividendsProgressiveUrssaf = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
+    const dividendsProgressiveAmount = Math.round(dividendsProgressiveUrssaf.nodeValue);
+
+    let dividendsProgressivePlusWage = Math.round(dividendsProgressiveAmount + wage);
+    let dividendsPfuPlusWage = Math.round(dividendsNetPfuAmount + wage);
+    let bestWagePlusDividends;
+
+    if (dividendsProgressivePlusWage > dividendsPfuPlusWage) {
+        bestWagePlusDividends = dividendsProgressivePlusWage;
+    } else {
+        bestWagePlusDividends = dividendsPfuPlusWage;
+    }
+
+    localStorage.setItem('dividendsNetPfuAmount', dividendsNetPfuAmount);
+    localStorage.setItem('dividendsProgressiveAmount', dividendsProgressiveAmount);
+    localStorage.setItem('bestWagePlusDividends', bestWagePlusDividends);
+}
+
+function eurlAddObjectInArray(percentage, wage, maxDividends, dividendsNetPfuAmount, dividendsProgressiveAmount, bestWagePlusDividends, eurlArray) {
+    let myObject = {
+        percentage: percentage,
+        wage: wage,
+        maxDividends: maxDividends,
+        dividendsNetPfuAmount: dividendsNetPfuAmount,
+        dividendsProgressiveAmount: dividendsProgressiveAmount,
+        bestWagePlusDividends: bestWagePlusDividends
+    }
+    eurlArray.push(myObject);
 }
 
 function eurlCompareResults(eurlArray) {
