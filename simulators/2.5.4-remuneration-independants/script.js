@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -656,7 +656,7 @@ function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eur
         bestWagePlusDividends = dividendsPfuPlusWage;
     }*/
 
-    eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome);
+    eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome, wage);
 
     const dividendsNetPfuAmount = parseInt(localStorage.getItem('dividendsNetPfuAmount'));
     const dividendsProgressiveAmount = parseInt(localStorage.getItem('dividendsProgressiveAmount'));
