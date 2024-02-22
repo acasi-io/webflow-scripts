@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -673,7 +673,7 @@ function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eur
     eurlArray.push(myObject);
 }
 
-function eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome) {
+function eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome, wage) {
     let dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.128));
 
     if(document.getElementById('single-parent').value === 'oui') {
