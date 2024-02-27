@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -249,7 +249,6 @@ function compareIsAndIr(isHtmlTag, irHtmlTag, resultStorage, hasDividends, socia
         document.getElementById(`simulator-${socialForm}-recap-title`).textContent = "à l'IS";
     } else {
         localStorage.setItem(resultStorage, irResult);
-        document.getElementById(`simulator-${socialForm}-recap-title`).textContent = "à l'IR";
         if (hasDividends) {
             const pfuDividends = parseInt(localStorage.getItem('eurlPfuDividends'));
             const progressiveDividends = parseInt(localStorage.getItem('eurlProgressiveDividends'));
@@ -259,6 +258,8 @@ function compareIsAndIr(isHtmlTag, irHtmlTag, resultStorage, hasDividends, socia
             if (pfuIsResult > irResult || progressiveIsResult > irResult) {
                 document.getElementById(`simulator-eurl-recap-title`).textContent = "à l'IS";
             }
+        } else {
+            document.getElementById(`simulator-${socialForm}-recap-title`).textContent = "à l'IR";
         }
     }
 }
