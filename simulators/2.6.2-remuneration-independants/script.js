@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -154,7 +154,7 @@ function fillRecapContainer(turnover) {
     const sasuTotal = sasu + sasuDividends;
 
     orderResults(sasuTotal, eurlTotal, eiBestResult, micro);
-    addStyleToResults(sasuTotal, eurlTotal, eiBestResult, micro);
+    compareResultsAndAddStyle(sasuTotal, eurlTotal, eiBestResult, micro);
 }
 
 function orderResults(sasuTotal, eurlTotal, eiBestResult, micro) {
@@ -189,7 +189,7 @@ function orderResults(sasuTotal, eurlTotal, eiBestResult, micro) {
     }
 }
 
-function addStyleToResults(sasuTotal, eurlTotal, eiBestResult, micro) {
+function compareResultsAndAddStyle(sasuTotal, eurlTotal, eiBestResult, micro) {
     const eurlContainerRecap = document.getElementById('eurl-container-recap');
     const sasuContainerRecap = document.getElementById('sasu-container-recap');
     const eiContainerRecap = document.getElementById('ei-container-recap');
@@ -204,33 +204,22 @@ function addStyleToResults(sasuTotal, eurlTotal, eiBestResult, micro) {
 }
 
 function compareResults(sasuTotal, eurlTotal, eiBestResult, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap) {
-    if (eurlTotal >= eiBestResult && eurlTotal > sasuTotal && eurlTotal > micro) {
-        if (eurlTotal > eiBestResult) {
-            eurlContainerRecap.classList.add('container-best-choice');
-            eurlHeadingRecap.classList.add('heading-best-choice');
-        } else if (eurlTotal === eiBestResult) {
-            eurlContainerRecap.classList.add('container-best-choice');
-            eurlHeadingRecap.classList.add('heading-best-choice');
-            eiContainerRecap.classList.add('container-best-choice');
-            eiHeadingRecap.classList.add('heading-best-choice');
-        }
+    let resultRecapTitle = document.getElementById('simulator-result-title');
+    if (eurlTotal > eiBestResult && eurlTotal > sasuTotal && eurlTotal > micro) {
+        addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
     } else if (sasuTotal > eurlTotal && sasuTotal > eiBestResult && sasuTotal > micro) {
-        sasuContainerRecap.classList.add('container-best-choice');
-        sasuHeadingRecap.classList.add('heading-best-choice');
+        addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
     } else if (micro > eurlTotal && micro > eiBestResult && micro > sasuTotal) {
-        microContainerRecap.classList.add('container-best-choice');
-        microHeadingRecap.classList.add('heading-best-choice');
-    } else if (eiBestResult >= eurlTotal && eiBestResult > sasuTotal && eiBestResult > micro) {
-        if (eiBestResult > eurlTotal) {
-            eiContainerRecap.classList.add('container-best-choice');
-            eiHeadingRecap.classList.add('heading-best-choice');
-        } else if (eiBestResult === eurlTotal) {
-            eurlContainerRecap.classList.add('container-best-choice');
-            eurlHeadingRecap.classList.add('heading-best-choice');
-            eiContainerRecap.classList.add('container-best-choice');
-            eiHeadingRecap.classList.add('heading-best-choice');
-        }
+        addStyleToResults(microContainerRecap, microHeadingRecap, resultRecapTitle, 'micro');
+    } else if (eiBestResult > eurlTotal && eiBestResult > sasuTotal && eiBestResult > micro) {
+        addStyleToResults(eiContainerRecap, eiHeadingRecap, resultRecapTitle, 'ei');
     }
+}
+
+function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socialForm) {
+    containerRecap.classList.add('container-best-choice');
+    headingRecap.classList.add('heading-best-choice');
+    resultRecapTitle.textContent = document.getElementById(`${socialForm}-heading-recap`).textContent;
 }
 
 function compareIsAndIr(isHtmlTag, irHtmlTag, resultStorage, hasDividends, socialForm) {
