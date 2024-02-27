@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -234,15 +234,8 @@ function compareResults(sasuTotal, eurlTotal, eiBestResult, micro, eurlContainer
 }
 
 function compareIsAndIr(isHtmlTag, irHtmlTag, resultStorage, hasDividends, socialForm) {
-    let isResult;
-    let irResult;
-    document.querySelectorAll(isHtmlTag).forEach(element => {
-        isResult = parseInt((element.textContent).replace(/\D/g, ''));
-    });
-
-    document.querySelectorAll(irHtmlTag).forEach(element => {
-        irResult = parseInt((element.textContent).replace(/\D/g, ''));
-    });
+    let isResult = parseInt((document.getElementById(isHtmlTag).textContent).replace(/\D/g, ''));
+    let irResult = parseInt((document.getElementById(irHtmlTag).textContent).replace(/\D/g, ''));
 
     if (isResult > irResult) {
         localStorage.setItem(resultStorage, isResult);
