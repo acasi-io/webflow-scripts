@@ -1,12 +1,7 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.5.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
-
-const green = '#6FCF97';
-const orange = '#FFB13C';
-const red = '#FF2B44';
-
 
 const calculBtn = document.getElementById('calcul-btn');
 const numberOfChildSelect = document.getElementById('child');
@@ -147,26 +142,26 @@ function fillRecapContainer(turnover) {
         element.classList.remove('container-best-choice');
     });
 
-    const eurlIs = parseInt(localStorage.getItem('eurlIs'));
+    const eurlBestResult = parseInt(localStorage.getItem('eurlBestResult'));
     const eurlDividends = parseInt(localStorage.getItem('eurlDividends'));
-    const eurlTotal = eurlIs + eurlDividends;
+    const eurlTotal = eurlBestResult + eurlDividends;
 
-    const eiIr = parseInt(localStorage.getItem('eiIr'));
+    const eiBestResult = parseInt(localStorage.getItem('eiBestResult'));
     const sasu = parseInt(localStorage.getItem('sasu'));
     const micro = parseInt(localStorage.getItem('micro'));
 
     const sasuDividends = parseInt(localStorage.getItem('sasuDividends'));
     const sasuTotal = sasu + sasuDividends;
 
-    orderResults(sasuTotal, eurlTotal, eiIr, micro);
-    addStyleToResults(sasuTotal, eurlTotal, eiIr, micro);
+    orderResults(sasuTotal, eurlTotal, eiBestResult, micro);
+    addStyleToResults(sasuTotal, eurlTotal, eiBestResult, micro);
 }
 
-function orderResults(sasuTotal, eurlTotal, eiIr, micro) {
+function orderResults(sasuTotal, eurlTotal, eiBestResult, micro) {
     let results = [
         { id: "sasu-container-recap", remuneration: sasuTotal },
         { id: "eurl-container-recap", remuneration: eurlTotal },
-        { id: "ei-container-recap", remuneration: eiIr },
+        { id: "ei-container-recap", remuneration: eiBestResult },
         { id: "micro-container-recap", remuneration: micro }
     ];
     
@@ -194,7 +189,7 @@ function orderResults(sasuTotal, eurlTotal, eiIr, micro) {
     }
 }
 
-function addStyleToResults(sasuTotal, eurlTotal, eiIr, micro) {
+function addStyleToResults(sasuTotal, eurlTotal, eiBestResult, micro) {
     const eurlContainerRecap = document.getElementById('eurl-container-recap');
     const sasuContainerRecap = document.getElementById('sasu-container-recap');
     const eiContainerRecap = document.getElementById('ei-container-recap');
@@ -205,31 +200,31 @@ function addStyleToResults(sasuTotal, eurlTotal, eiIr, micro) {
     const eiHeadingRecap = document.getElementById('ei-heading-recap');
     const microHeadingRecap = document.getElementById('micro-heading-recap');
 
-    compareResults(sasuTotal, eurlTotal, eiIr, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap);
+    compareResults(sasuTotal, eurlTotal, eiBestResult, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap);
 }
 
-function compareResults(sasuTotal, eurlTotal, eiIr, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap) {
-    if (eurlTotal >= eiIr && eurlTotal > sasuTotal && eurlTotal > micro) {
-        if (eurlTotal > eiIr) {
+function compareResults(sasuTotal, eurlTotal, eiBestResult, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap) {
+    if (eurlTotal >= eiBestResult && eurlTotal > sasuTotal && eurlTotal > micro) {
+        if (eurlTotal > eiBestResult) {
             eurlContainerRecap.classList.add('container-best-choice');
             eurlHeadingRecap.classList.add('heading-best-choice');
-        } else if (eurlTotal === eiIr) {
+        } else if (eurlTotal === eiBestResult) {
             eurlContainerRecap.classList.add('container-best-choice');
             eurlHeadingRecap.classList.add('heading-best-choice');
             eiContainerRecap.classList.add('container-best-choice');
             eiHeadingRecap.classList.add('heading-best-choice');
         }
-    } else if (sasuTotal > eurlTotal && sasuTotal > eiIr && sasuTotal > micro) {
+    } else if (sasuTotal > eurlTotal && sasuTotal > eiBestResult && sasuTotal > micro) {
         sasuContainerRecap.classList.add('container-best-choice');
         sasuHeadingRecap.classList.add('heading-best-choice');
-    } else if (micro > eurlTotal && micro > eiIr && micro > sasuTotal) {
+    } else if (micro > eurlTotal && micro > eiBestResult && micro > sasuTotal) {
         microContainerRecap.classList.add('container-best-choice');
         microHeadingRecap.classList.add('heading-best-choice');
-    } else if (eiIr >= eurlTotal && eiIr > sasuTotal && eiIr > micro) {
-        if (eiIr > eurlTotal) {
+    } else if (eiBestResult >= eurlTotal && eiBestResult > sasuTotal && eiBestResult > micro) {
+        if (eiBestResult > eurlTotal) {
             eiContainerRecap.classList.add('container-best-choice');
             eiHeadingRecap.classList.add('heading-best-choice');
-        } else if (eiIr === eurlTotal) {
+        } else if (eiBestResult === eurlTotal) {
             eurlContainerRecap.classList.add('container-best-choice');
             eurlHeadingRecap.classList.add('heading-best-choice');
             eiContainerRecap.classList.add('container-best-choice');
@@ -238,18 +233,38 @@ function compareResults(sasuTotal, eurlTotal, eiIr, micro, eurlContainerRecap, s
     }
 }
 
+function compareIsAndIr(isHtmlTag, irHtmlTag, resultStorage, socialForm) {
+    let isResult;
+    let irResult;
+    document.querySelectorAll(isHtmlTag).forEach(element => {
+        isResult = parseInt((element.textContent).replace(/\D/g, ''));
+    });
+
+    document.querySelectorAll(irHtmlTag).forEach(element => {
+        irResult = parseInt((element.textContent).replace(/\D/g, ''));
+    });
+
+    if (isResult > irResult) {
+        localStorage.setItem(resultStorage, isResult);
+        document.getElementById(`simulator-${socialForm}-recap-title`).textContent = "à l'IS";
+    } else {
+        localStorage.setItem(resultStorage, irResult);
+        document.getElementById(`simulator-${socialForm}-recap-title`).textContent = "à l'IR";
+    }
+}
+
 function fillWageRecap(turnover) {
     document.querySelectorAll('.is-eurl-after').forEach(element => {
         const eurllIsAmount = (element.textContent).replace(/\D/g, '');
-        localStorage.setItem('eurlIs', eurllIsAmount);
         document.getElementById('eurl-wage-recap').textContent = eurllIsAmount.toLocaleString('fr-FR') + '€';
     });
+    compareIsAndIr('is-eurl-after', 'ir-eurl-after', 'eurlBestResult', 'eurl');
 
     document.querySelectorAll('.ir-ei-after').forEach(element => {
         const eilIrAmount = (element.textContent).replace(/\D/g, '');
-        localStorage.setItem('eiIr', eilIrAmount);
         document.getElementById('ei-wage-recap').textContent = eilIrAmount.toLocaleString('fr-FR') + '€';
     });
+    compareIsAndIr('is-ei-after', 'ir-ei-after', 'eiBestResult', 'ei');
 
     sasuAfter.forEach(element => {
         const sasuAmount = (element.textContent).replace(/\D/g, '');
