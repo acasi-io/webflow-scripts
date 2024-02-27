@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -244,49 +244,27 @@ function compareIsAndIr(isHtmlTag, irHtmlTag, resultStorage, hasDividends, socia
         const progressiveIsResult = progressiveDividends + isResult;
 
         if (pfuIsResult > irResult || progressiveIsResult > irResult) {
-            localStorage.setItem(resultStorage, isResult);
-            document.getElementById(`simulator-eurl-recap-title`).textContent = "à l'IS";
+            compareIsAndIrFillWageRecap(resultStorage, isResult, socialForm);
+        } else {
+            compareIsAndIrFillWageRecap(resultStorage, irResult, socialForm);
         }
     } else {
         if (isResult > irResult) {
-            localStorage.setItem(resultStorage, isResult);
-            document.getElementById(`simulator-${socialForm}-recap-title`).textContent = "à l'IS";
+            compareIsAndIrFillWageRecap(resultStorage, isResult, socialForm);
         } else {
-            document.getElementById(`simulator-${socialForm}-recap-title`).textContent = "à l'IR";
+            compareIsAndIrFillWageRecap(resultStorage, irResult, socialForm);
         }
     }
+}
 
-    /*if (isResult > irResult) {
-        localStorage.setItem(resultStorage, isResult);
-        document.getElementById(`simulator-${socialForm}-recap-title`).textContent = "à l'IS";
-    } else {
-        localStorage.setItem(resultStorage, irResult);
-        if (hasDividends) {
-            const pfuDividends = parseInt(localStorage.getItem('eurlPfuDividends'));
-            const progressiveDividends = parseInt(localStorage.getItem('eurlProgressiveDividends'));
-            const pfuIsResult = pfuDividends + isResult;
-            const progressiveIsResult = progressiveDividends + irResult;
-    
-            if (pfuIsResult > irResult || progressiveIsResult > irResult) {
-                document.getElementById(`simulator-eurl-recap-title`).textContent = "à l'IS";
-            }
-        } else {
-            document.getElementById(`simulator-${socialForm}-recap-title`).textContent = "à l'IR";
-        }
-    }*/
+function compareIsAndIrFillWageRecap(resultStorage, taxResult, socialForm) {
+    localStorage.setItem(resultStorage, taxResult);
+    document.getElementById(`simulator-${socialForm}-recap-title`).textContent = "à l'IS";
+    document.getElementById(`${socialForm}-wage-recap`).textContent = taxResult.toLocaleString('fr-FR') + '€';
 }
 
 function fillWageRecap(turnover) {
-    document.querySelectorAll('.is-eurl-after').forEach(element => {
-        const eurllIsAmount = (element.textContent).replace(/\D/g, '');
-        document.getElementById('eurl-wage-recap').textContent = eurllIsAmount.toLocaleString('fr-FR') + '€';
-    });
     compareIsAndIr('is-eurl-after', 'ir-eurl-after', 'eurlBestResult', true, 'eurl');
-
-    document.querySelectorAll('.ir-ei-after').forEach(element => {
-        const eilIrAmount = (element.textContent).replace(/\D/g, '');
-        document.getElementById('ei-wage-recap').textContent = eilIrAmount.toLocaleString('fr-FR') + '€';
-    });
     compareIsAndIr('is-ei-after', 'ir-ei-after', 'eiBestResult', false, 'ei');
 
     sasuAfter.forEach(element => {
