@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -9,6 +9,7 @@ const sasuDividendsPfu = document.getElementById('sasu-pfu-dividends');
 const sasuDividendsProgressive = document.getElementById('sasu-progressive-dividends');
 const sasuBefore = document.querySelectorAll('.sasu-before');
 const sasuAfter = document.querySelectorAll('.sasu-after');
+const simulatorResults = document.getElementById('simulator-results');
 
 
 numberOfChildSelect.addEventListener('change', (input) => {
@@ -54,7 +55,10 @@ calculBtn.addEventListener('click', () => {
 
         fillRecapContainer(turnover);
 
-        document.getElementById('simulator-results').classList.remove('hidden');
+        simulatorResults.classList.remove('hidden');
+        simulatorResults.scrollIntoView({
+            behavior: "smooth"
+        });
 
         hideLoader();
     }, 100);
