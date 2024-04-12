@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -259,8 +259,8 @@ function compareIsAndIrFillWageRecap(resultStorage, taxResult, socialForm) {
 }
 
 function fillWageRecap(turnover) {
-    compareIsAndIr('is_eurlis_after_tax', 'is_eurlir_after_tax', 'eurlBestResult', true, 'eurl');
-    compareIsAndIr('is_eiis_after_tax', 'is_eiir_after_tax', 'eiBestResult', false, 'ei');
+    compareIsAndIr('is-eurlis-after-tax', 'is-eurlir-after-tax', 'eurlBestResult', true, 'eurl');
+    compareIsAndIr('is-eiis-after-tax', 'is-eiir-after-tax', 'eiBestResult', false, 'ei');
 
     sasuAfterTax.forEach(element => {
         const sasuAmount = (element.textContent).replace(/\D/g, '');
