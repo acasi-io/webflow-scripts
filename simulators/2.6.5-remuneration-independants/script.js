@@ -7,13 +7,13 @@ const calculBtn = document.getElementById('calcul-btn');
 const numberOfChildSelect = document.getElementById('child');
 const sasuDividendsPfu = document.getElementById('sasu-pfu-dividends');
 const sasuDividendsProgressive = document.getElementById('sasu-progressive-dividends');
-const sasuBefore = document.querySelectorAll('.sasu-before');
-const sasuAfter = document.querySelectorAll('.sasu-after');
+const sasuBeforeTax = document.querySelectorAll('.is_sasu_before_tax');
+const sasuAfterTax = document.querySelectorAll('.is_sasu_after_tax');
 const simulatorResults = document.getElementById('simulator-results');
 
 
 numberOfChildSelect.addEventListener('change', (input) => {
-    const singleParentElements = document.querySelectorAll('.single-parent');
+    const singleParentElements = document.querySelectorAll('.is_single_parent');
     if (parseInt(input.target.value) > 0) {
         singleParentElements.forEach(element => {
             element.classList.remove('hidden');
@@ -66,10 +66,10 @@ calculBtn.addEventListener('click', () => {
 
 
 function microConditions(turnover) {
-    const microRecap = document.querySelectorAll('.micro-recap');
-    const microContributions = document.querySelector('.simulator-micro-contributions');
+    const microRecap = document.querySelectorAll('.is_micro_recap');
+    const microContributions = document.querySelector('.is_micro_contributions');
 
-    document.querySelectorAll('.simulator-micro').forEach(element => {
+    document.querySelectorAll('.simulator_micro_hidden').forEach(element => {
         element.style.display = 'none';
     });
     microContributions.style.display = 'none';
@@ -79,7 +79,7 @@ function microConditions(turnover) {
     });
 
     if (turnover <= 50000) {
-        document.querySelectorAll('.simulator-micro').forEach(element => {
+        document.querySelectorAll('.simulator_micro_hidden').forEach(element => {
             element.style.display = 'block';
         });
 
@@ -140,11 +140,11 @@ function fillRecapContainer(turnover) {
     fillSasuDividendsRecap();
     fillTextForMicro(turnover);
 
-    document.querySelectorAll('.heading-recap').forEach(element => {
+    document.querySelectorAll('.simulator_heading_recap').forEach(element => {
         element.classList.remove('heading-best-choice');
     });
 
-    document.querySelectorAll('.container-recap').forEach(element => {
+    document.querySelectorAll('.simulator_recap_item').forEach(element => {
         element.classList.remove('container-best-choice');
     });
 
@@ -259,16 +259,16 @@ function compareIsAndIrFillWageRecap(resultStorage, taxResult, socialForm) {
 }
 
 function fillWageRecap(turnover) {
-    compareIsAndIr('is-eurl-after', 'ir-eurl-after', 'eurlBestResult', true, 'eurl');
-    compareIsAndIr('is-ei-after', 'ir-ei-after', 'eiBestResult', false, 'ei');
+    compareIsAndIr('is_eurlis_after_tax', 'is_eurlir_after_tax', 'eurlBestResult', true, 'eurl');
+    compareIsAndIr('is_eiis_after_tax', 'is_eiir_after_tax', 'eiBestResult', false, 'ei');
 
-    sasuAfter.forEach(element => {
+    sasuAfterTax.forEach(element => {
         const sasuAmount = (element.textContent).replace(/\D/g, '');
         document.getElementById('sasu-wage-recap').textContent = sasuAmount.toLocaleString('fr-FR') + '€';
         localStorage.setItem('sasu', sasuAmount);
     });
 
-    document.querySelectorAll('.micro-after').forEach(element => {
+    document.querySelectorAll('.is_micro_after_tax').forEach(element => {
         if (turnover > 50000) {
             localStorage.setItem('micro', 0);
         } else {
@@ -278,7 +278,7 @@ function fillWageRecap(turnover) {
         }
     });
 
-    document.querySelectorAll('.ca-recap').forEach(element => {
+    document.querySelectorAll('.is_ca_recap').forEach(element => {
         element.textContent = turnover.toLocaleString('fr-FR') + '€';
     });
 }
@@ -508,7 +508,7 @@ function sasuSituation(wage, situation, numberOfChild, householdIncome, singlePa
 }
 
 function sasuRemuneration() {
-    document.querySelectorAll('.sasu-remuneration').forEach(element => {
+    document.querySelectorAll('.is_sasu_remuneration').forEach(element => {
         element.style.display = 'block';
     });
 
@@ -517,7 +517,7 @@ function sasuRemuneration() {
     if (isNaN(netAmount)) {
         netAmount = 0;
     }
-    sasuBefore.forEach(element => {
+    sasuBeforeTax.forEach(element => {
         element.textContent = `${netAmount}€`;
     });
 
@@ -526,12 +526,12 @@ function sasuRemuneration() {
     if (isNaN(afterTaxAmount)) {
         afterTaxAmount = 0;
     }
-    sasuAfter.forEach(element => {
+    sasuAfterTax.forEach(element => {
         element.textContent = `${afterTaxAmount}€`;
     });
 
     if (netAmount === 0 && afterTaxAmount === 0) {
-        document.querySelectorAll('.sasu-remuneration').forEach(element => {
+        document.querySelectorAll('.is_sasu_remuneration').forEach(element => {
             element.style.display = 'none';
         });
     }
@@ -544,7 +544,7 @@ function sasuContributions() {
     yearFillText("salarié . cotisations . maladie . employeur", '#sasu-disease');
     yearFillText("salarié . cotisations . CSA", '#sasu-solidarity-autonomy');
     yearFillText("salarié . cotisations . ATMP", '#sasu-work-accident');
-    yearFillText("salarié . cotisations . vieillesse . employeur", '.sasu-employer-old-age');
+    yearFillText("salarié . cotisations . vieillesse . employeur", '#sasu-employer-old-age');
     yearFillText("salarié . cotisations . retraite complémentaire . employeur", '#sasu-employer-additional-retirement');
     yearFillText("salarié . cotisations . CEG . employeur", '#sasu-employer-general-balance');
     yearFillText("salarié . cotisations . allocations familiales", '#sasu-family-allowance');
@@ -755,7 +755,7 @@ function eurlCompareResults(eurlArray) {
                 "dirigeant . rémunération . net": wageEurl
             }).evaluate("dirigeant . rémunération . net . après impôt");
 
-            document.querySelectorAll('.is-eurl-after').forEach(element => {
+            document.querySelectorAll('.is_eurlis_after_tax').forEach(element => {
                 element.textContent = (Math.round(afterTaxEurl.nodeValue)).toLocaleString('fr-FR') + '€';
             });
         }
@@ -769,7 +769,7 @@ function eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgres
     document.getElementById('eurl-progressive-dividends').textContent = bestDividendsProgressive.toLocaleString('fr-FR') + '€';
     localStorage.setItem('eurlProgressiveDividends', bestDividendsProgressive);
 
-    document.querySelectorAll('.eurl-is-before').forEach(element => {
+    document.querySelectorAll('.is_eurlis_before_tax').forEach(element => {
         element.textContent = wageEurl.toLocaleString('fr-FR') + '€';
     });
 
@@ -789,23 +789,23 @@ function eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgres
 function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
 
-    eiEurlRemuneration('.ei-before', '.is-ei-after');
-    // eiEurlRemuneration('.is-eurl-after');
+    eiEurlRemuneration('.is_ei_before_tax', '.is_eiis_after_tax');
+    // eiEurlRemuneration('.is_eurlis_after_tax');
     eiEurlContributions('ei');
     eiRetirement();
 
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IR');
-    eiEurlRemuneration('.ei-before', '.ir-ei-after');
-    eiEurlRemuneration('.eurl-ir-before', '.ir-eurl-after');
+    eiEurlRemuneration('.is_ei_before_tax', '.is_eiir_after_tax');
+    eiEurlRemuneration('.is_eurlir_before_tax', '.is_eurlir_after_tax');
 
     if(document.getElementById('single-parent').value === 'oui') {
         eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IS');
-        eiEurlRemuneration('.ei-before', '.is-ei-after');
-        // eiEurlRemuneration('.is-eurl-after');
+        eiEurlRemuneration('.is_ei_before_tax', '.is_eiis_after_tax');
+        // eiEurlRemuneration('.is_eurlis_after_tax');
 
         eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IR');
-        eiEurlRemuneration('.ei-before', '.ir-ei-after');
-        eiEurlRemuneration('.eurl-ir-before', '.ir-eurl-after');
+        eiEurlRemuneration('.is_ei_before_tax', '.is_eiir_after_tax');
+        eiEurlRemuneration('.is_eurlir_before_tax', '.is_eurlir_after_tax');
     }
 }
 
@@ -858,8 +858,8 @@ function microSituation(turnoverMinusCost, situation, numberOfChild, householdIn
 }
 
 function microRemuneration() {
-    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net", '.micro-before');
-    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net . après impôt", '.micro-after');
+    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net", '.is_micro_before_tax');
+    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net . après impôt", '.is_micro_after_tax');
 }
 
 function microContributions() {
