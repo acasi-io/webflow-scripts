@@ -2,7 +2,7 @@ const nextBtn = document.getElementById('next-button');
 const screenWidth = window.innerWidth;
 const coachMobile = document.getElementById('image-coach-mobile');
 const coachImage = document.getElementById("container-coach-image");
-const question = document.querySelector('.question-title');
+const question = document.querySelector('.is_question_title');
 
 
 storageAnswers = JSON.parse(localStorage.getItem('choices'));
@@ -13,14 +13,14 @@ document.getElementById('previous-button').addEventListener('click', () => {
 });
   
 
-document.querySelector('.cta-previous-pre-qualif-mobile').addEventListener('click', () => {
+document.querySelector('.prequalif_cta_previous_mobile').addEventListener('click', () => {
     history.back();
 });
 
 
-document.querySelectorAll('.pre-qualif-answers').forEach(answer => {
+document.querySelectorAll('.prequalif_answers_item').forEach(answer => {
 	answer.addEventListener('click', () => {
-		document.querySelectorAll('.pre-qualif-answers').forEach(otherAnswer => {
+		document.querySelectorAll('.prequalif_answers_item').forEach(otherAnswer => {
 			otherAnswer.classList.remove('input-checked');
 		});
         
