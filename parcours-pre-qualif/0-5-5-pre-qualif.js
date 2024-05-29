@@ -5,7 +5,7 @@ const coachImage = document.getElementById("container-coach-image");
 const question = document.querySelector('.is_question_title');
 
 
-storageAnswers = JSON.parse(localStorage.getItem('choices'));
+let storageAnswers = {};
 
 
 document.getElementById('previous-button').addEventListener('click', () => {
