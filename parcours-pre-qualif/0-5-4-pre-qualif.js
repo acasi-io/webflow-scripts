@@ -93,11 +93,14 @@ function redirectUrl() {
 
 
 function shareCookies() {
+    let urlParams = JSON.parse(localStorage.getItem('urlParams'));
     let answers = JSON.parse(localStorage.getItem('choices'));
     
     if (answers === null || answers === undefined) {
         answers = {};
     }
 
-    document.cookie = `pre_qualification_workflow_data=${JSON.stringify(answers)}; domain=acasi.io; path=/`;
+    const preQualificationData = {...urlParams, ...answers};
+
+    document.cookie = `pre_qualification_workflow_data=${JSON.stringify(preQualificationData)}; domain=acasi.io; path=/`;
 }
