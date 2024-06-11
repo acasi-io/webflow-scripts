@@ -33,11 +33,19 @@
         localStorage.setItem("choices", JSON.stringify(storageAnswers));
     }
     function showCoachAnswer(choice, coachAnswer) {
+        scrollWindow();
+        showCoachAnswerText(choice, coachAnswer);
+    }
+
+    function scrollWindow() {
         window.scrollTo({ top: 1200, behavior: "smooth" });
         setTimeout(() => {
             window.scrollTo({ top: 1200, behavior: "smooth" });
         }, 1100);
         coachImage.style.top = "480px";
+    }
+
+    function showCoachAnswerText(choice, coachAnswer) {
         if (choice === "designer") {
             coachAnswer.textContent = "Top ! Nous connaissons les problématiques des designers sur le bout des doigts.";
         } else if (choice === "coach") {
@@ -57,6 +65,7 @@
             resizeZero();
         }
     }
+
     function nextPage() {
         nextBtn.addEventListener("click", () => {
             const choice = localStorage.getItem("currentChoice");

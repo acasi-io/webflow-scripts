@@ -4,10 +4,18 @@
 <script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-6-pre-qualif.js"></script>
 <script>
     function showCoachAnswer(choice, coachAnswer) {
+        scrollWindow();
+        showCoachAnswerText(choice, coachAnswer);
+    }
+
+    function scrollWindow() {
         window.scrollTo({ top: 1200, behavior: "smooth" });
+        coachImage.style.top = "360px";
+    }
+
+    function showCoachAnswerText(choice, coachAnswer) {
         document.getElementById("trustpilot").classList.add("hidden");
         storageAnswers = JSON.parse(localStorage.getItem("choices"));
-        coachImage.style.top = "360px";
         if (choice === "SAS" || choice === "SASU") {
             coachAnswer.textContent = `Très bon choix. La ${choice} est une forme juridique souple où vous aurez beaucoup de liberté dans la gestion.`;
             storageAnswers.appointment_requested = false;
@@ -27,6 +35,7 @@
         }
         localStorage.setItem("choices", JSON.stringify(storageAnswers));
     }
+
     function nextPage() {
         nextBtn.addEventListener("click", () => {
             const choice = localStorage.getItem("currentChoice");

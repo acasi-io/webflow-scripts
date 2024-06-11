@@ -4,14 +4,23 @@
 <script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-6-pre-qualif.js"></script>
 <script>
     function showCoachAnswer(choice, coachAnswer) {
+        scrollWindow();
+        showCoachAnswerText();
+    }
+
+    function scrollWindow() {
         window.scrollTo({ top: 1200, behavior: "smooth" });
         coachImage.style.top = "270px";
+    }
+
+    function showCoachAnswerText(choice, coachAnswer) {
         if (choice === "asap") {
             coachAnswer.textContent = "C’est parti ! 🚀 Généralement nous déposons le dossier à l'INPI, 24h après avoir reçu tous vos documents.";
         } else {
             coachAnswer.textContent = "Vous avez raison de prendre le temps à bien définir votre projet. On peut d'ores et déjà vous aider à choisir la forme sociale adaptée à votre activité !";
         }
     }
+
     function nextPage() {
         nextBtn.addEventListener("click", () => {
             window.location.href = "qc2";

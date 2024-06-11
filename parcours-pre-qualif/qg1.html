@@ -27,9 +27,18 @@
         }
     });
     localStorage.setItem("choices", JSON.stringify(storageAnswers));
+
     function showCoachAnswer(choice, coachAnswer) {
+        scrollWindow();
+        showCoachAnswerText(choice, coachAnswer);
+    }
+
+    function scrollWindow() {
         window.scrollTo({ top: 1200, behavior: "smooth" });
         coachImage.style.top = "440px";
+    }
+
+    function showCoachAnswerText(choice, coachAnswer) {
         if (choice === "sas") {
             coachAnswer.textContent = "Super ! Plus de la moitié de nos clients ont une SAS ou une SASU.";
         } else if (choice === "limited_liability") {
@@ -45,6 +54,7 @@
             coachAnswer.textContent = "Top ! On peut vous aider à optimiser votre activité.";
         }
     }
+
     function nextPage() {
         nextBtn.addEventListener("click", () => {
             const choice = localStorage.getItem("currentChoice");
