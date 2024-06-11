@@ -1,0 +1,71 @@
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-0-2-heading-pre-qualif.js" async></script>
+<script>
+    let creation = false;
+</script>
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-6-pre-qualif.js"></script>
+<script>
+    const windowStartUrl = localStorage.getItem("url");
+    if (windowStartUrl.includes("/metiers") || windowStartUrl.includes("/avocat")) {
+        storageAnswers = JSON.parse(localStorage.getItem("choices"));
+        const urlParts = windowStartUrl.split("/");
+        const job = urlParts[urlParts.length - 1];
+        let profession;
+        if (job === "avocat") {
+            profession = "lawyer";
+        } else if (job === "developpeur") {
+            profession = "dev";
+        } else if (job === "architecte") {
+            profession = "architect";
+        } else if (job === "agent-immobilier") {
+            profession = "real_estate";
+        } else {
+            profession = job;
+        }
+        storageAnswers.profession = profession;
+        localStorage.setItem("currentChoice", profession);
+        nextBtn.classList.add("next-button");
+        nextPage();
+        const preQualifAnswers = document.querySelectorAll(".pre-qualif-answers");
+        preQualifAnswers.forEach((answer) => {
+            if (answer.id === profession) {
+                answer.classList.add("input-checked");
+            }
+        });
+        localStorage.setItem("choices", JSON.stringify(storageAnswers));
+    }
+    function showCoachAnswer(choice, coachAnswer) {
+        window.scrollTo({ top: 1200, behavior: "smooth" });
+        setTimeout(() => {
+            window.scrollTo({ top: 1200, behavior: "smooth" });
+        }, 1100);
+        coachImage.style.top = "480px";
+        if (choice === "designer") {
+            coachAnswer.textContent = "Top ! Nous connaissons les problématiques des designers sur le bout des doigts.";
+        } else if (choice === "coach") {
+            coachAnswer.textContent = "Top ! Nous connaissons les problématiques des coachs sur le bout des doigts.";
+        } else if (choice === "architect") {
+            coachAnswer.textContent = "Top ! Nous connaissons les problématiques des architectes sur le bout des doigts.";
+        } else if (choice === "consultant") {
+            coachAnswer.textContent = "Top ! Nous avons près de 1 200 clients consultants. Nous connaissons vos problématiques et les optimisations possibles mieux que quiconque.";
+        } else if (choice === "dev") {
+            coachAnswer.textContent = "Top ! Nous avons près de 700 clients développeurs/IT. Nous connaissons vos problématiques et les optimisations possibles mieux que quiconque.";
+        } else if (choice === "lawyer") {
+            coachAnswer.textContent = "Top ! Nous travaillons déjà avec plus de 200 collaborateurs issus de divers cabinets de la place : August Debouzy, White & Case, Bredin Prat ...";
+        } else if (choice === "real_estate") {
+            coachAnswer.textContent = "Super ! Nous sommes partenaires avec plusieurs réseaux d’agents immobiliers : Safti, Proprietes-privees.com ...";
+        } else {
+            document.getElementById("wrapper-coach-answer").classList.add("hidden");
+            resizeZero();
+        }
+    }
+    function nextPage() {
+        nextBtn.addEventListener("click", () => {
+            const choice = localStorage.getItem("currentChoice");
+            if (choice === "e_commerce" || choice === "artisan" || choice === "restaurant") {
+                window.location.href = "page-sortie";
+            } else {
+                window.location.href = "qg4";
+            }
+        });
+    }
+</script>

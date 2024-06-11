@@ -1,0 +1,30 @@
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-0-2-heading-pre-qualif.js" async></script>
+<script>
+    let creation = false;
+</script>
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-6-pre-qualif.js"></script>
+<script>
+    function showCoachAnswer(choice, coachAnswer) {
+        window.scrollTo({ top: 1200, behavior: "smooth" });
+        coachImage.style.top = "280px";
+        if (choice === "true") {
+            coachAnswer.textContent = "Génial ! 🚀 Il vous suffit de renseigner vos  coordonnées et choisir un créneau à l’étape suivante.";
+        } else {
+            coachAnswer.textContent = "Super ! Prenez le temps de tester gratuitement l’application. Vous verrez, c’est facile à prendre en mains.";
+        }
+    }
+    if (localStorage.getItem("button") === "rdv") {
+        storageAnswers = JSON.parse(localStorage.getItem("choices"));
+        storageAnswers.appointment_requested = true;
+        localStorage.setItem("choices", JSON.stringify(storageAnswers));
+        const preQualifAnswer = document.querySelector('[data-hubspot-property-value="true"]');
+        preQualifAnswer.classList.add("input-checked");
+        nextBtn.classList.add("next-button");
+        nextPage();
+    }
+    function nextPage() {
+        nextBtn.addEventListener("click", () => {
+            redirectUrl();
+        });
+    }
+</script>

@@ -1,0 +1,60 @@
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-0-2-heading-pre-qualif.js" async></script>
+<script>
+    let creation = false;
+</script>
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-6-pre-qualif.js"></script>
+<script>
+    storageAnswers = JSON.parse(localStorage.getItem("choices"));
+    let status;
+    const windowStartUrl = localStorage.getItem("url");
+    if (windowStartUrl.includes("sas")) {
+        preSelectedAnswers("sas");
+    } else if (windowStartUrl.includes("eurl-sarl")) {
+        preSelectedAnswers("limited_liability");
+    } else if (windowStartUrl.includes("entreprise-individuelle")) {
+        preSelectedAnswers("ei");
+    }
+    function preSelectedAnswers(socialForm) {
+        status = socialForm;
+        storageAnswers.pre_qualification_status = status;
+        nextBtn.classList.add("next-button");
+        nextPage();
+    }
+    const preQualifAnswers = document.querySelectorAll(".pre-qualif-answers");
+    preQualifAnswers.forEach((answer) => {
+        if (answer.id === status) {
+            answer.classList.add("input-checked");
+        }
+    });
+    localStorage.setItem("choices", JSON.stringify(storageAnswers));
+    function showCoachAnswer(choice, coachAnswer) {
+        window.scrollTo({ top: 1200, behavior: "smooth" });
+        coachImage.style.top = "440px";
+        if (choice === "sas") {
+            coachAnswer.textContent = "Super ! Plus de la moitié de nos clients ont une SAS ou une SASU.";
+        } else if (choice === "limited_liability") {
+            coachAnswer.textContent = "Super ! Plus de 40% de nos clients ont une SARL/EURL.";
+        } else if (choice === "ei") {
+            coachAnswer.textContent = "Super ! Nous nous occupons de la gestion comptable et administrative des entreprises individuelles.";
+        } else if (choice === "micro") {
+            coachAnswer.textContent = "Top ! La micro-entreprise est une bonne rampe de lancement, tant que vous ne dépassez pas certains seuils de chiffre d’affaires ... ";
+        } else if (choice === "other") {
+            document.getElementById("wrapper-coach-answer").classList.add("hidden");
+            resizeZero();
+        } else {
+            coachAnswer.textContent = "Top ! On peut vous aider à optimiser votre activité.";
+        }
+    }
+    function nextPage() {
+        nextBtn.addEventListener("click", () => {
+            const choice = localStorage.getItem("currentChoice");
+            if (choice === "other") {
+                window.location.href = "page-sortie";
+            } else if (choice === "micro") {
+                window.location.href = "qg1bis";
+            } else {
+                window.location.href = "qg2";
+            }
+        });
+    }
+</script>

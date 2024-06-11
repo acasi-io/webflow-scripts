@@ -1,0 +1,40 @@
+<script>
+    let creation = true;
+</script>
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-6-pre-qualif.js"></script>
+<script>
+    function showCoachAnswer(choice, coachAnswer) {
+        window.scrollTo({ top: 1200, behavior: "smooth" });
+        document.getElementById("trustpilot").classList.add("hidden");
+        storageAnswers = JSON.parse(localStorage.getItem("choices"));
+        coachImage.style.top = "360px";
+        if (choice === "SAS" || choice === "SASU") {
+            coachAnswer.textContent = `Très bon choix. La ${choice} est une forme juridique souple où vous aurez beaucoup de liberté dans la gestion.`;
+            storageAnswers.appointment_requested = false;
+        } else if (choice === "SARL" || choice === "EURL") {
+            coachAnswer.textContent = `Très bon choix. La ${choice} permet de vous rémunérer à moindre coût.`;
+            storageAnswers.appointment_requested = false;
+        } else if (choice === "unknown") {
+            coachAnswer.textContent = "Pas de problèmes ! Nous pouvons vous aider à choisir le statut adapté.";
+            setTimeout(() => {
+                document.getElementById("trustpilot").classList.remove("hidden");
+            }, 1000);
+            storageAnswers.appointment_requested = true;
+        } else {
+            document.getElementById("wrapper-coach-answer").classList.add("hidden");
+            resizeZero();
+            storageAnswers.appointment_requested = false;
+        }
+        localStorage.setItem("choices", JSON.stringify(storageAnswers));
+    }
+    function nextPage() {
+        nextBtn.addEventListener("click", () => {
+            const choice = localStorage.getItem("currentChoice");
+            if (choice === "micro") {
+                window.location.href = "page-sortie";
+            } else {
+                window.location.href = "qc4";
+            }
+        });
+    }
+</script>

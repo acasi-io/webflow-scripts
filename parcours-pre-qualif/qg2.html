@@ -1,0 +1,28 @@
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-0-2-heading-pre-qualif.js" async></script>
+<script>
+    let creation = false;
+</script>
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-6-pre-qualif.js"></script>
+<script>
+    function showCoachAnswer(choice, coachAnswer) {
+        window.scrollTo({ top: 1200, behavior: "smooth" });
+        if (choice === "no_employees") {
+            coachAnswer.textContent = "Ça tombe bien, notre solution est spécialement adaptée pour les indépendants sans salariés. Vous ne payerez pas pour des services RH dont vous n'avez pas l'utilité.";
+        } else if (choice === "sas_president") {
+            coachAnswer.textContent = "C'est parfait ! On gère tous vos bulletins de paie et votre rémunération.";
+        } else {
+            document.getElementById("wrapper-coach-answer").classList.add("hidden");
+            resizeZero();
+        }
+    }
+    function nextPage() {
+        nextBtn.addEventListener("click", () => {
+            const choice = localStorage.getItem("currentChoice");
+            if (choice === "has_employees") {
+                window.location.href = "page-sortie";
+            } else {
+                window.location.href = "qg3";
+            }
+        });
+    }
+</script>

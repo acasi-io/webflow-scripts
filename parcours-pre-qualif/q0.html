@@ -1,0 +1,28 @@
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-0-2-heading-pre-qualif.js" async></script>
+<script>
+    let creation = false;
+    localStorage.setItem("vtcUrl", window.location.href);
+</script>
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-6-pre-qualif.js"></script>
+<script>
+    nextBtn.classList.add("next");
+    function showCoachAnswer(choice, coachAnswer) {
+        window.scrollTo({ top: 1200, behavior: "smooth" });
+        coachImage.style.top = "340px";
+        if (choice === "false") {
+            coachAnswer.textContent = "Pas de problèmes ! Près de 300 000 sociétés sont créées chaque année en France. Voyons si nous pouvons vous aider ...";
+        } else {
+            coachAnswer.textContent = "Bravo ! J’espère que votre activité se porte bien. Voyons si nous pouvons vous aider à l’améliorer ...";
+        }
+    }
+    function nextPage() {
+        nextBtn.addEventListener("click", () => {
+            const choice = localStorage.getItem("currentChoice");
+            if (choice === "false") {
+                window.location.href = "qc1";
+            } else {
+                window.location.href = "qg1";
+            }
+        });
+    }
+</script>

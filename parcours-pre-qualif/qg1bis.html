@@ -1,0 +1,25 @@
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-0-2-heading-pre-qualif.js" async></script>
+<script>
+    let creation = false;
+</script>
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-6-pre-qualif.js"></script>
+<script>
+    function showCoachAnswer(choice, coachAnswer) {
+        window.scrollTo({ top: 1200, behavior: "smooth" });
+        coachImage.style.top = "300px";
+        if (choice === "false") {
+            document.getElementById("wrapper-coach-answer").classList.add("hidden");
+            resizeZero();
+        }
+    }
+    function nextPage() {
+        nextBtn.addEventListener("click", () => {
+            const choice = localStorage.getItem("currentChoice");
+            if (choice === "false") {
+                window.location.href = "page-sortie";
+            } else {
+                window.location.href = "qc1";
+            }
+        });
+    }
+</script>

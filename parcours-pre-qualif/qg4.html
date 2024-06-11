@@ -1,0 +1,33 @@
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-0-2-heading-pre-qualif.js" async></script>
+<script>
+    let creation = false;
+</script>
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-6-pre-qualif.js"></script>
+<script>
+    function showCoachAnswer(choice, coachAnswer) {
+        window.scrollTo({ top: 1200, behavior: "smooth" });
+        document.getElementById("trustpilot").classList.add("hidden");
+        coachImage.style.top = "370px";
+        if (choice === "regularisation_under_two_months") {
+            coachAnswer.textContent = "Vous avez laissé votre compta de côté ? Pas de stress, nous pouvons tout remettre à flot.";
+        } else if (choice === "help_needed") {
+            coachAnswer.textContent = "Pas de problèmes ! Vous ne serez pas déçu(e). Nos experts sont reconnus pour leurs compétences.";
+            setTimeout(() => {
+                document.getElementById("trustpilot").classList.remove("hidden");
+            }, 1000);
+        } else if (choice === "no_accountant") {
+            coachAnswer.textContent = "Vous avez raison ! Un expert-comptable va vous décharger et vous faire gagner en sérénité.  Enfin ... si vous choisissez le bon 😉";
+        } else if (choice === "has_accountant") {
+            coachAnswer.textContent = "Pas de problèmes ! On s’occupe de la transition avec votre ancien expert-comptable. Vous n’avez rien à faire; ni rien à payer.";
+        } else {
+            document.getElementById("wrapper-coach-answer").classList.add("hidden");
+            resizeZero();
+        }
+    }
+    function nextPage() {
+        nextBtn.addEventListener("click", () => {
+            const choice = localStorage.getItem("currentChoice");
+            window.location.href = "qg5";
+        });
+    }
+</script>
