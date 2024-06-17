@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -48,7 +48,8 @@ calculBtn.addEventListener('click', () => {
 
         const turnoverMinusCost = turnover - cost;
 
-        eurlResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome);
+        // eurlResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome);
+        calculEurl(turnoverMinusCost, turnover, cost, situation, householdIncome, singleParent);
         sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
         eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
         microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
@@ -602,7 +603,7 @@ function eiEurlContributions(form) {
 
 
 /* EURL */
-function eurlSituation(wage, situation, numberOfChild, householdIncome, tax, singleParent) {
+/*function eurlSituation(wage, situation, numberOfChild, householdIncome, tax, singleParent) {
     engine.setSituation({
         "dirigeant . rémunération . totale": wage,
         "impôt . foyer fiscal . situation de famille": `'${situation}'`,
@@ -615,6 +616,53 @@ function eurlSituation(wage, situation, numberOfChild, householdIncome, tax, sin
         "entreprise . catégorie juridique": "'SARL'",
         "impôt . méthode de calcul": "'barème standard'"
     });
+}*/
+
+function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, tax) {
+    engine.setSituation({
+        "entreprise . chiffre d'affaires": turnoverMinusCost,
+        "impôt . foyer fiscal . situation de famille": `'${situation}'`,
+        "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
+        "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
+        "impôt . foyer fiscal . parent isolé": `${singleParent}`,
+        "entreprise . imposition": `'${tax}'`,
+        "entreprise . activité . nature": "'libérale'",
+        "situation personnelle . domiciliation fiscale à l'étranger": "non",
+        "entreprise . catégorie juridique": "'EI'",
+        "entreprise . catégorie juridique . EI . auto-entrepreneur": "non"
+    });
+}
+
+function calculEurl(turnoverMinusCost, turnover, cost, situation, householdIncome, singleParent) {
+    let maxWage;
+    if(document.getElementById('single-parent').value === 'oui') {
+        eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IS');
+        const maxWageUrssaf = engine.evaluate("dirigeant . rémunération . net");
+        maxWage = Math.round(maxWageUrssaf.nodeValue);
+    } else {
+        eurlCalculContributionsAndRetirement(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
+        const maxWageUrssaf = engine.evaluate("dirigeant . rémunération . net");
+        maxWage = Math.round(maxWageUrssaf.nodeValue);
+    }
+
+    let eurlArray = [];
+    let percentage = 0;
+    const currentWage = turnoverMinusCost * (percentage / 100);
+    let contributionsUrssaf = engine.setSituation({
+        "dirigeant . rémunération . net": currentWage
+    }).evaluate("dirigeant . indépendant . cotisations et contributions");
+    let contributionsAmount = Math.round(contributionsUrssaf.nodeValue);
+    eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eurlArray, situation, numberOfChild, householdIncome);
+    let wageAfter = parseInt(localStorage.getItem('wageAfter'));
+
+    while (wageAfter < maxWage) {
+        percentage += 5;
+        let wage = turnoverMinusCost * (percentage / 100);
+        wageAfter = wage + (turnoverMinusCost * (5 / 100));
+        eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eurlArray, situation, numberOfChild, householdIncome);
+    }
+
+    eurlCompareResults(eurlArray, situation, numberOfChild, householdIncome);
 }
 
 function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
@@ -681,7 +729,7 @@ function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eur
 
     eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome, wage);
 
-    let eurlContributionsTotalAmount = parseInt(localStorage.getItem('contributionsEurlAmount'));
+    /*let eurlContributionsTotalAmount = parseInt(localStorage.getItem('contributionsEurlAmount'));
     const eurlContributionsTotalText = document.getElementById('eurl-contributions-total');
     const shareCapital = document.getElementById('share-capital');
 
@@ -692,7 +740,7 @@ function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eur
         let calculContributionsAmount = Math.round(calculContributionsUrssaf.nodeValue);
         eurlContributionsTotalAmount = eurlContributionsTotalAmount + calculContributionsAmount;
         eurlContributionsTotalText.textContent = eurlContributionsTotalAmount + '€';
-    }
+    }*/
 
     const dividendsNetPfuAmount = parseInt(localStorage.getItem('dividendsNetPfuAmount'));
     const dividendsProgressiveAmount = parseInt(localStorage.getItem('dividendsProgressiveAmount'));
@@ -748,7 +796,7 @@ function eurlAddObjectInArray(percentage, wage, maxDividends, dividendsNetPfuAmo
     eurlArray.push(myObject);
 }
 
-function eurlCompareResults(eurlArray) {
+/*function eurlCompareResults(eurlArray) {
     let remunerationPlusDividendsBestAmount = eurlArray[0].bestWagePlusDividends;
     let maxRemunerationObject = 0;
     let dividends = eurlArray[0].maxDividends;
@@ -779,6 +827,81 @@ function eurlCompareResults(eurlArray) {
             document.querySelectorAll('.is_eurlis_after_tax').forEach(element => {
                 element.textContent = (Math.round(afterTaxEurl.nodeValue)).toLocaleString('fr-FR') + '€';
             });
+        }
+    }
+}*/
+
+function eurlCompareResults(eurlArray, situation, numberOfChild, householdIncome) {
+    let remunerationPlusDividendsBestAmount = eurlArray[0].bestWagePlusDividends;
+    let maxRemunerationObject = 0;
+    let dividends = eurlArray[0].maxDividends;
+    let wageEurl = eurlArray[0].wage;
+    let bestDividendsPfu = eurlArray[0].dividendsNetPfuAmount;
+    let bestDividendsProgressive = eurlArray[0].dividendsProgressiveAmount;
+
+    for (let i = 1; i < eurlArray.length; i++) {
+        const currentRemunerationPlusDividends = eurlArray[i].bestWagePlusDividends;
+
+        if (currentRemunerationPlusDividends > remunerationPlusDividendsBestAmount) {
+            remunerationPlusDividendsBestAmount = currentRemunerationPlusDividends;
+            maxRemunerationObject = i;
+            dividends = eurlArray[i].maxDividends;
+            wageEurl = eurlArray[i].wage;
+            bestDividendsPfu = eurlArray[i].dividendsNetPfuAmount;
+            bestDividendsProgressive = eurlArray[i].dividendsProgressiveAmount;
+
+            eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive, wageEurl);
+
+            engine.setSituation({
+                "entreprise . imposition": "'IS'",
+                "entreprise . associés": "'unique'",
+                "entreprise . catégorie juridique": "'SARL'",
+                "dirigeant . rémunération . net": wageEurl
+            });
+            
+            document.querySelectorAll('.is_eurlis_before_tax').forEach(element => {
+                element.textContent = (Math.round(wageEurl)).toLocaleString('fr-FR') + '€';
+            });
+            
+            const afterTaxEurl = engine.evaluate("dirigeant . rémunération . net . après impôt");
+            document.querySelectorAll('.is_eurlis_after_tax').forEach(element => {
+                element.textContent = (Math.round(afterTaxEurl.nodeValue)).toLocaleString('fr-FR') + '€';
+            });
+
+            fillText("dirigeant . indépendant . cotisations et contributions . cotisations", `eurl-contributions`);
+            fillText("dirigeant . indépendant . cotisations et contributions . maladie", `eurl-disease`);
+            fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", `eurl-base-retirement`);
+            fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", `eurl-additional-retirement`);
+            fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", `eurl-disease-allowance`);
+            fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", `eurl-disability`);
+            fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", `eurl-csg`);
+            fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `eurl-formation`);
+
+            const shareCapital = document.getElementById('share-capital');
+            let eurlContributionsOnDividends;
+            let eurlContributionsOnWage;
+            if (shareCapital >= (dividends * 0.1)) {
+                let eurlDividendsForContributions = dividends * 0.9;
+                if(document.getElementById('single-parent').value === 'oui') {
+                    eurlSituation(wageEurl, situation, numberOfChild, householdIncome, 'oui', 'IS');
+                    const eurlContributionsOnWageUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
+                    eurlContributionsOnWage = Math.round(eurlContributionsOnWageUrssaf.nodeValue);
+                    eurlSituation(eurlDividendsForContributions, situation, numberOfChild, householdIncome, 'oui', 'IS');
+                    const eurlContributionsOnDividendsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
+                    eurlContributionsOnDividends = Math.round(eurlContributionsOnDividendsUrssaf.nodeValue);
+                } else {
+                    eurlSituation(wageEurl, situation, numberOfChild, householdIncome, 'non', 'IS');
+                    const eurlContributionsOnWageUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
+                    eurlContributionsOnWage = Math.round(eurlContributionsOnWageUrssaf.nodeValue);
+                    eurlSituation(eurlDividendsForContributions, situation, numberOfChild, householdIncome, 'non', 'IS');
+                    const eurlContributionsOnDividendsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
+                    eurlContributionsOnDividends = Math.round(eurlContributionsOnDividendsUrssaf.nodeValue);
+                }
+            }
+
+            let eurlContributionsTotal = eurlContributionsOnWage + eurlContributionsOnDividends;
+            const eurlContributionsTotalText = document.getElementById('eurl-contributions-total');
+            eurlContributionsTotalText.textContent = eurlContributionsTotal.toLocaleString('fr-FR') + '€';
         }
     }
 }
