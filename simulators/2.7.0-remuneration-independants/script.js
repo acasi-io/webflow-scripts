@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -681,6 +681,19 @@ function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eur
 
     eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome, wage);
 
+    let eurlContributionsTotalAmount = parseInt(localStorage.getItem('contributionsEurlAmount'));
+    const eurlContributionsTotalText = document.getElementById('eurl-contributions-total');
+    const shareCapital = document.getElementById('share-capital');
+
+    if (shareCapital >= (maxDividends * 0.1)) {
+        let contributionsOnEurlDividends = (maxDividends * 0.9);
+        eiSituation(contributionsOnEurlDividends, situation, numberOfChild, householdIncome, singleParent, 'IS');
+        let calculContributionsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
+        let calculContributionsAmount = Math.round(calculContributionsUrssaf.nodeValue);
+        eurlContributionsTotalAmount = eurlContributionsTotalAmount + calculContributionsAmount;
+        eurlContributionsTotalText.textContent = eurlContributionsTotalAmount + '€';
+    }
+
     const dividendsNetPfuAmount = parseInt(localStorage.getItem('dividendsNetPfuAmount'));
     const dividendsProgressiveAmount = parseInt(localStorage.getItem('dividendsProgressiveAmount'));
     const bestWagePlusDividends = parseInt(localStorage.getItem('bestWagePlusDividends'));
@@ -688,11 +701,7 @@ function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eur
     eurlAddObjectInArray(percentage, wage, maxDividends, dividendsNetPfuAmount, dividendsProgressiveAmount, bestWagePlusDividends, eurlArray);
 }
 
-function eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome, wage) {
-    // let dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.128));
-
-    let dividendsNetPfuAmount;
-
+function calculDividendsPfu(maxDividends, dividendsNetPfuAmount) {
     const shareCapital = document.getElementById('share-capital');
 
     if (shareCapital < (maxDividends * 0.1)) {
@@ -700,6 +709,11 @@ function eurlCalculBestDividends(maxDividends, situation, numberOfChild, househo
     } else {
         dividendsNetPfuAmount = Math.round(maxDividends - (((maxDividends * 0.1) * 0.3) + (((maxDividends * 0.9) * 0.128))));
     }
+}
+
+function eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome, wage) {
+    let dividendsNetPfuAmount;
+    calculDividendsPfu(maxDividends, dividendsNetPfuAmount);
 
     if(document.getElementById('single-parent').value === 'oui') {
         situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'oui', 'SARL');
