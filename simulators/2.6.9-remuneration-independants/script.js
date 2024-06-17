@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.6.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -698,7 +698,7 @@ function eurlCalculBestDividends(maxDividends, situation, numberOfChild, househo
     if (shareCapital < (maxDividends * 0.1)) {
         dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.3));
     } else {
-        dividendsNetPfuAmount = Math.round(maxDividends - (((maxDividends * 0.1) * 0.3) + ((maxDividends - (maxDividends * 0.1) * 0.128))));
+        dividendsNetPfuAmount = Math.round(maxDividends - (((maxDividends * 0.1) * 0.3) + (((maxDividends * 0.9) * 0.128))));
     }
 
     if(document.getElementById('single-parent').value === 'oui') {
