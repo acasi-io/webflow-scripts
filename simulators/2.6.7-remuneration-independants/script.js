@@ -689,7 +689,17 @@ function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eur
 }
 
 function eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome, wage) {
-    let dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.128));
+    // let dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.128));
+
+    let dividendsNetPfuAmount;
+
+    const shareCapital = document.getElementById('share-capital');
+
+    if (shareCapital < (maxDividends * 0.1)) {
+        dividendsNetPfuAmount = Math.round(maxDividends - (maxDividends * 0.3));
+    } else {
+        dividendsNetPfuAmount = Math.round(maxDividends - (((maxDividends * 0.1) * 0.3) + ((maxDividends - (maxDividends * 0.1) * 0.128))));
+    }
 
     if(document.getElementById('single-parent').value === 'oui') {
         situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'oui', 'SARL');
