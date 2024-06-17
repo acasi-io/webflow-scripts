@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -633,7 +633,7 @@ function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdInc
     });
 }
 
-function calculEurl(turnoverMinusCost, turnover, cost, situation, householdIncome, singleParent) {
+function calculEurl(turnoverMinusCost, turnover, cost, situation, numberOfChild, householdIncome, singleParent) {
     let maxWage;
     if(document.getElementById('single-parent').value === 'oui') {
         eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IS');
