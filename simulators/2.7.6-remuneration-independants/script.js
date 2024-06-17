@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -49,7 +49,7 @@ calculBtn.addEventListener('click', () => {
         const turnoverMinusCost = turnover - cost;
 
         // eurlResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome);
-        calculEurl(turnoverMinusCost, turnover, cost, situation, householdIncome);
+        calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome);
         sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
         eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
         microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
@@ -633,7 +633,7 @@ function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdInc
     });
 }
 
-function calculEurl(turnoverMinusCost, turnover, cost, situation, numberOfChild, householdIncome, singleParent) {
+function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome) {
     let maxWage;
     if(document.getElementById('single-parent').value === 'oui') {
         eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IS');
