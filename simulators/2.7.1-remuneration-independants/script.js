@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -681,7 +681,7 @@ function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eur
 
     eurlCalculBestDividends(maxDividends, situation, numberOfChild, householdIncome, wage);
 
-    let eurlContributionsTotalAmount = parseInt(localStorage.getItem('contributionsEurlAmount'));
+    /*let eurlContributionsTotalAmount = parseInt(localStorage.getItem('contributionsEurlAmount'));
     const eurlContributionsTotalText = document.getElementById('eurl-contributions-total');
     const shareCapital = document.getElementById('share-capital');
 
@@ -692,7 +692,7 @@ function eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eur
         let calculContributionsAmount = Math.round(calculContributionsUrssaf.nodeValue);
         eurlContributionsTotalAmount = eurlContributionsTotalAmount + calculContributionsAmount;
         eurlContributionsTotalText.textContent = eurlContributionsTotalAmount + '€';
-    }
+    }*/
 
     const dividendsNetPfuAmount = parseInt(localStorage.getItem('dividendsNetPfuAmount'));
     const dividendsProgressiveAmount = parseInt(localStorage.getItem('dividendsProgressiveAmount'));
