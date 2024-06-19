@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -660,10 +660,10 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
         let wage = turnoverMinusCost * (percentage / 100);
         wageAfter = wage + (turnoverMinusCost * (5 / 100));
         eurlPushInArray(turnoverMinusCost, percentage, contributionsAmount, eurlArray, situation, numberOfChild, householdIncome);
-        localStorage.setItem('arrayEurl', eurlArray);
     }
 
     eurlCompareResults(eurlArray, situation, numberOfChild, householdIncome);
+    localStorage.setItem('arrayEurl', eurlArray);
 }
 
 function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
