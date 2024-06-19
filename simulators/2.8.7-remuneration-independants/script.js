@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -639,7 +639,7 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
         pourcentage: 0,
         cotisations: 0,
         remuneration: 0,
-        remunerationBeforeTax: 0,
+        remunerationAfterTax: 0,
         bestDividends: 0,
         grossDividends: 0,
         pfuDividends: 0,
@@ -654,8 +654,8 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
         remunerationAfterTaxText.forEach(element => {
             element.textContent = remuneration.toLocaleString('fr-FR') + '€'; 
         });*/
-        let remunerationBeforeTaxUrssaf = engine.evaluate("dirigeant . rémunération . totale");
-        let remunerationBeforeTaxAmount = Math.round(remunerationBeforeTaxUrssaf.nodeValue);
+        let remunerationAfterTaxUrssaf = engine.evaluate("dirigeant . rémunération . net . après impôt");
+        let remunerationAfterTaxAmount = Math.round(remunerationAfterTaxUrssaf.nodeValue);
         /*let remunerationBeforeTaxText = document.querySelectorAll('.is_eurlis_before_tax');
         remunerationBeforeTaxText.forEach(element => {
             element.textContent = remunerationBeforeTaxAmount.toLocaleString('fr-FR') + '€';
@@ -727,7 +727,7 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
                 pourcentage: pourcentage,
                 cotisations: cotisationsAmount,
                 remuneration: remuneration,
-                remunerationBeforeTax: remunerationBeforeTaxAmount,
+                remunerationAfterTax: remunerationAfterTaxAmount,
                 bestDividends: bestDividends,
                 grossDividends: eurlDividendsBrut,
                 pfuDividends: eurlDividendsPfu,
@@ -763,14 +763,14 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
     let eurlPfuDividendsText = document.getElementById('eurl-pfu-dividends');
     eurlPfuDividendsText.textContent = (resultat.pfuDividends).toLocaleString('fr-FR') + '€';
 
-    let remunerationAfterTaxText = document.querySelectorAll('.is_eurlis_after_tax');
-    remunerationAfterTaxText.forEach(element => {
+    let remunerationBeforeTaxText = document.querySelectorAll('.is_eurlis_before_tax');
+    remunerationBeforeTaxText.forEach(element => {
         element.textContent = (resultat.remuneration).toLocaleString('fr-FR') + '€'; 
     });
 
-    let remunerationBeforeTaxText = document.querySelectorAll('.is_eurlis_before_tax');
-    remunerationBeforeTaxText.forEach(element => {
-        element.textContent = (resultat.remunerationBeforeTax).toLocaleString('fr-FR') + '€';
+    let remunerationAfterTaxText = document.querySelectorAll('.is_eurlis_after_tax');
+    remunerationAfterTaxText.forEach(element => {
+        element.textContent = (resultat.remunerationAfterTax).toLocaleString('fr-FR') + '€';
     });
 
 
