@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -634,7 +634,7 @@ function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdInc
     });
 }
 
-function comparerRemunerations(maxWage, singleParent, numberOfChild, householdIncome, situation) {
+function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberOfChild, householdIncome, situation) {
     let meilleurResultat = {
         pourcentage: 0,
         cotisations: 0,
@@ -754,7 +754,7 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
         maxWage = Math.round(maxWageUrssaf.nodeValue);
     }
 
-    let resultat = comparerRemunerations(maxWage, singleParent, numberOfChild, householdIncome, situation);
+    let resultat = comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberOfChild, householdIncome, situation);
 
     let eurlContributionsTotalText = document.getElementById('eurl-contributions-total');
     eurlContributionsTotalText.textContent = (resultat.cotisations).toLocaleString('fr-FR') + '€';
