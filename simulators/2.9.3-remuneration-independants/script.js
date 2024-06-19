@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -756,7 +756,7 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
     return meilleurResultat;
 }
 
-function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
+/*function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
     // remuneration max
     let maxWage;
     if(document.getElementById('single-parent').value === 'oui') {
@@ -788,7 +788,7 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
     let remunerationAfterTaxText = document.querySelectorAll('.is_eurlis_after_tax');
     remunerationAfterTaxText.forEach(element => {
         element.textContent = (resultat.remunerationAfterTax).toLocaleString('fr-FR') + '€';
-    });
+    });*/
 
 
 
@@ -811,7 +811,7 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
 
     eurlCompareResults(eurlArray, situation, numberOfChild, householdIncome);
     localStorage.setItem('arrayEurl', eurlArray);*/
-}
+/*}*/
 
 function eurlResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
     let afterIs;
