@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -831,6 +831,15 @@ function eurlAddObjectInArray(percentage, wage, maxDividends, dividendsNetPfuAmo
     }
 }*/
 
+function eurlContributionsSituation(wageEurl) {
+    engine.setSituation({
+        "entreprise . imposition": "'IS'",
+        "entreprise . associés": "'unique'",
+        "entreprise . catégorie juridique": "'SARL'",
+        "dirigeant . rémunération . net": wageEurl
+    });
+}
+
 function eurlCompareResults(eurlArray, situation, numberOfChild, householdIncome) {
     let remunerationPlusDividendsBestAmount = eurlArray[0].bestWagePlusDividends;
     let maxRemunerationObject = 0;
@@ -852,21 +861,7 @@ function eurlCompareResults(eurlArray, situation, numberOfChild, householdIncome
 
             eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive, wageEurl);
 
-            engine.setSituation({
-                "entreprise . imposition": "'IS'",
-                "entreprise . associés": "'unique'",
-                "entreprise . catégorie juridique": "'SARL'",
-                "dirigeant . rémunération . net": wageEurl
-            });
-            
-            document.querySelectorAll('.is_eurlis_before_tax').forEach(element => {
-                element.textContent = (Math.round(wageEurl)).toLocaleString('fr-FR') + '€';
-            });
-            
-            const afterTaxEurl = engine.evaluate("dirigeant . rémunération . net . après impôt");
-            document.querySelectorAll('.is_eurlis_after_tax').forEach(element => {
-                element.textContent = (Math.round(afterTaxEurl.nodeValue)).toLocaleString('fr-FR') + '€';
-            });
+            eurlContributionsSituation(wageEurl);
 
             fillText("dirigeant . indépendant . cotisations et contributions . cotisations", `eurl-contributions`);
             fillText("dirigeant . indépendant . cotisations et contributions . maladie", `eurl-disease`);
@@ -876,6 +871,15 @@ function eurlCompareResults(eurlArray, situation, numberOfChild, householdIncome
             fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", `eurl-disability`);
             fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", `eurl-csg`);
             fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `eurl-formation`);
+            
+            document.querySelectorAll('.is_eurlis_before_tax').forEach(element => {
+                element.textContent = (Math.round(wageEurl)).toLocaleString('fr-FR') + '€';
+            });
+            
+            const afterTaxEurl = engine.evaluate("dirigeant . rémunération . net . après impôt");
+            document.querySelectorAll('.is_eurlis_after_tax').forEach(element => {
+                element.textContent = (Math.round(afterTaxEurl.nodeValue)).toLocaleString('fr-FR') + '€';
+            });
 
             const shareCapital = document.getElementById('share-capital');
             let eurlContributionsOnDividends;
