@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -863,17 +863,14 @@ function eurlCompareResults(eurlArray, situation, numberOfChild, householdIncome
 
             eurlContributionsSituation(wageEurl);
 
-            const cotisations = engine.evaluate("dirigeant . indépendant . cotisations et contributions . cotisations");
-            console.log(Math.round(cotisations.nodeValue));
-
-            fillText("dirigeant . indépendant . cotisations et contributions . cotisations", `eurl-contributions`);
-            fillText("dirigeant . indépendant . cotisations et contributions . maladie", `eurl-disease`);
-            fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", `eurl-base-retirement`);
-            fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", `eurl-additional-retirement`);
-            fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", `eurl-disease-allowance`);
-            fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", `eurl-disability`);
-            fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", `eurl-csg`);
-            fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `eurl-formation`);
+            fillText("dirigeant . indépendant . cotisations et contributions . cotisations", `#eurl-contributions`);
+            fillText("dirigeant . indépendant . cotisations et contributions . maladie", `#eurl-disease`);
+            fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", `#eurl-base-retirement`);
+            fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", `#eurl-additional-retirement`);
+            fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", `#eurl-disease-allowance`);
+            fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", `#eurl-disability`);
+            fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", `#eurl-csg`);
+            fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#eurl-formation`);
             
             document.querySelectorAll('.is_eurlis_before_tax').forEach(element => {
                 element.textContent = (Math.round(wageEurl)).toLocaleString('fr-FR') + '€';
