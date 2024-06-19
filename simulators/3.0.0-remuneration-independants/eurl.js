@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -142,6 +142,15 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
 
     localStorage.setItem('eurlArray', JSON.stringify(eurlArray));
     return bestResult;
+}
+
+function fillText(urssafData, htmlTag) {
+    const dataUrssaf = engine.evaluate(urssafData);
+    let data = Math.round(dataUrssaf.nodeValue);
+    if (isNaN(data)) {
+        data = 0;
+    }
+    document.querySelector(htmlTag).textContent = data.toLocaleString('fr-FR') + '€';
 }
 
 function fillCotisationsText() {
