@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -56,7 +56,7 @@ function calculDividendsPfu(turnoverMinusCost, remuneration, cotisationsAmount) 
         let cotisationsOnDividendsAmount = Math.round(cotisationsOnDividendsUrssaf.nodeValue);
         cotisationsAmount = cotisationsAmount + cotisationsOnDividendsAmount;
         let tenPercentShareCapital = shareCapital * 0.1;
-        eurlDividendsPfu = eurlDividendsBrut - ((tenPercentShareCapital * 0.3) + ((eurlDividendsBrut - tenPercentShareCapital) * 0.128));
+        eurlDividendsPfu = Math.round(eurlDividendsBrut - ((tenPercentShareCapital * 0.3) + ((eurlDividendsBrut - tenPercentShareCapital) * 0.128)));
     }
 
     return {
@@ -118,6 +118,7 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
     for (let pourcentage = 5; pourcentage <= 100; pourcentage += 5) {
         let remuneration = Math.round(maxWage * (pourcentage / 100));
         eurlContributionsSituation(remuneration);
+        fillCotisationsText();
 
         let remunerationAfterTaxUrssaf = engine.evaluate("dirigeant . rémunération . net . après impôt");
         let remunerationAfterTaxAmount = Math.round(remunerationAfterTaxUrssaf.nodeValue);
@@ -141,6 +142,16 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
 
     localStorage.setItem('eurlArray', JSON.stringify(eurlArray));
     return bestResult;
+}
+
+function fillCotisationsText() {
+    fillText("dirigeant . indépendant . cotisations et contributions . maladie", `#eurl-disease`);
+    fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", `#eurl-base-retirement`);
+    fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", `#eurl-additional-retirement`);
+    fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", `#eurl-disease-allowance`);
+    fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", `#eurl-disability`);
+    fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", `#eurl-csg`);
+    fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#eurl-formation`);
 }
 
 function calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
