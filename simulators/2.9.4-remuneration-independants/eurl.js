@@ -1,3 +1,8 @@
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+
+const engine = new Engine(rules);
+
 function eurlContributionsSituation(wageEurl) {
     engine.setSituation({
         "entreprise . imposition": "'IS'",
