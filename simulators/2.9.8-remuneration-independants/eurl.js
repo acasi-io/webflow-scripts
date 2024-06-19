@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -134,13 +134,13 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
         let resultArray = createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, total);
         eurlArray.push(resultArray);
 
-        if (total > meilleurResultat.total) {
+        if (total > bestResult.total) {
             bestResult = createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, total);
         }
     }
 
     localStorage.setItem('eurlArray', JSON.stringify(eurlArray));
-    return meilleurResultat;
+    return bestResult;
 }
 
 function calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
