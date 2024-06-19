@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { retirementText, fillText } from './script.js';
 
@@ -185,7 +185,8 @@ function fillTextEurl(resultat) {
     });
 }
 
-function eurlRetirement() {
+function eurlRetirement(remuneration) {
+    eurlContributionsSituation(remuneration);
     retirementText('eurl-gain-trimester', 'eurl-pension-scheme', 'eurl-retirement-points');
 }
 
@@ -195,7 +196,7 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
     let resultat = comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberOfChild, householdIncome, situation);
 
     fillTextEurl(resultat);
-    eurlRetirement();
+    eurlRetirement(resultat.remuneration);
 }
 
 export { calculEurl };
