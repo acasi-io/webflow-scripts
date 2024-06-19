@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -647,6 +647,8 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
         total: 0
     };
 
+    let eurlArray = [];
+
     for (let pourcentage = 5; pourcentage <= 100; pourcentage += 5) {
         let remuneration = maxWage * (pourcentage / 100);
         eurlContributionsSituation(remuneration);
@@ -718,9 +720,23 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
             bestDividends = eurlDividendsBaremeAmount;
         }
 
-        let total = remuneration + bestDividends;
+        let total = remunerationAfterTaxAmount + bestDividends;
 
         console.log(`Pourcentage: ${pourcentage}% - Rémunération: ${remuneration.toFixed(2)}, Dividendes: ${bestDividends.toFixed(2)}, Total: ${total.toFixed(2)}`);
+
+        let psuhInArray = {
+            pourcentage: pourcentage,
+            cotisations: cotisationsAmount,
+            remuneration: remuneration,
+            remunerationAfterTax: remunerationAfterTaxAmount,
+            bestDividends: bestDividends,
+            grossDividends: eurlDividendsBrut,
+            pfuDividends: eurlDividendsPfu,
+            baremeDividends: eurlDividendsBaremeAmount,
+            total: total
+        };
+
+        eurlArray.push(psuhInArray);
 
         if (total > meilleurResultat.total) {
             meilleurResultat = {
@@ -738,7 +754,7 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
     }
 
     console.log('Meilleur résultat:', meilleurResultat);
-    localStorage.setItem('eurlArray', JSON.stringify(meilleurResultat));
+    localStorage.setItem('eurlArray', JSON.stringify(eurlArray));
     return meilleurResultat;
 }
 
