@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.8.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -862,6 +862,9 @@ function eurlCompareResults(eurlArray, situation, numberOfChild, householdIncome
             eurlFillDividendsText(dividends, bestDividendsPfu, bestDividendsProgressive, wageEurl);
 
             eurlContributionsSituation(wageEurl);
+
+            const cotisations = engine.evaluate("dirigeant . indépendant . cotisations et contributions . cotisations");
+            console.log(Math.round(cotisations.nodeValue));
 
             fillText("dirigeant . indépendant . cotisations et contributions . cotisations", `eurl-contributions`);
             fillText("dirigeant . indépendant . cotisations et contributions . maladie", `eurl-disease`);
