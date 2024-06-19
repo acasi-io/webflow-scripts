@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.9.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -650,7 +650,7 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
     let eurlArray = [];
 
     for (let pourcentage = 5; pourcentage <= 100; pourcentage += 5) {
-        let remuneration = maxWage * (pourcentage / 100);
+        let remuneration = Math.round(maxWage * (pourcentage / 100));
         eurlContributionsSituation(remuneration);
         /*let remunerationAfterTaxText = document.querySelectorAll('.is_eurlis_after_tax');
         remunerationAfterTaxText.forEach(element => {
@@ -674,7 +674,7 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
             eurlDividendsBrut = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25 )));
         }
 
-        let shareCapital = document.getElementById('share-capital').value;
+        let shareCapital = parseInt(document.getElementById('share-capital').value);
         let eurlDividendsPfu;
         if (eurlDividendsBrut < (shareCapital * 0.1)) {
             eurlDividendsPfu = eurlDividendsBrut - (eurlDividendsBrut * 0.3);
@@ -710,8 +710,6 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
             "entreprise . catégorie juridique": "'SAS'"
         }).evaluate("bénéficiaire . dividendes . nets d'impôt");
         let eurlDividendsBaremeAmount = Math.round(eurlDividendsBaremeUrssaf.nodeValue);
-        let eurlProgressiveDividendsText = document.getElementById('eurl-progressive-dividends');
-        eurlProgressiveDividendsText.textContent = eurlDividendsBaremeAmount.toLocaleString('fr-FR') + '€';
 
         let bestDividends
         if (eurlDividendsPfu > eurlDividendsBaremeAmount) {
@@ -779,6 +777,8 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
     eurlGrossDividendsText.textContent = (resultat.grossDividends).toLocaleString('fr-FR') + '€';
     let eurlPfuDividendsText = document.getElementById('eurl-pfu-dividends');
     eurlPfuDividendsText.textContent = (resultat.pfuDividends).toLocaleString('fr-FR') + '€';
+    let eurlProgressiveDividendsText = document.getElementById('eurl-progressive-dividends');
+    eurlProgressiveDividendsText.textContent = (resultat.baremeDividends).toLocaleString('fr-FR') + '€';
 
     let remunerationBeforeTaxText = document.querySelectorAll('.is_eurlis_before_tax');
     remunerationBeforeTaxText.forEach(element => {
