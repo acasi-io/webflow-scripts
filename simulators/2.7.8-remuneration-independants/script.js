@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/2.7.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -640,7 +640,7 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
         const maxWageUrssaf = engine.evaluate("dirigeant . rémunération . net");
         maxWage = Math.round(maxWageUrssaf.nodeValue);
     } else {
-        eurlCalculContributionsAndRetirement(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
+        eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
         const maxWageUrssaf = engine.evaluate("dirigeant . rémunération . net");
         maxWage = Math.round(maxWageUrssaf.nodeValue);
     }
