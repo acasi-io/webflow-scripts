@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -98,36 +98,11 @@ function microSituation(turnoverMinusCost, situation, numberOfChild, householdIn
 }
 
 function microRemuneration() {
-    const netBeforeTaxUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . revenu net");
-    let netBeforeTax = netBeforeTaxUrssaf.nodeValue;
-    if (isNaN(netBeforeTax)) {
-        netBeforeTax = 0;
-    }
-    document.querySelectorAll(".is_micro_before_tax").forEach(element => {
-        element.textContent = netBeforeTax.toLocaleString('fr-FR') + '€';
-    });
-
-    const netAfterTaxUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . revenu net . après impôt");
-    let netAfterTax = netAfterTaxUrssaf.nodeValue;
-    if (isNaN(netAfterTax)) {
-        netAfterTax = 0;
-    }
-    document.querySelectorAll(".is_micro_after_tax").forEach(element => {
-        element.textContent = netAfterTax.toLocaleString('fr-FR') + '€';
-    });
-    // fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net", '.is_micro_before_tax');
-    // fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net . après impôt", '.is_micro_after_tax');
+    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net", '.is_micro_before_tax');
+    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net . après impôt", '.is_micro_after_tax');
 }
 
 function microContributions() {
-    /*let contributionsTotalUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions");
-    document.getElementById("micro-contributions-total").textContent = (Math.round((contributionsTotalUrssaf.nodeValue) * 12)).toLocaleString('fr-FR') + '€';
-    let contributionsUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations");
-    document.getElementById("micro-contributions").textContent = (Math.round(contributionsUrssaf.nodeValue)).toLocaleString('fr-FR') + '€';
-    let tfcUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions . TFC");
-    document.getElementById("micro-room-tax").textContent = (Math.round((tfcUrssaf.nodeValue) * 12)).toLocaleString('fr-FR') + '€';
-    let cfpUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions . CFP");
-    document.getElementById("micro-formation").textContent = (Math.round((cfpUrssaf.nodeValue) * 12)).toLocaleString('fr-FR') + '€';*/
     yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions", '#micro-contributions-total');
     fillText("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations", '#micro-contributions');
     yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . TFC", '#micro-room-tax');
