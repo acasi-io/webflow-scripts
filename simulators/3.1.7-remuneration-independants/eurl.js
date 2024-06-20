@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -141,6 +141,8 @@ function compareBestDividends(eurlDividendsPfu, eurlDividendsBaremeAmount) {
         bestDividends = eurlDividendsBaremeAmount;
     }
 
+    localStorage.setItem('bestEurlDividends', bestDividends);
+
     return bestDividends;
 }
 
@@ -172,15 +174,18 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
 
         let remunerationAfterTaxUrssaf = engine.evaluate("dirigeant . rémunération . net . après impôt");
         let remunerationAfterTaxAmount = Math.round(remunerationAfterTaxUrssaf.nodeValue);
+        localStorage.setItem('eurlAfterTax', remunerationAfterTaxAmount);
         let cotisationsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
         let cotisationsAmount = Math.round(cotisationsUrssaf.nodeValue);
 
         let eurlDividendsBrut = calculIs(turnoverMinusCost, remuneration, cotisationsAmount);
         let { cotisationsTotalAmount, eurlDividendsPfu } = calculDividendsPfu(turnoverMinusCost, remuneration, cotisationsAmount);
+        localStorage.setItem('eurlCotisationsTotal', cotisationsTotalAmount);
         let eurlDividendsBaremeAmount = calculDividendsBareme(singleParent, numberOfChild, householdIncome, situation, eurlDividendsBrut);
         let bestDividends = compareBestDividends(eurlDividendsPfu, eurlDividendsBaremeAmount);
 
         let total = remunerationAfterTaxAmount + bestDividends;
+        localStorage.setItem('eurlIsTotal', total);
 
         let resultArray = createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, total);
         eurlArray.push(resultArray);

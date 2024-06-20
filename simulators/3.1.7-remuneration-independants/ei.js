@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -66,27 +66,16 @@ function eiEurlContributions(form) {
     fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#${form}-formation`);
 }
 
-function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
-    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IS');
+function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
+    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS');
 
     eiEurlRemuneration('.is_ei_before_tax', '.is_eiis_after_tax');
-    // eiEurlRemuneration('.is_eurlis_after_tax');
     eiEurlContributions('ei');
     eiRetirement();
 
-    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'IR');
+    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IR');
     eiEurlRemuneration('.is_ei_before_tax', '.is_eiir_after_tax');
     eiEurlRemuneration('.is_eurlir_before_tax', '.is_eurlir_after_tax');
-
-    if(document.getElementById('single-parent').value === 'oui') {
-        eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IS');
-        eiEurlRemuneration('.is_ei_before_tax', '.is_eiis_after_tax');
-        // eiEurlRemuneration('.is_eurlis_after_tax');
-
-        eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'oui', 'IR');
-        eiEurlRemuneration('.is_ei_before_tax', '.is_eiir_after_tax');
-        eiEurlRemuneration('.is_eurlir_before_tax', '.is_eurlir_after_tax');
-    }
 }
 
 function eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, tax) {

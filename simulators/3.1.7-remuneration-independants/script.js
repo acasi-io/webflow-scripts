@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro } from './micro.js';
@@ -53,7 +53,7 @@ calculBtn.addEventListener('click', () => {
 
         calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
         sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
-        eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
+        eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
         microResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
 
         fillRecapContainer(turnover);
@@ -111,11 +111,98 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
     document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
 }
 
+function fillEurlRecap() {
+    const eurlWageRecap = document.getElementById('eurl-wage-recap');
+    const eurlDividendsRecap = document.getElementById('eurl-dividends-recap');
+    const eurlCotisationsRecap = document.getElementById('eurl-contributions-recap');
+
+    let eurlIrResult = parseInt((document.getElementById('is-eurlir-after-tax').textContent).replace(/\D/g, ''));
+    let eurlIsTotal = parseInt(localStorage.getItem('eurlIsTotal'));
+
+    if (eurlIsTotal > eurlIrResult) {
+        let bestDividends = parseInt(localStorage.getItem('bestEurlDividends'));
+        let eurlIsAfterTax = parseInt(localStorage.getItem('eurlAfterTax'));
+        let cotisationsTotal = parseInt(localStorage.setItem('eurlCotisationsTotal'));
+
+        eurlWageRecap.textContent = eurlIsAfterTax.toLocaleString('fr-FR') + '€';
+        eurlDividendsRecap.textContent = bestDividends.toLocaleString('fr-FR') + '€';
+        eurlCotisationsRecap.textContent = cotisationsTotal.toLocaleString('fr-FR') + '€';
+        localStorage.setItem('eurlTotal', eurlIsTotal);
+    } else {
+        eurlDividendsRecap.textContent = '0€';
+        eurlWageRecap.textContent = eurlIrResult.toLocaleString('fr-FR') + '€';
+        localStorage.setItem('eurlTotal', eurlIrResult);
+    }
+}
+
+function fillMicroRecap(turnover) {
+    document.querySelectorAll('.is_micro_after_tax').forEach(element => {
+        if (turnover > 50000) {
+            localStorage.setItem('micro', 0);
+        } else {
+            const microAmount = (element.textContent).replace(/\D/g, '');
+            localStorage.setItem('micro', microAmount);
+            document.getElementById('micro-wage-recap').textContent = microAmount.toLocaleString('fr-FR') + '€';
+            localStorage.setItem('microTotal', microAmount);
+        }
+    });
+
+    const microContributions = document.getElementById('micro-contributions-total').textContent;
+    document.getElementById('micro-contributions-recap').textContent = microContributions;
+}
+
+function fillEiRecap() {
+    let cotisationsTotal = parseInt((document.getElementById('ei-contributions-total').textContent).replace(/\D/g, ''));
+    let eiIsResult = parseInt((document.getElementById('is-eiis-after-tax').textContent).replace(/\D/g, ''));
+    let eiIrResult = parseInt((document.getElementById('is-eiir-after-tax').textContent).replace(/\D/g, ''));
+    let bestResult;
+    if (eiIsResult > eiIrResult) {
+        bestResult = eiIsResult;
+    } else {
+        bestResult = eiIrResult;
+    }
+
+    document.getElementById('ei-contributions-recap').textContent = cotisationsTotal.toLocaleString('fr-FR') + '€';
+    document.getElementById('ei-wage-recap').textContent = bestResult.toLocaleString('fr-FR') + '€';
+
+    localStorage.setItem('eiTotal', bestResult);
+}
+
+function fillSasuRecap() {
+    let sasuAfterTax = parseInt((document.getElementById('is_sasu_after_tax').textContent).replace(/\D/g, ''));
+    let sasuPfuDividends = parseInt((document.getElementById('sasu-pfu-dividends').textContent).replace(/\D/g, '')); 
+    let sasuBaremeDividends = parseInt((document.getElementById('sasu-progressive-dividends').textContent).replace(/\D/g, ''));
+    const sasuContributions = document.getElementById('sasu-contributions-total').textContent;
+    
+    let bestSasuDividends;
+    if (sasuPfuDividends > sasuBaremeDividends) {
+        bestSasuDividends = sasuPfuDividends;
+    } else {
+        bestSasuDividends = sasuBaremeDividends; 
+    }
+
+    document.getElementById('sasu-wage-recap').textContent = sasuAfterTax.toLocaleString('fr-FR') + '€';
+    document.getElementById('sasu-dividends-recap').textContent = bestSasuDividends.toLocaleString('fr-FR') + '€';
+    document.getElementById('sasu-contributions-recap').textContent = sasuContributions;
+
+    let sasuTotal = sasuAfterTax + bestSasuDividends;
+    localStorage.setItem('sasuTotal', sasuTotal);
+}
+
 function fillRecapContainer(turnover) {
-    fillWageRecap(turnover);
-    fillContributionsRecap();
-    fillSasuDividendsRecap();
-    fillTextForMicro(turnover);
+    // fillWageRecap(turnover);
+    // fillContributionsRecap();
+    // fillSasuDividendsRecap();
+    // fillTextForMicro(turnover);
+
+    fillEurlRecap();
+    fillMicroRecap(turnover);
+    fillEiRecap();
+    fillSasuRecap();
+
+    document.querySelectorAll('.is_ca_recap').forEach(element => {
+        element.textContent = turnover.toLocaleString('fr-FR') + '€';
+    });
 
     document.querySelectorAll('.simulator_heading_recap').forEach(element => {
         element.classList.remove('heading-best-choice');
@@ -125,8 +212,8 @@ function fillRecapContainer(turnover) {
         element.classList.remove('container-best-choice');
     });
 
-    const eurlBestResult = parseInt(localStorage.getItem('eurlBestResult'));
-    const eurlDividends = parseInt(localStorage.getItem('eurlDividends'));
+    /*const eurlBestResult = parseInt(localStorage.getItem('eurlBestResult'));
+    const eurlDividends = parseInt(localStorage.getItem('eurlBestDividends'));
     const eurlTotal = eurlBestResult + eurlDividends;
 
     const eiBestResult = parseInt(localStorage.getItem('eiBestResult'));
@@ -137,15 +224,23 @@ function fillRecapContainer(turnover) {
     const sasuTotal = sasu + sasuDividends;
 
     orderResults(sasuTotal, eurlTotal, eiBestResult, micro);
-    compareResultsAndAddStyle(sasuTotal, eurlTotal, eiBestResult, micro);
+    compareResultsAndAddStyle(sasuTotal, eurlTotal, eiBestResult, micro);*/
+
+    let eurlTotal = parseInt(localStorage.getItem('eurlTotal'));
+    let eiTotal = parseInt(localStorage.getItem('eiTotal'));
+    let sasuTotal = parseInt(localStorage.getItem('sasuTotal'));
+    let microTotal = parseInt(localStorage.getItem('microTotal'));
+
+    orderResults(sasuTotal, eurlTotal, eiTotal, microTotal);
+    compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal);
 }
 
-function orderResults(sasuTotal, eurlTotal, eiBestResult, micro) {
+function orderResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
     let results = [
         { id: "sasu-container-recap", remuneration: sasuTotal },
         { id: "eurl-container-recap", remuneration: eurlTotal },
-        { id: "ei-container-recap", remuneration: eiBestResult },
-        { id: "micro-container-recap", remuneration: micro }
+        { id: "ei-container-recap", remuneration: eiTotal },
+        { id: "micro-container-recap", remuneration: microTotal }
     ];
     
     results.sort(function(a, b) {
@@ -172,7 +267,7 @@ function orderResults(sasuTotal, eurlTotal, eiBestResult, micro) {
     }
 }
 
-function compareResultsAndAddStyle(sasuTotal, eurlTotal, eiBestResult, micro) {
+function compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal) {
     const eurlContainerRecap = document.getElementById('eurl-container-recap');
     const sasuContainerRecap = document.getElementById('sasu-container-recap');
     const eiContainerRecap = document.getElementById('ei-container-recap');
@@ -183,18 +278,18 @@ function compareResultsAndAddStyle(sasuTotal, eurlTotal, eiBestResult, micro) {
     const eiHeadingRecap = document.getElementById('ei-heading-recap');
     const microHeadingRecap = document.getElementById('micro-heading-recap');
 
-    compareResults(sasuTotal, eurlTotal, eiBestResult, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap);
+    compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap);
 }
 
-function compareResults(sasuTotal, eurlTotal, eiBestResult, micro, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap) {
+function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap) {
     let resultRecapTitle = document.getElementById('simulator-result-title');
-    if (eurlTotal > eiBestResult && eurlTotal > sasuTotal && eurlTotal > micro) {
+    if (eurlTotal > eiTotal && eurlTotal > sasuTotal && eurlTotal > microTotal) {
         addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
-    } else if (sasuTotal > eurlTotal && sasuTotal > eiBestResult && sasuTotal > micro) {
+    } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
         addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
-    } else if (micro > eurlTotal && micro > eiBestResult && micro > sasuTotal) {
+    } else if (microTotal > eurlTotal && microTotal > eiTotal && microTotal > sasuTotal) {
         addStyleToResults(microContainerRecap, microHeadingRecap, resultRecapTitle, 'micro');
-    } else if (eiBestResult > eurlTotal && eiBestResult > sasuTotal && eiBestResult > micro) {
+    } else if (eiTotal > eurlTotal && eiTotal > sasuTotal && eiTotal > microTotal) {
         addStyleToResults(eiContainerRecap, eiHeadingRecap, resultRecapTitle, 'ei');
     }
 }
@@ -205,7 +300,7 @@ function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socia
     resultRecapTitle.textContent = document.getElementById(`${socialForm}-heading-recap`).textContent;
 }
 
-function compareIsAndIr(isHtmlTag, irHtmlTag, resultStorage, hasDividends, socialForm) {
+/*function compareIsAndIr(isHtmlTag, irHtmlTag, resultStorage, hasDividends, socialForm) {
     let isResult = parseInt((document.getElementById(isHtmlTag).textContent).replace(/\D/g, ''));
     let irResult = parseInt((document.getElementById(irHtmlTag).textContent).replace(/\D/g, ''));
 
@@ -227,15 +322,15 @@ function compareIsAndIr(isHtmlTag, irHtmlTag, resultStorage, hasDividends, socia
             compareIsAndIrFillWageRecap(resultStorage, irResult, socialForm);
         }
     }
-}
+}*/
 
-function compareIsAndIrFillWageRecap(resultStorage, taxResult, socialForm) {
+/*function compareIsAndIrFillWageRecap(resultStorage, taxResult, socialForm) {
     localStorage.setItem(resultStorage, taxResult);
     document.getElementById(`simulator-${socialForm}-recap-title`).textContent = "à l'IS";
     document.getElementById(`${socialForm}-wage-recap`).textContent = taxResult.toLocaleString('fr-FR') + '€';
-}
+}*/
 
-function fillWageRecap(turnover) {
+/*function fillWageRecap(turnover) {
     compareIsAndIr('is-eurlis-after-tax', 'is-eurlir-after-tax', 'eurlBestResult', true, 'eurl');
     compareIsAndIr('is-eiis-after-tax', 'is-eiir-after-tax', 'eiBestResult', false, 'ei');
 
@@ -245,22 +340,12 @@ function fillWageRecap(turnover) {
         localStorage.setItem('sasu', sasuAmount);
     });
 
-    document.querySelectorAll('.is_micro_after_tax').forEach(element => {
-        if (turnover > 50000) {
-            localStorage.setItem('micro', 0);
-        } else {
-            const microAmount = (element.textContent).replace(/\D/g, '');
-            localStorage.setItem('micro', microAmount);
-            document.getElementById('micro-wage-recap').textContent = microAmount.toLocaleString('fr-FR') + '€';
-        }
-    });
-
     document.querySelectorAll('.is_ca_recap').forEach(element => {
         element.textContent = turnover.toLocaleString('fr-FR') + '€';
     });
-}
+}*/
 
-function fillContributionsRecap() {
+/*function fillContributionsRecap() {
     const sasuContributions = document.getElementById('sasu-contributions-total').textContent;
     document.getElementById('sasu-contributions-recap').textContent = sasuContributions;
 
@@ -272,7 +357,7 @@ function fillContributionsRecap() {
 
     const microContributions = document.getElementById('micro-contributions-total').textContent;
     document.getElementById('micro-contributions-recap').textContent = microContributions;
-}
+}*/
 
 
 export { retirementText, fillText, fillSameClassTexts, yearFillText };
