@@ -1,18 +1,15 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro } from './micro.js';
 import { eiResult } from './ei.js';
-import { sasuResult } from './sasu.js';
+import { sasuResult, fillSasuDividendsRecap } from './sasu.js';
 
 const engine = new Engine(rules);
 
 const calculBtn = document.getElementById('calcul-btn');
 const numberOfChildSelect = document.getElementById('child');
-// const sasuDividendsPfu = document.getElementById('sasu-pfu-dividends');
-// const sasuDividendsProgressive = document.getElementById('sasu-progressive-dividends');
-// const sasuBeforeTax = document.querySelectorAll('.is_sasu_before_tax');
 let sasuAfterTax = document.querySelectorAll('.is_sasu_after_tax');
 const simulatorResults = document.getElementById('simulator-results');
 
@@ -54,7 +51,6 @@ calculBtn.addEventListener('click', () => {
 
         const turnoverMinusCost = turnover - cost;
 
-        // eurlResult(turnoverMinusCost, situation, cost, numberOfChild, householdIncome);
         calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
         sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
         eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
