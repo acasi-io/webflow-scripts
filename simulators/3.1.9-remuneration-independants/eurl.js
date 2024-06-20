@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -141,8 +141,6 @@ function compareBestDividends(eurlDividendsPfu, eurlDividendsBaremeAmount) {
         bestDividends = eurlDividendsBaremeAmount;
     }
 
-    localStorage.setItem('bestEurlDividends', bestDividends);
-
     return bestDividends;
 }
 
@@ -174,7 +172,6 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
 
         let remunerationAfterTaxUrssaf = engine.evaluate("dirigeant . rémunération . net . après impôt");
         let remunerationAfterTaxAmount = Math.round(remunerationAfterTaxUrssaf.nodeValue);
-        localStorage.setItem('eurlAfterTax', remunerationAfterTaxAmount);
         let cotisationsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
         let cotisationsAmount = Math.round(cotisationsUrssaf.nodeValue);
 
@@ -185,7 +182,6 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
         let bestDividends = compareBestDividends(eurlDividendsPfu, eurlDividendsBaremeAmount);
 
         let total = remunerationAfterTaxAmount + bestDividends;
-        localStorage.setItem('eurlIsTotal', total);
 
         let resultArray = createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, total);
         eurlArray.push(resultArray);
@@ -247,6 +243,10 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
     let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
 
     let resultat = comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberOfChild, householdIncome, situation);
+
+    localStorage.setItem('eurlAfterTax', resultat.remunerationAfterTax);
+    localStorage.setItem('eurlIsTotal', resultat.total);
+    localStorage.setItem('bestEurlDividends', resultat.bestDividends);
 
     fillTextEurl(resultat);
     eurlRetirement(resultat.remuneration);
