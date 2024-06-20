@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { retirementText, fillText, fillSameClassTexts, yearFillText } from './script.js';
 
@@ -31,16 +31,11 @@ function microConditions(turnover) {
 }
 
 function microResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
-    microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'non');
+    microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', singleParent);
 
     microRemuneration();
     microContributions();
     microRetirement();
-
-    if(document.getElementById('single-parent').value === 'oui') {
-        microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', 'oui');
-        microRemuneration();
-    }
 }
 
 function microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, paymentInDischarge, singleParent) {
@@ -58,8 +53,25 @@ function microSituation(turnoverMinusCost, situation, numberOfChild, householdIn
 }
 
 function microRemuneration() {
-    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net", '.is_micro_before_tax');
-    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net . après impôt", '.is_micro_after_tax');
+    const netBeforeTaxUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . revenu net");
+    let netBeforeTax = netBeforeTaxUrssaf.nodeValue;
+    if (isNaN(netBeforeTax)) {
+        netBeforeTax = 0;
+    }
+    document.querySelectorAll(".is_micro_before_tax").forEach(element => {
+        element.textContent = netBeforeTax.toLocaleString('fr-FR') + '€';
+    });
+
+    const netAfterTaxUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . revenu net . après impôt");
+    let netAfterTax = netAfterTaxUrssaf.nodeValue;
+    if (isNaN(netAfterTax)) {
+        netAfterTax = 0;
+    }
+    document.querySelectorAll(".is_micro_after_tax").forEach(element => {
+        element.textContent = netAfterTax.toLocaleString('fr-FR') + '€';
+    });
+    // fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net", '.is_micro_before_tax');
+    // fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net . après impôt", '.is_micro_after_tax');
 }
 
 function microContributions() {

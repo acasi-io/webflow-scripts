@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult } from './micro.js';
@@ -56,7 +56,7 @@ calculBtn.addEventListener('click', () => {
         calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
         sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
         eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
-        microResult(turnoverMinusCost, situation, numberOfChild, householdIncome);
+        microResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
 
         fillRecapContainer(turnover);
 
