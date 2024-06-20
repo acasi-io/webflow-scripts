@@ -1,11 +1,14 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { retirementText, fillText, fillSameClassTexts } from './script.js';
 
-console.log(retirementText);
-console.log(fillText);
-console.log(fillSameClassTexts);
+
+window.addEventListener('DOMContentLoaded', () => {
+    console.log(retirementText);
+    console.log(fillText);
+    console.log(fillSameClassTexts);
+});
 
 const engine = new Engine(rules);
 
