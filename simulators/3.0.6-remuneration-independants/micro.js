@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { retirementText, fillText, fillSameClassTexts, yearFillText } from './script.js';
 
@@ -30,7 +30,7 @@ function microConditions(turnover) {
     }   
 }
 
-function microResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
+function microResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
     microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', singleParent);
 
     microRemuneration();
