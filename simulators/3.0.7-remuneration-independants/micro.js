@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { retirementText, fillText, fillSameClassTexts, yearFillText } from './script.js';
 
@@ -75,10 +75,18 @@ function microRemuneration() {
 }
 
 function microContributions() {
-    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions", '#micro-contributions-total');
-    fillText("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations", '#micro-contributions');
-    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . TFC", '#micro-room-tax');
-    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . CFP", '#micro-formation');
+    let contributionsTotalUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions");
+    document.getElementById("micro-contributions-total").textContent = (Math.round((contributionsTotalUrssaf.nodeValue) * 12)).toLocaleString('fr-FR') + '€';
+    let contributionsUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations");
+    document.getElementById("micro-contributions-total").textContent = (Math.round(contributionsUrssaf.nodeValue)).toLocaleString('fr-FR') + '€';
+    let tfcUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions . TFC");
+    document.getElementById("micro-room-tax").textContent = (Math.round((tfcUrssaf.nodeValue) * 12)).toLocaleString('fr-FR') + '€';
+    let cfpUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions . CFP");
+    document.getElementById("micro-formation").textContent = (Math.round((cfpUrssaf.nodeValue) * 12)).toLocaleString('fr-FR') + '€';
+    // yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions", '#micro-contributions-total');
+    // fillText("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations", '#micro-contributions');
+    // yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . TFC", '#micro-room-tax');
+    // yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . CFP", '#micro-formation');
 }
 
 function microRetirement() {
