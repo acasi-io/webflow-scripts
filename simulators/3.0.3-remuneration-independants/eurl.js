@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.0.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { retirementText, fillText } from './script.js';
 
@@ -61,6 +61,8 @@ function calculDividendsPfu(turnoverMinusCost, remuneration, cotisationsAmount) 
         eurlDividendsPfu = Math.round(eurlDividendsBrut - ((tenPercentShareCapital * 0.3) + ((eurlDividendsBrut - tenPercentShareCapital) * 0.128)));
     }
 
+    localStorage.setItem('eurlPfuDividends', eurlDividendsPfu);
+
     return {
         cotisationsTotalAmount: cotisationsAmount,
         eurlDividendsPfu: eurlDividendsPfu
@@ -81,6 +83,7 @@ function calculDividendsBareme(singleParent, numberOfChild, householdIncome, sit
     }).evaluate("bénéficiaire . dividendes . nets d'impôt");
 
     let eurlDividendsBaremeAmount = Math.round(eurlDividendsBaremeUrssaf.nodeValue);
+    localStorage.setItem('eurlProgressiveDividends', eurlDividendsBaremeAmount);
 
     return eurlDividendsBaremeAmount
 }
