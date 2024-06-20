@@ -1,16 +1,53 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.3-remuneration-independants/node_modules/modele-social/dist/index.js';
-
-import { retirementText, fillText, fillSameClassTexts } from './script.js';
-
-
-window.addEventListener('DOMContentLoaded', () => {
-    console.log(retirementText);
-    console.log(fillText);
-    console.log(fillSameClassTexts);
-});
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
+
+function fillText(urssafData, htmlTag) {
+    const dataUrssaf = engine.evaluate(urssafData);
+    let data = Math.round(dataUrssaf.nodeValue);
+    if (isNaN(data)) {
+        data = 0;
+    }
+    document.querySelector(htmlTag).textContent = data.toLocaleString('fr-FR') + '€';
+}
+
+function yearFillText(urssafData, htmlTag) {
+    const data = engine.evaluate(urssafData);
+    let dataYear = Math.round(data.nodeValue * 12);
+    if (isNaN(dataYear)) {
+        dataYear = 0;
+    }
+    document.querySelector(htmlTag).textContent = dataYear.toLocaleString('fr-FR') + '€';
+}
+
+function fillSameClassTexts(urssafData, htmlTag) {
+    const dataUrssaf = engine.evaluate(urssafData);
+    let data = dataUrssaf.nodeValue;
+    if (isNaN(data)) {
+        data = 0;
+    }
+    document.querySelectorAll(htmlTag).forEach(element => {
+        element.textContent = data.toLocaleString('fr-FR') + '€';
+    });
+}
+
+function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag) {
+    const gainTrimester = engine.evaluate("protection sociale . retraite . trimestres");
+    document.getElementById(gainTrimesterTag).textContent = gainTrimester.nodeValue;
+
+    const pensionScheme = engine.evaluate("protection sociale . retraite . base");
+    let pensionSchemeAmount = Math.round(pensionScheme.nodeValue * 12);
+    if (isNaN(pensionSchemeAmount)) {
+        pensionSchemeAmount = 0;
+    }
+    document.getElementById(pensionSchemeTag).textContent = `${pensionSchemeAmount.toLocaleString('fr-FR')}€`;
+
+    const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
+    document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
+}
+
+
 
 function eiEurlRemuneration(taxRemunerationBefore, taxRemunerationAfter) {
     fillSameClassTexts("dirigeant . rémunération . net", taxRemunerationBefore);

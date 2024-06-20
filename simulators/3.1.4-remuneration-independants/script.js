@@ -1,8 +1,8 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
-import { microConditions, microResult } from './micro.js';
+import { microConditions, microResult, fillTextForMicro } from './micro.js';
 import { eiResult } from './ei.js';
 
 const engine = new Engine(rules);
@@ -290,13 +290,6 @@ function fillContributionsRecap() {
 
     const microContributions = document.getElementById('micro-contributions-total').textContent;
     document.getElementById('micro-contributions-recap').textContent = microContributions;
-}
-
-function fillTextForMicro(turnover) {
-    const microTextRecap = document.getElementById('micro-text-recap');
-    if (turnover > 50000) {
-        microTextRecap.textContent = "Le plafond à ne pas dépasser est de 77 700€. Si vous dépassez ce plafond, sachez que vous pouvez conserver ce statut pendant deux années supplémentaires à la suite desquelles vous basculerez automatiquement en EI si votre chiffre d'affaires est toujours supérieur au plafond. Notre simulateur propose la micro-entreprise pour tout chiffre d'affaires ne dépassant pas 50 000€ pour anticiper la limite et offrir une marge de sécurité."
-    }
 }
 
 function situationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, singleParent, socialForm) {

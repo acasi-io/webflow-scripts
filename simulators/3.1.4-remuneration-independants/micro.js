@@ -1,9 +1,54 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.3-remuneration-independants/node_modules/modele-social/dist/index.js';
-
-import { retirementText, fillText, fillSameClassTexts, yearFillText } from './script.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
+
+
+function fillText(urssafData, htmlTag) {
+    const dataUrssaf = engine.evaluate(urssafData);
+    let data = Math.round(dataUrssaf.nodeValue);
+    if (isNaN(data)) {
+        data = 0;
+    }
+    document.querySelector(htmlTag).textContent = data.toLocaleString('fr-FR') + '€';
+}
+
+function yearFillText(urssafData, htmlTag) {
+    const data = engine.evaluate(urssafData);
+    let dataYear = Math.round(data.nodeValue * 12);
+    if (isNaN(dataYear)) {
+        dataYear = 0;
+    }
+    document.querySelector(htmlTag).textContent = dataYear.toLocaleString('fr-FR') + '€';
+}
+
+function fillSameClassTexts(urssafData, htmlTag) {
+    const dataUrssaf = engine.evaluate(urssafData);
+    let data = dataUrssaf.nodeValue;
+    if (isNaN(data)) {
+        data = 0;
+    }
+    document.querySelectorAll(htmlTag).forEach(element => {
+        element.textContent = data.toLocaleString('fr-FR') + '€';
+    });
+}
+
+function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag) {
+    const gainTrimester = engine.evaluate("protection sociale . retraite . trimestres");
+    document.getElementById(gainTrimesterTag).textContent = gainTrimester.nodeValue;
+
+    const pensionScheme = engine.evaluate("protection sociale . retraite . base");
+    let pensionSchemeAmount = Math.round(pensionScheme.nodeValue * 12);
+    if (isNaN(pensionSchemeAmount)) {
+        pensionSchemeAmount = 0;
+    }
+    document.getElementById(pensionSchemeTag).textContent = `${pensionSchemeAmount.toLocaleString('fr-FR')}€`;
+
+    const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
+    document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
+}
+
+
 
 function microConditions(turnover) {
     const microRecap = document.querySelectorAll('.is_micro_recap');
@@ -75,23 +120,30 @@ function microRemuneration() {
 }
 
 function microContributions() {
-    let contributionsTotalUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions");
+    /*let contributionsTotalUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions");
     document.getElementById("micro-contributions-total").textContent = (Math.round((contributionsTotalUrssaf.nodeValue) * 12)).toLocaleString('fr-FR') + '€';
     let contributionsUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations");
     document.getElementById("micro-contributions").textContent = (Math.round(contributionsUrssaf.nodeValue)).toLocaleString('fr-FR') + '€';
     let tfcUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions . TFC");
     document.getElementById("micro-room-tax").textContent = (Math.round((tfcUrssaf.nodeValue) * 12)).toLocaleString('fr-FR') + '€';
     let cfpUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . cotisations et contributions . CFP");
-    document.getElementById("micro-formation").textContent = (Math.round((cfpUrssaf.nodeValue) * 12)).toLocaleString('fr-FR') + '€';
-    // yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions", '#micro-contributions-total');
-    // fillText("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations", '#micro-contributions');
-    // yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . TFC", '#micro-room-tax');
-    // yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . CFP", '#micro-formation');
+    document.getElementById("micro-formation").textContent = (Math.round((cfpUrssaf.nodeValue) * 12)).toLocaleString('fr-FR') + '€';*/
+    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions", '#micro-contributions-total');
+    fillText("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations", '#micro-contributions');
+    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . TFC", '#micro-room-tax');
+    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . CFP", '#micro-formation');
 }
 
 function microRetirement() {
     retirementText('micro-gain-trimester', 'micro-pension-scheme', 'micro-retirement-points');
 }
 
+function fillTextForMicro(turnover) {
+    const microTextRecap = document.getElementById('micro-text-recap');
+    if (turnover > 50000) {
+        microTextRecap.textContent = "Le plafond à ne pas dépasser est de 77 700€. Si vous dépassez ce plafond, sachez que vous pouvez conserver ce statut pendant deux années supplémentaires à la suite desquelles vous basculerez automatiquement en EI si votre chiffre d'affaires est toujours supérieur au plafond. Notre simulateur propose la micro-entreprise pour tout chiffre d'affaires ne dépassant pas 50 000€ pour anticiper la limite et offrir une marge de sécurité."
+    }
+}
 
-export { microConditions, microResult };
+
+export { microConditions, microResult, fillTextForMicro };
