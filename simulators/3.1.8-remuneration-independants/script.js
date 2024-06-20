@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro } from './micro.js';
@@ -122,7 +122,7 @@ function fillEurlRecap() {
     if (eurlIsTotal > eurlIrResult) {
         let bestDividends = parseInt(localStorage.getItem('bestEurlDividends'));
         let eurlIsAfterTax = parseInt(localStorage.getItem('eurlAfterTax'));
-        let cotisationsTotal = parseInt(localStorage.setItem('eurlCotisationsTotal'));
+        let cotisationsTotal = parseInt(localStorage.getItem('eurlCotisationsTotal'));
 
         eurlWageRecap.textContent = eurlIsAfterTax.toLocaleString('fr-FR') + '€';
         eurlDividendsRecap.textContent = bestDividends.toLocaleString('fr-FR') + '€';
