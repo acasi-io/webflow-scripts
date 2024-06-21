@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -120,5 +120,23 @@ function fillTextForMicro(turnover) {
     }
 }
 
+function microcalculRetraite(cost, turnover) {
+    engine.setSituation({
+        "entreprise . charges": cost,
+        "entreprise . activités . revenus mixtes": "non",
+        "entreprise . catégorie juridique": "'EI'",
+        "entreprise . chiffre d'affaires": turnover,
+        "entreprise . catégorie juridique . EI . auto-entrepreneur": "oui"
+    });
 
-export { microConditions, microResult, fillTextForMicro };
+    let basicRetirementUrssaf = engine.evaluate("protection sociale . retraite . base");
+    let basicRetirementAmount = Math.round(basicRetirementUrssaf.nodeValue);
+    let complementaryRetirementUrssaf = engine.evaluate("protection sociale . retraite . complémentaire");
+    let complementaryRetirementAmount = Math.round(complementaryRetirementUrssaf.nodeValue);
+    let microTotalRetirement = basicRetirementAmount + complementaryRetirementAmount;
+
+    return microTotalRetirement;
+}
+
+
+export { microConditions, microResult, fillTextForMicro, microcalculRetraite };

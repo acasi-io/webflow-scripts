@@ -1,8 +1,8 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
-import { calculEurl, eurlcalculRetraite } from './eurl.js';
-import { microConditions, microResult, fillTextForMicro } from './micro.js';
+import { calculEurl } from './eurl.js';
+import { microConditions, microResult, fillTextForMicro, microcalculRetraite } from './micro.js';
 import { eiResult } from './ei.js';
 import { sasuResult, fillSasuDividendsRecap } from './sasu.js';
 
@@ -287,8 +287,8 @@ function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socia
 }
 
 function fillRetireRecap(cost, turnover) {
-    let eurlRetirement = eurlcalculRetraite(cost, turnover);
-    document.getElementById('micro-retire-recap').textContent = eurlRetirement.toLocaleString('fr-FR') + '€';
+    let microRetirement = microcalculRetraite(cost, turnover);
+    document.getElementById('micro-retire-recap').textContent = microRetirement.toLocaleString('fr-FR') + '€';
 }
 
 
