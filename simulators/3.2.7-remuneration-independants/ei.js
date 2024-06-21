@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -97,5 +97,25 @@ function eiRetirement() {
     retirementText('ei-gain-trimester', 'ei-pension-scheme', 'ei-retirement-points');
 }
 
+function eiCalculRetraite(turnover) {
+    engine.setSituation({
+        "salarié": "non",
+        "entreprise . date de création": "période . début d'année",
+        "dirigeant . exonérations . ACRE": "non",
+        "entreprise . imposition": "'IS'",
+        "entreprise . catégorie juridique": "'EI'",
+        "entreprise . chiffre d'affaires": turnover,
+        "entreprise . catégorie juridique . EI . auto-entrepreneur": "non"
+    });
 
-export { eiResult };
+    let basicRetirementUrssaf = engine.evaluate("protection sociale . retraite . base");
+    let basicRetirementAmount = Math.round(basicRetirementUrssaf.nodeValue * 12);
+    let complementaryRetirementUrssaf = engine.evaluate("protection sociale . retraite . complémentaire");
+    let complementaryRetirementAmount = Math.round(complementaryRetirementUrssaf.nodeValue);
+    let totalRetirement = basicRetirementAmount + complementaryRetirementAmount;
+
+    return totalRetirement;
+}
+
+
+export { eiResult, eiCalculRetraite };
