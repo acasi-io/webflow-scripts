@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microcalculRetraite } from './micro.js';
@@ -194,7 +194,7 @@ function fillRecapContainer(turnover, cost) {
     fillMicroRecap(turnover);
     fillEiRecap();
     fillSasuRecap();
-    fillRetireRecap(cost, turnover);
+    fillRetireRecap(turnover);
 
     document.querySelectorAll('.is_ca_recap').forEach(element => {
         element.textContent = turnover.toLocaleString('fr-FR') + '€';
@@ -209,13 +209,9 @@ function fillRecapContainer(turnover, cost) {
     });
 
     let eurlTotal = parseInt(localStorage.getItem('eurlTotal'));
-    console.log(eurlTotal);
     let eiTotal = parseInt(localStorage.getItem('eiTotal'));
-    console.log(eiTotal);
     let sasuTotal = parseInt(localStorage.getItem('sasuTotal'));
-    console.log(sasuTotal);
     let microTotal = parseInt(localStorage.getItem('microTotal'));
-    console.log(microTotal);
 
     orderResults(sasuTotal, eurlTotal, eiTotal, microTotal);
     compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal);
@@ -286,8 +282,8 @@ function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socia
     resultRecapTitle.textContent = document.getElementById(`${socialForm}-heading-recap`).textContent;
 }
 
-function fillRetireRecap(cost, turnover) {
-    let microRetirement = microcalculRetraite(cost, turnover);
+function fillRetireRecap(turnover) {
+    let microRetirement = microcalculRetraite(turnover);
     document.getElementById('micro-retire-recap').textContent = microRetirement.toLocaleString('fr-FR') + '€';
 }
 
