@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -135,8 +135,8 @@ function microcalculRetraite(cost, turnover) {
     let complementaryRetirementAmount = Math.round(complementaryRetirementUrssaf.nodeValue);
     let microTotalRetirement = basicRetirementAmount + complementaryRetirementAmount;
 
-    console.log(basicRetirementAmount);
-    console.log(complementaryRetirementAmount);
+    console.log(basicRetirementUrssaf);
+    console.log(complementaryRetirementUrssaf);
     console.log(microTotalRetirement);
 
     return microTotalRetirement;
