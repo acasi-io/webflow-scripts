@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro } from './micro.js';
@@ -190,11 +190,6 @@ function fillSasuRecap() {
 }
 
 function fillRecapContainer(turnover) {
-    // fillWageRecap(turnover);
-    // fillContributionsRecap();
-    // fillSasuDividendsRecap();
-    // fillTextForMicro(turnover);
-
     fillEurlRecap();
     fillMicroRecap(turnover);
     fillEiRecap();
@@ -211,20 +206,6 @@ function fillRecapContainer(turnover) {
     document.querySelectorAll('.simulator_recap_item').forEach(element => {
         element.classList.remove('container-best-choice');
     });
-
-    /*const eurlBestResult = parseInt(localStorage.getItem('eurlBestResult'));
-    const eurlDividends = parseInt(localStorage.getItem('eurlBestDividends'));
-    const eurlTotal = eurlBestResult + eurlDividends;
-
-    const eiBestResult = parseInt(localStorage.getItem('eiBestResult'));
-    const sasu = parseInt(localStorage.getItem('sasu'));
-    const micro = parseInt(localStorage.getItem('micro'));
-
-    const sasuDividends = parseInt(localStorage.getItem('sasuDividends'));
-    const sasuTotal = sasu + sasuDividends;
-
-    orderResults(sasuTotal, eurlTotal, eiBestResult, micro);
-    compareResultsAndAddStyle(sasuTotal, eurlTotal, eiBestResult, micro);*/
 
     let eurlTotal = parseInt(localStorage.getItem('eurlTotal'));
     console.log(eurlTotal);
@@ -303,65 +284,6 @@ function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socia
     headingRecap.classList.add('heading-best-choice');
     resultRecapTitle.textContent = document.getElementById(`${socialForm}-heading-recap`).textContent;
 }
-
-/*function compareIsAndIr(isHtmlTag, irHtmlTag, resultStorage, hasDividends, socialForm) {
-    let isResult = parseInt((document.getElementById(isHtmlTag).textContent).replace(/\D/g, ''));
-    let irResult = parseInt((document.getElementById(irHtmlTag).textContent).replace(/\D/g, ''));
-
-    if (hasDividends) {
-        const pfuDividends = parseInt(localStorage.getItem('eurlPfuDividends'));
-        const progressiveDividends = parseInt(localStorage.getItem('eurlProgressiveDividends'));
-        const pfuIsResult = pfuDividends + isResult;
-        const progressiveIsResult = progressiveDividends + isResult;
-
-        if (pfuIsResult > irResult || progressiveIsResult > irResult) {
-            compareIsAndIrFillWageRecap(resultStorage, isResult, socialForm);
-        } else {
-            compareIsAndIrFillWageRecap(resultStorage, irResult, socialForm);
-        }
-    } else {
-        if (isResult > irResult) {
-            compareIsAndIrFillWageRecap(resultStorage, isResult, socialForm);
-        } else {
-            compareIsAndIrFillWageRecap(resultStorage, irResult, socialForm);
-        }
-    }
-}*/
-
-/*function compareIsAndIrFillWageRecap(resultStorage, taxResult, socialForm) {
-    localStorage.setItem(resultStorage, taxResult);
-    document.getElementById(`simulator-${socialForm}-recap-title`).textContent = "à l'IS";
-    document.getElementById(`${socialForm}-wage-recap`).textContent = taxResult.toLocaleString('fr-FR') + '€';
-}*/
-
-/*function fillWageRecap(turnover) {
-    compareIsAndIr('is-eurlis-after-tax', 'is-eurlir-after-tax', 'eurlBestResult', true, 'eurl');
-    compareIsAndIr('is-eiis-after-tax', 'is-eiir-after-tax', 'eiBestResult', false, 'ei');
-
-    sasuAfterTax.forEach(element => {
-        const sasuAmount = (element.textContent).replace(/\D/g, '');
-        document.getElementById('sasu-wage-recap').textContent = sasuAmount.toLocaleString('fr-FR') + '€';
-        localStorage.setItem('sasu', sasuAmount);
-    });
-
-    document.querySelectorAll('.is_ca_recap').forEach(element => {
-        element.textContent = turnover.toLocaleString('fr-FR') + '€';
-    });
-}*/
-
-/*function fillContributionsRecap() {
-    const sasuContributions = document.getElementById('sasu-contributions-total').textContent;
-    document.getElementById('sasu-contributions-recap').textContent = sasuContributions;
-
-    const eurlContributions = document.getElementById('eurl-contributions-total').textContent;
-    document.getElementById('eurl-contributions-recap').textContent = eurlContributions;
-
-    const eiContributions = document.getElementById('ei-contributions-total').textContent;
-    document.getElementById('ei-contributions-recap').textContent = eiContributions;
-
-    const microContributions = document.getElementById('micro-contributions-total').textContent;
-    document.getElementById('micro-contributions-recap').textContent = microContributions;
-}*/
 
 
 export { retirementText, fillText, fillSameClassTexts, yearFillText };
