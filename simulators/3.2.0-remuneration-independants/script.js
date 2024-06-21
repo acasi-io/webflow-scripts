@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.1.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro } from './micro.js';
@@ -227,9 +227,13 @@ function fillRecapContainer(turnover) {
     compareResultsAndAddStyle(sasuTotal, eurlTotal, eiBestResult, micro);*/
 
     let eurlTotal = parseInt(localStorage.getItem('eurlTotal'));
+    console.log(eurlTotal);
     let eiTotal = parseInt(localStorage.getItem('eiTotal'));
+    console.log(eiTotal);
     let sasuTotal = parseInt(localStorage.getItem('sasuTotal'));
+    console.log(sasuTotal);
     let microTotal = parseInt(localStorage.getItem('microTotal'));
+    console.log(microTotal);
 
     orderResults(sasuTotal, eurlTotal, eiTotal, microTotal);
     compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal);
