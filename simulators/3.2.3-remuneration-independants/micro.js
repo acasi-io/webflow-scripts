@@ -135,6 +135,10 @@ function microcalculRetraite(cost, turnover) {
     let complementaryRetirementAmount = Math.round(complementaryRetirementUrssaf.nodeValue);
     let microTotalRetirement = basicRetirementAmount + complementaryRetirementAmount;
 
+    console.log(basicRetirementAmount);
+    console.log(complementaryRetirementAmount);
+    console.log(microTotalRetirement);
+
     return microTotalRetirement;
 }
 
