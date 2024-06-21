@@ -1,7 +1,7 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
-import { calculEurl } from './eurl.js';
+import { calculEurl, eurlcalculRetraite } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro } from './micro.js';
 import { eiResult } from './ei.js';
 import { sasuResult, fillSasuDividendsRecap } from './sasu.js';
@@ -56,7 +56,7 @@ calculBtn.addEventListener('click', () => {
         eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
         microResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
 
-        fillRecapContainer(turnover);
+        fillRecapContainer(turnover, cost);
 
         simulatorResults.classList.remove('hidden');
         simulatorResults.scrollIntoView({
@@ -189,11 +189,12 @@ function fillSasuRecap() {
     localStorage.setItem('sasuTotal', sasuTotal);
 }
 
-function fillRecapContainer(turnover) {
+function fillRecapContainer(turnover, cost) {
     fillEurlRecap();
     fillMicroRecap(turnover);
     fillEiRecap();
     fillSasuRecap();
+    fillRetireRecap(cost, turnover);
 
     document.querySelectorAll('.is_ca_recap').forEach(element => {
         element.textContent = turnover.toLocaleString('fr-FR') + '€';
@@ -283,6 +284,11 @@ function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socia
     containerRecap.classList.add('container-best-choice');
     headingRecap.classList.add('heading-best-choice');
     resultRecapTitle.textContent = document.getElementById(`${socialForm}-heading-recap`).textContent;
+}
+
+function fillRetireRecap(cost, turnover) {
+    let eurlRetirement = eurlcalculRetraite(cost, turnover);
+    document.getElementById('micro-retire-recap').textContent = eurlRetirement.toLocaleString('fr-FR') + '€';
 }
 
 
