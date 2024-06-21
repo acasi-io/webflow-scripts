@@ -1,10 +1,10 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
 import { eiResult, eiCalculRetraite } from './ei.js';
-import { sasuResult, fillSasuDividendsRecap } from './sasu.js';
+import { sasuResult, fillSasuDividendsRecap, sasuCalculRetraite } from './sasu.js';
 
 const engine = new Engine(rules);
 
@@ -194,7 +194,7 @@ function fillRecapContainer(turnover, cost) {
     fillMicroRecap(turnover);
     fillEiRecap();
     fillSasuRecap();
-    fillRetireRecap(turnover);
+    fillRetireRecap(turnover, cost);
 
     document.querySelectorAll('.is_ca_recap').forEach(element => {
         element.textContent = turnover.toLocaleString('fr-FR') + '€';
@@ -282,12 +282,15 @@ function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socia
     resultRecapTitle.textContent = document.getElementById(`${socialForm}-heading-recap`).textContent;
 }
 
-function fillRetireRecap(turnover) {
+function fillRetireRecap(turnover, cost) {
     let microRetirement = microCalculRetraite(turnover);
     document.getElementById('micro-retire-recap').textContent = microRetirement.toLocaleString('fr-FR') + '€';
 
     let eiRetirement = eiCalculRetraite(turnover);
     document.getElementById('ei-retire-recap').textContent = eiRetirement.toLocaleString('fr-FR') + '€';
+
+    let sasuRetirement = sasuCalculRetraite(cost, turnover);
+    document.getElementById('sasu-retire-recap').textContent = sasuRetirement.toLocaleString('fr-FR') + '€';
 }
 
 

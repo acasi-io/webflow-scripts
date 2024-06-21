@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.2.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -330,5 +330,27 @@ function sasuRetirement() {
     document.getElementById('sasu-retirement-points').textContent = pointsAcquired;
 }
 
+function sasuCalculRetraite(cost, turnover) {
+    engine.setSituation({
+        "entreprise . charges": cost,
+        "entreprise . date de création": "période . début d'année",
+        "dirigeant . exonérations . ACRE": "non",
+        "salarié . cotisations . ATMP . taux fonctions support": "oui",
+        "entreprise . chiffre d'affaires": turnover,
+        "entreprise . catégorie juridique": "'SAS'"
+      })
 
-export { fillSasuDividendsRecap, sasuResult };
+    let basicRetirementUrssaf = engine.evaluate("protection sociale . retraite . base");
+    let basicRetirementAmount = Math.round(basicRetirementUrssaf.nodeValue * 12);
+    let complementaryRetirementUrssaf = engine.evaluate("protection sociale . retraite . complémentaire");
+    let complementaryRetirementAmount = Math.round(complementaryRetirementUrssaf.nodeValue);
+    let totalRetirement = basicRetirementAmount + complementaryRetirementAmount;
+
+    console.log(basicRetirementUrssaf);
+    console.log(complementaryRetirementUrssaf);
+
+    return totalRetirement;
+}
+
+
+export { fillSasuDividendsRecap, sasuResult, sasuCalculRetraite };
