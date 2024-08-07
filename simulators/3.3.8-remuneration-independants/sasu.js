@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -157,19 +157,7 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuContributions();
     sasuRetirement();
 
-    let PASS = 46368;
-    let halfPass = 0.5 * PASS;
-    let fifthPass = 0.2 * PASS;
-
-    sasuAfterTax = parseInt(localStorage.getItem('sasuAfterTax'));
-
-    const pumaTaxAmount = (0.065 * (maxDividends - halfPass) * (1 - (sasuAfterTax / fifthPass)));
-
-    if (pumaTaxAmount <= 0) {
-        document.getElementById('sasu-puma').textContent = '0€';
-    } else {
-        document.getElementById('sasu-puma').textContent = pumaTaxAmount.toLocaleString('fr-FR') + '€';
-    }
+    let pumaTaxAmount = calculPumaTax(maxDividends);
 
     let grossDividends = maxDividends - pumaTaxAmount;
 
@@ -178,17 +166,19 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuGrossDividends.textContent = maxDividends.toLocaleString('fr-FR') + '€';
 }
 
-function calculPumaTax(maxDividends, pumaTaxAmount) {
+function calculPumaTax(maxDividends) {
     let PASS = 46368;
     let halfPass = 0.5 * PASS;
     let fifthPass = 0.2 * PASS;
 
     sasuAfterTax = parseInt(localStorage.getItem('sasuAfterTax'));
 
-    if (sasuAfterTax > fifthPass) {
-        pumaTaxAmount = 0;
+    let pumaTaxAmount = (0.065 * (maxDividends - halfPass) * (1 - (sasuAfterTax / fifthPass)));
+
+    if (pumaTaxAmount <= 0) {
+        document.getElementById('sasu-puma').textContent = '0€';
     } else {
-        pumaTaxAmount = (0.065 * (maxDividends - halfPass) * (1 - (sasuAfterTax / fifthPass)));
+        document.getElementById('sasu-puma').textContent = pumaTaxAmount.toLocaleString('fr-FR') + '€';
     }
 
     return pumaTaxAmount;
