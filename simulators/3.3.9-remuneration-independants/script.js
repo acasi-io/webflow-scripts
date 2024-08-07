@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -12,6 +12,9 @@ const calculBtn = document.getElementById('calcul-btn');
 const numberOfChildSelect = document.getElementById('child');
 let sasuAfterTax = document.querySelectorAll('.is_sasu_after_tax');
 const simulatorResults = document.getElementById('simulator-results');
+let PASS = 46368;
+export let halfPass = 0.5 * PASS;
+export let fifthPass = 0.2 * PASS;
 
 
 numberOfChildSelect.addEventListener('change', (input) => {
