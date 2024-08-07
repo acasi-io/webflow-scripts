@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -159,7 +159,9 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
 
     calculPumaTax(maxDividends);
 
-    let pumaTaxAmount = parseInt(localStorage.getItem('pumaTaxAmount'));
+    let pumaTaxAmount = calculPumaTax(maxDividends);
+    document.getElementById('sasu-puma').textContent = pumaTaxAmount.toLocaleString('fr-FR') + '€';
+
     let grossDividends = maxDividends - pumaTaxAmount;
 
     sasuCalculDividendsNets(grossDividends, situation, numberOfChild, householdIncome);
@@ -172,19 +174,17 @@ function calculPumaTax(maxDividends) {
     let halfPass = 0.5 * PASS;
     let fifthPass = 0.2 * PASS;
 
+    let pumaTaxAmount = 0;
+
     sasuAfterTax = parseInt(localStorage.getItem('sasuAfterTax'));
 
-    let pumaTaxAmount;
-
     if (sasuAfterTax > fifthPass) {
-        pumaTaxAmount = 0
+        pumaTaxAmount = 0;
     } else {
         pumaTaxAmount = (0.065 * (maxDividends - halfPass) * (1 - (sasuAfterTax / fifthPass)));
     }
 
-    document.getElementById('sasu-puma').textContent = pumaTaxAmount.toLocaleString('fr-FR') + '€';
-
-    localStorage.setItem('pumaTaxAmount', pumaTaxAmount);
+    return pumaTaxAmount;
 }
 
 function findSasuBestRemunerationAndDividends(turnoverMinusCost, situation, numberOfChild, householdIncome, arraySasu) {
