@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -157,9 +157,31 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuContributions();
     sasuRetirement();
 
+    calculPumaTax(maxDividends);
+
+    maxDividends = parseInt(localStorage.getItem('grossDividends'));
+
     sasuCalculDividendsNets(maxDividends, situation, numberOfChild, householdIncome);
     const sasuGrossDividends = document.getElementById('sasu-gross-dividends');
     sasuGrossDividends.textContent = maxDividends.toLocaleString('fr-FR') + '€';
+}
+
+function calculPumaTax(maxDividends) {
+    let PASS = 46368;
+    let halfPass = 0.5 * PASS;
+    let fifthPass = 0.2 * PASS;
+
+    sasuAfterTax = parseInt(localStorage.getItem('sasuAfterTax'));
+
+    let pumaTaxAmount = 0.065 * (maxDividends - halfPass) * (1 - (sasuAfterTax / fifthPass));
+
+    if (pumaTaxAmount <= 0) {
+        document.getElementById('sasu-puma').textContent = '0€';
+        localStorage.setItem('grossDividends', maxDividends - 0);
+    } else {
+        document.getElementById('sasu-puma').textContent = pumaTaxAmount.toLocaleString('fr-FR') + '€'
+        localStorage.setItem('grossDividends', maxDividends - pumaTaxAmount);
+    }
 }
 
 function findSasuBestRemunerationAndDividends(turnoverMinusCost, situation, numberOfChild, householdIncome, arraySasu) {
@@ -278,6 +300,8 @@ function sasuRemuneration() {
     sasuAfterTax.forEach(element => {
         element.textContent = `${afterTaxAmount}€`;
     });
+
+    localStorage.setItem('sasuAfterTax', sasuAfterTax);
 
     if (netAmount === 0 && afterTaxAmount === 0) {
         document.querySelectorAll('.is_sasu_remuneration').forEach(element => {
