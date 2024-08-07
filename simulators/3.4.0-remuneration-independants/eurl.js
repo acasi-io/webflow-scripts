@@ -1,5 +1,7 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.3.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+
+import { halfPass, fifthPass } from './script.js';
 
 const engine = new Engine(rules);
 
@@ -218,6 +220,7 @@ function fillTextEurl(resultat) {
     eurlContributionsTotalText.textContent = (resultat.cotisations).toLocaleString('fr-FR') + '€';
     let eurlGrossDividendsText = document.getElementById('eurl-gross-dividends');
     eurlGrossDividendsText.textContent = (resultat.grossDividends).toLocaleString('fr-FR') + '€';
+    localStorage.setItem('eurlGrossDividends', resultat.grossDividends);
     let eurlPfuDividendsText = document.getElementById('eurl-pfu-dividends');
     eurlPfuDividendsText.textContent = (resultat.pfuDividends).toLocaleString('fr-FR') + '€';
     let eurlProgressiveDividendsText = document.getElementById('eurl-progressive-dividends');
@@ -232,6 +235,7 @@ function fillTextEurl(resultat) {
     remunerationAfterTaxText.forEach(element => {
         element.textContent = (resultat.remunerationAfterTax).toLocaleString('fr-FR') + '€';
     });
+    localStorage.setItem('eurlAfterTax', resultat.remunerationAfterTax);
 }
 
 function eurlRetirement(remuneration) {
@@ -239,23 +243,18 @@ function eurlRetirement(remuneration) {
     retirementText('eurl-gain-trimester', 'eurl-pension-scheme', 'eurl-retirement-points');
 }
 
-/*function calculPumaTax(maxDividends) {
-    // let PASS = 46368;
-    // let halfPass = 0.5 * PASS;
-    // let fifthPass = 0.2 * PASS;
+function calculPumaTax() {
+    let eurlAfterTax = parseInt(localStorage.getItem('eurlAfterTax'));
+    let grossDividends = parseInt(localStorage.getItem('eurlGrossDividends'));
 
-    sasuAfterTax = parseInt(localStorage.getItem('sasuAfterTax'));
-
-    let pumaTaxAmount = (0.065 * (maxDividends - halfPass) * (1 - (sasuAfterTax / fifthPass)));
+    let pumaTaxAmount = (0.065 * (grossDividends - halfPass) * (1 - (eurlAfterTax / fifthPass)));
 
     if (pumaTaxAmount <= 0) {
-        document.getElementById('sasu-puma').textContent = '0€';
+        document.getElementById('eurl-puma').textContent = '0€';
     } else {
-        document.getElementById('sasu-puma').textContent = pumaTaxAmount.toLocaleString('fr-FR') + '€';
+        document.getElementById('eurl-puma').textContent = pumaTaxAmount.toLocaleString('fr-FR') + '€';
     }
-
-    return pumaTaxAmount;
-}*/
+}
 
 function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
     let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
@@ -268,6 +267,7 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
 
     fillTextEurl(resultat);
     eurlRetirement(resultat.remuneration);
+    calculPumaTax();
 }
 
 
