@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -169,9 +169,9 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
 }
 
 function calculPumaTax(maxDividends) {
-    sasuAfterTax = parseInt(localStorage.getItem('sasuAfterTax'));
+    const sasuAfterTaxForDividends = parseInt(localStorage.getItem('sasuAfterTax'));
 
-    let pumaTaxAmount = (0.065 * (maxDividends - halfPass) * (1 - (sasuAfterTax / fifthPass)));
+    let pumaTaxAmount = (0.065 * (maxDividends - halfPass) * (1 - (sasuAfterTaxForDividends / fifthPass)));
 
     if (pumaTaxAmount <= 0) {
         document.getElementById('sasu-puma').textContent = '0€';
