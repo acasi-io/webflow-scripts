@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -53,9 +53,11 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
 function microConditions(turnover) {
     const microRecap = document.querySelectorAll('.is_micro_recap');
     const microContributions = document.querySelector('.is_micro_contributions');
-    const microRecapContainer = document.getElementById('micro-container-recap');
+    const microRecapContainer = document.querySelectorAll('.simulator_recap_item.is-micro');
 
-    microRecapContainer.style.display = 'none';
+    microRecapContainer.forEach((item) => {
+        item.style.display = 'none';
+    });
 
     document.querySelectorAll('.simulator_micro_hidden').forEach(element => {
         element.style.display = 'none';
@@ -67,7 +69,9 @@ function microConditions(turnover) {
     });
 
     if (turnover <= 50000) {
-        microRecapContainer.style.display = 'block';
+        microRecapContainer.forEach((item) => {
+            item.style.display = 'block';
+        });
 
         document.querySelectorAll('.simulator_micro_hidden').forEach(element => {
             element.style.display = 'block';

@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -231,11 +231,11 @@ function fillRecapContainer(turnoverMinusCost, turnover) {
     let sasuTotal = parseInt(localStorage.getItem('sasuTotal'));
     let microTotal = parseInt(localStorage.getItem('microTotal'));
 
-    orderResults(sasuTotal, eurlTotal, eiTotal, microTotal);
+    // orderResults(sasuTotal, eurlTotal, eiTotal, microTotal);
     compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal);
 }
 
-function orderResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
+/*function orderResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
     let results = [
         { id: "sasu-container-recap", remuneration: sasuTotal },
         { id: "eurl-container-recap", remuneration: eurlTotal },
@@ -265,13 +265,13 @@ function orderResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
             }
         }
     }
-}
+}*/
 
 function compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal) {
-    const eurlContainerRecap = document.getElementById('eurl-container-recap');
-    const sasuContainerRecap = document.getElementById('sasu-container-recap');
-    const eiContainerRecap = document.getElementById('ei-container-recap');
-    const microContainerRecap = document.getElementById('micro-container-recap');
+    const eurlContainerRecap = document.querySelectorAll('.simulator_recap_item.is-eurl');
+    const sasuContainerRecap = document.querySelectorAll('.simulator_recap_item.is-sasu');
+    const eiContainerRecap = document.querySelectorAll('.simulator_recap_item.is-ei');
+    const microContainerRecap = document.querySelectorAll('.simulator_recap_item.is-micro');
 
     const eurlHeadingRecap = document.getElementById('eurl-heading-recap');
     const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
@@ -281,6 +281,14 @@ function compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal) {
     compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap);
 }
 
+function showBestChoiceText(socialForm) {
+    document.querySelectorAll('.simulator_recap_explication_result.is-bestchoice-text').forEach((text) => {
+        text.style.display = 'none';
+    });
+
+    document.getElementById(`${socialForm}-bestchoice-text`).style.display = 'block';
+}
+
 function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap) {
     let resultRecapTitle = document.getElementById('simulator-result-title');
 
@@ -288,12 +296,16 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainer
 
     if (eurlTotal > eiTotal && eurlTotal > sasuTotal && eurlTotal > microTotal) {
         addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
+        showBestChoiceText('eurl');
     } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
         addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
+        showBestChoiceText('sasu');
     } else if (microTotal > eurlTotal && microTotal > eiTotal && microTotal > sasuTotal) {
         addStyleToResults(microContainerRecap, microHeadingRecap, resultRecapTitle, 'micro');
+        showBestChoiceText('micro');
     } else if (eiTotal > eurlTotal && eiTotal > sasuTotal && eiTotal > microTotal) {
         addStyleToResults(eiContainerRecap, eiHeadingRecap, resultRecapTitle, 'ei');
+        showBestChoiceText('micro');
     }
 }
 
@@ -308,7 +320,9 @@ function removeStyleToResults() {
 }
 
 function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socialForm) {
-    containerRecap.classList.add('is-bestchoice');
+    containerRecap.forEach((item) => {
+        item.classList.add('is-bestchoice');
+    });
     headingRecap.classList.add('is-bestchoice');
     resultRecapTitle.textContent = document.getElementById(`${socialForm}-heading-recap`).textContent;
 }
@@ -351,6 +365,8 @@ function checkUnemployment(turnoverMinusCost, turnover) {
         removeStyleToResults();
 
         addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
+
+        showBestChoiceText('sasu');
     } else {
         fillRecapContainer(turnoverMinusCost, turnover);
     };
