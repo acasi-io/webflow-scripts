@@ -53,6 +53,9 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
 function microConditions(turnover) {
     const microRecap = document.querySelectorAll('.is_micro_recap');
     const microContributions = document.querySelector('.is_micro_contributions');
+    const microRecapContainer = document.getElementById('micro-container-recap');
+
+    microRecapContainer.style.display = 'none';
 
     document.querySelectorAll('.simulator_micro_hidden').forEach(element => {
         element.style.display = 'none';
@@ -64,6 +67,8 @@ function microConditions(turnover) {
     });
 
     if (turnover <= 50000) {
+        microRecapContainer.style.display = 'block';
+
         document.querySelectorAll('.simulator_micro_hidden').forEach(element => {
             element.style.display = 'block';
         });
