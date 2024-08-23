@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -283,6 +283,12 @@ function compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal) {
 
 function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap) {
     let resultRecapTitle = document.getElementById('simulator-result-title');
+
+    removeStyleToResults(eurlContainerRecap, eurlHeadingRecap);
+    removeStyleToResults(sasuContainerRecap, sasuHeadingRecap);
+    removeStyleToResults(microContainerRecap, microHeadingRecap);
+    removeStyleToResults(eiContainerRecap, eiHeadingRecap);
+
     if (eurlTotal > eiTotal && eurlTotal > sasuTotal && eurlTotal > microTotal) {
         addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
     } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
@@ -292,6 +298,11 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainer
     } else if (eiTotal > eurlTotal && eiTotal > sasuTotal && eiTotal > microTotal) {
         addStyleToResults(eiContainerRecap, eiHeadingRecap, resultRecapTitle, 'ei');
     }
+}
+
+function removeStyleToResults(containerRecap, headingRecap) {
+    containerRecap.classList.remove('is-bestchoice');
+    headingRecap.classList.remove('is-bestchoice');
 }
 
 function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socialForm) {
