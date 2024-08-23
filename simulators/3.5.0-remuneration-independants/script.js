@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -358,7 +358,7 @@ function checkUnemployment(turnoverMinusCost, turnover) {
             element.classList.remove('container-best-choice');
         });
     
-        const sasuContainerRecap = document.getElementById('sasu-container-recap');
+        const sasuContainerRecap = document.querySelectorAll('.simulator_recap_item.is-sasu');
         const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
         let resultRecapTitle = document.getElementById('simulator-result-title');
 
