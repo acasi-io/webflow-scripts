@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -312,9 +312,7 @@ function fillRetireRecap(turnoverMinusCost, turnover) {
 }
 
 function checkUnemployment(turnoverMinusCost, turnover) {
-    if (unemploymentDuration.value === "less_six_months") {
-        fillRecapContainer(turnoverMinusCost, turnover);
-    } else {
+    if (isUnemployment.value === "true" && unemploymentDuration.value === "more_six_months") {
         fillEurlRecap();
         fillMicroRecap(turnover);
         fillEiRecap();
@@ -340,6 +338,8 @@ function checkUnemployment(turnoverMinusCost, turnover) {
     
         let resultRecapTitle = document.getElementById('simulator-result-title');
         resultRecapTitle.textContent = document.getElementById(`sasu-heading-recap`).textContent;
+    } else {
+        fillRecapContainer(turnoverMinusCost, turnover);
     };
 }
 
