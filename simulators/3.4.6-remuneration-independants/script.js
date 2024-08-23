@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -295,8 +295,8 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainer
 }
 
 function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socialForm) {
-    containerRecap.classList.add('container-best-choice');
-    headingRecap.classList.add('heading-best-choice');
+    containerRecap.classList.add('is-bestchoice');
+    headingRecap.classList.add('is-bestchoice');
     resultRecapTitle.textContent = document.getElementById(`${socialForm}-heading-recap`).textContent;
 }
 
@@ -333,11 +333,9 @@ function checkUnemployment(turnoverMinusCost, turnover) {
     
         const sasuContainerRecap = document.getElementById('sasu-container-recap');
         const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
-        sasuContainerRecap.classList.add('container-best-choice');
-        sasuHeadingRecap.classList.add('heading-best-choice');
-    
         let resultRecapTitle = document.getElementById('simulator-result-title');
-        resultRecapTitle.textContent = document.getElementById(`sasu-heading-recap`).textContent;
+
+        addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
     } else {
         fillRecapContainer(turnoverMinusCost, turnover);
     };
