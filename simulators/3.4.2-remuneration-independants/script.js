@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -59,7 +59,9 @@ calculBtn.addEventListener('click', () => {
         eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
         microResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
 
-        fillRecapContainer(turnoverMinusCost, turnover);
+        // fillRecapContainer(turnoverMinusCost, turnover);
+
+        checkUnemployment(turnoverMinusCost, turnover);
 
         simulatorResults.classList.remove('hidden');
         simulatorResults.scrollIntoView({
@@ -294,6 +296,46 @@ function fillRetireRecap(turnoverMinusCost, turnover) {
 
     //let sasuRetirement = sasuCalculRetraite(turnoverMinusCost);
     //document.getElementById('sasu-retire-recap').textContent = sasuRetirement.toLocaleString('fr-FR') + '€';
+}
+
+function checkUnemployment(turnoverMinusCost, turnover) {
+    const isUnemployment = document.getElementById('unemployment_boolean').value;
+    const unemploymentDuration = document.getElementById('unemployment_duration');
+
+    if (isUnemployment === "true") {
+        unemploymentDuration.style.display = "block";
+        if (unemploymentDuration.value === "less_six_months") {
+            fillRecapContainer(turnoverMinusCost, turnover);
+        } else {
+            fillEurlRecap();
+            fillMicroRecap(turnover);
+            fillEiRecap();
+            fillSasuRecap();
+            fillRetireRecap(turnoverMinusCost, turnover);
+
+            document.querySelectorAll('.is_ca_recap').forEach(element => {
+                element.textContent = turnover.toLocaleString('fr-FR') + '€';
+            });
+
+            document.querySelectorAll('.simulator_heading_recap').forEach(element => {
+                element.classList.remove('heading-best-choice');
+            });
+
+            document.querySelectorAll('.simulator_recap_item').forEach(element => {
+                element.classList.remove('container-best-choice');
+            });
+
+            const sasuContainerRecap = document.getElementById('sasu-container-recap');
+            const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
+            sasuContainerRecap.classList.add('container-best-choice');
+            sasuHeadingRecap.classList.add('heading-best-choice');
+
+            let resultRecapTitle = document.getElementById('simulator-result-title');
+            resultRecapTitle.textContent = document.getElementById(`sasu-heading-recap`).textContent;
+        }
+    } else {
+        unemploymentDuration.style.display = "none";
+    }
 }
 
 
