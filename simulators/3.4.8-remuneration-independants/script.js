@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.4.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -284,10 +284,7 @@ function compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal) {
 function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap) {
     let resultRecapTitle = document.getElementById('simulator-result-title');
 
-    removeStyleToResults(eurlContainerRecap, eurlHeadingRecap);
-    removeStyleToResults(sasuContainerRecap, sasuHeadingRecap);
-    removeStyleToResults(microContainerRecap, microHeadingRecap);
-    removeStyleToResults(eiContainerRecap, eiHeadingRecap);
+    removeStyleToResults();
 
     if (eurlTotal > eiTotal && eurlTotal > sasuTotal && eurlTotal > microTotal) {
         addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
@@ -300,9 +297,14 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainer
     }
 }
 
-function removeStyleToResults(containerRecap, headingRecap) {
-    containerRecap.classList.remove('is-bestchoice');
-    headingRecap.classList.remove('is-bestchoice');
+function removeStyleToResults() {
+    document.querySelectorAll('.simulator_recap_item').forEach((item) => {
+        item.classList.remove('is-bestchoice');
+    });
+
+    document.querySelectorAll('.simulator_heading_recap').forEach((heading) => {
+        heading.classList.remove('is-bestchoice');
+    });
 }
 
 function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socialForm) {
@@ -345,6 +347,8 @@ function checkUnemployment(turnoverMinusCost, turnover) {
         const sasuContainerRecap = document.getElementById('sasu-container-recap');
         const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
         let resultRecapTitle = document.getElementById('simulator-result-title');
+
+        removeStyleToResults();
 
         addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
     } else {
