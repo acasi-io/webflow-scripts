@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -81,6 +81,12 @@ function microConditions(turnover) {
         /*microRecap.forEach(element => {
             element.style.display = 'block';
         });*/
+
+        const contributionsRecap = document.getElementById('micro-contributions-recap');
+        const retireRecap = document.getElementById('micro-retire-recap');
+
+        contributionsRecap.textContent = '0€';
+        retireRecap.textContent = '0€';
     }   
 }
 
