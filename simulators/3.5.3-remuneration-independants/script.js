@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -299,6 +299,10 @@ function showBestChoice(socialForm) {
         otherRecapContainer.appendChild(recap);
     });
 
+    let resultRecapTitle = document.getElementById('simulator-result-title');
+
+    resultRecapTitle.textContent = document.getElementById(`${socialForm}-heading-recap`).textContent;
+
     let bestChoiceContainer = document.querySelector('.simulator_best_result_container');
 
     let bestChoiceRecap = document.getElementById(`${socialForm}-container-recap`);
@@ -382,9 +386,9 @@ function checkUnemployment(turnoverMinusCost, turnover) {
     
         const sasuContainerRecap = document.querySelectorAll('.simulator_recap_item.is-sasu');
         const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
-        let resultRecapTitle = document.getElementById('simulator-result-title');
+        // let resultRecapTitle = document.getElementById('simulator-result-title');
 
-        resultRecapTitle.textContent = document.getElementById(`sasu-heading-recap`).textContent;
+        // resultRecapTitle.textContent = document.getElementById(`sasu-heading-recap`).textContent;
 
         // removeStyleToResults();
 
