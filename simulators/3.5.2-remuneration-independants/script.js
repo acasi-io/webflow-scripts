@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -292,26 +292,18 @@ function showBestChoiceText(socialForm) {
 }
 
 function showBestChoice(socialForm) {
-    let recapGridInformation = document.querySelector('.simulator_recap_grid.is-recap');
-    let textGridRecapInformation = document.querySelector('.simulator_recap_grid.is-text');
-    let allRecap = document.querySelectorAll(`.simulator_recap_item.is-recap`);
-    let allRecapText = document.querySelectorAll(`.simulator_recap_item.is-text`);
+    let otherRecapContainer = document.getElementById('simulator_recap_other_container');
+    let allRecap = document.querySelectorAll('.simulator_recap_item');
 
     allRecap.forEach((recap) => {
-        recapGridInformation.appendChild(recap);
-    });
-
-    allRecapText.forEach((recap) => {
-        textGridRecapInformation.appendChild(recap);
+        otherRecapContainer.appendChild(recap);
     });
 
     let bestChoiceContainer = document.querySelector('.simulator_best_result_container');
 
-    let bestChoiceRecap = document.querySelectorAll(`.simulator_recap_item.is-${socialForm}`);
+    let bestChoiceRecap = document.getElementById(`${socialForm}-container-recap`);
 
-    bestChoiceRecap.forEach((recap) => {
-        bestChoiceContainer.appendChild(recap);
-    });
+    bestChoiceContainer.appendChild(bestChoiceRecap);
 }
 
 function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
@@ -392,11 +384,14 @@ function checkUnemployment(turnoverMinusCost, turnover) {
         const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
         let resultRecapTitle = document.getElementById('simulator-result-title');
 
+        resultRecapTitle.textContent = document.getElementById(`sasu-heading-recap`).textContent;
+
         // removeStyleToResults();
 
         // addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
 
         showBestChoice('sasu');
+        showBestChoiceText('sasu');
     } else {
         fillRecapContainer(turnoverMinusCost, turnover);
     };
