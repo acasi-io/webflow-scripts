@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -217,6 +217,14 @@ function fillRecapContainer(turnoverMinusCost, turnover) {
     document.querySelectorAll('.is_ca_recap').forEach(element => {
         element.textContent = turnover.toLocaleString('fr-FR') + '€';
     });
+
+    if (turnover > 50000) {
+        let contributionsRecap = document.getElementById('micro-contributions-recap');
+        let retireRecap = document.getElementById('micro-retire-recap');
+
+        contributionsRecap.textContent = '-';
+        retireRecap.textContent = '-';
+    }
 
     /*document.querySelectorAll('.simulator_heading_recap').forEach(element => {
         element.classList.remove('heading-best-choice');
