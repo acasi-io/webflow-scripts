@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.5.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -218,13 +218,13 @@ function fillRecapContainer(turnoverMinusCost, turnover) {
         element.textContent = turnover.toLocaleString('fr-FR') + '€';
     });
 
-    document.querySelectorAll('.simulator_heading_recap').forEach(element => {
+    /*document.querySelectorAll('.simulator_heading_recap').forEach(element => {
         element.classList.remove('heading-best-choice');
-    });
+    });*/
 
-    document.querySelectorAll('.simulator_recap_item').forEach(element => {
+    /*document.querySelectorAll('.simulator_recap_item').forEach(element => {
         element.classList.remove('container-best-choice');
-    });
+    });*/
 
     let eurlTotal = parseInt(localStorage.getItem('eurlTotal'));
     let eiTotal = parseInt(localStorage.getItem('eiTotal'));
@@ -232,7 +232,9 @@ function fillRecapContainer(turnoverMinusCost, turnover) {
     let microTotal = parseInt(localStorage.getItem('microTotal'));
 
     // orderResults(sasuTotal, eurlTotal, eiTotal, microTotal);
-    compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal);
+    // compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal);
+
+    compareResults(sasuTotal, eurlTotal, eiTotal, microTotal);
 }
 
 /*function orderResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
@@ -267,7 +269,7 @@ function fillRecapContainer(turnoverMinusCost, turnover) {
     }
 }*/
 
-function compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal) {
+/*function compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal) {
     const eurlContainerRecap = document.querySelectorAll('.simulator_recap_item.is-eurl');
     const sasuContainerRecap = document.querySelectorAll('.simulator_recap_item.is-sasu');
     const eiContainerRecap = document.querySelectorAll('.simulator_recap_item.is-ei');
@@ -279,7 +281,7 @@ function compareResultsAndAddStyle(sasuTotal, eurlTotal, eiTotal, microTotal) {
     const microHeadingRecap = document.getElementById('micro-heading-recap');
 
     compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap);
-}
+}*/
 
 function showBestChoiceText(socialForm) {
     document.querySelectorAll('.simulator_recap_explication_result.is-bestchoice-text').forEach((text) => {
@@ -289,27 +291,55 @@ function showBestChoiceText(socialForm) {
     document.getElementById(`${socialForm}-bestchoice-text`).style.display = 'block';
 }
 
-function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap) {
-    let resultRecapTitle = document.getElementById('simulator-result-title');
+function showBestChoice(socialForm) {
+    let recapGridInformation = document.querySelector('.simulator_recap_grid.is-recap');
+    let textGridRecapInformation = document.querySelector('.simulator_recap_grid.is-text');
+    let allRecap = document.querySelectorAll(`.simulator_recap_item.is-recap`);
+    let allRecapText = document.querySelectorAll(`.simulator_recap_item.is-text`);
 
-    removeStyleToResults();
+    allRecap.forEach((recap) => {
+        recapGridInformation.appendChild(recap);
+    });
+
+    allRecapText.forEach((recap) => {
+        textGridRecapInformation.appendChild(recap);
+    });
+
+    let bestChoiceContainer = document.querySelector('.simulator_best_result_container');
+
+    let bestChoiceRecap = document.querySelectorAll(`.simulator_recap_item.is-${socialForm}`);
+
+    bestChoiceRecap.forEach((recap) => {
+        bestChoiceContainer.appendChild(recap);
+    });
+}
+
+function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
+    // let resultRecapTitle = document.getElementById('simulator-result-title');
+
+    // removeStyleToResults();
+
 
     if (eurlTotal > eiTotal && eurlTotal > sasuTotal && eurlTotal > microTotal) {
-        addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
+        // addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
+        showBestChoice('eurl');
         showBestChoiceText('eurl');
     } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
-        addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
+        // addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
+        showBestChoice('sasu');
         showBestChoiceText('sasu');
     } else if (microTotal > eurlTotal && microTotal > eiTotal && microTotal > sasuTotal) {
-        addStyleToResults(microContainerRecap, microHeadingRecap, resultRecapTitle, 'micro');
+        // addStyleToResults(microContainerRecap, microHeadingRecap, resultRecapTitle, 'micro');
+        showBestChoice('micro');
         showBestChoiceText('micro');
     } else if (eiTotal > eurlTotal && eiTotal > sasuTotal && eiTotal > microTotal) {
-        addStyleToResults(eiContainerRecap, eiHeadingRecap, resultRecapTitle, 'ei');
-        showBestChoiceText('micro');
+        // addStyleToResults(eiContainerRecap, eiHeadingRecap, resultRecapTitle, 'ei');
+        showBestChoice('ei');
+        showBestChoiceText('ei');
     }
 }
 
-function removeStyleToResults() {
+/*function removeStyleToResults() {
     document.querySelectorAll('.simulator_recap_item').forEach((item) => {
         item.classList.remove('is-bestchoice');
     });
@@ -317,15 +347,15 @@ function removeStyleToResults() {
     document.querySelectorAll('.simulator_heading_recap').forEach((heading) => {
         heading.classList.remove('is-bestchoice');
     });
-}
+}*/
 
-function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socialForm) {
+/*function addStyleToResults(containerRecap, headingRecap, resultRecapTitle, socialForm) {
     containerRecap.forEach((item) => {
         item.classList.add('is-bestchoice');
     });
     headingRecap.classList.add('is-bestchoice');
     resultRecapTitle.textContent = document.getElementById(`${socialForm}-heading-recap`).textContent;
-}
+}*/
 
 function fillRetireRecap(turnoverMinusCost, turnover) {
     let microRetirement = microCalculRetraite(turnover);
@@ -350,23 +380,23 @@ function checkUnemployment(turnoverMinusCost, turnover) {
             element.textContent = turnover.toLocaleString('fr-FR') + '€';
         });
     
-        document.querySelectorAll('.simulator_heading_recap').forEach(element => {
+        /*document.querySelectorAll('.simulator_heading_recap').forEach(element => {
             element.classList.remove('heading-best-choice');
         });
 
         document.querySelectorAll('.simulator_recap_item').forEach(element => {
             element.classList.remove('container-best-choice');
-        });
+        });*/
     
         const sasuContainerRecap = document.querySelectorAll('.simulator_recap_item.is-sasu');
         const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
         let resultRecapTitle = document.getElementById('simulator-result-title');
 
-        removeStyleToResults();
+        // removeStyleToResults();
 
-        addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
+        // addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
 
-        showBestChoiceText('sasu');
+        showBestChoice('sasu');
     } else {
         fillRecapContainer(turnoverMinusCost, turnover);
     };
