@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -32,26 +32,6 @@ window.addEventListener('load', () => {
             unemploymentDuration.style.display = "block";
         } else {
             unemploymentDuration.style.display = "none";
-        }
-    });
-
-    numberOfChild.addEventListener('change', (input) => {
-        numberOfChildValue = parseInt(input.target.value);
-    });
-
-    situationValue = 'célibataire';
-
-    if (situationValue === "célibataire" && numberOfChildValue > 0) {
-        singleParentSentence.classList.remove('is-hidden');
-    } else {
-        singleParentSentence.classList.add('is-hidden');
-    }
-
-    situation.addEventListener('change', () => {
-        if (situationValue === "célibataire" && numberOfChildValue > 0) {
-            singleParentSentence.classList.remove('is-hidden');
-        } else {
-            singleParentSentence.classList.add('is-hidden');
         }
     });
 });
