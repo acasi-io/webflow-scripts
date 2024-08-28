@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -19,7 +19,8 @@ export let fifthPass = 0.2 * PASS;
 const isUnemployment = document.getElementById('unemployment_boolean');
 const unemploymentDuration = document.getElementById('unemployment_duration');
 const singleParentSentence = document.querySelector('.simulator_sentence_container.is-single-parent');
-const numberOfChild = parseInt(document.getElementById('child').value);
+const numberOfChildValue = parseInt(document.getElementById('child').value);
+const numberOfChild = document.getElementById('child');
 const situation = document.getElementById('personal-situation');
 
 const sasuBestChoiceText = document.getElementById('sasu-bestchoice-text');
@@ -33,7 +34,12 @@ window.addEventListener('load', () => {
         }
     });
 
+    numberOfChild.addEventListener('change', (input) => {
+        console.log(parseInt(input.target.value));
+    });
+
     situation.addEventListener('change', () => {
+
         if (situation.value === "célibataire" && numberOfChild > 0) {
             singleParentSentence.style.display = "block";
         } else {
@@ -79,14 +85,14 @@ calculBtn.addEventListener('click', () => {
 
         const turnoverMinusCost = turnover - cost;
 
-        calculEurl(turnoverMinusCost, situationValue, numberOfChild, householdIncome, singleParent);
-        sasuResult(turnoverMinusCost, situationValue, numberOfChild, householdIncome);
-        eiResult(turnoverMinusCost, situationValue, numberOfChild, householdIncome, singleParent);
-        microResult(turnoverMinusCost, situationValue, numberOfChild, householdIncome, singleParent);
+        calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome);
+        eiResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        microResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
 
         // fillRecapContainer(turnoverMinusCost, turnover);
 
-        checkUnemployment(turnoverMinusCost, turnover, numberOfChild, situation);
+        checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue);
 
         simulatorResults.classList.remove('hidden');
         simulatorResults.scrollIntoView({
@@ -385,7 +391,7 @@ function fillRetireRecap(turnoverMinusCost, turnover) {
     //document.getElementById('sasu-retire-recap').textContent = sasuRetirement.toLocaleString('fr-FR') + '€';
 }
 
-function fillBestChoiceText(turnover, situation, numberOfChild) {
+function fillBestChoiceText(turnover, situationValue, numberOfChildValue) {
     let unemploymentText;
     if (isUnemployment === 'true' && unemploymentDuration === 'less_six_months') {
         unemploymentText = 'touchez le chômage depuis moins de six mois';
@@ -393,20 +399,20 @@ function fillBestChoiceText(turnover, situation, numberOfChild) {
         unemploymentText = 'ne touchez pas le chômage';
     }
 
-    if (situation === 'couple') {
-        situation = 'en couple';
+    if (situationValue === 'couple') {
+        situationValue = 'en couple';
     }
 
-    document.getElementById('eurl-bestchoice-text').textContent = `L’EURL est le meilleur choix pour plusieurs raisons. Puisque votre votre chiffre d'affaires est de ${turnover}€, que vous ${unemploymentText}, et que vous êtes ${situation} avec ${numberOfChild} enfants à charges, vous pouvez profiter des avantages de l’EURL en optimisant votre rémunération entre rémunération réelle, applicant des charges sociales moins élevées que la SASU, et dividendes.`;
+    document.getElementById('eurl-bestchoice-text').textContent = `L’EURL est le meilleur choix pour plusieurs raisons. Puisque votre votre chiffre d'affaires est de ${turnover}€, que vous ${unemploymentText}, et que vous êtes ${situationValue} avec ${numberOfChildValue} enfants à charges, vous pouvez profiter des avantages de l’EURL en optimisant votre rémunération entre rémunération réelle, applicant des charges sociales moins élevées que la SASU, et dividendes.`;
 
     document.getElementById('micro-bestchoice-text').textContent = `La micro-entreprise est le meilleur choix pour vous car votre chiffre d’affaires est inférieur à 50 000€. Cette forme sociale vous permettra donc de diminuer vos charges sociales pour une meilleure rémunération finale.`;
 
-    document.getElementById('ei-bestchoice-text').textContent = `Puisque votre rémunération est de ${turnover}, que vous ${unemploymentText} et que vous êtes ${situation} avec ${numberOfChild} enfants à charges, l'EI est le meilleur choix pour vous.`;
+    document.getElementById('ei-bestchoice-text').textContent = `Puisque votre rémunération est de ${turnover}, que vous ${unemploymentText} et que vous êtes ${situationValue} avec ${numberOfChildValue} enfants à charges, l'EI est le meilleur choix pour vous.`;
 
     document.getElementById('sasu-bestchoice-text').textContent = `La SASU est le meilleur choix pour vous puisque votre chiffre d'affaires étant de ${turnover}€, vous pourrez bénéficier des meilleures coitisations si vous choisissez de vous versez des salaires, ou vous pourrez aussi faire le choix de vous versez des dividendes pour optimiser votre rémunération.`;
 }
 
-function checkUnemployment(turnoverMinusCost, turnover, numberOfChild, situation) {
+function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue) {
     if (isUnemployment.value === "true" && unemploymentDuration.value === "more_six_months") {
         fillEurlRecap();
         fillMicroRecap(turnover);
@@ -445,13 +451,13 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChild, situation
 
         // addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
 
-        sasuBestChoiceText.textContent = 'La SASU est le meilleur choix pour vous car vous pouvez cumuler votre allocation chômage avec votre rémunération. Cela permet de cotiser ( retraite, sécurité sociale, etc) et d’optimiser sa rémunération, notamment en se versant des dividendes.'
+        sasuBestChoiceText.textContent = 'La SASU est le meilleur choix pour vous car vous pouvez cumuler votre allocation chômage avec votre rémunération. Cela permet de cotiser (retraite, sécurité sociale, etc) et d’optimiser sa rémunération, notamment en se versant des dividendes.'
 
         showBestChoice('sasu');
         showBestChoiceText('sasu');
     } else {
         fillRecapContainer(turnoverMinusCost, turnover);
-        fillBestChoiceText(turnover, situation, numberOfChild);
+        fillBestChoiceText(turnover, situationValue, numberOfChildValue);
     };
 }
 
