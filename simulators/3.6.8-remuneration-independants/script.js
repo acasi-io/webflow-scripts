@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -18,11 +18,6 @@ export let fifthPass = 0.2 * PASS;
 
 const isUnemployment = document.getElementById('unemployment_boolean');
 const unemploymentDuration = document.getElementById('unemployment_duration');
-const singleParentSentence = document.querySelector('.simulator_sentence_container.is-single-parent');
-let numberOfChildValue = parseInt(document.getElementById('child').value);
-const numberOfChild = document.getElementById('child');
-const situation = document.getElementById('personal-situation');
-let situationValue = document.getElementById('personal-situation').value;
 
 const sasuBestChoiceText = document.getElementById('sasu-bestchoice-text');
 
@@ -67,6 +62,8 @@ calculBtn.addEventListener('click', () => {
         const cost = parseFloat(document.getElementById('cost').value);
         const householdIncome = parseFloat(document.getElementById('household-income').value);
         const singleParent = document.getElementById('single-parent').value;
+        const numberOfChildValue = parseInt(document.getElementById('child').value);
+        const situationValue = document.getElementById('personal-situation').value;
 
         microConditions(turnover);
 
