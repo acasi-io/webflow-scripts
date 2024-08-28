@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.6.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -19,7 +19,7 @@ export let fifthPass = 0.2 * PASS;
 const isUnemployment = document.getElementById('unemployment_boolean');
 const unemploymentDuration = document.getElementById('unemployment_duration');
 const singleParentSentence = document.querySelector('.simulator_sentence_container.is-single-parent');
-const numberOfChildValue = parseInt(document.getElementById('child').value);
+let numberOfChildValue = parseInt(document.getElementById('child').value);
 const numberOfChild = document.getElementById('child');
 const situation = document.getElementById('personal-situation');
 
@@ -35,12 +35,11 @@ window.addEventListener('load', () => {
     });
 
     numberOfChild.addEventListener('change', (input) => {
-        console.log(parseInt(input.target.value));
+        numberOfChildValue = parseInt(input.target.value);
     });
 
     situation.addEventListener('change', () => {
-
-        if (situation.value === "célibataire" && numberOfChild > 0) {
+        if (situation.value === "célibataire" && numberOfChildValue > 0) {
             singleParentSentence.style.display = "block";
         } else {
             singleParentSentence.style.display = "none";
