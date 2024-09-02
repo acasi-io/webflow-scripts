@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -392,7 +392,7 @@ function fillBestChoiceText(turnover, situationValue, numberOfChildValue, cost) 
     const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal')).toLocaleString('fr-FR');
     const eurlContributions = (document.getElementById('eurl-contributions-total')).textContent;
 
-    document.getElementById('eurl-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de ${turnover}€ et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€, alors en vous versant ${eurlDividends}€ de dividendes et en vous rémunérant ${eurlRemuneration}€, l'EURL est la meilleure optimisation pour vous.<br>Vos cotisation à devoir à l'Etat s'élèveront à ${eurlContributions}.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="total-amount">${eurlFinalAmount}€</span>.`;
+    document.getElementById('eurl-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€, alors en vous versant <span class="simulator-recap-text-number">${eurlDividends}€</span> de dividendes et en vous rémunérant <span class="simulator-recap-text-number">${eurlRemuneration}€</span>, l'EURL est la meilleure optimisation pour vous.<br>Vos cotisation à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${eurlContributions}€</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${eurlFinalAmount}€</span>.`;
 
     // document.getElementById('eurl-bestchoice-text').textContent = `L’EURL est le meilleur choix pour plusieurs raisons. Puisque votre votre chiffre d'affaires est de ${turnover}€, que vous ${unemploymentText}, et que vous êtes ${situationValue} avec ${numberOfChildValue} enfants à charges, vous pouvez profiter des avantages de l’EURL en optimisant votre rémunération entre rémunération réelle, applicant des charges sociales moins élevées que la SASU, et dividendes.`;
 
