@@ -313,8 +313,13 @@ function showBestChoice(socialForm) {
     let resultRecapHeading = document.getElementById(`${socialForm}-heading-recap`);
     let resultRecapTitle = document.getElementById('simulator-result-title');
 
-    resultRecapHeading.style.display = 'block';
-    gridRecap.style.display = 'block';
+    document.querySelectorAll('.simulator_recap_numbers_grid').forEach((grid) => {
+        grid.style.display = 'block';
+    });
+
+    document.querySelectorAll('.simulator_heading_recap').forEach((heading) => {
+        heading.style.display = 'block';
+    });
 
     allRecap.forEach((recap) => {
         otherRecapContainer.appendChild(recap);
