@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -313,7 +313,7 @@ function showBestChoice(socialForm) {
     let resultRecapHeading = document.getElementById(`${socialForm}-heading-recap`);
     let resultRecapTitle = document.getElementById('simulator-result-title');
 
-    document.querySelectorAll('.eurl_simulator_grid_heading_container').forEach((container) => {
+    document.querySelectorAll('.simulator_grid_heading_container').forEach((container) => {
         container.style.display = 'block';
     });
 
