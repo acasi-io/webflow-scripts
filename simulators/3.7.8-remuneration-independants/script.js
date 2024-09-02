@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -314,11 +314,11 @@ function showBestChoice(socialForm) {
     let resultRecapTitle = document.getElementById('simulator-result-title');
 
     document.querySelectorAll('.simulator_recap_numbers_grid').forEach((grid) => {
-        grid.style.display = 'block';
+        grid.classList.remove = 'hidden';
     });
 
     document.querySelectorAll('.simulator_heading_recap').forEach((heading) => {
-        heading.style.display = 'block';
+        heading.classList.remove = 'hidden';
     });
 
     allRecap.forEach((recap) => {
@@ -327,8 +327,8 @@ function showBestChoice(socialForm) {
 
     resultRecapTitle.textContent = resultRecapHeading.textContent;
 
-    resultRecapHeading.style.display = 'none';
-    gridRecap.style.display = 'none';
+    resultRecapHeading.classList.add = 'hidden';
+    gridRecap.classList.add = 'hidden';
 
     bestChoiceContainer.appendChild(bestChoiceRecap);
 }
