@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -305,21 +305,21 @@ function showBestChoiceText(socialForm) {
 function showBestChoice(socialForm) {
     let otherRecapContainer = document.getElementById('simulator_recap_other_container');
     let allRecap = document.querySelectorAll('.simulator_recap_item');
+    let bestChoiceContainer = document.querySelector('.simulator_best_result_container');
+    let bestChoiceRecap = document.getElementById(`${socialForm}-container-recap`);
+    let gridRecap = document.getElementById(`${socialForm}-recap-grid`);
+    let resultRecapTitle = document.getElementById('simulator-result-title');
+
+    resultRecapTitle.style.display = 'block';
+    gridRecap.style.display = 'block';
 
     allRecap.forEach((recap) => {
         otherRecapContainer.appendChild(recap);
     });
 
-    let resultRecapTitle = document.getElementById('simulator-result-title');
-
     resultRecapTitle.textContent = document.getElementById(`${socialForm}-heading-recap`).textContent;
+
     resultRecapTitle.style.display = 'none';
-
-    let bestChoiceContainer = document.querySelector('.simulator_best_result_container');
-
-    let bestChoiceRecap = document.getElementById(`${socialForm}-container-recap`);
-
-    let gridRecap = document.querySelector(`.${socialForm}-container-recap .simulator_recap_numbers_grid`);
     gridRecap.style.display = 'none';
 
     bestChoiceContainer.appendChild(bestChoiceRecap);
