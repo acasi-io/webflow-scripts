@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.7.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -309,17 +309,14 @@ function showBestChoice(socialForm) {
     let allRecap = document.querySelectorAll('.simulator_recap_item');
     let bestChoiceContainer = document.querySelector('.simulator_best_result_container');
     let bestChoiceRecap = document.getElementById(`${socialForm}-container-recap`);
-    let gridRecap = document.getElementById(`${socialForm}-recap-grid`);
+    let gridHeadingContainer = document.getElementById(`${socialForm}_simulator_grid_heading_container`);
     let resultRecapHeading = document.getElementById(`${socialForm}-heading-recap`);
     let resultRecapTitle = document.getElementById('simulator-result-title');
 
-    document.querySelectorAll('.simulator_recap_numbers_grid').forEach((grid) => {
-        grid.classList.remove = 'hidden';
+    document.querySelectorAll('.eurl_simulator_grid_heading_container').forEach((container) => {
+        container.style.display = 'block';
     });
 
-    document.querySelectorAll('.simulator_heading_recap').forEach((heading) => {
-        heading.classList.remove = 'hidden';
-    });
 
     allRecap.forEach((recap) => {
         otherRecapContainer.appendChild(recap);
@@ -327,8 +324,7 @@ function showBestChoice(socialForm) {
 
     resultRecapTitle.textContent = resultRecapHeading.textContent;
 
-    resultRecapHeading.classList.add = 'hidden';
-    gridRecap.classList.add = 'hidden';
+    gridHeadingContainer.style.display = 'none';    
 
     bestChoiceContainer.appendChild(bestChoiceRecap);
 }
