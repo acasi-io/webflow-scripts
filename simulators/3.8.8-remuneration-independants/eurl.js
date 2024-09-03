@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -176,6 +176,9 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
         let remunerationAfterTaxAmount = Math.round(remunerationAfterTaxUrssaf.nodeValue);
         let cotisationsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
         let cotisationsAmount = Math.round(cotisationsUrssaf.nodeValue);
+
+        let retireWage = engine.evaluate("protection sociale . retraite");
+        console.log(Math.round(retireWage.nodeValue));
 
         let eurlDividendsBrut = calculIs(turnoverMinusCost, remuneration, cotisationsAmount);
         let { cotisationsTotalAmount, eurlDividendsPfu } = calculDividendsPfu(turnoverMinusCost, remuneration, cotisationsAmount);
