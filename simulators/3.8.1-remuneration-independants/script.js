@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -486,9 +486,11 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
 
         showBestChoice('sasu');
         showBestChoiceText('sasu');
+        showBestSocialForm();
     } else {
         fillRecapContainer(turnoverMinusCost, turnover);
         fillBestChoiceText(turnover, situationValue, numberOfChildValue, cost);
+        showBestSocialForm();
     };
 }
 
