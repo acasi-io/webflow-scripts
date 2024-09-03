@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -68,28 +68,6 @@ calculBtn.addEventListener('click', () => {
         microConditions(turnover);
 
         const turnoverMinusCost = turnover - cost;
-
-        document.querySelectorAll('.simulator_contributions_grid').forEach((grid) => {
-            grid.classList.add = 'hidden';
-        });
-    
-        document.querySelectorAll('.simulator_dividends_grid').forEach((grid) => {
-            grid.classList.add = 'hidden';
-        });
-    
-        document.querySelectorAll('.simulator_remuneration_grid').forEach((grid) => {
-            grid.classList.add = 'hidden';
-        });
-    
-        document.querySelectorAll('.simulator_retire_grid').forEach((grid) => {
-            grid.classList.add = 'hidden';
-        });
-    
-        document.querySelectorAll('.simulator_separator').forEach((grid) => {
-            grid.classList.add = 'hidden';
-        });
-    
-        document.getElementById('dividends-container').style.display = 'none';
 
         calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome);
@@ -515,6 +493,28 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
 
 
 function showBestSocialForm(bestSocialForm) {
+    document.querySelectorAll('.simulator_contributions_grid').forEach((grid) => {
+        grid.classList.add('hidden');
+    });
+
+    document.querySelectorAll('.simulator_dividends_grid').forEach((grid) => {
+        grid.classList.add('hidden');
+    });
+
+    document.querySelectorAll('.simulator_remuneration_grid').forEach((grid) => {
+        grid.classList.add('hidden');
+    });
+
+    document.querySelectorAll('.simulator_retire_grid').forEach((grid) => {
+        grid.classList.add('hidden');
+    });
+
+    document.querySelectorAll('.simulator_separator').forEach((grid) => {
+        grid.classList.add('hidden');
+    });
+
+    document.getElementById('dividends-container').style.display = 'none';
+    
     if (bestSocialForm === 'sasu' || bestSocialForm === 'eurl') {
         document.getElementById('dividends-container').style.display = 'block';
         document.getElementById(`${bestSocialForm}-dividends-grid`).classList.remove('hidden');
