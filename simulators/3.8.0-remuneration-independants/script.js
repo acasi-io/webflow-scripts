@@ -334,24 +334,32 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
 
     // removeStyleToResults();
 
+    let bestSocialForm;
+
 
     if (eurlTotal > eiTotal && eurlTotal > sasuTotal && eurlTotal > microTotal) {
         // addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
+        bestSocialForm = 'eurl';
         showBestChoice('eurl');
         showBestChoiceText('eurl');
     } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
         // addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
+        bestSocialForm = 'sasu';
         showBestChoice('sasu');
         showBestChoiceText('sasu');
     } else if (microTotal > eurlTotal && microTotal > eiTotal && microTotal > sasuTotal) {
         // addStyleToResults(microContainerRecap, microHeadingRecap, resultRecapTitle, 'micro');
+        bestSocialForm = 'micro';
         showBestChoice('micro');
         showBestChoiceText('micro');
     } else if (eiTotal > eurlTotal && eiTotal > sasuTotal && eiTotal > microTotal) {
         // addStyleToResults(eiContainerRecap, eiHeadingRecap, resultRecapTitle, 'ei');
+        bestSocialForm = 'ei';
         showBestChoice('ei');
         showBestChoiceText('ei');
     }
+
+    localStorage.setItem('bestSocialForm', bestSocialForm);
 }
 
 /*function removeStyleToResults() {
@@ -409,7 +417,7 @@ function fillBestChoiceText(turnover, situationValue, numberOfChildValue, cost) 
     const microFinalAmount = parseInt(localStorage.getItem('microTotal')).toLocaleString('fr-FR');
     const microContributions = (document.getElementById('micro-contributions-total')).textContent;
 
-    document.getElementById('micro-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€, alors la micro-entreprise est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${microContributions}€</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${microFinalAmount}€</span>.`;
+    document.getElementById('micro-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€, alors la micro-entreprise est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${microContributions}</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${microFinalAmount}€</span>.`;
 
     // document.getElementById('ei-bestchoice-text').textContent = `Puisque votre rémunération est de ${turnover}, que vous ${unemploymentText} et que vous êtes ${situationValue} avec ${numberOfChildValue} enfants à charges, l'EI est le meilleur choix pour vous.`;
 
@@ -482,6 +490,33 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         fillRecapContainer(turnoverMinusCost, turnover);
         fillBestChoiceText(turnover, situationValue, numberOfChildValue, cost);
     };
+}
+
+
+function showBestSocialForm() {
+    document.querySelectorAll('.simulator_contributions_grid').forEach((grid) => {
+        grid.classList.add = 'hidden';
+    });
+
+    document.querySelectorAll('.simulator_dividends_grid').forEach((grid) => {
+        grid.classList.add = 'hidden';
+    });
+
+    document.querySelectorAll('.simulator_remuneration_grid').forEach((grid) => {
+        grid.classList.add = 'hidden';
+    });
+
+    document.getElementById('dividends-container').style.display = 'block';
+
+    let bestSocialForm = localStorage.getItem('bestSocialForm');
+
+    if (bestSocialForm !== 'sasu' || bestSocialForm !== 'eurl') {
+        document.getElementById('dividends-container').style.display = 'none';
+    }
+
+    document.getElementById(`${bestSocialForm}-contributions-grid`).classList.remove('hidden');
+    document.getElementById(`${bestSocialForm}-dividends-grid`).classList.remove('hidden');
+    document.getElementById(`${bestSocialForm}-remuneration-grid`).classList.remove('hidden');
 }
 
 
