@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -327,8 +327,6 @@ function showBestChoice(socialForm) {
     gridHeadingContainer.style.display = 'none';    
 
     bestChoiceContainer.appendChild(bestChoiceRecap);
-
-    localStorage.setItem('bestSocialForm', socialForm);
 }
 
 function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
@@ -341,18 +339,22 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
         // addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
         showBestChoice('eurl');
         showBestChoiceText('eurl');
+        localStorage.setItem('bestSocialForm', 'eurl');
     } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
         // addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
         showBestChoice('sasu');
         showBestChoiceText('sasu');
+        localStorage.setItem('bestSocialForm', 'sasu');
     } else if (microTotal > eurlTotal && microTotal > eiTotal && microTotal > sasuTotal) {
         // addStyleToResults(microContainerRecap, microHeadingRecap, resultRecapTitle, 'micro');
         showBestChoice('micro');
         showBestChoiceText('micro');
+        localStorage.setItem('bestSocialForm', 'micro');
     } else if (eiTotal > eurlTotal && eiTotal > sasuTotal && eiTotal > microTotal) {
         // addStyleToResults(eiContainerRecap, eiHeadingRecap, resultRecapTitle, 'ei');
         showBestChoice('ei');
         showBestChoiceText('ei');
+        localStorage.setItem('bestSocialForm', 'ei');
     }
 }
 
@@ -480,14 +482,18 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
 
         showBestChoice('sasu');
         showBestChoiceText('sasu');
+        let bestSocialForm = localStorage.getItem('bestSocialForm');
+        showBestSocialForm(bestSocialForm);
     } else {
         fillRecapContainer(turnoverMinusCost, turnover);
         fillBestChoiceText(turnover, situationValue, numberOfChildValue, cost);
+        let bestSocialForm = localStorage.getItem('bestSocialForm');
+        showBestSocialForm(bestSocialForm);
     };
 }
 
 
-function showBestSocialForm() {
+function showBestSocialForm(bestSocialForm) {
     document.querySelectorAll('.simulator_contributions_grid').forEach((grid) => {
         grid.classList.add = 'hidden';
     });
@@ -509,8 +515,6 @@ function showBestSocialForm() {
     });
 
     document.getElementById('dividends-container').style.display = 'none';
-
-    let bestSocialForm = localStorage.getItem('bestSocialForm');
 
     if (bestSocialForm === 'sasu' || bestSocialForm === 'eurl') {
         document.getElementById('dividends-container').style.display = 'block';
