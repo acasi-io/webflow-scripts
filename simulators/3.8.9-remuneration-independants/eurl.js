@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -74,6 +74,9 @@ function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdInc
         "entreprise . catégorie juridique": "'EI'",
         "entreprise . catégorie juridique . EI . auto-entrepreneur": "non"
     });
+
+    let retireWage = engine.evaluate("protection sociale . retraite");
+    console.log(Math.round(retireWage.nodeValue));
 }
 
 function calculIs(turnoverMinusCost, remuneration, cotisationsAmount) {
@@ -176,9 +179,6 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
         let remunerationAfterTaxAmount = Math.round(remunerationAfterTaxUrssaf.nodeValue);
         let cotisationsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
         let cotisationsAmount = Math.round(cotisationsUrssaf.nodeValue);
-
-        let retireWage = engine.evaluate("protection sociale . retraite");
-        console.log(Math.round(retireWage.nodeValue));
 
         let eurlDividendsBrut = calculIs(turnoverMinusCost, remuneration, cotisationsAmount);
         let { cotisationsTotalAmount, eurlDividendsPfu } = calculDividendsPfu(turnoverMinusCost, remuneration, cotisationsAmount);
