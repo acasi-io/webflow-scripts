@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -327,6 +327,8 @@ function showBestChoice(socialForm) {
     gridHeadingContainer.style.display = 'none';    
 
     bestChoiceContainer.appendChild(bestChoiceRecap);
+
+    localStorage.setItem('bestSocialForm', socialForm);
 }
 
 function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
@@ -334,32 +336,24 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
 
     // removeStyleToResults();
 
-    let bestSocialForm;
-
 
     if (eurlTotal > eiTotal && eurlTotal > sasuTotal && eurlTotal > microTotal) {
         // addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
-        bestSocialForm = 'eurl';
         showBestChoice('eurl');
         showBestChoiceText('eurl');
     } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
         // addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
-        bestSocialForm = 'sasu';
         showBestChoice('sasu');
         showBestChoiceText('sasu');
     } else if (microTotal > eurlTotal && microTotal > eiTotal && microTotal > sasuTotal) {
         // addStyleToResults(microContainerRecap, microHeadingRecap, resultRecapTitle, 'micro');
-        bestSocialForm = 'micro';
         showBestChoice('micro');
         showBestChoiceText('micro');
     } else if (eiTotal > eurlTotal && eiTotal > sasuTotal && eiTotal > microTotal) {
         // addStyleToResults(eiContainerRecap, eiHeadingRecap, resultRecapTitle, 'ei');
-        bestSocialForm = 'ei';
         showBestChoice('ei');
         showBestChoiceText('ei');
     }
-
-    localStorage.setItem('bestSocialForm', bestSocialForm);
 }
 
 /*function removeStyleToResults() {
@@ -486,11 +480,9 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
 
         showBestChoice('sasu');
         showBestChoiceText('sasu');
-        showBestSocialForm();
     } else {
         fillRecapContainer(turnoverMinusCost, turnover);
         fillBestChoiceText(turnover, situationValue, numberOfChildValue, cost);
-        showBestSocialForm();
     };
 }
 
