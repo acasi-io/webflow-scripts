@@ -508,17 +508,26 @@ function showBestSocialForm() {
         grid.classList.add = 'hidden';
     });
 
-    document.getElementById('dividends-container').style.display = 'block';
+    document.querySelectorAll('.simulator_retire_grid').forEach((grid) => {
+        grid.classList.add = 'hidden';
+    });
+
+    document.querySelectorAll('.simulator_separator').forEach((grid) => {
+        grid.classList.add = 'hidden';
+    });
+
+    document.getElementById('dividends-container').style.display = 'none';
 
     let bestSocialForm = localStorage.getItem('bestSocialForm');
 
-    if (bestSocialForm !== 'sasu' || bestSocialForm !== 'eurl') {
-        document.getElementById('dividends-container').style.display = 'none';
+    if (bestSocialForm === 'sasu' || bestSocialForm === 'eurl') {
+        document.getElementById('dividends-container').style.display = 'block';
     }
 
     document.getElementById(`${bestSocialForm}-contributions-grid`).classList.remove('hidden');
     document.getElementById(`${bestSocialForm}-dividends-grid`).classList.remove('hidden');
     document.getElementById(`${bestSocialForm}-remuneration-grid`).classList.remove('hidden');
+    document.getElementById(`${bestSocialForm}-retire-grid`).classList.remove('hidden');
 }
 
 
