@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.8.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -482,8 +482,7 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
 
         showBestChoice('sasu');
         showBestChoiceText('sasu');
-        let bestSocialForm = localStorage.getItem('bestSocialForm');
-        showBestSocialForm(bestSocialForm);
+        showBestSocialForm('sasu');
     } else {
         fillRecapContainer(turnoverMinusCost, turnover);
         fillBestChoiceText(turnover, situationValue, numberOfChildValue, cost);
@@ -518,10 +517,10 @@ function showBestSocialForm(bestSocialForm) {
 
     if (bestSocialForm === 'sasu' || bestSocialForm === 'eurl') {
         document.getElementById('dividends-container').style.display = 'block';
+        document.getElementById(`${bestSocialForm}-dividends-grid`).classList.remove('hidden');
     }
 
     document.getElementById(`${bestSocialForm}-contributions-grid`).classList.remove('hidden');
-    document.getElementById(`${bestSocialForm}-dividends-grid`).classList.remove('hidden');
     document.getElementById(`${bestSocialForm}-remuneration-grid`).classList.remove('hidden');
     document.getElementById(`${bestSocialForm}-retire-grid`).classList.remove('hidden');
 }
