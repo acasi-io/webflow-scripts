@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -15,8 +15,6 @@ const simulatorResults = document.getElementById('simulator-results');
 let PASS = 46368;
 export let halfPass = 0.5 * PASS;
 export let fifthPass = 0.2 * PASS;
-
-// test
 
 const isUnemployment = document.getElementById('unemployment_boolean');
 const unemploymentDuration = document.getElementById('unemployment_duration');
