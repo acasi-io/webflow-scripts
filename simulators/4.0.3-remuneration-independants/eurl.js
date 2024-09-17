@@ -1,12 +1,12 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
 const engine = new Engine(rules);
 
 
-function fillText(urssafData, htmlTag) {
+/* function fillText(urssafData, htmlTag) {
     const dataUrssaf = engine.evaluate(urssafData);
     let data = Math.round(dataUrssaf.nodeValue);
     if (isNaN(data)) {
@@ -48,7 +48,7 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
     document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
-}
+}*/ 
 
 
 
@@ -170,7 +170,7 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
     for (let pourcentage = 5; pourcentage <= 100; pourcentage += 5) {
         let remuneration = Math.round(maxWage * (pourcentage / 100));
         eurlContributionsSituation(remuneration);
-        fillCotisationsText();
+        // fillCotisationsText();
 
         let remunerationAfterTaxUrssaf = engine.evaluate("dirigeant . rémunération . net . après impôt");
         let remunerationAfterTaxAmount = Math.round(remunerationAfterTaxUrssaf.nodeValue);
@@ -197,7 +197,7 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
     return bestResult;
 }
 
-function fillCotisationsText() {
+/*function fillCotisationsText() {
     fillText("dirigeant . indépendant . cotisations et contributions . maladie", `#eurl-disease`);
     fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", `#eurl-base-retirement`);
     fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", `#eurl-additional-retirement`);
@@ -205,7 +205,7 @@ function fillCotisationsText() {
     fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", `#eurl-disability`);
     fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", `#eurl-csg`);
     fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#eurl-formation`);
-}
+}*/
 
 function calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
     eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS');
@@ -215,7 +215,7 @@ function calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdInc
     return maxWage;
 }
 
-function fillTextEurl(resultat) {
+/*function fillTextEurl(resultat) {
     let eurlContributionsTotalText = document.getElementById('eurl-contributions-total');
     eurlContributionsTotalText.textContent = (resultat.cotisations).toLocaleString('fr-FR') + '€';
     let eurlGrossDividendsText = document.getElementById('eurl-gross-dividends');
@@ -241,7 +241,7 @@ function fillTextEurl(resultat) {
 function eurlRetirement(remuneration) {
     eurlContributionsSituation(remuneration);
     retirementText('eurl-gain-trimester', 'eurl-pension-scheme', 'eurl-retirement-points');
-}
+}*/
 
 function calculPumaTax() {
     let eurlAfterTax = parseInt(localStorage.getItem('eurlAfterTax'));
@@ -263,15 +263,15 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
 
     /*eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS')
     const contributionsData = engine.evaluate("dirigeant . indépendant . cotisations et contributions . maladie");
-    const contributionsTotal = Math.round(contributionsData.nodeValue);
-    localStorage.setItem('eurlContributionsTotal', contributionsTotal);*/
+    const contributionsTotal = Math.round(contributionsData.nodeValue);*/
+    localStorage.setItem('eurlContributionsTotal', resultat.cotisations);
 
     localStorage.setItem('eurlAfterTax', resultat.remunerationAfterTax);
     localStorage.setItem('eurlTotal', resultat.total);
     localStorage.setItem('eurlDividends', resultat.bestDividends);
 
-    fillTextEurl(resultat);
-    eurlRetirement(resultat.remuneration);
+    // fillTextEurl(resultat);
+    // eurlRetirement(resultat.remuneration);
     calculPumaTax();
 }
 
