@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './result.js';
 
@@ -261,6 +261,7 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
 
     let resultat = comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberOfChild, householdIncome, situation);
 
+    eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS')
     const contributionsData = engine.evaluate("dirigeant . indépendant . cotisations et contributions . maladie");
     const contributionsTotal = Math.round(contributionsData.nodeValue);
     localStorage.setItem('eurlContributionsTotal', contributionsTotal);
