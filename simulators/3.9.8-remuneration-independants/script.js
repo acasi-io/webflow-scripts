@@ -1,8 +1,8 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
-import { microConditions, microResult, microCalculRetraite } from './micro.js';
+import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
 import { eiResult, eiCalculRetraite } from './ei.js';
 import { sasuResult, fillSasuDividendsRecap, sasuCalculRetraite } from './sasu.js';
 
