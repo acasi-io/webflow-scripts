@@ -1,7 +1,7 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
-import { halfPass, fifthPass } from './result.js';
+import { halfPass, fifthPass } from './script.js';
 
 const engine = new Engine(rules);
 
