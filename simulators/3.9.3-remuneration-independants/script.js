@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -399,37 +399,60 @@ function fillBestChoiceText(turnover, situationValue, numberOfChildValue, cost) 
         situationValue = 'en couple';
     }
 
-    const eurlDividends = parseInt(localStorage.getItem('bestEurlDividends')).toLocaleString('fr-FR');
-    const eurlRemuneration = parseInt(localStorage.getItem('eurlAfterTax')).toLocaleString('fr-FR');
-    const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal')).toLocaleString('fr-FR');
-    const eurlContributions = (document.getElementById('eurl-contributions-total')).textContent;
+    let wage;
 
-    document.getElementById(`eurl-bestchoice-text`).innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€, alors en vous versant <span class="simulator-recap-text-number">${eurlDividends}€</span> de dividendes et en vous rémunérant <span class="simulator-recap-text-number">${eurlRemuneration}€</span>, l'EURL est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${eurlContributions}</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${eurlFinalAmount}€</span>.`;
+    const microFinalAmount = parseInt(localStorage.getItem('microTotal')).toLocaleString('fr-FR');
+    const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal')).toLocaleString('fr-FR');
+    const eiFinalAmount = parseInt(localStorage.getItem('eiTotal')).toLocaleString('fr-FR');
+    const sasuFinalAmount = parseInt(localStorage.getItem('sasuTotal')).toLocaleString('fr-FR');
+
+    let bestSocialForm = localStorage.getItem('bestSocialForm');
+
+    if (bestSocialForm === 'eurl') {
+        wage = eurlFinalAmount;
+    } else if (bestSocialForm === 'sasu') {
+        wage = sasuFinalAmount;
+    } else if (bestSocialForm === 'micro') {
+        wage = microFinalAmount;
+    } else {
+        wage = eiFinalAmount;
+    }
+
+
+    document.querySelector('.simulator_result_ca').textContent = turnover.toLocaleString('fr-FR');
+    document.querySelector('.simulator_result_revenu').textContent = wage + '€';
+
+    // const eurlDividends = parseInt(localStorage.getItem('bestEurlDividends')).toLocaleString('fr-FR');
+    // const eurlRemuneration = parseInt(localStorage.getItem('eurlAfterTax')).toLocaleString('fr-FR');
+    // const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal')).toLocaleString('fr-FR');
+    // const eurlContributions = (document.getElementById('eurl-contributions-total')).textContent;
+
+    // document.getElementById(`eurl-bestchoice-text`).innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€, alors en vous versant <span class="simulator-recap-text-number">${eurlDividends}€</span> de dividendes et en vous rémunérant <span class="simulator-recap-text-number">${eurlRemuneration}€</span>, l'EURL est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${eurlContributions}</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${eurlFinalAmount}€</span>.`;
 
     // document.getElementById('eurl-bestchoice-text').textContent = `L’EURL est le meilleur choix pour plusieurs raisons. Puisque votre votre chiffre d'affaires est de ${turnover}€, que vous ${unemploymentText}, et que vous êtes ${situationValue} avec ${numberOfChildValue} enfants à charges, vous pouvez profiter des avantages de l’EURL en optimisant votre rémunération entre rémunération réelle, applicant des charges sociales moins élevées que la SASU, et dividendes.`;
 
     // document.getElementById('micro-bestchoice-text').textContent = `La micro-entreprise est le meilleur choix pour vous car votre chiffre d’affaires est inférieur à 50 000€. Cette forme sociale vous permettra donc de diminuer vos charges sociales pour une meilleure rémunération finale.`;
 
-    const microFinalAmount = parseInt(localStorage.getItem('microTotal')).toLocaleString('fr-FR');
-    const microContributions = (document.getElementById('micro-contributions-total')).textContent;
+    // const microFinalAmount = parseInt(localStorage.getItem('microTotal')).toLocaleString('fr-FR');
+    // const microContributions = (document.getElementById('micro-contributions-total')).textContent;
 
-    document.getElementById('micro-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€, alors la micro-entreprise est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${microContributions}</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${microFinalAmount}€</span>.`;
+    // document.getElementById('micro-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€, alors la micro-entreprise est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${microContributions}</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${microFinalAmount}€</span>.`;
 
     // document.getElementById('ei-bestchoice-text').textContent = `Puisque votre rémunération est de ${turnover}, que vous ${unemploymentText} et que vous êtes ${situationValue} avec ${numberOfChildValue} enfants à charges, l'EI est le meilleur choix pour vous.`;
 
-    const eiFinalAmount = parseInt(localStorage.getItem('eiTotal')).toLocaleString('fr-FR');
-    const eiContributions = (document.getElementById('ei-contributions-total')).textContent;
+    // const eiFinalAmount = parseInt(localStorage.getItem('eiTotal')).toLocaleString('fr-FR');
+    // const eiContributions = (document.getElementById('ei-contributions-total')).textContent;
 
-    document.getElementById('ei-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€, alors l'EI est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${eiContributions}€</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${eiFinalAmount}€</span>.`;
+    // document.getElementById('ei-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€, alors l'EI est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${eiContributions}€</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${eiFinalAmount}€</span>.`;
 
     // document.getElementById('sasu-bestchoice-text').textContent = `La SASU est le meilleur choix pour vous puisque votre chiffre d'affaires étant de ${turnover}€, vous pourrez bénéficier des meilleures coitisations si vous choisissez de vous versez des salaires, ou vous pourrez aussi faire le choix de vous versez des dividendes pour optimiser votre rémunération.`;
 
-    const sasuDividends = parseInt(localStorage.getItem('bestSasuDividends')).toLocaleString('fr-FR');
-    const sasuRemuneration = parseInt(localStorage.getItem('sasuAfterTax')).toLocaleString('fr-FR');
-    const sasuFinalAmount = parseInt(localStorage.getItem('sasuTotal')).toLocaleString('fr-FR');
-    const sasuContributions = (document.getElementById('sasu-contributions-total')).textContent;
+    // const sasuDividends = parseInt(localStorage.getItem('bestSasuDividends')).toLocaleString('fr-FR');
+    // const sasuRemuneration = parseInt(localStorage.getItem('sasuAfterTax')).toLocaleString('fr-FR');
+    // const sasuFinalAmount = parseInt(localStorage.getItem('sasuTotal')).toLocaleString('fr-FR');
+    // const sasuContributions = (document.getElementById('sasu-contributions-total')).textContent;
 
-    document.getElementById('sasu-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€ et que vous touchez le chômage, alors en vous versant <span class="simulator-recap-text-number">${sasuDividends}€</span> de dividendes et en vous rémunérant <span class="simulator-recap-text-number">${sasuRemuneration}€</span>, la SASU est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${sasuContributions}</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${sasuFinalAmount}€</span>.`;
+    // document.getElementById('sasu-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€ et que vous touchez le chômage, alors en vous versant <span class="simulator-recap-text-number">${sasuDividends}€</span> de dividendes et en vous rémunérant <span class="simulator-recap-text-number">${sasuRemuneration}€</span>, la SASU est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${sasuContributions}</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${sasuFinalAmount}€</span>.`;
 }
 
 function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, cost) {
