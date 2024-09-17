@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -10,7 +10,6 @@ const engine = new Engine(rules);
 
 const calculBtn = document.getElementById('calcul-btn');
 const numberOfChildSelect = document.getElementById('child');
-let sasuAfterTax = document.querySelectorAll('.is_sasu_after_tax');
 const simulatorResults = document.getElementById('simulator-results');
 let PASS = 46368;
 export let halfPass = 0.5 * PASS;
@@ -19,7 +18,6 @@ export let fifthPass = 0.2 * PASS;
 const isUnemployment = document.getElementById('unemployment_boolean');
 const unemploymentDuration = document.getElementById('unemployment_duration');
 
-const sasuBestChoiceText = document.getElementById('sasu-bestchoice-text');
 
 window.addEventListener('load', () => {
     isUnemployment.addEventListener('change', () => {
@@ -411,7 +409,7 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal')).toLocaleString('fr-FR');
     const eurlDividends = parseInt(localStorage.getItem('bestEurlDividends')).toLocaleString('fr-FR');
     const eurlRemuneration = parseInt(localStorage.getItem('eurlAfterTax')).toLocaleString('fr-FR');
-    const eurlContributions = (document.getElementById('eurl-contributions-total')).textContent;
+    const eurlContributions = parseInt(localStorage.getItem('eurlContributionsTotal')).toLocaleString('fr-FR');
 
     const eiFinalAmount = parseInt(localStorage.getItem('eiTotal')).toLocaleString('fr-FR');
     const eiContributions = (document.getElementById('ei-contributions-total')).textContent;
