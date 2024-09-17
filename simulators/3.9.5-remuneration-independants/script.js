@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -399,26 +399,55 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
         situationValue = 'en couple';
     }
 
-    let wage;
+    let bestTotalWage;
+    let bestWage;
+    let bestDividends;
+    let bestContributions;
 
     const microFinalAmount = parseInt(localStorage.getItem('microTotal')).toLocaleString('fr-FR');
+    const microContributions = (document.getElementById('micro-contributions-total')).textContent;
+
     const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal')).toLocaleString('fr-FR');
+    const eurlDividends = parseInt(localStorage.getItem('bestEurlDividends')).toLocaleString('fr-FR');
+    const eurlRemuneration = parseInt(localStorage.getItem('eurlAfterTax')).toLocaleString('fr-FR');
+    const eurlContributions = (document.getElementById('eurl-contributions-total')).textContent;
+
     const eiFinalAmount = parseInt(localStorage.getItem('eiTotal')).toLocaleString('fr-FR');
+    const eiContributions = (document.getElementById('ei-contributions-total')).textContent;
+
     const sasuFinalAmount = parseInt(localStorage.getItem('sasuTotal')).toLocaleString('fr-FR');
+    const sasuDividends = parseInt(localStorage.getItem('bestSasuDividends')).toLocaleString('fr-FR');
+    const sasuRemuneration = parseInt(localStorage.getItem('sasuAfterTax')).toLocaleString('fr-FR');
+    const sasuContributions = (document.getElementById('sasu-contributions-total')).textContent;
 
     if (bestSocialForm === 'eurl') {
-        wage = eurlFinalAmount;
+        bestTotalWage = eurlFinalAmount;
+        bestWage = eurlRemuneration;
+        bestDividends = eurlDividends;
+        bestContributions = eurlContributions;
     } else if (bestSocialForm === 'sasu') {
-        wage = sasuFinalAmount;
+        bestTotalWage = sasuFinalAmount;
+        bestWage = sasuRemuneration;
+        bestDividends = sasuDividends;
+        bestContributions = sasuContributions;
     } else if (bestSocialForm === 'micro') {
-        wage = microFinalAmount;
+        bestTotalWage = microFinalAmount;
+        bestWage = microFinalAmount;
+        bestDividends = '0';
+        bestContributions = microContributions;
     } else {
-        wage = eiFinalAmount;
+        bestTotalWage = eiFinalAmount;
+        bestWage = eiFinalAmount;
+        bestDividends = '0';
+        bestContributions = eiContributions;
     }
 
 
     document.querySelector('.simulator_result_ca').textContent = turnover.toLocaleString('fr-FR');
-    document.querySelector('.simulator_result_revenu').textContent = wage + '€';
+    document.querySelector('.simulator_result_revenu').textContent = bestTotalWage + '€';
+    document.getElementById('best-remuneration').textContent = bestWage.toLocaleString('fr-FR') + '€';
+    document.getElementById('best-dividends').textContent = bestDividends.toLocaleString('fr-FR') + '€';
+    document.getElementById('best-contributions').textContent = bestContributions.toLocaleString('fr-FR') + '€';
 
     // const eurlDividends = parseInt(localStorage.getItem('bestEurlDividends')).toLocaleString('fr-FR');
     // const eurlRemuneration = parseInt(localStorage.getItem('eurlAfterTax')).toLocaleString('fr-FR');
@@ -482,8 +511,8 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
             element.classList.remove('container-best-choice');
         });*/
     
-        const sasuContainerRecap = document.querySelectorAll('.simulator_recap_item.is-sasu');
-        const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
+        // const sasuContainerRecap = document.querySelectorAll('.simulator_recap_item.is-sasu');
+        // const sasuHeadingRecap = document.getElementById('sasu-heading-recap');
         // let resultRecapTitle = document.getElementById('simulator-result-title');
 
         // resultRecapTitle.textContent = document.getElementById(`sasu-heading-recap`).textContent;
@@ -499,7 +528,14 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         const sasuFinalAmount = parseInt(localStorage.getItem('sasuTotal')).toLocaleString('fr-FR');
         const sasuContributions = (document.getElementById('sasu-contributions-total')).textContent;
 
-        document.getElementById('sasu-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€ et que vous touchez le chômage, alors en vous versant <span class="simulator-recap-text-number">${sasuDividends}€</span> de dividendes et en vous rémunérant <span class="simulator-recap-text-number">${sasuRemuneration}€</span>, la SASU est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${sasuContributions}</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${sasuFinalAmount}€</span>.`;
+        document.querySelector('.simulator_result_ca').textContent = turnover.toLocaleString('fr-FR');
+        document.querySelector('.simulator_result_revenu').textContent = sasuFinalAmount + '€';
+
+        document.getElementById('best-remuneration').textContent = sasuRemuneration.toLocaleString('fr-FR') + '€';
+        document.getElementById('best-dividends').textContent = sasuDividends.toLocaleString('fr-FR') + '€';
+        document.getElementById('best-contributions').textContent = sasuContributions.toLocaleString('fr-FR') + '€';
+
+        // document.getElementById('sasu-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€ et que vous touchez le chômage, alors en vous versant <span class="simulator-recap-text-number">${sasuDividends}€</span> de dividendes et en vous rémunérant <span class="simulator-recap-text-number">${sasuRemuneration}€</span>, la SASU est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${sasuContributions}</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${sasuFinalAmount}€</span>.`;
 
         showBestChoice('sasu');
         showBestChoiceText('sasu');
