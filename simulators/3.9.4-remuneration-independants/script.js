@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/3.9.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -387,7 +387,7 @@ function fillRetireRecap(turnoverMinusCost, turnover) {
     //document.getElementById('sasu-retire-recap').textContent = sasuRetirement.toLocaleString('fr-FR') + '€';
 }
 
-function fillBestChoiceText(turnover, situationValue, numberOfChildValue, cost) {
+function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     let unemploymentText;
     if (isUnemployment === 'true' && unemploymentDuration === 'less_six_months') {
         unemploymentText = 'touchez le chômage depuis moins de six mois';
@@ -405,8 +405,6 @@ function fillBestChoiceText(turnover, situationValue, numberOfChildValue, cost) 
     const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal')).toLocaleString('fr-FR');
     const eiFinalAmount = parseInt(localStorage.getItem('eiTotal')).toLocaleString('fr-FR');
     const sasuFinalAmount = parseInt(localStorage.getItem('sasuTotal')).toLocaleString('fr-FR');
-
-    let bestSocialForm = localStorage.getItem('bestSocialForm');
 
     if (bestSocialForm === 'eurl') {
         wage = eurlFinalAmount;
@@ -508,8 +506,8 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         showBestSocialForm('sasu');
     } else {
         fillRecapContainer(turnoverMinusCost, turnover);
-        fillBestChoiceText(turnover, situationValue, numberOfChildValue, cost);
         let bestSocialForm = localStorage.getItem('bestSocialForm');
+        fillBestChoiceText(turnover, situationValue, bestSocialForm);
         showBestSocialForm(bestSocialForm);
     };
 }
