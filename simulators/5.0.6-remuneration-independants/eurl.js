@@ -260,6 +260,9 @@ function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, household
     let resultat = comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation);
 
     localStorage.setItem('eurlTotal', resultat.total);
+    localStorage.setItem('bestEurlDividends', resultat.bestDividends);
+    localStorage.setItem('eurlAfterTax', resultat.remunerationAfterTax);
+    localStorage.setItem('eurlContributionsTotal', resultat.cotisations);
 }
 
 function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome) {
@@ -270,11 +273,6 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
     /*eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS')
     const contributionsData = engine.evaluate("dirigeant . indépendant . cotisations et contributions . maladie");
     const contributionsTotal = Math.round(contributionsData.nodeValue);*/
-    localStorage.setItem('eurlContributionsTotal', resultat.cotisations);
-
-    localStorage.setItem('eurlAfterTax', resultat.remunerationAfterTax);
-    // localStorage.setItem('eurlTotal', resultat.total);
-    localStorage.setItem('eurlDividends', resultat.bestDividends);
 
     fillTextEurl(resultat);
     eurlRetirement(resultat.remuneration);

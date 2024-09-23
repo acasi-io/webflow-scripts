@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -342,25 +342,29 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinus
         // addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
         showBestChoice('eurl');
         showBestChoiceText('eurl');
-        localStorage.setItem('bestSocialForm', 'eurl_ei');
+        localStorage.setItem('bestSocialForm', 'eurl');
+        localStorage.setItem('bestSocialFormForComponent', 'eurl_ei');
         calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, 'non');
     } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
         // addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
         showBestChoice('sasu');
         showBestChoiceText('sasu');
         localStorage.setItem('bestSocialForm', 'sasu');
+        localStorage.setItem('bestSocialFormForComponent', 'sasu');
         // sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
     } else if (microTotal > eurlTotal && microTotal > eiTotal && microTotal > sasuTotal) {
         // addStyleToResults(microContainerRecap, microHeadingRecap, resultRecapTitle, 'micro');
         showBestChoice('micro');
         showBestChoiceText('micro');
         localStorage.setItem('bestSocialForm', 'micro');
+        localStorage.setItem('bestSocialFormForComponent', 'micro');
         microResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
     } else if (eiTotal > eurlTotal && eiTotal > sasuTotal && eiTotal > microTotal) {
         // addStyleToResults(eiContainerRecap, eiHeadingRecap, resultRecapTitle, 'ei');
         showBestChoice('ei');
         showBestChoiceText('ei');
-        localStorage.setItem('bestSocialForm', 'eurl_ei');
+        localStorage.setItem('bestSocialForm', 'ei');
+        localStorage.setItem('bestSocialFormForComponent', 'eurl_ei');
         eiResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
     }
 }
@@ -409,53 +413,66 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     let bestTotalWage;
     let bestWage;
     let bestDividends;
-    let bestContributions;
+    // let bestContributions;
 
     const microFinalAmount = parseInt(localStorage.getItem('microTotal')).toLocaleString('fr-FR');
     // const microContributions = (document.getElementById('micro-contributions-total')).textContent;
-    const microContributions = parseInt(localStorage.getItem('microContributions')).toLocaleString('fr-FR');
+    // const microContributions = parseInt(localStorage.getItem('microContributions')).toLocaleString('fr-FR');
 
     const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal')).toLocaleString('fr-FR');
     const eurlDividends = parseInt(localStorage.getItem('bestEurlDividends')).toLocaleString('fr-FR');
     const eurlRemuneration = parseInt(localStorage.getItem('eurlAfterTax')).toLocaleString('fr-FR');
-    const eurlContributions = parseInt(localStorage.getItem('eurlContributionsTotal')).toLocaleString('fr-FR');
+    // const eurlContributions = parseInt(localStorage.getItem('eurlContributionsTotal')).toLocaleString('fr-FR');
 
     const eiFinalAmount = parseInt(localStorage.getItem('eiTotal')).toLocaleString('fr-FR');
-    const eiContributions = (document.getElementById('ei-contributions-total')).textContent;
+    // const eiContributions = (document.getElementById('ei-contributions-total')).textContent;
 
-    const sasuFinalAmount = parseInt(localStorage.getItem('sasuTotal')).toLocaleString('fr-FR');
-    const sasuDividends = parseInt(localStorage.getItem('bestSasuDividends')).toLocaleString('fr-FR');
-    const sasuRemuneration = parseInt(localStorage.getItem('sasuAfterTax')).toLocaleString('fr-FR');
-    const sasuContributions = (document.getElementById('sasu-contributions-total')).textContent;
 
-    if (bestSocialForm === 'eurl') {
+    const sasuArray = JSON.parse(localStorage.getItem('arraySasu'));
+    const sasuFinalAmount = parseInt((sasuArray.remunerationPlusDividendsBestAmount).toLocaleString('fr-FR'));
+    const sasuPfuDividends = parseInt(sasuArray.dividendsNetsPfuAmount);
+    const sasuProgressiveDividends = parseInt(sasuArray.dividendsNetsProgressiveAmount);
+    let sasuDividends;
+    if (sasuPfuDividends > sasuProgressiveDividends) {
+        sasuDividends = sasuPfuDividends.toLocaleString('fr-FR');
+    } else {
+        sasuDividends = sasuProgressiveDividends.toLocaleString('fr-FR');
+    }
+    const sasuRemuneration = parseInt((sasuArray.afterTaxAmount).toLocaleString('fr-FR'));
+    // const sasuContributions = (document.getElementById('sasu-contributions-total')).textContent;
+
+    if (bestSocialForm === 'eurl_ei') {
         bestTotalWage = eurlFinalAmount;
         bestWage = eurlRemuneration;
         bestDividends = eurlDividends;
-        bestContributions = eurlContributions;
+        // bestContributions = eurlContributions;
     } else if (bestSocialForm === 'sasu') {
         bestTotalWage = sasuFinalAmount;
         bestWage = sasuRemuneration;
         bestDividends = sasuDividends;
-        bestContributions = sasuContributions;
+        // bestContributions = sasuContributions;
     } else if (bestSocialForm === 'micro') {
         bestTotalWage = microFinalAmount;
         bestWage = microFinalAmount;
         bestDividends = '0';
-        bestContributions = microContributions;
+        // bestContributions = microContributions;
     } else {
         bestTotalWage = eiFinalAmount;
         bestWage = eiFinalAmount;
         bestDividends = '0';
-        bestContributions = eiContributions;
+        // bestContributions = eiContributions;
     }
 
+
+    const contributionsTotal = document.getElementById('contributions-total');
 
     document.querySelector('.simulator_result_ca').textContent = turnover.toLocaleString('fr-FR');
     document.querySelector('.simulator_result_revenu').textContent = bestTotalWage + '€';
     document.getElementById('best-remuneration').textContent = bestWage.toLocaleString('fr-FR') + '€';
+
     document.getElementById('best-dividends').textContent = bestDividends.toLocaleString('fr-FR') + '€';
-    document.getElementById('best-contributions').textContent = bestContributions.toLocaleString('fr-FR') + '€';
+
+    document.getElementById('best-contributions').textContent = contributionsTotal.textContent;
 
     // const eurlDividends = parseInt(localStorage.getItem('bestEurlDividends')).toLocaleString('fr-FR');
     // const eurlRemuneration = parseInt(localStorage.getItem('eurlAfterTax')).toLocaleString('fr-FR');
@@ -558,12 +575,13 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         let bestSocialForm = localStorage.getItem('bestSocialForm');
         fillBestChoiceText(turnover, situationValue, bestSocialForm);
-        showBestSocialForm(bestSocialForm);
+        let bestSocialFormForComponent = localStorage.getItem('bestSocialFormForComponent');
+        showBestSocialForm(bestSocialFormForComponent);
     };
 }
 
 
-function showBestSocialForm(bestSocialForm) {
+function showBestSocialForm(bestSocialForm, bestSocialFormForComponent) {
     document.querySelectorAll('.details_dividends_component').forEach((component) => {
         component.classList.add('hidden');
     });
@@ -580,7 +598,7 @@ function showBestSocialForm(bestSocialForm) {
         component.classList.add('hidden');
     });
 
-    document.querySelectorAll(`.details_${bestSocialForm}_contributions_component`).forEach((component) => {
+    document.querySelectorAll(`.details_${bestSocialFormForComponent}_contributions_component`).forEach((component) => {
         component.classList.remove('hidden');
     });
 
