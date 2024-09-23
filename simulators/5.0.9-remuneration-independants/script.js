@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -442,38 +442,38 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     const sasuRemuneration = parseInt(sasuArray.afterTaxAmount);
     // const sasuContributions = (document.getElementById('sasu-contributions-total')).textContent;
 
-    if (bestSocialForm === 'eurl_ei') {
+    if (bestSocialForm === 'eurl') {
         bestTotalWage = eurlFinalAmount;
         bestWage = eurlRemuneration;
         bestDividends = eurlDividends;
-        // bestContributions = eurlContributions;
+        bestContributions = eurlContributions;
     } else if (bestSocialForm === 'sasu') {
         bestTotalWage = sasuFinalAmount;
         bestWage = sasuRemuneration;
         bestDividends = sasuDividends;
-        // bestContributions = sasuContributions;
+        bestContributions = sasuContributions;
     } else if (bestSocialForm === 'micro') {
         bestTotalWage = microFinalAmount;
         bestWage = microFinalAmount;
         bestDividends = '0';
-        // bestContributions = microContributions;
+        bestContributions = microContributions;
     } else {
         bestTotalWage = eiFinalAmount;
         bestWage = eiFinalAmount;
         bestDividends = '0';
-        // bestContributions = eiContributions;
+        bestContributions = eiContributions;
     }
 
 
     const contributionsTotal = document.getElementById('contributions-total');
+    document.getElementById('best-contributions').textContent = contributionsTotal.textContent;
 
     document.querySelector('.simulator_result_ca').textContent = turnover.toLocaleString('fr-FR');
+
     document.querySelector('.simulator_result_revenu').textContent = bestTotalWage.toLocaleString('fr-FR') + '€';
     document.getElementById('best-remuneration').textContent = bestWage.toLocaleString('fr-FR') + '€';
 
     document.getElementById('best-dividends').textContent = bestDividends.toLocaleString('fr-FR') + '€';
-
-    document.getElementById('best-contributions').textContent = contributionsTotal.textContent;
 
     // const eurlDividends = parseInt(localStorage.getItem('bestEurlDividends')).toLocaleString('fr-FR');
     // const eurlRemuneration = parseInt(localStorage.getItem('eurlAfterTax')).toLocaleString('fr-FR');
