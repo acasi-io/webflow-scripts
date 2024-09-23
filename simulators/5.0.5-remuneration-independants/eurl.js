@@ -165,9 +165,6 @@ function createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration
 function comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation) {
     let bestResult = createObjectForResult(0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-    // Testing
-    let singleParent = 'non';
-
     let eurlArray = [];
 
     for (let pourcentage = 5; pourcentage <= 100; pourcentage += 5) {
@@ -183,7 +180,7 @@ function comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, househ
         let eurlDividendsBrut = calculIs(turnoverMinusCost, remuneration, cotisationsAmount);
         let { cotisationsTotalAmount, eurlDividendsPfu } = calculDividendsPfu(turnoverMinusCost, remuneration, cotisationsAmount);
         localStorage.setItem('eurlCotisationsTotal', cotisationsTotalAmount);
-        let eurlDividendsBaremeAmount = calculDividendsBareme(singleParent, numberOfChild, householdIncome, situation, eurlDividendsBrut);
+        let eurlDividendsBaremeAmount = calculDividendsBareme(numberOfChild, householdIncome, situation, eurlDividendsBrut);
         let bestDividends = compareBestDividends(eurlDividendsPfu, eurlDividendsBaremeAmount);
 
         let total = remunerationAfterTaxAmount + bestDividends;
