@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -73,7 +73,7 @@ calculBtn.addEventListener('click', () => {
         // findSasuBestRemunerationAndDividends();
 
         // calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
-        sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome);
+        sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         // eiResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         // microResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
 
@@ -349,7 +349,7 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinus
         showBestChoice('sasu');
         showBestChoiceText('sasu');
         localStorage.setItem('bestSocialForm', 'sasu');
-        sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome);
+        // sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
     } else if (microTotal > eurlTotal && microTotal > eiTotal && microTotal > sasuTotal) {
         // addStyleToResults(microContainerRecap, microHeadingRecap, resultRecapTitle, 'micro');
         showBestChoice('micro');

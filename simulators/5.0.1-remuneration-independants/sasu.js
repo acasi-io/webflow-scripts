@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -115,7 +115,7 @@ function calculEssentialsValueForDividends(wage, situation, numberOfChild, house
     localStorage.setItem('totalForIs', totalForIs);
 }
 
-function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, arraySasu) {
+function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, percentage, arraySasu) {
     const wage = Math.round(turnoverMinusCost * (percentage / 100));
 
     calculEssentialsValueForDividends(wage, situation, numberOfChild, householdIncome, turnoverMinusCost)
@@ -130,7 +130,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
         maxDividends = Math.round(totalForIs - ((42500 * 0.15) + ((totalForIs - 42500) * 0.25)));
     }
 
-    situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, 'non', 'SAS');
+    situationProgressiveDividends(maxDividends, situation, numberOfChild, householdIncome, singleParent, 'SAS');
     const dividendsNetsProgressive = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsNetsProgressiveAmount = (Math.round(dividendsNetsProgressive.nodeValue));
 
@@ -141,20 +141,20 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     sasuPushInArray(afterTax, dividendsNetsProgressiveAmount, dividendsNetsPfuAmount, maxDividends, percentage, arraySasu);
 }
 
-function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome) {
+function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
     let arraySasu = [];
 
-    findSasuBestRemunerationAndDividends(turnoverMinusCost, situation, numberOfChild, householdIncome, arraySasu);
+    findSasuBestRemunerationAndDividends(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, arraySasu);
 
     let bestWage = parseInt(localStorage.getItem('bestWage'));
     let maxDividends = parseInt(localStorage.getItem('maxDividends'));
 
-    if(document.getElementById('single-parent').value === 'oui') {
+    /*if(document.getElementById('single-parent').value === 'oui') {
         sasuSituation(bestWage, situation, numberOfChild, householdIncome, 'oui');
         sasuRemuneration();
-    }
+    }*/
 
-    sasuSituation(bestWage, situation, numberOfChild, householdIncome, 'non');
+    sasuSituation(bestWage, situation, numberOfChild, householdIncome, singleParent);
     sasuRemuneration();
     sasuContributions();
     sasuRetirement();
@@ -182,9 +182,9 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     return pumaTaxAmount;
 }*/
 
-function findSasuBestRemunerationAndDividends(turnoverMinusCost, situation, numberOfChild, householdIncome, arraySasu) {
+function findSasuBestRemunerationAndDividends(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, arraySasu) {
     for (let percentage = 0; percentage <= 100; percentage += 10) {
-        sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, percentage, arraySasu);
+        sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, percentage, arraySasu);
     }
 
     arraySasu = JSON.parse(localStorage.getItem('arraySasu')); 
