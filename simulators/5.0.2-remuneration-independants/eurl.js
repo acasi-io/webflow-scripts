@@ -61,7 +61,7 @@ function eurlContributionsSituation(wageEurl) {
     });
 }
 
-function eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, tax) {
+function eurlSituation(turnoverMinusCost, situation, numberOfChild, singleParent, tax) {
     engine.setSituation({
         "entreprise . chiffre d'affaires": turnoverMinusCost,
         "impôt . foyer fiscal . situation de famille": `'${situation}'`,
@@ -208,8 +208,8 @@ function fillCotisationsText() {
     fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#contributions-eurl-ei-formation`);
 }
 
-function calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
-    eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS');
+function calculMaxWage(turnoverMinusCost, situation, numberOfChild, singleParent) {
+    eurlSituation(turnoverMinusCost, situation, numberOfChild, singleParent, 'IS');
     const maxWageUrssaf = engine.evaluate("dirigeant . rémunération . net");
     let maxWage = Math.round(maxWageUrssaf.nodeValue);
 
@@ -255,7 +255,7 @@ function eurlRetirement(remuneration) {
 }*/
 
 function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
-    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
+    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, singleParent);
 
     let resultat = comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberOfChild, householdIncome, situation);
 
@@ -263,7 +263,7 @@ function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, household
 }
 
 function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
-    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
+    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, singleParent);
 
     let resultat = comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberOfChild, householdIncome, situation);
 
