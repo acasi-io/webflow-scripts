@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -70,10 +70,10 @@ calculBtn.addEventListener('click', () => {
         storageMicroTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         storageEiTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         storageEurlTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
-        findSasuBestRemunerationAndDividends();
+        // findSasuBestRemunerationAndDividends();
 
         // calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
-        // sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome);
+        sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome);
         // eiResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         // microResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
 
