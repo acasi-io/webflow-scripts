@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -84,12 +84,16 @@ function microConditions(turnover) {
     }
 }
 
-function microResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
+function storageMicroTotal(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
     microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', singleParent);
 
     const microAfterTaxIsUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . revenu net . après impôt");
     const microAfterTaxIsAmount = Math.round(microAfterTaxIsUrssaf.nodeValue);
     localStorage.setItem('microTotal', microAfterTaxIsAmount);
+}
+
+function microResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
+    microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', singleParent);
 
     microRemuneration();
     microContributions();
@@ -148,4 +152,4 @@ function microCalculRetraite(turnover) {
 }
 
 
-export { microConditions, microResult, fillTextForMicro, microCalculRetraite };
+export { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal };

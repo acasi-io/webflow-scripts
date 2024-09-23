@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -66,7 +66,7 @@ function eiContributions() {
     fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#contributions-eurl-ei-formation`);
 }
 
-function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
+function storageEiTotal(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS');
     const eiAfterTaxIsUrssaf = engine.evaluate("dirigeant . rémunération . net . après impôt");
     const eiAfterTaxIsAmount = Math.round(eiAfterTaxIsUrssaf.nodeValue);
@@ -79,19 +79,33 @@ function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome, 
 
     if (eiAfterTaxIsAmount > eiAfterTaxIrAmount) {
         bestEiResult = eiAfterTaxIsAmount;
+    } else {
+        bestEiResult = eiAfterTaxIrAmount;
+    }
+
+    localStorage.setItem('eiTotal', bestEiResult);
+}
+
+function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
+    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS');
+    const eiAfterTaxIsUrssaf = engine.evaluate("dirigeant . rémunération . net . après impôt");
+    const eiAfterTaxIsAmount = Math.round(eiAfterTaxIsUrssaf.nodeValue);
+
+    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IR');
+    const eiAfterTaxIrUrssaf = engine.evaluate("dirigeant . rémunération . net . après impôt");
+    const eiAfterTaxIrAmount = Math.round(eiAfterTaxIrUrssaf.nodeValue);
+
+    if (eiAfterTaxIsAmount > eiAfterTaxIrAmount) {
         eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS');
         eiRemuneration();
         eiContributions();
         eiRetirement();
     } else {
-        bestEiResult = eiAfterTaxIrAmount;
         eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IR');
         eiRemuneration();
         eiContributions();
         eiRetirement();
     }
-
-    localStorage.setItem('eiTotal', bestEiResult);
 }
 
 function eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, tax) {
@@ -130,4 +144,4 @@ function eiCalculRetraite(turnover) {
 }
 
 
-export { eiResult, eiCalculRetraite };
+export { eiResult, eiCalculRetraite, storageEiTotal };

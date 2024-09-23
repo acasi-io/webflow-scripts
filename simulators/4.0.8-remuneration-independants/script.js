@@ -1,10 +1,10 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
-import { calculEurl } from './eurl.js';
-import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
-import { eiResult, eiCalculRetraite } from './ei.js';
-import { sasuResult, fillSasuDividendsRecap, sasuCalculRetraite } from './sasu.js';
+import { calculEurl, storageEurlTotal } from './eurl.js';
+import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
+import { eiResult, eiCalculRetraite, storageEiTotal } from './ei.js';
+import { sasuResult, fillSasuDividendsRecap, sasuCalculRetraite, findSasuBestRemunerationAndDividends } from './sasu.js';
 
 const engine = new Engine(rules);
 
@@ -67,10 +67,15 @@ calculBtn.addEventListener('click', () => {
 
         const turnoverMinusCost = turnover - cost;
 
-        calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
-        sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome);
-        eiResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
-        microResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        storageMicroTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        storageEiTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        storageEurlTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        findSasuBestRemunerationAndDividends();
+
+        // calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        // sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome);
+        // eiResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        // microResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
 
         // fillRecapContainer(turnoverMinusCost, turnover);
 
@@ -327,7 +332,7 @@ function showBestChoice(socialForm) {
     bestChoiceContainer.appendChild(bestChoiceRecap);
 }
 
-function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
+function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent) {
     // let resultRecapTitle = document.getElementById('simulator-result-title');
 
     // removeStyleToResults();
@@ -337,22 +342,26 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal) {
         // addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
         showBestChoice('eurl');
         showBestChoiceText('eurl');
-        localStorage.setItem('bestSocialForm', 'eurl');
+        localStorage.setItem('bestSocialForm', 'eurl_ei');
+        calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
     } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
         // addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
         showBestChoice('sasu');
         showBestChoiceText('sasu');
         localStorage.setItem('bestSocialForm', 'sasu');
+        sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome);
     } else if (microTotal > eurlTotal && microTotal > eiTotal && microTotal > sasuTotal) {
         // addStyleToResults(microContainerRecap, microHeadingRecap, resultRecapTitle, 'micro');
         showBestChoice('micro');
         showBestChoiceText('micro');
         localStorage.setItem('bestSocialForm', 'micro');
+        microResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
     } else if (eiTotal > eurlTotal && eiTotal > sasuTotal && eiTotal > microTotal) {
         // addStyleToResults(eiContainerRecap, eiHeadingRecap, resultRecapTitle, 'ei');
         showBestChoice('ei');
         showBestChoiceText('ei');
-        localStorage.setItem('bestSocialForm', 'ei');
+        localStorage.setItem('bestSocialForm', 'eurl_ei');
+        eiResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
     }
 }
 
@@ -481,7 +490,7 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     // document.getElementById('sasu-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€ et que vous touchez le chômage, alors en vous versant <span class="simulator-recap-text-number">${sasuDividends}€</span> de dividendes et en vous rémunérant <span class="simulator-recap-text-number">${sasuRemuneration}€</span>, la SASU est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${sasuContributions}</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${sasuFinalAmount}€</span>.`;
 }
 
-function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, cost) {
+function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, householdIncome, singleParent) {
     if (isUnemployment.value === "true" && unemploymentDuration.value === "more_six_months") {
         // fillEurlRecap();
         // fillMicroRecap(turnover);
@@ -546,7 +555,7 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         let sasuTotal = parseInt(localStorage.getItem('sasuTotal'));
         let microTotal = parseInt(localStorage.getItem('microTotal'));
 
-        compareResults(sasuTotal, eurlTotal, eiTotal, microTotal);
+        compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         let bestSocialForm = localStorage.getItem('bestSocialForm');
         fillBestChoiceText(turnover, situationValue, bestSocialForm);
         showBestSocialForm(bestSocialForm);
@@ -555,7 +564,27 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
 
 
 function showBestSocialForm(bestSocialForm) {
-    document.querySelectorAll('.simulator_contributions_grid').forEach((grid) => {
+    document.querySelectorAll('.details_dividends_component').forEach((component) => {
+        component.classList.add('hidden');
+    });
+
+    document.querySelectorAll(`.details_micro_contributions_component`).forEach((component) => {
+        component.classList.add('hidden');
+    });
+
+    document.querySelectorAll(`.details_eurl_ei_contributions_component`).forEach((component) => {
+        component.classList.add('hidden');
+    });
+
+    document.querySelectorAll(`.details_sasu_contributions_component`).forEach((component) => {
+        component.classList.add('hidden');
+    });
+
+    document.querySelectorAll(`.details_${bestSocialForm}_contributions_component`).forEach((component) => {
+        component.classList.remove('hidden');
+    });
+
+    /*document.querySelectorAll('.simulator_contributions_grid').forEach((grid) => {
         grid.classList.add('hidden');
     });
 
@@ -573,18 +602,19 @@ function showBestSocialForm(bestSocialForm) {
 
     document.querySelectorAll('.simulator_separator').forEach((grid) => {
         grid.classList.add('hidden');
-    });
+    });*/
 
-    document.getElementById('dividends-container').style.display = 'none';
+    // document.getElementById('dividends-container').style.display = 'none';
     
     if (bestSocialForm === 'sasu' || bestSocialForm === 'eurl') {
-        document.getElementById('dividends-container').style.display = 'block';
-        document.getElementById(`${bestSocialForm}-dividends-grid`).classList.remove('hidden');
+        document.querySelectorAll('.details_dividends_component').forEach((component) => {
+            component.classList.remove('hidden');
+        });
     }
 
-    document.getElementById(`${bestSocialForm}-contributions-grid`).classList.remove('hidden');
-    document.getElementById(`${bestSocialForm}-remuneration-grid`).classList.remove('hidden');
-    document.getElementById(`${bestSocialForm}-retire-grid`).classList.remove('hidden');
+    // document.getElementById(`${bestSocialForm}-contributions-grid`).classList.remove('hidden');
+    // document.getElementById(`${bestSocialForm}-remuneration-grid`).classList.remove('hidden');
+    // document.getElementById(`${bestSocialForm}-retire-grid`).classList.remove('hidden');
 }
 
 

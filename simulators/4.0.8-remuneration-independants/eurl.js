@@ -35,19 +35,19 @@ function fillSameClassTexts(urssafData, htmlTag) {
     });
 }
 
-function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag) {
+function retirementText() {
     const gainTrimester = engine.evaluate("protection sociale . retraite . trimestres");
-    document.getElementById(gainTrimesterTag).textContent = gainTrimester.nodeValue;
+    document.getElementById('gain-trimester').textContent = gainTrimester.nodeValue;
 
     const pensionScheme = engine.evaluate("protection sociale . retraite . base");
     let pensionSchemeAmount = Math.round(pensionScheme.nodeValue * 12);
     if (isNaN(pensionSchemeAmount)) {
         pensionSchemeAmount = 0;
     }
-    document.getElementById(pensionSchemeTag).textContent = `${pensionSchemeAmount.toLocaleString('fr-FR')}€`;
+    document.getElementById('pension-scheme').textContent = `${pensionSchemeAmount.toLocaleString('fr-FR')}€`;
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
-    document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
+    document.getElementById('retirement-points').textContent = retirementPoints.nodeValue;
 }
 
 
@@ -198,13 +198,14 @@ function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberO
 }
 
 function fillCotisationsText() {
-    fillText("dirigeant . indépendant . cotisations et contributions . maladie", `#eurl-disease`);
-    fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", `#eurl-base-retirement`);
-    fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", `#eurl-additional-retirement`);
-    fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", `#eurl-disease-allowance`);
-    fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", `#eurl-disability`);
-    fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", `#eurl-csg`);
-    fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#eurl-formation`);
+    fillText("dirigeant . indépendant . cotisations et contributions . cotisations", "#contributions-eurl-ei-cotisations-total")
+    fillText("dirigeant . indépendant . cotisations et contributions . maladie", `#contributions-eurl-ei-disease`);
+    fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", `#contributions-eurl-ei-base-retirement`);
+    fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", `#contributions-eurl-ei-additional-retirement`);
+    fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", `#contributions-eurl-ei-disease-allowance`);
+    fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", `#contributions-eurl-ei-disability`);
+    fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", `#contributions-eurl-ei-csg`);
+    fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#contributions-eurl-ei-formation`);
 }
 
 function calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
@@ -216,34 +217,31 @@ function calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdInc
 }
 
 function fillTextEurl(resultat) {
-    let eurlContributionsTotalText = document.getElementById('eurl-contributions-total');
+    let eurlContributionsTotalText = document.getElementById('contributions-total');
     eurlContributionsTotalText.textContent = (resultat.cotisations).toLocaleString('fr-FR') + '€';
-    let eurlGrossDividendsText = document.getElementById('eurl-gross-dividends');
+
+    let eurlGrossDividendsText = document.getElementById('gross-dividends');
     eurlGrossDividendsText.textContent = (resultat.grossDividends).toLocaleString('fr-FR') + '€';
     localStorage.setItem('eurlGrossDividends', resultat.grossDividends);
-    let eurlPfuDividendsText = document.getElementById('eurl-pfu-dividends');
+
+    let eurlPfuDividendsText = document.getElementById('pfu-dividends');
     eurlPfuDividendsText.textContent = (resultat.pfuDividends).toLocaleString('fr-FR') + '€';
-    let eurlProgressiveDividendsText = document.getElementById('eurl-progressive-dividends');
+
+    let eurlProgressiveDividendsText = document.getElementById('progressive-dividends');
     eurlProgressiveDividendsText.textContent = (resultat.baremeDividends).toLocaleString('fr-FR') + '€';
 
-    let remunerationBeforeTaxText = document.querySelectorAll('.is_eurlis_before_tax');
-    remunerationBeforeTaxText.forEach(element => {
-        element.textContent = (resultat.remuneration).toLocaleString('fr-FR') + '€'; 
-    });
+    document.getElementById('before-tax').textContent = (resultat.remuneration).toLocaleString('fr-FR') + '€';
+    document.getElementById('after-tax').textContent = (resultat.remunerationAfterTax).toLocaleString('fr-FR') + '€';
 
-    let remunerationAfterTaxText = document.querySelectorAll('.is_eurlis_after_tax');
-    remunerationAfterTaxText.forEach(element => {
-        element.textContent = (resultat.remunerationAfterTax).toLocaleString('fr-FR') + '€';
-    });
     localStorage.setItem('eurlAfterTax', resultat.remunerationAfterTax);
 }
 
 function eurlRetirement(remuneration) {
     eurlContributionsSituation(remuneration);
-    retirementText('eurl-gain-trimester', 'eurl-pension-scheme', 'eurl-retirement-points');
+    retirementText();
 }
 
-function calculPumaTax() {
+/*function calculPumaTax() {
     let eurlAfterTax = parseInt(localStorage.getItem('eurlAfterTax'));
     let grossDividends = parseInt(localStorage.getItem('eurlGrossDividends'));
 
@@ -254,6 +252,14 @@ function calculPumaTax() {
     } else {
         document.getElementById('eurl-puma').textContent = pumaTaxAmount.toLocaleString('fr-FR') + '€';
     }
+}*/
+
+function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
+    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
+
+    let resultat = comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberOfChild, householdIncome, situation);
+
+    localStorage.setItem('eurlTotal', resultat.total);
 }
 
 function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
@@ -267,13 +273,13 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
     localStorage.setItem('eurlContributionsTotal', resultat.cotisations);
 
     localStorage.setItem('eurlAfterTax', resultat.remunerationAfterTax);
-    localStorage.setItem('eurlTotal', resultat.total);
+    // localStorage.setItem('eurlTotal', resultat.total);
     localStorage.setItem('eurlDividends', resultat.bestDividends);
 
     fillTextEurl(resultat);
     eurlRetirement(resultat.remuneration);
-    calculPumaTax();
+    // calculPumaTax();
 }
 
 
-export { calculEurl };
+export { calculEurl, storageEurlTotal };
