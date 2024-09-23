@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -419,10 +419,9 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     // const microContributions = (document.getElementById('micro-contributions-total')).textContent;
     // const microContributions = parseInt(localStorage.getItem('microContributions')).toLocaleString('fr-FR');
 
-    const eurlArray = JSON.parse(localStorage.getItem('eurlArray'));
-    const eurlFinalAmount = parseInt(eurlArray.total);
-    const eurlDividends = parseInt(eurlArray.bestDividends);
-    const eurlRemuneration = parseInt(eurlArray.remunerationAfterTax);
+    const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal'));
+    const eurlDividends = parseInt(localStorage.getItem('bestEurlDividends'));
+    const eurlRemuneration = parseInt(localStorage.getItem('remunerationAfterTax'));
     // const eurlContributions = parseInt(localStorage.getItem('eurlContributionsTotal')).toLocaleString('fr-FR');
 
     const eiFinalAmount = parseInt(localStorage.getItem('eiTotal'));
@@ -430,16 +429,19 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 
 
     const sasuArray = JSON.parse(localStorage.getItem('arraySasu'));
-    const sasuFinalAmount = parseInt(sasuArray.remunerationPlusDividendsBestAmount);
-    const sasuPfuDividends = parseInt(sasuArray.dividendsNetsPfuAmount);
-    const sasuProgressiveDividends = parseInt(sasuArray.dividendsNetsProgressiveAmount);
+    const bestSasuTotal = Math.max(...array.map(obj => obj.remunerationPlusDividendsBestAmount));
+    const bestSasuObject = array.find(obj => obj.remunerationPlusDividendsBestAmount === bestSasuTotal);
+
+    const sasuFinalAmount = parseInt(bestSasuObject.remunerationPlusDividendsBestAmount);
+    const sasuPfuDividends = parseInt(bestSasuObject.dividendsNetsPfuAmount);
+    const sasuProgressiveDividends = parseInt(bestSasuObject.dividendsNetsProgressiveAmount);
     let sasuDividends;
     if (sasuPfuDividends > sasuProgressiveDividends) {
         sasuDividends = sasuPfuDividends;
     } else {
         sasuDividends = sasuProgressiveDividends;
     }
-    const sasuRemuneration = parseInt(sasuArray.afterTaxAmount);
+    const sasuRemuneration = parseInt(bestSasuObject.afterTaxAmount);
     // const sasuContributions = (document.getElementById('sasu-contributions-total')).textContent;
 
     if (bestSocialForm === 'eurl') {
