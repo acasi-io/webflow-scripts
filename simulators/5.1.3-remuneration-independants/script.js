@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -421,7 +421,7 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 
     const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal'));
     const eurlDividends = parseInt(localStorage.getItem('bestEurlDividends'));
-    const eurlRemuneration = parseInt(localStorage.getItem('remunerationAfterTax'));
+    const eurlRemuneration = parseInt(localStorage.getItem('eurlAfterTax'));
     // const eurlContributions = parseInt(localStorage.getItem('eurlContributionsTotal')).toLocaleString('fr-FR');
 
     const eiFinalAmount = parseInt(localStorage.getItem('eiTotal'));
