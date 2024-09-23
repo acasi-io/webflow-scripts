@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -33,19 +33,19 @@ function fillSameClassTexts(urssafData, htmlTag) {
     });
 }
 
-function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag) {
+function microRetirement() {
     const gainTrimester = engine.evaluate("protection sociale . retraite . trimestres");
-    document.getElementById(gainTrimesterTag).textContent = gainTrimester.nodeValue;
+    document.getElementById('gain-trimester').textContent = gainTrimester.nodeValue;
 
     const pensionScheme = engine.evaluate("protection sociale . retraite . base");
     let pensionSchemeAmount = Math.round(pensionScheme.nodeValue * 12);
     if (isNaN(pensionSchemeAmount)) {
         pensionSchemeAmount = 0;
     }
-    document.getElementById(pensionSchemeTag).textContent = `${pensionSchemeAmount.toLocaleString('fr-FR')}€`;
+    document.getElementById('pension-scheme').textContent = `${pensionSchemeAmount.toLocaleString('fr-FR')}€`;
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
-    document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
+    document.getElementById('retirement-points').textContent = retirementPoints.nodeValue;
 }
 
 
@@ -87,6 +87,10 @@ function microConditions(turnover) {
 function microResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
     microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', singleParent);
 
+    const microAfterTaxIsUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . revenu net . après impôt");
+    const microAfterTaxIsAmount = Math.round(microAfterTaxIsUrssaf.nodeValue);
+    localStorage.setItem('microTotal', microAfterTaxIsAmount);
+
     microRemuneration();
     microContributions();
     microRetirement();
@@ -107,19 +111,15 @@ function microSituation(turnoverMinusCost, situation, numberOfChild, householdIn
 }
 
 function microRemuneration() {
-    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net", '.is_micro_before_tax');
-    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net . après impôt", '.is_micro_after_tax');
+    fillText("dirigeant . auto-entrepreneur . revenu net", '#before-tax');
+    fillText("dirigeant . auto-entrepreneur . revenu net . après impôt", '#after-tax');
 }
 
 function microContributions() {
-    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions", '#micro-contributions-total');
-    fillText("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations", '#micro-contributions');
-    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . TFC", '#micro-room-tax');
-    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . CFP", '#micro-formation');
-}
-
-function microRetirement() {
-    retirementText('micro-gain-trimester', 'micro-pension-scheme', 'micro-retirement-points');
+    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions", '#contributions-total');
+    fillText("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations", '#contributions-micro-contributions');
+    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . TFC", '#contributions-micro-room-tax');
+    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . CFP", '#contributions-micro-formation');
 }
 
 function fillTextForMicro(turnover) {

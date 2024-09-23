@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -129,7 +129,7 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
     document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
 }
 
-function fillEurlRecap() {
+/*function fillEurlRecap() {
     const eurlWageRecap = document.getElementById('eurl-wage-recap');
     const eurlDividendsRecap = document.getElementById('eurl-dividends-recap');
     const eurlCotisationsRecap = document.getElementById('eurl-contributions-recap');
@@ -207,7 +207,7 @@ function fillSasuRecap() {
 
     let sasuTotal = sasuAfterTax + bestSasuDividends;
     localStorage.setItem('sasuTotal', sasuTotal);
-}
+}*/
 
 function fillRecapContainer(turnoverMinusCost, turnover) {
     fillEurlRecap();
@@ -381,7 +381,7 @@ function fillRetireRecap(turnoverMinusCost, turnover) {
     let eiRetirement = eiCalculRetraite(turnover);
     document.getElementById('ei-retire-recap').textContent = eiRetirement.toLocaleString('fr-FR') + '€';
 
-    //let sasuRetirement = sasuCalculRetraite(turnoverMinusCost);
+    // let sasuRetirement = sasuCalculRetraite(turnoverMinusCost);
     //document.getElementById('sasu-retire-recap').textContent = sasuRetirement.toLocaleString('fr-FR') + '€';
 }
 

@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -32,50 +32,66 @@ function fillSameClassTexts(urssafData, htmlTag) {
     });
 }
 
-function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag) {
+function eiRetirement() {
     const gainTrimester = engine.evaluate("protection sociale . retraite . trimestres");
-    document.getElementById(gainTrimesterTag).textContent = gainTrimester.nodeValue;
+    document.getElementById('gain-trimester').textContent = gainTrimester.nodeValue;
 
     const pensionScheme = engine.evaluate("protection sociale . retraite . base");
     let pensionSchemeAmount = Math.round(pensionScheme.nodeValue * 12);
     if (isNaN(pensionSchemeAmount)) {
         pensionSchemeAmount = 0;
     }
-    document.getElementById(pensionSchemeTag).textContent = `${pensionSchemeAmount.toLocaleString('fr-FR')}€`;
+    document.getElementById('pension-scheme').textContent = `${pensionSchemeAmount.toLocaleString('fr-FR')}€`;
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
-    document.getElementById(retirementPointsTag).textContent = retirementPoints.nodeValue;
+    document.getElementById('retirement-points').textContent = retirementPoints.nodeValue;
 }
 
 
 
-function eiEurlRemuneration(taxRemunerationBefore, taxRemunerationAfter) {
-    fillSameClassTexts("dirigeant . rémunération . net", taxRemunerationBefore);
-    fillSameClassTexts("dirigeant . rémunération . net . après impôt", taxRemunerationAfter);
+function eiRemuneration() {
+    fillSameClassTexts("dirigeant . rémunération . net", "#before-tax");
+    fillSameClassTexts("dirigeant . rémunération . net . après impôt", "#after-tax");
 }
 
-function eiEurlContributions(form) {
-    fillText("dirigeant . indépendant . cotisations et contributions", `#${form}-contributions-total`);
-    fillText("dirigeant . indépendant . cotisations et contributions . cotisations", `#${form}-contributions`);
-    fillText("dirigeant . indépendant . cotisations et contributions . maladie", `#${form}-disease`);
-    fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", `#${form}-base-retirement`);
-    fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", `#${form}-additional-retirement`);
-    fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", `#${form}-disease-allowance`);
-    fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", `#${form}-disability`);
-    fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", `#${form}-csg`);
-    fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#${form}-formation`);
+function eiContributions() {
+    fillText("dirigeant . indépendant . cotisations et contributions", `#contributions-total`);
+    fillText("dirigeant . indépendant . cotisations et contributions . cotisations", `#contributions-eurl-ei-cotisations-total`);
+    fillText("dirigeant . indépendant . cotisations et contributions . maladie", `#contributions-eurl-ei-disease`);
+    fillText("dirigeant . indépendant . cotisations et contributions . retraite de base", `#contributions-eurl-ei-base-retirement`);
+    fillText("dirigeant . indépendant . cotisations et contributions . retraite complémentaire", `#contributions-eurl-ei-additional-retirement`);
+    fillText("dirigeant . indépendant . cotisations et contributions . indemnités journalières maladie", `#contributions-eurl-ei-disease-allowance`);
+    fillText("dirigeant . indépendant . cotisations et contributions . invalidité et décès", `#contributions-eurl-ei-disability`);
+    fillText("dirigeant . indépendant . cotisations et contributions . CSG-CRDS", `#contributions-eurl-ei-csg`);
+    fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#contributions-eurl-ei-formation`);
 }
 
 function eiResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS');
-
-    eiEurlRemuneration('.is_ei_before_tax', '.is_eiis_after_tax');
-    eiEurlContributions('ei');
-    eiRetirement();
+    const eiAfterTaxIsUrssaf = engine.evaluate("dirigeant . rémunération . net . après impôt");
+    const eiAfterTaxIsAmount = Math.round(eiAfterTaxIsUrssaf.nodeValue);
 
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IR');
-    eiEurlRemuneration('.is_ei_before_tax', '.is_eiir_after_tax');
-    eiEurlRemuneration('.is_eurlir_before_tax', '.is_eurlir_after_tax');
+    const eiAfterTaxIrUrssaf = engine.evaluate("dirigeant . rémunération . net . après impôt");
+    const eiAfterTaxIrAmount = Math.round(eiAfterTaxIrUrssaf.nodeValue);
+
+    let bestEiResult;
+
+    if (eiAfterTaxIsAmount > eiAfterTaxIrAmount) {
+        bestEiResult = eiAfterTaxIsAmount;
+        eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS');
+        eiRemuneration();
+        eiContributions();
+        eiRetirement();
+    } else {
+        bestEiResult = eiAfterTaxIrAmount;
+        eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IR');
+        eiRemuneration();
+        eiContributions();
+        eiRetirement();
+    }
+
+    localStorage.setItem('eiTotal', bestEiResult);
 }
 
 function eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, tax) {
@@ -91,10 +107,6 @@ function eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncom
         "entreprise . catégorie juridique": "'EI'",
         "entreprise . catégorie juridique . EI . auto-entrepreneur": "non"
     });
-}
-
-function eiRetirement() {
-    retirementText('ei-gain-trimester', 'ei-pension-scheme', 'ei-retirement-points');
 }
 
 function eiCalculRetraite(turnover) {
