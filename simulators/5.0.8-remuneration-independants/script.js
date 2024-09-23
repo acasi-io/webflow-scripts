@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -419,9 +419,10 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     // const microContributions = (document.getElementById('micro-contributions-total')).textContent;
     // const microContributions = parseInt(localStorage.getItem('microContributions')).toLocaleString('fr-FR');
 
-    const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal'));
-    const eurlDividends = parseInt(localStorage.getItem('bestEurlDividends'));
-    const eurlRemuneration = parseInt(localStorage.getItem('eurlAfterTax'));
+    const eurlArray = JSON.parse(localStorage.getItem('eurlArray'));
+    const eurlFinalAmount = parseInt(eurlArray.total);
+    const eurlDividends = parseInt(eurlArray.bestDividends);
+    const eurlRemuneration = parseInt(eurlArray.remunerationAfterTax);
     // const eurlContributions = parseInt(localStorage.getItem('eurlContributionsTotal')).toLocaleString('fr-FR');
 
     const eiFinalAmount = parseInt(localStorage.getItem('eiTotal'));
@@ -576,7 +577,7 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         let bestSocialForm = localStorage.getItem('bestSocialForm');
         fillBestChoiceText(turnover, situationValue, bestSocialForm);
         let bestSocialFormForComponent = localStorage.getItem('bestSocialFormForComponent');
-        showBestSocialForm(bestSocialFormForComponent);
+        showBestSocialForm(bestSocialForm, bestSocialFormForComponent);
     };
 }
 
