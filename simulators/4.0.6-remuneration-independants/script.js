@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -483,11 +483,11 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 
 function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, cost) {
     if (isUnemployment.value === "true" && unemploymentDuration.value === "more_six_months") {
-        fillEurlRecap();
-        fillMicroRecap(turnover);
-        fillEiRecap();
-        fillSasuRecap();
-        fillRetireRecap(turnoverMinusCost, turnover);
+        // fillEurlRecap();
+        // fillMicroRecap(turnover);
+        // fillEiRecap();
+        // fillSasuRecap();
+        // fillRetireRecap(turnoverMinusCost, turnover);
     
         document.querySelectorAll('.is_ca_recap').forEach(element => {
             element.textContent = turnover.toLocaleString('fr-FR') + '€';
@@ -540,7 +540,13 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         showBestChoiceText('sasu');
         showBestSocialForm('sasu');
     } else {
-        fillRecapContainer(turnoverMinusCost, turnover);
+        // fillRecapContainer(turnoverMinusCost, turnover);
+        let eurlTotal = parseInt(localStorage.getItem('eurlTotal'));
+        let eiTotal = parseInt(localStorage.getItem('eiTotal'));
+        let sasuTotal = parseInt(localStorage.getItem('sasuTotal'));
+        let microTotal = parseInt(localStorage.getItem('microTotal'));
+
+        compareResults(sasuTotal, eurlTotal, eiTotal, microTotal);
         let bestSocialForm = localStorage.getItem('bestSocialForm');
         fillBestChoiceText(turnover, situationValue, bestSocialForm);
         showBestSocialForm(bestSocialForm);
