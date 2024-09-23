@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -429,8 +429,8 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 
 
     const sasuArray = JSON.parse(localStorage.getItem('arraySasu'));
-    const bestSasuTotal = Math.max(...array.map(obj => obj.remunerationPlusDividendsBestAmount));
-    const bestSasuObject = array.find(obj => obj.remunerationPlusDividendsBestAmount === bestSasuTotal);
+    const bestSasuTotal = Math.max(...sasuArray.map(obj => obj.remunerationPlusDividendsBestAmount));
+    const bestSasuObject = sasuArray.find(obj => obj.remunerationPlusDividendsBestAmount === bestSasuTotal);
 
     const sasuFinalAmount = parseInt(bestSasuObject.remunerationPlusDividendsBestAmount);
     const sasuPfuDividends = parseInt(bestSasuObject.dividendsNetsPfuAmount);
