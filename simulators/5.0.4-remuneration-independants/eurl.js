@@ -61,13 +61,13 @@ function eurlContributionsSituation(wageEurl) {
     });
 }
 
-function eurlSituation(turnoverMinusCost, situation, numberOfChild, singleParent, tax) {
+function eurlSituation(turnoverMinusCost, situation, numberOfChild, tax) {
     engine.setSituation({
         "entreprise . chiffre d'affaires": turnoverMinusCost,
         "impôt . foyer fiscal . situation de famille": `'${situation}'`,
         "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
         // "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
-        "impôt . foyer fiscal . parent isolé": `${singleParent}`,
+        "impôt . foyer fiscal . parent isolé": 'non',
         "entreprise . imposition": `'${tax}'`,
         "entreprise . activité . nature": "'libérale'",
         "situation personnelle . domiciliation fiscale à l'étranger": "non",
@@ -116,9 +116,9 @@ function calculDividendsPfu(turnoverMinusCost, remuneration, cotisationsAmount) 
     };
 }
 
-function calculDividendsBareme(singleParent, numberOfChild, householdIncome, situation, eurlDividendsBrut) {
+function calculDividendsBareme(numberOfChild, householdIncome, situation, eurlDividendsBrut) {
     let eurlDividendsBaremeUrssaf = engine.setSituation({
-        "impôt . foyer fiscal . parent isolé": singleParent,
+        "impôt . foyer fiscal . parent isolé": 'non',
         "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
         "impôt . foyer fiscal . revenu imposable . autres revenus imposables": householdIncome,
         "dirigeant . rémunération . net . imposable": "0 €/an",
@@ -162,8 +162,11 @@ function createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration
     return bestResult;
 }
 
-function comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberOfChild, householdIncome, situation) {
+function comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation) {
     let bestResult = createObjectForResult(0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+    // Testing
+    let singleParent = 'non';
 
     let eurlArray = [];
 
@@ -208,8 +211,8 @@ function fillCotisationsText() {
     fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#contributions-eurl-ei-formation`);
 }
 
-function calculMaxWage(turnoverMinusCost, situation, numberOfChild, singleParent) {
-    eurlSituation(turnoverMinusCost, situation, numberOfChild, singleParent, 'IS');
+function calculMaxWage(turnoverMinusCost, situation, numberOfChild) {
+    eurlSituation(turnoverMinusCost, situation, numberOfChild, 'non', 'IS');
     const maxWageUrssaf = engine.evaluate("dirigeant . rémunération . net");
     let maxWage = Math.round(maxWageUrssaf.nodeValue);
 
@@ -254,18 +257,18 @@ function eurlRetirement(remuneration) {
     }
 }*/
 
-function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
-    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, singleParent);
+function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, householdIncome) {
+    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild);
 
-    let resultat = comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberOfChild, householdIncome, situation);
+    let resultat = comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation);
 
     localStorage.setItem('eurlTotal', resultat.total);
 }
 
-function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
-    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, singleParent);
+function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome) {
+    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild);
 
-    let resultat = comparerRemunerations(maxWage, turnoverMinusCost, singleParent, numberOfChild, householdIncome, situation);
+    let resultat = comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation);
 
     /*eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS')
     const contributionsData = engine.evaluate("dirigeant . indépendant . cotisations et contributions . maladie");

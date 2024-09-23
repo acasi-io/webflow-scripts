@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -69,7 +69,7 @@ calculBtn.addEventListener('click', () => {
 
         storageMicroTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         storageEiTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
-        storageEurlTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        storageEurlTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, 'non');
         // findSasuBestRemunerationAndDividends();
 
         // calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
@@ -343,7 +343,7 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinus
         showBestChoice('eurl');
         showBestChoiceText('eurl');
         localStorage.setItem('bestSocialForm', 'eurl_ei');
-        calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, 'non');
     } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
         // addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
         showBestChoice('sasu');
