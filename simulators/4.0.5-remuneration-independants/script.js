@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/4.0.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite } from './micro.js';
@@ -135,7 +135,7 @@ function fillEurlRecap() {
     const eurlCotisationsRecap = document.getElementById('eurl-contributions-recap');
 
     let eurlIrResult = parseInt((document.getElementById('is-eurlir-after-tax').textContent).replace(/\D/g, ''));
-    let eurlIsTotal = parseInt(localStorage.getItem('eurlIsTotal'));
+    let eurlIsTotal = parseInt(localStorage.getItem('eurlTotal'));
 
     if (eurlIsTotal > eurlIrResult) {
         let bestDividends = parseInt(localStorage.getItem('bestEurlDividends'));
