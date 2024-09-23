@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.0.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -446,22 +446,22 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
         bestTotalWage = eurlFinalAmount;
         bestWage = eurlRemuneration;
         bestDividends = eurlDividends;
-        bestContributions = eurlContributions;
+        // bestContributions = eurlContributions;
     } else if (bestSocialForm === 'sasu') {
         bestTotalWage = sasuFinalAmount;
         bestWage = sasuRemuneration;
         bestDividends = sasuDividends;
-        bestContributions = sasuContributions;
+        // bestContributions = sasuContributions;
     } else if (bestSocialForm === 'micro') {
         bestTotalWage = microFinalAmount;
         bestWage = microFinalAmount;
         bestDividends = '0';
-        bestContributions = microContributions;
+        // bestContributions = microContributions;
     } else {
         bestTotalWage = eiFinalAmount;
         bestWage = eiFinalAmount;
         bestDividends = '0';
-        bestContributions = eiContributions;
+        // bestContributions = eiContributions;
     }
 
 
