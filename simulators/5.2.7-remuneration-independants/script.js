@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -302,13 +302,13 @@ function fillRecapContainer(turnoverMinusCost, turnover) {
     compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, eurlContainerRecap, sasuContainerRecap, eiContainerRecap, microContainerRecap, eurlHeadingRecap, sasuHeadingRecap, eiHeadingRecap, microHeadingRecap);
 }*/
 
-function showBestChoiceText(socialForm) {
+/*function showBestChoiceText(socialForm) {
     document.querySelectorAll('.simulator_recap_explication_result.is-bestchoice-text').forEach((text) => {
         text.style.display = 'none';
     });
 
     document.getElementById(`${socialForm}-bestchoice-text`).style.display = 'block';
-}
+}*/
 
 /*function showBestChoice(socialForm) {
     let otherRecapContainer = document.getElementById('simulator_recap_other_container');
@@ -344,7 +344,7 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinus
     if (eurlTotal > eiTotal && eurlTotal > sasuTotal && eurlTotal > microTotal) {
         // addStyleToResults(eurlContainerRecap, eurlHeadingRecap, resultRecapTitle, 'eurl');
         // showBestChoice('eurl');
-        showBestChoiceText('eurl');
+        // showBestChoiceText('eurl');
         localStorage.setItem('bestSocialForm', 'eurl');
         localStorage.setItem('bestSocialFormForComponent', 'eurl_ei');
         calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
@@ -352,7 +352,7 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinus
     } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
         // addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
         // showBestChoice('sasu');
-        showBestChoiceText('sasu');
+        // showBestChoiceText('sasu');
         localStorage.setItem('bestSocialForm', 'sasu');
         localStorage.setItem('bestSocialFormForComponent', 'sasu');
         resultRecapTitle.textContent = "SASU à l'Impôt sur les Sociétés";
@@ -360,7 +360,7 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinus
     } else if (microTotal > eurlTotal && microTotal > eiTotal && microTotal > sasuTotal) {
         // addStyleToResults(microContainerRecap, microHeadingRecap, resultRecapTitle, 'micro');
         // showBestChoice('micro');
-        showBestChoiceText('micro');
+        // showBestChoiceText('micro');
         localStorage.setItem('bestSocialForm', 'micro');
         localStorage.setItem('bestSocialFormForComponent', 'micro');
         microResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
@@ -368,7 +368,7 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinus
     } else if (eiTotal > eurlTotal && eiTotal > sasuTotal && eiTotal > microTotal) {
         // addStyleToResults(eiContainerRecap, eiHeadingRecap, resultRecapTitle, 'ei');
         // showBestChoice('ei');
-        showBestChoiceText('ei');
+        // showBestChoiceText('ei');
         localStorage.setItem('bestSocialForm', 'ei');
         localStorage.setItem('bestSocialFormForComponent', 'eurl_ei');
         eiResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
@@ -583,7 +583,7 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         // document.getElementById('sasu-bestchoice-text').innerHTML = `Si votre chiffre d'affaire est de <span class="simulator-recap-text-number">${turnover}€</span> et vos charges, c’est à dire ce que vous dépensez pour faire fonctionner votre entreprise, sont de ${cost}€ et que vous touchez le chômage, alors en vous versant <span class="simulator-recap-text-number">${sasuDividends}€</span> de dividendes et en vous rémunérant <span class="simulator-recap-text-number">${sasuRemuneration}€</span>, la SASU est la meilleure optimisation pour vous.<br>Vos cotisations à devoir à l'Etat s'élèveront à <span class="simulator-recap-text-number">${sasuContributions}</span>.<br>En résumé, le montant qui vous reviendra à la fin sera de <span class="simulator-recap-text-total-amount">${sasuFinalAmount}€</span>.`;
 
         // showBestChoice('sasu');
-        showBestChoiceText('sasu');
+        // showBestChoiceText('sasu');
         showBestSocialForm('sasu', 'sasu');
         fillBestChoiceText(turnover, situationValue, 'sasu');
         explanationText.textContent = "La SASU est une forme juridique de société par actions simplifiée avec un seul associé. Les principaux avantages incluent la protection du patrimoine personnel, la flexibilité dans l'organisation, la liberté de fixation du capital, la possibilité de transition vers une structure pluripersonnelle sans formalités complexes et l’absences de cotisations sociales sur les dividendes.";
