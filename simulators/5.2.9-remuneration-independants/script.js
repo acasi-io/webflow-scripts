@@ -1,8 +1,8 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
-import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
+import { microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
 import { eiResult, eiCalculRetraite, storageEiTotal } from './ei.js';
 import { sasuResult, fillSasuDividendsRecap, sasuCalculRetraite, findSasuBestRemunerationAndDividends } from './sasu.js';
 
@@ -66,7 +66,7 @@ calculBtn.addEventListener('click', () => {
         const numberOfChildValue = parseInt(document.getElementById('child').value);
         const situationValue = document.getElementById('personal-situation').value;
 
-        microConditions(turnover);
+        // microConditions(turnover);
 
         const turnoverMinusCost = turnover - cost;
 
