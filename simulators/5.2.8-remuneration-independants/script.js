@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -539,11 +539,11 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
 
         if (turnover > 50000) {
             localStorage.setItem('microTotal', 0);
-            let contributionsRecap = document.getElementById('micro-contributions-recap');
+            /*let contributionsRecap = document.getElementById('micro-contributions-recap');
             let retireRecap = document.getElementById('micro-retire-recap');
     
             contributionsRecap.textContent = '-';
-            retireRecap.textContent = '-';
+            retireRecap.textContent = '-';*/
         }
     
         /*document.querySelectorAll('.simulator_heading_recap').forEach(element => {
