@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -69,7 +69,7 @@ calculBtn.addEventListener('click', () => {
 
         storageMicroTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         storageEiTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
-        storageEurlTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, 'non');
+        storageEurlTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         // findSasuBestRemunerationAndDividends();
 
         // calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
@@ -79,7 +79,7 @@ calculBtn.addEventListener('click', () => {
 
         // fillRecapContainer(turnoverMinusCost, turnover);
 
-        checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, cost);
+        checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, singleParent);
 
         simulatorResults.classList.remove('hidden');
         simulatorResults.scrollIntoView({
@@ -344,7 +344,7 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinus
         showBestChoiceText('eurl');
         localStorage.setItem('bestSocialForm', 'eurl');
         localStorage.setItem('bestSocialFormForComponent', 'eurl_ei');
-        calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, 'non');
+        calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
     } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
         // addStyleToResults(sasuContainerRecap, sasuHeadingRecap, resultRecapTitle, 'sasu');
         showBestChoice('sasu');

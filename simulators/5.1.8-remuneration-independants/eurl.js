@@ -61,13 +61,13 @@ function eurlContributionsSituation(wageEurl) {
     });
 }
 
-function eurlSituation(turnoverMinusCost, situation, numberOfChild, tax) {
+function eurlSituation(turnoverMinusCost, situation, numberOfChild, singleParent, tax) {
     engine.setSituation({
         "entreprise . chiffre d'affaires": turnoverMinusCost,
         "impôt . foyer fiscal . situation de famille": `'${situation}'`,
         "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
         // "impôt . foyer fiscal . revenu imposable . autres revenus imposables": parseFloat(householdIncome),
-        "impôt . foyer fiscal . parent isolé": 'non',
+        "impôt . foyer fiscal . parent isolé": `${singleParent}`,
         "entreprise . imposition": `'${tax}'`,
         "entreprise . activité . nature": "'libérale'",
         "situation personnelle . domiciliation fiscale à l'étranger": "non",
@@ -116,9 +116,9 @@ function calculDividendsPfu(turnoverMinusCost, remuneration, cotisationsAmount) 
     };
 }
 
-function calculDividendsBareme(numberOfChild, householdIncome, situation, eurlDividendsBrut) {
+function calculDividendsBareme(numberOfChild, householdIncome, situation, eurlDividendsBrut, singleParent) {
     let eurlDividendsBaremeUrssaf = engine.setSituation({
-        "impôt . foyer fiscal . parent isolé": 'non',
+        "impôt . foyer fiscal . parent isolé": `${singleParent}`,
         "impôt . foyer fiscal . enfants à charge": parseInt(numberOfChild),
         "impôt . foyer fiscal . revenu imposable . autres revenus imposables": householdIncome,
         "dirigeant . rémunération . net . imposable": "0 €/an",
@@ -162,7 +162,7 @@ function createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration
     return bestResult;
 }
 
-function comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation) {
+function comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation, singleParent) {
     let bestResult = createObjectForResult(0, 0, 0, 0, 0, 0, 0, 0, 0);
 
     let eurlArray = [];
@@ -180,7 +180,7 @@ function comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, househ
         let eurlDividendsBrut = calculIs(turnoverMinusCost, remuneration, cotisationsAmount);
         let { cotisationsTotalAmount, eurlDividendsPfu } = calculDividendsPfu(turnoverMinusCost, remuneration, cotisationsAmount);
         localStorage.setItem('eurlCotisationsTotal', cotisationsTotalAmount);
-        let eurlDividendsBaremeAmount = calculDividendsBareme(numberOfChild, householdIncome, situation, eurlDividendsBrut);
+        let eurlDividendsBaremeAmount = calculDividendsBareme(numberOfChild, householdIncome, situation, eurlDividendsBrut, singleParent);
         let bestDividends = compareBestDividends(eurlDividendsPfu, eurlDividendsBaremeAmount);
 
         let total = remunerationAfterTaxAmount + bestDividends;
@@ -208,8 +208,8 @@ function fillCotisationsText() {
     fillText("dirigeant . indépendant . cotisations et contributions . formation professionnelle", `#contributions-eurl-ei-formation`);
 }
 
-function calculMaxWage(turnoverMinusCost, situation, numberOfChild) {
-    eurlSituation(turnoverMinusCost, situation, numberOfChild, 'non', 'IS');
+function calculMaxWage(turnoverMinusCost, situation, numberOfChild, singleParent) {
+    eurlSituation(turnoverMinusCost, situation, numberOfChild, singleParent, 'IS');
     const maxWageUrssaf = engine.evaluate("dirigeant . rémunération . net");
     let maxWage = Math.round(maxWageUrssaf.nodeValue);
 
@@ -254,10 +254,10 @@ function eurlRetirement(remuneration) {
     }
 }*/
 
-function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, householdIncome) {
-    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild);
+function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
+    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, singleParent);
 
-    let resultat = comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation);
+    let resultat = comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation, singleParent);
 
     localStorage.setItem('eurlTotal', resultat.total);
     localStorage.setItem('bestEurlDividends', resultat.bestDividends);
@@ -265,8 +265,8 @@ function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, household
     localStorage.setItem('eurlContributionsTotal', resultat.cotisations);
 }
 
-function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome) {
-    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild);
+function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
+    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, singleParent);
 
     let resultat = comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation);
 
