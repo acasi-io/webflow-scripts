@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -10,15 +10,6 @@ function fillText(urssafData, htmlTag) {
         data = 0;
     }
     document.querySelector(htmlTag).textContent = data.toLocaleString('fr-FR') + '€';
-}
-
-function yearFillText(urssafData, htmlTag) {
-    const data = engine.evaluate(urssafData);
-    let dataYear = Math.round(data.nodeValue * 12);
-    if (isNaN(dataYear)) {
-        dataYear = 0;
-    }
-    document.querySelector(htmlTag).textContent = dataYear.toLocaleString('fr-FR') + '€';
 }
 
 function fillSameClassTexts(urssafData, htmlTag) {

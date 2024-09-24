@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -7,18 +7,7 @@ const engine = new Engine(rules);
 
 const sasuDividendsPfu = document.getElementById('pfu-dividends');
 const sasuDividendsProgressive = document.getElementById('progressive-dividends');
-const sasuBeforeTax = document.getElementById('before-tax');
-let sasuAfterTax = document.getElementById('after-tax');
 
-
-function fillText(urssafData, htmlTag) {
-    const dataUrssaf = engine.evaluate(urssafData);
-    let data = Math.round(dataUrssaf.nodeValue);
-    if (isNaN(data)) {
-        data = 0;
-    }
-    document.querySelector(htmlTag).textContent = data.toLocaleString('fr-FR') + '€';
-}
 
 function yearFillText(urssafData, htmlTag) {
     const data = engine.evaluate(urssafData);
@@ -27,17 +16,6 @@ function yearFillText(urssafData, htmlTag) {
         dataYear = 0;
     }
     document.querySelector(htmlTag).textContent = dataYear.toLocaleString('fr-FR') + '€';
-}
-
-function fillSameClassTexts(urssafData, htmlTag) {
-    const dataUrssaf = engine.evaluate(urssafData);
-    let data = dataUrssaf.nodeValue;
-    if (isNaN(data)) {
-        data = 0;
-    }
-    document.querySelectorAll(htmlTag).forEach(element => {
-        element.textContent = data.toLocaleString('fr-FR') + '€';
-    });
 }
 
 function retirementText() {
@@ -57,7 +35,7 @@ function retirementText() {
 
 
 
-function fillSasuDividendsRecap() {
+/*function fillSasuDividendsRecap() {
     const sasuDividendsRecap = document.getElementById('sasu-dividends-recap');
     const sasuDividendsProgressiveAmount = parseInt((sasuDividendsProgressive.textContent).replace(/\D/g, ''));
     const sasuDividendsPfuAmount = parseInt((sasuDividendsPfu.textContent).replace(/\D/g, ''));
@@ -70,7 +48,7 @@ function fillSasuDividendsRecap() {
         sasuDividendsRecap.textContent = sasuDividendsPfuAmount.toLocaleString('fr-FR') + '€';
     }
     localStorage.setItem('sasuDividends', bestDividends);
-}
+}*/
 
 function situationProgressiveDividends(dividends, situation, numberOfChild, householdIncome, singleParent, socialForm) {
     engine.setSituation({
@@ -148,11 +126,6 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
 
     let bestWage = parseInt(localStorage.getItem('bestWage'));
     let maxDividends = parseInt(localStorage.getItem('maxDividends'));
-
-    /*if(document.getElementById('single-parent').value === 'oui') {
-        sasuSituation(bestWage, situation, numberOfChild, householdIncome, 'oui');
-        sasuRemuneration();
-    }*/
 
     sasuSituation(bestWage, situation, numberOfChild, householdIncome, singleParent);
     sasuRemuneration();
@@ -278,10 +251,6 @@ function sasuSituation(wage, situation, numberOfChild, householdIncome, singlePa
 }
 
 function sasuRemuneration() {
-    /*document.querySelectorAll('.is_sasu_remuneration').forEach(element => {
-        element.style.display = 'block';
-    });*/
-
     const net = engine.evaluate("salarié . rémunération . net . à payer avant impôt");
     let netAmount = Math.round(net.nodeValue * 12);
     if (isNaN(netAmount)) {
@@ -348,7 +317,7 @@ function sasuRetirement() {
     document.getElementById('retirement-points').textContent = pointsAcquired;
 }
 
-function sasuCalculRetraite(turnoverMinusCost) {
+/*function sasuCalculRetraite(turnoverMinusCost) {
     engine.setSituation({
         "entreprise . date de création": "période . début d'année",
         "dirigeant . exonérations . ACRE": "non",
@@ -364,7 +333,7 @@ function sasuCalculRetraite(turnoverMinusCost) {
     let totalRetirement = basicRetirementAmount + complementaryRetirementAmount;
 
     return totalRetirement;
-}
+}*/
 
 
-export { fillSasuDividendsRecap, sasuResult, sasuCalculRetraite, findSasuBestRemunerationAndDividends };
+export { sasuResult };
