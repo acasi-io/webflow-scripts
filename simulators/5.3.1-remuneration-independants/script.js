@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -576,7 +576,7 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
 
         document.getElementById('best-remuneration').textContent = sasuRemuneration.toLocaleString('fr-FR') + '€';
         document.getElementById('best-dividends').textContent = sasuDividends.toLocaleString('fr-FR') + '€';
-        document.getElementById('best-contributions').textContent = sasuContributions.toLocaleString('fr-FR') + '€';
+        // document.getElementById('best-contributions').textContent = sasuContributions.toLocaleString('fr-FR') + '€';
 
         resultRecapTitle.textContent = "SASU à l'Impôt sur les Sociétés";
 
