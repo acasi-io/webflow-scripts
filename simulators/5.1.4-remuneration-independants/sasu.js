@@ -138,7 +138,7 @@ function sasuCalculAll(turnoverMinusCost, situation, numberOfChild, householdInc
     const dividendsNetsPfu = engine.evaluate("bénéficiaire . dividendes . nets d'impôt");
     const dividendsNetsPfuAmount = (Math.round(dividendsNetsPfu.nodeValue));
 
-    sasuSituation(bestWage, situation, numberOfChild, householdIncome, singleParent);
+    sasuSituation(wage, situation, numberOfChild, householdIncome, singleParent);
     const contributions = engine.evaluate("dirigeant . assimilé salarié . cotisations");
     const contributionsAmount = Math.round(contributions.nodeValue * 12);
 
