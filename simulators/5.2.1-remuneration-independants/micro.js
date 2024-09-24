@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -109,8 +109,10 @@ function microSituation(turnoverMinusCost, situation, numberOfChild, householdIn
         "dirigeant . auto-entrepreneur . impôt . versement libératoire": `${paymentInDischarge}`,
         "impôt . foyer fiscal . parent isolé": `${singleParent}`,
         "entreprise . activité . nature": "'libérale'",
+        "entreprise . activité . nature . libérale . réglementée": "non",
         "entreprise . catégorie juridique": "'EI'",
-        "entreprise . catégorie juridique . EI . auto-entrepreneur": "oui"
+        "entreprise . catégorie juridique . EI . auto-entrepreneur": "oui",
+        "dirigeant . auto-entrepreneur": "oui"
     });
 }
 
