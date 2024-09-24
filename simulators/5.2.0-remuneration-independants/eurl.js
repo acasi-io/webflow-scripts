@@ -268,7 +268,7 @@ function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, household
 function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
     let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, singleParent);
 
-    let resultat = comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation);
+    let resultat = comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation, singleParent);
 
     /*eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS')
     const contributionsData = engine.evaluate("dirigeant . indépendant . cotisations et contributions . maladie");
