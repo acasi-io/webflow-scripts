@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.1.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -586,25 +586,15 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
 
 
 function showBestSocialForm(bestSocialForm, bestSocialFormForComponent) {
-    document.querySelectorAll('.details_dividends_component').forEach((component) => {
-        component.classList.add('hidden');
-    });
+    document.querySelector('.details_dividends_component').classList.add('hidden');
 
-    document.querySelectorAll(`.details_micro_contributions_component`).forEach((component) => {
-        component.classList.add('hidden');
-    });
+    document.querySelector(`.contributions_micro_grid`).classList.add('hidden');
 
-    document.querySelectorAll(`.details_eurl_ei_contributions_component`).forEach((component) => {
-        component.classList.add('hidden');
-    });
+    document.querySelector(`.contributions_eurl_ei_grid`).classList.add('hidden');
 
-    document.querySelectorAll(`.details_sasu_contributions_component`).forEach((component) => {
-        component.classList.add('hidden');
-    });
+    document.querySelector(`.contributions_sasu_grid`).classList.add('hidden');
 
-    document.querySelectorAll(`.details_${bestSocialFormForComponent}_contributions_component`).forEach((component) => {
-        component.classList.remove('hidden');
-    });
+    document.querySelector(`.contributions_${bestSocialFormForComponent}_grid`).classList.remove('hidden');
 
     /*document.querySelectorAll('.simulator_contributions_grid').forEach((grid) => {
         grid.classList.add('hidden');
@@ -629,9 +619,7 @@ function showBestSocialForm(bestSocialForm, bestSocialFormForComponent) {
     // document.getElementById('dividends-container').style.display = 'none';
     
     if (bestSocialForm === 'sasu' || bestSocialForm === 'eurl') {
-        document.querySelectorAll('.details_dividends_component').forEach((component) => {
-            component.classList.remove('hidden');
-        });
+        document.querySelector('.details_dividends_component').classList.remove('hidden');
     }
 
     // document.getElementById(`${bestSocialForm}-contributions-grid`).classList.remove('hidden');
