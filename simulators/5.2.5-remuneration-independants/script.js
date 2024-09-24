@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -416,6 +416,9 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
         situationValue = 'en couple';
     }
 
+    const explanationText = document.getElementById('explanation-text');
+    const attentionText = document.getElementById('attention-text');
+
     let bestTotalWage;
     let bestWage;
     let bestDividends;
@@ -454,21 +457,29 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
         bestTotalWage = eurlFinalAmount;
         bestWage = eurlRemuneration;
         bestDividends = eurlDividends;
+        explanationText.textContent = "L'EURL est une SARL à associé unique, offrant une protection du patrimoine personnel et une grande flexibilité. Les principaux avantages incluent la protection du patrimoine personnel, la flexibilité dans l'organisation, la liberté de fixation du capital, et la transition automatique vers une SARL en cas d'arrivée de nouveaux associés.";
+        attentionText.textContent = "L’EURL à l’IS offre une fiscalité avantageuse, mais attention à la gestion des dividendes, soumis à cotisations sociales. En tant que gérant TNS, vous bénéficiez de charges sociales réduites, mais d'une couverture sociale et retraite moins favorable. La responsabilité est limitée sauf en cas de garanties personnelles, et des formalités comptables rigoureuses sont nécessaires pour rester conforme.";
         // bestContributions = eurlContributions;
     } else if (bestSocialForm === 'sasu') {
         bestTotalWage = sasuFinalAmount;
         bestWage = sasuRemuneration;
         bestDividends = sasuDividends;
+        explanationText.textContent = "La SASU est une forme juridique de société par actions simplifiée avec un seul associé. Les principaux avantages incluent la protection du patrimoine personnel, la flexibilité dans l'organisation, la liberté de fixation du capital, la possibilité de transition vers une structure pluripersonnelle sans formalités complexes et l’absences de cotisations sociales sur les dividendes.";
+        attentionText.textContent = "La SASU offre souplesse et l'absence de cotisations sociales sur les dividendes, mais certains aspects sont à surveiller. En tant que président assimilé salarié, vous relevez du régime général, avec des charges sociales plus élevées mais une meilleure couverture sociale et retraite. Vous pouvez choisir de vous verser plus de dividendes pour réduire ces charges, mais cela diminue votre protection sociale, notamment en matière de retraite. Enfin, la gestion administrative reste rigoureuse et la responsabilité limitée, sauf en cas de garanties personnelles.";
         // bestContributions = sasuContributions;
     } else if (bestSocialForm === 'micro') {
         bestTotalWage = microFinalAmount;
         bestWage = microFinalAmount;
         bestDividends = '0';
+        explanationText.textContent = "La micro-entreprise est simple à créer et à gérer, avec un régime fiscal et social allégé. Les cotisations sont calculées sur le chiffre d’affaires, et la TVA peut être exonérée sous certains seuils. De plus, les formalités comptables sont réduites, ce qui en fait un statut idéal pour démarrer une activité sans lourdes contraintes administratives.";
+        attentionText.textContent = "Les plafonds de chiffre d’affaires limitent la croissance et obligent à changer de statut en cas de dépassement. La couverture sociale et retraite est moindre, et l’absence de séparation entre patrimoine personnel et professionnel expose l'entrepreneur à un risque financier en cas de difficultés.";
         // bestContributions = microContributions;
     } else {
         bestTotalWage = eiFinalAmount;
         bestWage = eiFinalAmount;
         bestDividends = '0';
+        explanationText.textContent = "L'entreprise individuelle permet à un entrepreneur de démarrer une activité sans créer une entité juridique distincte. La responsabilité est limitée au patrimoine professionnel, offrant une protection des biens personnels sans formalités. L'entrepreneur peut librement apporter des fonds et gérer la trésorerie. L'imposition est basée sur le bénéfice réalisé, avec des cotisations sociales en fonction des rémunérations.";
+        attentionText.textContent = "Bien que l'EI simplifie la gestion, la responsabilité de l'entrepreneur peut être engagée en cas de dettes si le patrimoine professionnel n'est pas bien séparé. De plus, les cotisations sociales sont calculées sur le bénéfice, même si celui-ci est réinvesti dans l'activité, ce qui peut affecter la trésorerie. Enfin, la couverture sociale et retraite peut être moins avantageuse que dans d'autres statuts plus protecteurs.";
         // bestContributions = eiContributions;
     }
 
@@ -579,6 +590,8 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         showBestChoiceText('sasu');
         showBestSocialForm('sasu', 'sasu');
         fillBestChoiceText(turnover, situationValue, 'sasu');
+        explanationText.textContent = "La SASU est une forme juridique de société par actions simplifiée avec un seul associé. Les principaux avantages incluent la protection du patrimoine personnel, la flexibilité dans l'organisation, la liberté de fixation du capital, la possibilité de transition vers une structure pluripersonnelle sans formalités complexes et l’absences de cotisations sociales sur les dividendes.";
+        attentionText.textContent = "La SASU offre souplesse et l'absence de cotisations sociales sur les dividendes, mais certains aspects sont à surveiller. En tant que président assimilé salarié, vous relevez du régime général, avec des charges sociales plus élevées mais une meilleure couverture sociale et retraite. Vous pouvez choisir de vous verser plus de dividendes pour réduire ces charges, mais cela diminue votre protection sociale, notamment en matière de retraite. Enfin, la gestion administrative reste rigoureuse et la responsabilité limitée, sauf en cas de garanties personnelles.";
     } else {
         // fillRecapContainer(turnoverMinusCost, turnover);
         let eurlTotal = parseInt(localStorage.getItem('eurlTotal'));
