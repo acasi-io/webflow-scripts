@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.2.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -569,7 +569,7 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         const sasuDividends = parseInt(localStorage.getItem('bestSasuDividends')).toLocaleString('fr-FR');
         const sasuRemuneration = parseInt(localStorage.getItem('sasuAfterTax')).toLocaleString('fr-FR');
         const sasuFinalAmount = parseInt(localStorage.getItem('sasuTotal')).toLocaleString('fr-FR');
-        const sasuContributions = (document.getElementById('sasu-contributions-total')).textContent;
+        // const sasuContributions = (document.getElementById('sasu-contributions-total')).textContent;
 
         document.querySelector('.simulator_result_ca').textContent = turnover.toLocaleString('fr-FR');
         document.querySelector('.simulator_result_revenu').textContent = sasuFinalAmount + '€';
