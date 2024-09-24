@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -81,7 +81,7 @@ function microContributions() {
     yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . CFP", '#contributions-micro-formation');
 }
 
-/*function microCalculRetraite(turnover) {
+function microCalculRetraite(turnover) {
     engine.setSituation({
         "salarié": "non",
         "entreprise . activités . revenus mixtes": "non",
@@ -97,7 +97,7 @@ function microContributions() {
     let totalRetirement = basicRetirementAmount + complementaryRetirementAmount;
 
     return totalRetirement;
-}*/
+}
 
 
 export { microResult, microCalculRetraite, storageMicroTotal };
