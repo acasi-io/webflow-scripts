@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -131,6 +131,12 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuRemuneration();
     sasuContributions();
     sasuRetirement();
+
+    yearFillText("dirigeant . assimilé salarié . cotisations", '#contributions-total');
+    const contributionsUrssaf = engine.evaluate("dirigeant . assimilé salarié . cotisations");
+    const contributionsAmount = Math.round(contributionsUrssaf.nodeValue * 12);
+
+    localStorage.setItem('sasuContributions', contributionsAmount);
 
     // let pumaTaxAmount = calculPumaTax(maxDividends);
 
@@ -335,5 +341,27 @@ function sasuRetirement() {
     return totalRetirement;
 }*/
 
+function fillSasuComparison() {
+    const sasuArray = JSON.parse(localStorage.getItem('arraySasu'));
+    const bestSasuTotal = Math.max(...sasuArray.map(obj => obj.remunerationPlusDividendsBestAmount));
+    const bestSasuObject = sasuArray.find(obj => obj.remunerationPlusDividendsBestAmount === bestSasuTotal);
 
-export { sasuResult };
+    const sasuPfuDividends = parseInt(bestSasuObject.dividendsNetsPfuAmount);
+    const sasuProgressiveDividends = parseInt(bestSasuObject.dividendsNetsProgressiveAmount);
+    let sasuDividends;
+    if (sasuPfuDividends > sasuProgressiveDividends) {
+        sasuDividends = sasuPfuDividends;
+    } else {
+        sasuDividends = sasuProgressiveDividends;
+    }
+
+    const sasuRemuneration = parseInt(bestSasuObject.afterTaxAmount);
+    const sasuContributions = parseInt(localStorage.getItem('sasuContributions'));
+
+    document.getElementById('sasu-comparison-wage').textContent = sasuRemuneration.toLocaleString('fr-FR');
+    document.getElementById('sasu-comparison-dividends').textContent = sasuDividends.toLocaleString('fr-FR');
+    document.getElementById('sasu-comparison-contributions').textContent = sasuContributions.toLocaleString('fr-FR');
+}
+
+
+export { sasuResult, fillSasuComparison };

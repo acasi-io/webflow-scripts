@@ -1,10 +1,10 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
 import { eiResult, eiCalculRetraite, storageEiTotal, fillEiComparison } from './ei.js';
-import { sasuResult } from './sasu.js';
+import { sasuResult, fillSasuComparison } from './sasu.js';
 
 const engine = new Engine(rules);
 
@@ -81,6 +81,7 @@ calculBtn.addEventListener('click', () => {
         storageEurlTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
 
         sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        fillSasuComparison();
 
         checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, householdIncome, singleParent);
 
