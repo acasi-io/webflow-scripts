@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -72,7 +72,7 @@ calculBtn.addEventListener('click', () => {
         fillMicroComparison(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent)
 
         storageEiTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
-        fillEiComparison(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        // fillEiComparison(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
 
         storageEurlTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         fillEurlComparison(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
