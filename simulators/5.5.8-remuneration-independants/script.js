@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -248,7 +248,7 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
         attentionText.textContent = "Bien que l'EI simplifie la gestion, la responsabilité de l'entrepreneur peut être engagée en cas de dettes si le patrimoine professionnel n'est pas bien séparé. De plus, les cotisations sociales sont calculées sur le bénéfice, même si celui-ci est réinvesti dans l'activité, ce qui peut affecter la trésorerie. Enfin, la couverture sociale et retraite peut être moins avantageuse que dans d'autres statuts plus protecteurs.";
     }
 
-    orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
+    //orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
     orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
 
     const contributionsTotal = document.getElementById('contributions-total');
@@ -283,7 +283,7 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     });
 }
 
-function orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+/*function orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
     let results = [
         { id: "sasu-comparison-component", remuneration: sasuFinalAmount },
         { id: "eurl-comparison-component", remuneration: eurlFinalAmount },
@@ -300,7 +300,7 @@ function orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFina
         // Mettre à jour le contenu de rémunération en fonction de l'ordre
         document.getElementById(`comparison_${i + 1}_best_remuneration`).textContent = results[i].remuneration;
     }
-}
+}*/
 
 function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, householdIncome, singleParent) {
     if (isUnemployment.value === "true" && unemploymentDuration.value === "more_six_months") {    
