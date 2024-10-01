@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -46,42 +46,6 @@ function microRetirement() {
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
     document.getElementById('retirement-points').textContent = retirementPoints.nodeValue;
-}
-
-
-
-function microConditions(turnover) {
-    // const microRecap = document.querySelectorAll('.is_micro_recap');
-    const microContributions = document.querySelector('.is_micro_contributions');
-    // const microRecapContainer = document.querySelectorAll('.simulator_recap_item.is-micro');
-
-    /*microRecapContainer.forEach((item) => {
-        item.style.display = 'none';
-    });*/
-
-    document.querySelectorAll('.simulator_micro_hidden').forEach(element => {
-        element.style.display = 'none';
-    });
-    microContributions.style.display = 'none';
-
-    /*microRecap.forEach(element => {
-        element.style.display = 'none';
-    });*/
-
-    if (turnover <= 50000) {
-        /*microRecapContainer.forEach((item) => {
-            item.style.display = 'block';
-        });*/
-
-        document.querySelectorAll('.simulator_micro_hidden').forEach(element => {
-            element.style.display = 'block';
-        });
-
-        microContributions.style.display = 'flex';
-        /*microRecap.forEach(element => {
-            element.style.display = 'block';
-        });*/
-    }
 }
 
 function storageMicroTotal(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
@@ -154,4 +118,4 @@ function microCalculRetraite(turnover) {
 }
 
 
-export { microConditions, microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal };
+export { microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal };
