@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -17,7 +17,7 @@ export let fifthPass = 0.2 * PASS;
 
 const isUnemployment = document.getElementById('unemployment_boolean');
 const unemploymentDuration = document.getElementById('unemployment_duration');
-let resultRecapTitle = document.querySelectorAll('simulator_best_result_title');
+let resultRecapTitle = document.querySelectorAll('.simulator_best_result_title');
 const explanationText = document.getElementById('explanation-text');
 const attentionText = document.getElementById('attention-text');
 
