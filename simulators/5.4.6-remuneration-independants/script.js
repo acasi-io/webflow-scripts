@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
 import { microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal } from './micro.js';
@@ -65,8 +65,6 @@ calculBtn.addEventListener('click', () => {
         const singleParent = document.getElementById('single-parent').value;
         const numberOfChildValue = parseInt(document.getElementById('child').value);
         const situationValue = document.getElementById('personal-situation').value;
-
-        microConditions(turnover);
 
         const turnoverMinusCost = turnover - cost;
 
