@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -131,8 +131,6 @@ function sasuResult(turnoverMinusCost, situation, numberOfChild, householdIncome
     sasuRemuneration();
     sasuContributions();
     sasuRetirement();
-
-    // fillSasuComparison();
 
     // let pumaTaxAmount = calculPumaTax(maxDividends);
 
@@ -336,28 +334,6 @@ function sasuRetirement() {
 
     return totalRetirement;
 }*/
-
-function fillSasuComparison() {
-    yearFillText("dirigeant . assimilé salarié . cotisations", '#sasu-comparison-contributions');
-
-    const remuneration = parseInt(localStorage.getItem('sasuAfterTax'));
-    document.getElementById('sasu-comparison-wage').textContent = remuneration.toLocaleString('fr-FR') + '€';
-
-    const sasuArray = JSON.parse(localStorage.getItem('arraySasu'));
-    const bestSasuTotal = Math.max(...sasuArray.map(obj => obj.remunerationPlusDividendsBestAmount));
-    const bestSasuObject = sasuArray.find(obj => obj.remunerationPlusDividendsBestAmount === bestSasuTotal);
-
-    const sasuPfuDividends = parseInt(bestSasuObject.dividendsNetsPfuAmount);
-    const sasuProgressiveDividends = parseInt(bestSasuObject.dividendsNetsProgressiveAmount);
-    let sasuDividends;
-    if (sasuPfuDividends > sasuProgressiveDividends) {
-        sasuDividends = sasuPfuDividends;
-    } else {
-        sasuDividends = sasuProgressiveDividends;
-    }
-
-    document.getElementById('sasu-comparison-dividends').textContent = sasuDividends.toLocaleString('fr-FR') + '€';
-}
 
 
 export { sasuResult };

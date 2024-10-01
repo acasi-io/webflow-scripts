@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -257,16 +257,5 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
     // calculPumaTax();
 }
 
-function fillEurlComparison(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
-    let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent);
 
-    let resultat = comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation, singleParent);
-
-    document.getElementById('eurl-comparison-dividends').textContent = resultat.bestDividends.toLocaleString('fr-FR') + '€';
-    document.getElementById('eurl-comparison-wage').textContent = resultat.remunerationAfterTax.toLocaleString('fr-FR') + '€';
-    document.getElementById('eurl-comparison-contributions').textContent = resultat.cotisations.toLocaleString('fr-FR') + '€';
-    document.getElementById('eurl-comparison-tax').textContent = resultat.taxAmount.toLocaleString('fr-FR') + '€';
-}
-
-
-export { calculEurl, storageEurlTotal, fillEurlComparison };
+export { calculEurl, storageEurlTotal };

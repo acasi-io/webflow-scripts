@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -136,15 +136,5 @@ function eiCalculRetraite(turnover) {
     return totalRetirement;
 }
 
-function fillEiComparison(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
-    const bestTax = localStorage.getItem('eiBestTax');
 
-    eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, bestTax);
-
-    fillText("dirigeant . rémunération . net . après impôt", "#ei-comparison-wage");
-    fillText("dirigeant . indépendant . cotisations et contributions", `#ei-comparison-contributions`);
-    fillText("impôt . montant", `#ei-comparison-tax`);
-}
-
-
-export { eiResult, eiCalculRetraite, storageEiTotal, fillEiComparison };
+export { eiResult, eiCalculRetraite, storageEiTotal };
