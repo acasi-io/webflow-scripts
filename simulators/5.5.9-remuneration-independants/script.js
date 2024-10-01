@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -265,10 +265,10 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
     // Créer un tableau d'objets avec les montants et leurs identifiants
     const amounts = [
-        { amount: microFinalAmount, id: 'comparison_third_best_remuneration' },
-        { amount: eurlFinalAmount, id: 'comparison_second_best_remuneration' },
-        { amount: eiFinalAmount, id: 'comparison_fourth_best_remuneration' },
-        { amount: sasuFinalAmount, id: 'comparison_best_remuneration' }
+        { amount: microFinalAmount, id: 'comparison_fourth_best_remuneration' }, // 4ème
+        { amount: eurlFinalAmount, id: 'comparison_second_best_remuneration' }, // 2ème
+        { amount: eiFinalAmount, id: 'comparison_third_best_remuneration' }, // 3ème
+        { amount: sasuFinalAmount, id: 'comparison_best_remuneration' } // 1er
     ];
   
     // Trier le tableau par montant décroissant
