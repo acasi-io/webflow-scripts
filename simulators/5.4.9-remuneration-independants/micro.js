@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -104,7 +104,7 @@ function fillMicroComparison(turnoverMinusCost, situation, numberOfChild, househ
 
     yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions", '#micro-comparison-contributions');
     fillText("dirigeant . auto-entrepreneur . revenu net . après impôt", '#micro-comparison-wage');
-    fillText("dirigeant . rémunération . impôt", '#after-tax');
+    fillText("dirigeant . rémunération . impôt", '#micro-comparison-tax');
 }
 
 
