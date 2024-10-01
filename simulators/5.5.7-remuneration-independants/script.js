@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -290,28 +290,15 @@ function orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFina
         { id: "ei-comparison-component", remuneration: eiFinalAmount },
         { id: "micro-comparison-component", remuneration: microFinalAmount }
     ];
-    
-    results.sort(function(a, b) {
-        return b.remuneration - a.remuneration;
-    });
 
-    let isMobile = window.matchMedia("(max-width: 768px)").matches;
+    results.sort((a, b) => b.remuneration - a.remuneration);
 
     for (let i = 0; i < results.length; i++) {
         let result = document.getElementById(results[i].id);
-        if (isMobile) {
-            result.style.gridRow = i + 1;
-        } else {
-            result.style.gridColumn = i + 1;
-        }
+        result.style.gridColumn = i + 1; // Garder la colonne correcte
 
-        if (i > 0 && results[i].remuneration === results[i - 1].remuneration) {
-            if (isMobile) {
-                result.style.gridRow = i + 1;
-            } else {
-                result.style.gridColumn = i + 1;
-            }
-        }
+        // Mettre à jour le contenu de rémunération en fonction de l'ordre
+        document.getElementById(`comparison_${i + 1}_best_remuneration`).textContent = results[i].remuneration;
     }
 }
 
