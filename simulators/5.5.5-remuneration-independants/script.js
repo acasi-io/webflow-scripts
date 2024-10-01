@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -20,6 +20,7 @@ const unemploymentDuration = document.getElementById('unemployment_duration');
 let resultRecapTitle = document.querySelectorAll('.simulator_best_result_title');
 const explanationText = document.getElementById('explanation-text');
 const attentionText = document.getElementById('attention-text');
+const comparisonTitle = document.getElementById('simulator_comparison_title');
 
 
 window.addEventListener('load', () => {
@@ -217,8 +218,6 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     }
     const sasuRemuneration = parseInt(bestSasuObject.afterTaxAmount);
 
-    const comparisonTitle = document.getElementById('simulator_comparison_title');
-
     if (bestSocialForm === 'eurl') {
         bestTotalWage = eurlFinalAmount;
         bestWage = eurlRemuneration;
@@ -237,7 +236,7 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
         bestTotalWage = microFinalAmount;
         bestWage = microFinalAmount;
         bestDividends = '0';
-        comparisonTitle.textContent = 'MICRO';
+        comparisonTitle.textContent = 'Micro';
         explanationText.textContent = "La micro-entreprise est simple à créer et à gérer, avec un régime fiscal et social allégé. Les cotisations sont calculées sur le chiffre d’affaires, et la TVA peut être exonérée sous certains seuils. De plus, les formalités comptables sont réduites, ce qui en fait un statut idéal pour démarrer une activité sans lourdes contraintes administratives.";
         attentionText.textContent = "Les plafonds de chiffre d’affaires limitent la croissance et obligent à changer de statut en cas de dépassement. La couverture sociale et retraite est moindre, et l’absence de séparation entre patrimoine personnel et professionnel expose l'entrepreneur à un risque financier en cas de difficultés.";
     } else {
