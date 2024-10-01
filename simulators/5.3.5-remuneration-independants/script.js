@@ -1,8 +1,8 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.3.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal } from './eurl.js';
-import { microResult, microCalculRetraite, storageMicroTotal } from './micro.js';
+import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
 import { eiResult, eiCalculRetraite, storageEiTotal } from './ei.js';
 import { sasuResult } from './sasu.js';
 
@@ -69,6 +69,8 @@ calculBtn.addEventListener('click', () => {
         const turnoverMinusCost = turnover - cost;
 
         storageMicroTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        fillMicroComparison(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent)
+
         storageEiTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         storageEurlTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
 
@@ -198,6 +200,10 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
         sasuDividends = sasuProgressiveDividends;
     }
     const sasuRemuneration = parseInt(bestSasuObject.afterTaxAmount);
+
+    document.querySelectorAll('.comparison_ca').forEach((text) => {
+        text.textContent = turnover.toLocaleString('fr-FR') + '€';
+    });
 
     if (bestSocialForm === 'eurl') {
         bestTotalWage = eurlFinalAmount;
