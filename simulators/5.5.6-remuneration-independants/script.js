@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -248,6 +248,8 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
         attentionText.textContent = "Bien que l'EI simplifie la gestion, la responsabilité de l'entrepreneur peut être engagée en cas de dettes si le patrimoine professionnel n'est pas bien séparé. De plus, les cotisations sociales sont calculées sur le bénéfice, même si celui-ci est réinvesti dans l'activité, ce qui peut affecter la trésorerie. Enfin, la couverture sociale et retraite peut être moins avantageuse que dans d'autres statuts plus protecteurs.";
     }
 
+    orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
+    orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
 
     const contributionsTotal = document.getElementById('contributions-total');
     document.getElementById('best-contributions').textContent = contributionsTotal.textContent;
@@ -258,6 +260,59 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     document.getElementById('best-remuneration').textContent = bestWage.toLocaleString('fr-FR') + '€';
 
     document.getElementById('best-dividends').textContent = bestDividends.toLocaleString('fr-FR') + '€';
+}
+
+function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+    // Créer un tableau d'objets avec les montants et leurs identifiants
+    const amounts = [
+        { amount: microFinalAmount, id: 'comparison_third_best_remuneration' },
+        { amount: eurlFinalAmount, id: 'comparison_second_best_remuneration' },
+        { amount: eiFinalAmount, id: 'comparison_fourth_best_remuneration' },
+        { amount: sasuFinalAmount, id: 'comparison_best_remuneration' }
+    ];
+  
+    // Trier le tableau par montant décroissant
+    amounts.sort((a, b) => b.amount - a.amount);
+  
+    // Attribuer les montants triés aux IDs respectifs
+    amounts.forEach((item, index) => {
+        // Utiliser l'index pour remplir les IDs appropriés
+        if (index < amounts.length) {
+            document.getElementById(item.id).textContent = item.amount;
+        }
+    });
+}
+
+function orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+    let results = [
+        { id: "sasu-comparison-component", remuneration: sasuFinalAmount },
+        { id: "eurl-comparison-component", remuneration: eurlFinalAmount },
+        { id: "ei-comparison-component", remuneration: eiFinalAmount },
+        { id: "micro-comparison-component", remuneration: microFinalAmount }
+    ];
+    
+    results.sort(function(a, b) {
+        return b.remuneration - a.remuneration;
+    });
+
+    let isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+    for (let i = 0; i < results.length; i++) {
+        let result = document.getElementById(results[i].id);
+        if (isMobile) {
+            result.style.gridRow = i + 1;
+        } else {
+            result.style.gridColumn = i + 1;
+        }
+
+        if (i > 0 && results[i].remuneration === results[i - 1].remuneration) {
+            if (isMobile) {
+                result.style.gridRow = i + 1;
+            } else {
+                result.style.gridColumn = i + 1;
+            }
+        }
+    }
 }
 
 function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, householdIncome, singleParent) {
