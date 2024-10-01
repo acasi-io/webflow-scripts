@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -20,17 +20,6 @@ function yearFillText(urssafData, htmlTag) {
         dataYear = 0;
     }
     document.querySelector(htmlTag).textContent = dataYear.toLocaleString('fr-FR') + '€';
-}
-
-function fillSameClassTexts(urssafData, htmlTag) {
-    const dataUrssaf = engine.evaluate(urssafData);
-    let data = dataUrssaf.nodeValue;
-    if (isNaN(data)) {
-        data = 0;
-    }
-    document.querySelectorAll(htmlTag).forEach(element => {
-        element.textContent = data.toLocaleString('fr-FR') + '€';
-    });
 }
 
 function microRetirement() {
@@ -92,13 +81,6 @@ function microContributions() {
     yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions . CFP", '#contributions-micro-formation');
 }
 
-function fillTextForMicro(turnover) {
-    const microTextRecap = document.getElementById('micro-text-recap');
-    if (turnover > 50000) {
-        microTextRecap.textContent = "Le plafond à ne pas dépasser est de 77 700€. Si vous dépassez ce plafond, sachez que vous pouvez conserver ce statut pendant deux années supplémentaires à la suite desquelles vous basculerez automatiquement en EI si votre chiffre d'affaires est toujours supérieur au plafond. Notre simulateur propose la micro-entreprise pour tout chiffre d'affaires ne dépassant pas 50 000€ pour anticiper la limite et offrir une marge de sécurité."
-    }
-}
-
 function microCalculRetraite(turnover) {
     engine.setSituation({
         "salarié": "non",
@@ -118,4 +100,4 @@ function microCalculRetraite(turnover) {
 }
 
 
-export { microResult, fillTextForMicro, microCalculRetraite, storageMicroTotal };
+export { microResult, microCalculRetraite, storageMicroTotal };

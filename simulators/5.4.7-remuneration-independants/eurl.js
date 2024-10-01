@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.4.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -13,26 +13,6 @@ function fillText(urssafData, htmlTag) {
         data = 0;
     }
     document.querySelector(htmlTag).textContent = data.toLocaleString('fr-FR') + '€';
-}
-
-function yearFillText(urssafData, htmlTag) {
-    const data = engine.evaluate(urssafData);
-    let dataYear = Math.round(data.nodeValue * 12);
-    if (isNaN(dataYear)) {
-        dataYear = 0;
-    }
-    document.querySelector(htmlTag).textContent = dataYear.toLocaleString('fr-FR') + '€';
-}
-
-function fillSameClassTexts(urssafData, htmlTag) {
-    const dataUrssaf = engine.evaluate(urssafData);
-    let data = dataUrssaf.nodeValue;
-    if (isNaN(data)) {
-        data = 0;
-    }
-    document.querySelectorAll(htmlTag).forEach(element => {
-        element.textContent = data.toLocaleString('fr-FR') + '€';
-    });
 }
 
 function retirementText() {
@@ -269,10 +249,6 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
     let maxWage = calculMaxWage(turnoverMinusCost, situation, numberOfChild, singleParent);
 
     let resultat = comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, householdIncome, situation, singleParent);
-
-    /*eurlSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IS')
-    const contributionsData = engine.evaluate("dirigeant . indépendant . cotisations et contributions . maladie");
-    const contributionsTotal = Math.round(contributionsData.nodeValue);*/
 
     fillTextEurl(resultat);
     eurlRetirement(resultat.remuneration);
