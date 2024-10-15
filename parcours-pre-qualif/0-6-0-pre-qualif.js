@@ -44,6 +44,7 @@ document.querySelectorAll('.prequalif_answers_item').forEach(answer => {
 
         showCoachAnswer(choice, coachAnswer);
 
+        document.getElementById('prequalif-buttons-wrapper').style.zIndex = "2";
         nextBtn.classList.add('next-button');
         nextPage();
 
