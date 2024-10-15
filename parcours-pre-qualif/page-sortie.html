@@ -1,11 +1,11 @@
 <script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-0-2-heading-pre-qualif.js" async></script>
 <script>
     let creation = false;
-    const choice = localStorage.getItem("currentChoice");
+    // const choice = localStorage.getItem("currentChoice");
     document.getElementById("previous-button").addEventListener("click", () => {
         history.back();
     });
-    if (choice === "false" || choice === "micro") {
+    /*if (choice === "false" || choice === "micro") {
         document.getElementById("micro_sortie").classList.remove("hidden");
     } else {
         const textSortie = document.getElementById("text_sortie");
@@ -19,5 +19,5 @@
         } else {
             textSortie.textContent = "Malheureusement, notre solution n’est pas encore adaptée votre besoin.";
         }
-    }
+    }*/
 </script>

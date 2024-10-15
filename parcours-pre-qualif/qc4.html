@@ -1,13 +1,17 @@
 <script>
     let creation = false;
 </script>
-<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-8-pre-qualif.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-7-pre-qualif.js"></script>
 <script>
     function showCoachAnswer(choice, coachAnswer) {
         window.scrollTo({ top: 1200, behavior: "smooth" });
         resizeZero();
         document.getElementById("wrapper-coach-answer").classList.add("hidden");
     }
+    
+    storageAnswers = JSON.parse(localStorage.getItem("choices"));
+    storageAnswers.appointment_requested = true;
+    
     function nextPage() {
         nextBtn.addEventListener("click", () => {
             redirectUrl();

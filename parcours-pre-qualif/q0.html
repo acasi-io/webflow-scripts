@@ -2,8 +2,9 @@
 <script>
     let creation = false;
     localStorage.setItem("vtcUrl", window.location.href);
+    localStorage.setItem("choices", JSON.stringify({}));
 </script>
-<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-8-pre-qualif.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/parcours-pre-qualif/0-5-9-pre-qualif.js"></script>
 <script>
     nextBtn.classList.add("next");
 
@@ -29,9 +30,9 @@
         nextBtn.addEventListener("click", () => {
             const choice = localStorage.getItem("currentChoice");
             if (choice === "false") {
-                window.location.href = "qc1";
+                window.location.href = "qc2";
             } else {
-                window.location.href = "qg1";
+                window.location.href = "qg3";
             }
         });
     }
