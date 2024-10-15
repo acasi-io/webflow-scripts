@@ -45,11 +45,11 @@ document.querySelectorAll('.prequalif_answers_item').forEach(answer => {
         showCoachAnswer(choice, coachAnswer);
 
         nextBtn.classList.add('next-button');
+        nextPage();
 
         setTimeout(() => {
             document.getElementById('chat_wait').classList.add('hidden');
             document.getElementById('coach_answer').classList.remove('hidden');
-            nextPage();
         }, 1000);
 
         if (question.dataset.hubspotProperty) {
