@@ -44,10 +44,11 @@ document.querySelectorAll('.prequalif_answers_item').forEach(answer => {
 
         showCoachAnswer(choice, coachAnswer);
 
+        nextBtn.classList.add('next-button');
+
         setTimeout(() => {
             document.getElementById('chat_wait').classList.add('hidden');
             document.getElementById('coach_answer').classList.remove('hidden');
-            nextBtn.classList.add('next-button');
             nextPage();
         }, 1000);
 
