@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -279,21 +279,21 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     // Trier les montants par ordre décroissant
     remunerationValues.sort((a, b) => b.value - a.value);
 
-    // Sélectionner le parent des divs qui contient les textes
-    const parent = document.querySelector('.simulator_comparison_grid');
-
-    // Réorganiser les divs de texte dans le DOM, en fonction des montants triés
-    remunerationValues.forEach(item => {
-        const div = document.getElementById(item.id);
-        parent.appendChild(div); // Réinsérer chaque div dans l'ordre trié
-
-        // Mettre à jour le chiffre dans le rectangle associé
-        // Supposons que le montant du rectangle a l'attribut 'data-socialform' pour chaque forme sociale (ex: EURL, SASU, etc.)
-        const rectangleElement = document.querySelector(`[data-socialform="${item.socialForm}"]`);
-
-        if (rectangleElement) {
-            // Mettre à jour le texte avec le montant formaté
-            rectangleElement.textContent = item.value.toLocaleString() + '€';
+    // Sélectionner les éléments ayant le data-socialform attribué
+    remunerationValues.forEach((item, index) => {
+        // Sélectionner l'élément avec le bon data-socialform
+        const element = document.querySelector(`[data-socialform="${item.socialForm}"]`);
+        
+        if (element) {
+            // Sélectionner le rectangle correspondant à l'index (0 = premier, 1 = deuxième, etc.)
+            const targetRectangle = document.querySelectorAll('.comparison_result_block')[index];
+            
+            if (targetRectangle) {
+                // Insérer le texte dans le bon rectangle
+                targetRectangle.appendChild(element);
+            } else {
+                console.warn(`Rectangle not found for index ${index}`);
+            }
         } else {
             console.warn(`Element with data-socialform="${item.socialForm}" not found`);
         }
