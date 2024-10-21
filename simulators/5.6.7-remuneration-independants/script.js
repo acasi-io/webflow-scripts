@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -263,29 +263,24 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 }
 
 function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
-    const eurlDiv = document.getElementById('eurl-comparison-component');
-    const sasuDiv = document.getElementById('sasu-comparison-component');
-    const eiDiv = document.getElementById('ei-comparison-component');
-    const microDiv = document.getElementById('micro-comparison-component');
-
-    // Les montants de rémunération affichés dans les rectangles de couleur
+    // Créer un tableau d'objets avec les ids des divs et leurs montants
     const remunerationValues = [
         { id: 'eurl-comparison-component', value: eurlFinalAmount },
         { id: 'sasu-comparison-component', value: sasuFinalAmount },
         { id: 'ei-comparison-component', value: eiFinalAmount },
         { id: 'micro-comparison-component', value: microFinalAmount }
     ];
-  
+
     // Trier les montants par ordre décroissant
     remunerationValues.sort((a, b) => b.value - a.value);
 
-    // Sélectionne le parent des divs qui contient le texte
+    // Sélectionner le parent des divs qui contient les textes
     const parent = document.querySelector('.simulator_comparison_grid');
 
-    // Réorganise uniquement les divs de texte dans le DOM, sans toucher aux rectangles
+    // Réorganiser les divs de texte dans le DOM, en fonction des montants triés
     remunerationValues.forEach(item => {
         const div = document.getElementById(item.id);
-        parent.appendChild(div); // Réinsère chaque div dans le nouvel ordre
+        parent.appendChild(div); // Réinsérer chaque div dans l'ordre trié
     });
 }
 
