@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -272,15 +272,15 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 }
 
 function resetSimulation() {
-    // Rendre visibles tous les éléments masqués
-    document.querySelectorAll('[data-socialform]').forEach(el => {
-        el.style.display = 'block'; // Rendre visible
-    });
-
-    // Remettre tous les éléments '.comparison_result_block' en display: none
+    // Réinitialiser les éléments clonés (les rendre invisibles au début de chaque simulation)
     document.querySelectorAll('.comparison_result_block').forEach(el => {
         el.style.display = 'none'; // Masquer les blocs
         el.innerHTML = ''; // Nettoyer leur contenu
+    });
+
+    // Réafficher tous les éléments d'origine
+    document.querySelectorAll('[data-socialform]').forEach(el => {
+        el.style.display = 'block'; // Rendre visible
     });
 }
 
@@ -296,8 +296,10 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         { id: 'micro-comparison-component', value: microFinalAmount }
     ];
 
+    // Trier les montants par ordre décroissant pour les divs du haut
     remunerationValuesDivs.sort((a, b) => b.value - a.value);
 
+    // Réorganiser les divs du haut
     const parentTop = document.querySelector('.simulator_comparison_grid_top');
     remunerationValuesDivs.forEach(item => {
         const div = document.getElementById(item.id);
@@ -312,23 +314,27 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         { value: microFinalAmount, socialForm: 'MICRO' }
     ];
 
+    // Trier les montants par ordre décroissant
     remunerationValues.sort((a, b) => b.value - a.value);
 
-    const parentBottom = document.querySelector('.simulator_comparison_grid_bottom');
+    // Réorganiser les chiffres dans les rectangles
     remunerationValues.forEach((item, index) => {
         const element = document.querySelector(`[data-socialform="${item.socialForm}"]`);
-        
+
         if (element) {
+            // Sélectionner le rectangle correspondant
             const targetRectangle = document.querySelectorAll('.comparison_result_block')[index];
-            
+
             if (targetRectangle) {
-                targetRectangle.innerHTML = '';
-                const clonedElement = element.cloneNode(true);
+                targetRectangle.innerHTML = ''; // Nettoyer le contenu
+                const clonedElement = element.cloneNode(true); // Cloner l'élément
 
-                clonedElement.style.display = 'block'; 
-                targetRectangle.style.display = 'block'; 
+                clonedElement.style.display = 'block'; // Afficher le clone
+                targetRectangle.style.display = 'block'; // Afficher le rectangle
 
-                targetRectangle.appendChild(clonedElement);
+                targetRectangle.appendChild(clonedElement); // Ajouter le clone au rectangle
+
+                // Masquer l'élément d'origine
                 element.style.display = 'none';
             } else {
                 console.warn(`Rectangle not found for index ${index}`);
@@ -338,7 +344,6 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         }
     });
 }
-
 
 
 
