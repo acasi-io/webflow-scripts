@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -268,12 +268,32 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 }
 
 function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
-    // Créer un tableau d'objets avec les ids des divs et leurs montants
+    // Étape 1 : Réorganisation des divs du haut (comme dans ton code initial)
+    const remunerationValuesDivs = [
+        { id: 'eurl-comparison-component', value: eurlFinalAmount },
+        { id: 'sasu-comparison-component', value: sasuFinalAmount },
+        { id: 'ei-comparison-component', value: eiFinalAmount },
+        { id: 'micro-comparison-component', value: microFinalAmount }
+    ];
+
+    // Trier les montants par ordre décroissant pour les divs du haut
+    remunerationValuesDivs.sort((a, b) => b.value - a.value);
+
+    // Sélectionner le parent des divs qui contient les textes
+    const parent = document.querySelector('.simulator_comparison_grid');
+
+    // Réorganiser les divs de texte dans le DOM, en fonction des montants triés
+    remunerationValuesDivs.forEach(item => {
+        const div = document.getElementById(item.id);
+        parent.appendChild(div); // Réinsérer chaque div dans l'ordre trié
+    });
+
+    // Étape 2 : Réorganisation des chiffres dans les rectangles
     const remunerationValues = [
-        { id: 'eurl-comparison-component', value: eurlFinalAmount, socialForm: 'EURL' },
-        { id: 'sasu-comparison-component', value: sasuFinalAmount, socialForm: 'SASU' },
-        { id: 'ei-comparison-component', value: eiFinalAmount, socialForm: 'EI' },
-        { id: 'micro-comparison-component', value: microFinalAmount, socialForm: 'MICRO' }
+        { value: eurlFinalAmount, socialForm: 'EURL' },
+        { value: sasuFinalAmount, socialForm: 'SASU' },
+        { value: eiFinalAmount, socialForm: 'EI' },
+        { value: microFinalAmount, socialForm: 'MICRO' }
     ];
 
     // Trier les montants par ordre décroissant
