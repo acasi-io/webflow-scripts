@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -35,6 +35,8 @@ function microRetirement() {
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
     document.getElementById('retirement-points').textContent = retirementPoints.nodeValue;
+
+    fillText("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations . répartition . retraite", "#retirement-amount");
 }
 
 function storageMicroTotal(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
@@ -105,6 +107,7 @@ function fillMicroComparison(turnoverMinusCost, situation, numberOfChild, househ
     yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions", '#micro-comparison-contributions');
     fillText("dirigeant . auto-entrepreneur . revenu net . après impôt", '#micro-comparison-wage');
     fillText("dirigeant . rémunération . impôt", '#micro-comparison-tax');
+    fillText("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations . répartition . retraite", "#micro-comparison-retirement");
 }
 
 

@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.5.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -28,6 +28,8 @@ function retirementText() {
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
     document.getElementById('retirement-points').textContent = retirementPoints.nodeValue;
+
+    fillText("protection sociale . retraite", "#retirement-amount");
 }
 
 
@@ -126,7 +128,7 @@ function compareBestDividends(eurlDividendsPfu, eurlDividendsBaremeAmount) {
     return bestDividends;
 }
 
-function createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, total) {
+function createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, retirementAmount, total) {
     let bestResult = {
         pourcentage: pourcentage,
         cotisations: cotisationsTotalAmount,
@@ -136,6 +138,7 @@ function createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration
         grossDividends: eurlDividendsBrut,
         pfuDividends: eurlDividendsPfu,
         baremeDividends: eurlDividendsBaremeAmount,
+        retirementAmount: retirementAmount,
         total: total
     };
 
@@ -157,6 +160,9 @@ function comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, househ
         let cotisationsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
         let cotisationsAmount = Math.round(cotisationsUrssaf.nodeValue);
 
+        let retirementAmountUrssaf = engine.evaluate("protection sociale . retraite");
+        let retirementAmount = Math.round(retirementAmountUrssaf.nodeValue);
+
         let eurlDividendsBrut = calculIs(turnoverMinusCost, remuneration, cotisationsAmount);
         let { cotisationsTotalAmount, eurlDividendsPfu } = calculDividendsPfu(turnoverMinusCost, remuneration, cotisationsAmount);
         localStorage.setItem('eurlCotisationsTotal', cotisationsTotalAmount);
@@ -169,7 +175,7 @@ function comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, househ
         eurlArray.push(resultArray);
 
         if (total > bestResult.total) {
-            bestResult = createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, total);
+            bestResult = createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, retirementAmount, total);
         }
     }
 
@@ -243,6 +249,7 @@ function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, household
     localStorage.setItem('bestEurlDividends', resultat.bestDividends);
     localStorage.setItem('eurlAfterTax', resultat.remunerationAfterTax);
     localStorage.setItem('eurlContributionsTotal', resultat.cotisations);
+    localStorage.setItem('eurlRetirementAmount', resultat.retirementAmount);
 }
 
 function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
@@ -259,10 +266,12 @@ function fillEurlComparison() {
     const dividends = parseInt(localStorage.getItem('bestEurlDividends'));
     const remuneration = parseInt(localStorage.getItem('eurlAfterTax'));
     const contributions = parseInt(localStorage.getItem('eurlContributionsTotal'));
+    const retirementAmount = parseInt(localStorage.getItem('eurlRetirementAmount'));
 
     document.getElementById('eurl-comparison-wage').textContent = remuneration.toLocaleString('fr-FR');
     document.getElementById('eurl-comparison-dividends').textContent = dividends.toLocaleString('fr-FR');
     document.getElementById('eurl-comparison-contributions').textContent = contributions.toLocaleString('fr-FR');
+    document.getElementById('eurl-comparison-retirement').textContent = retirementAmount.toLocaleString('fr-FR');
 }
 
 
