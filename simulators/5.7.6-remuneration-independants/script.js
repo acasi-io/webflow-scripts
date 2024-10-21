@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -86,6 +86,8 @@ calculBtn.addEventListener('click', () => {
         fillSasuComparison();
 
         checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, householdIncome, singleParent);
+
+        microConditions(turnover);
 
         simulatorResults.classList.remove('hidden');
         simulatorResults.scrollIntoView({
@@ -268,7 +270,7 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 }
 
 function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
-    // Étape 1 : Réorganisation des divs du haut
+    // Étape 1 : Réorganisation des divs du haut (comme dans ton code initial)
     const remunerationValuesDivs = [
         { id: 'eurl-comparison-component', value: eurlFinalAmount },
         { id: 'sasu-comparison-component', value: sasuFinalAmount },
@@ -282,10 +284,10 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     // Sélectionner le parent des divs qui contient les textes
     const parent = document.querySelector('.simulator_comparison_grid');
 
-    // Réorganiser les divs de texte dans le DOM, en fonction des montants triés
+    // Réorganiser les divs de texte dans le DOM (ils seront en haut de la grille)
     remunerationValuesDivs.forEach(item => {
         const div = document.getElementById(item.id);
-        parent.appendChild(div); // Réinsérer chaque div dans l'ordre trié
+        parent.insertBefore(div, parent.firstChild); // Réinsérer chaque div au début du parent
     });
 
     // Étape 2 : Réorganisation des chiffres dans les rectangles
@@ -309,8 +311,8 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
             const targetRectangle = document.querySelectorAll('.comparison_result_block')[index];
             
             if (targetRectangle) {
-                // Insérer le texte dans le bon rectangle
-                targetRectangle.appendChild(element);
+                // Insérer le texte dans le rectangle, mais cette fois-ci, positionner les rectangles en bas
+                parent.appendChild(targetRectangle); // Met les rectangles en bas de la grille
             } else {
                 console.warn(`Rectangle not found for index ${index}`);
             }
@@ -339,15 +341,22 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     }
 }*/
 
+function microConditions(turnover) {
+    if (turnover > 50000) {
+        localStorage.setItem('microTotal', 0);
+        document.getElementById('micro-comparison-wage').textContent = '0€';
+        document.getElementById('micro-comparison-contributions').textContent = '0€';
+        document.getElementById('micro-comparison-tax').textContent = '0€';
+    }
+}
+
 function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, householdIncome, singleParent) {
     if (isUnemployment.value === "true" && unemploymentDuration.value === "more_six_months") {    
         document.querySelectorAll('.is_ca_recap').forEach(element => {
             element.textContent = turnover.toLocaleString('fr-FR') + '€';
         });
 
-        if (turnover > 50000) {
-            localStorage.setItem('microTotal', 0);
-        }
+        microConditions(turnover);
 
         const sasuDividends = parseInt(localStorage.getItem('bestSasuDividends')).toLocaleString('fr-FR');
         const sasuRemuneration = parseInt(localStorage.getItem('sasuAfterTax')).toLocaleString('fr-FR');
