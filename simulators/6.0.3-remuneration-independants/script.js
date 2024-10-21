@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -273,10 +273,10 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 
 function resetSimulation() {
     // Réinitialiser les éléments clonés (les rendre invisibles au début de chaque simulation)
-    /*document.querySelectorAll('.comparison_result_block').forEach(el => {
+    document.querySelectorAll('.comparison_result_block').forEach(el => {
         el.style.display = 'none'; // Masquer les blocs
         el.innerHTML = ''; // Nettoyer leur contenu
-    });*/
+    });
 
     // Réafficher tous les éléments d'origine
     document.querySelectorAll('[data-socialform]').forEach(el => {
@@ -284,32 +284,49 @@ function resetSimulation() {
     });
 }
 
-function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, chiffreAffaires) {
     // Réinitialiser la simulation
     resetSimulation();
 
     // Étape 1 : Réorganisation des divs du haut
     const remunerationValuesDivs = [
-        { id: 'eurl-comparison-component', value: eurlFinalAmount },
-        { id: 'sasu-comparison-component', value: sasuFinalAmount },
-        { id: 'ei-comparison-component', value: eiFinalAmount },
-        { id: 'micro-comparison-component', value: microFinalAmount }
+        { id: 'eurl-comparison-component', value: eurlFinalAmount, form: 'EURL' },
+        { id: 'sasu-comparison-component', value: sasuFinalAmount, form: 'SASU' },
+        { id: 'ei-comparison-component', value: eiFinalAmount, form: 'EI' },
+        { id: 'micro-comparison-component', value: microFinalAmount, form: 'MICRO' }
     ];
 
+    // Si le chiffre d'affaires est inférieur à 50 000 €, on masque EURL et EI
+    if (chiffreAffaires < 50000) {
+        remunerationValuesDivs.forEach(item => {
+            if (item.form === 'EURL' || item.form === 'EI') {
+                item.value = null; // On ne montre pas ces valeurs
+                const elementToHide = document.querySelector(`[data-socialform="${item.form}"]`);
+                if (elementToHide) {
+                    elementToHide.style.display = 'none'; // Masquer l'élément
+                }
+            }
+        });
+    }
+
+    // Filtrer les valeurs non nulles pour le tri
+    const filteredRemunerationValuesDivs = remunerationValuesDivs.filter(item => item.value !== null);
+
     // Trier les montants par ordre décroissant pour les divs du haut
-    remunerationValuesDivs.sort((a, b) => b.value - a.value);
+    filteredRemunerationValuesDivs.sort((a, b) => b.value - a.value);
 
     // Réorganiser les divs du haut
     const parentTop = document.querySelector('.simulator_comparison_grid_top');
-    remunerationValuesDivs.forEach(item => {
+    filteredRemunerationValuesDivs.forEach(item => {
         const div = document.getElementById(item.id);
-        parentTop.appendChild(div);
+        if (div) parentTop.appendChild(div);
     });
 
-    document.querySelector('[data-socialform="EURL"').textContent = eurlFinalAmount.toLocaleString('fr-FR') + '€';
-    document.querySelector('[data-socialform="SASU"').textContent = sasuFinalAmount.toLocaleString('fr-FR') + '€';
-    document.querySelector('[data-socialform="EI"').textContent = eiFinalAmount.toLocaleString('fr-FR') + '€';
-    document.querySelector('[data-socialform="MICRO"').textContent = microFinalAmount.toLocaleString('fr-FR') + '€';
+    // Mettre à jour les montants dans les blocs
+    if (eurlFinalAmount !== null) document.querySelector('[data-socialform="EURL"]').textContent = eurlFinalAmount.toLocaleString('fr-FR') + '€';
+    if (sasuFinalAmount !== null) document.querySelector('[data-socialform="SASU"]').textContent = sasuFinalAmount.toLocaleString('fr-FR') + '€';
+    if (eiFinalAmount !== null) document.querySelector('[data-socialform="EI"]').textContent = eiFinalAmount.toLocaleString('fr-FR') + '€';
+    if (microFinalAmount !== null) document.querySelector('[data-socialform="MICRO"]').textContent = microFinalAmount.toLocaleString('fr-FR') + '€';
 
     // Étape 2 : Réorganisation des chiffres dans les rectangles
     const remunerationValues = [
@@ -319,11 +336,14 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         { value: microFinalAmount, socialForm: 'MICRO' }
     ];
 
+    // Filtrer les montants valides
+    const filteredRemunerationValues = remunerationValues.filter(item => item.value !== null);
+
     // Trier les montants par ordre décroissant
-    remunerationValues.sort((a, b) => b.value - a.value);
+    filteredRemunerationValues.sort((a, b) => b.value - a.value);
 
     // Réorganiser les chiffres dans les rectangles
-    remunerationValues.forEach((item, index) => {
+    filteredRemunerationValues.forEach((item, index) => {
         const element = document.querySelector(`[data-socialform="${item.socialForm}"]`);
 
         if (element) {
@@ -340,12 +360,7 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
                 targetRectangle.appendChild(clonedElement); // Ajouter le clone au rectangle
 
                 // Masquer l'élément d'origine
-                // element.style.display = 'none';
-
-                document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f52-2338269e .comparison_grid_remuneration_text').style.display = 'block !important';
-                document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f59-2338269e .comparison_grid_remuneration_text').style.display = 'block !important';
-                document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f60-2338269e .comparison_grid_remuneration_text').style.display = 'block !important';
-                document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f67-2338269e .comparison_grid_remuneration_text').style.display = 'block !important';
+                element.style.display = 'none';
             } else {
                 console.warn(`Rectangle not found for index ${index}`);
             }
@@ -354,6 +369,7 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         }
     });
 }
+
 
 
 
