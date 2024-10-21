@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -29,7 +29,7 @@ function retirementText() {
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
     document.getElementById('retirement-points').textContent = retirementPoints.nodeValue;
 
-    fillText("protection sociale . retraite", "#retirement-amount");
+    // fillText("protection sociale . retraite", "#retirement-amount");
 }
 
 
