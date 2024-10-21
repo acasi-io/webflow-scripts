@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -334,13 +334,13 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
 
                 targetRectangle.appendChild(clonedElement); // Ajouter le clone au rectangle
 
+                // Masquer l'élément d'origine
+                element.style.display = 'none';
+
                 document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f52-2338269e .comparison_grid_remuneration_text').style.display = 'block !important';
                 document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f59-2338269e .comparison_grid_remuneration_text').style.display = 'block !important';
                 document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f60-2338269e .comparison_grid_remuneration_text').style.display = 'block !important';
                 document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f67-2338269e .comparison_grid_remuneration_text').style.display = 'block !important';
-
-                // Masquer l'élément d'origine
-                element.style.display = 'none';
             } else {
                 console.warn(`Rectangle not found for index ${index}`);
             }
