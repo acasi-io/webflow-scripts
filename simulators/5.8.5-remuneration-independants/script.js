@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -272,7 +272,7 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 }
 
 function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
-    // Étape 1 : Réorganisation des divs du haut (avec les descriptions)
+    // Étape 1 : Réorganisation des divs du haut
     const remunerationValuesDivs = [
         { id: 'eurl-comparison-component', value: eurlFinalAmount },
         { id: 'sasu-comparison-component', value: sasuFinalAmount },
@@ -280,19 +280,15 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         { id: 'micro-comparison-component', value: microFinalAmount }
     ];
 
-    // Trier les montants par ordre décroissant pour les divs du haut
     remunerationValuesDivs.sort((a, b) => b.value - a.value);
 
-    // Sélectionner le parent des divs du haut
     const parentTop = document.querySelector('.simulator_comparison_grid_top');
-
-    // Réorganiser les divs de texte dans le DOM, en fonction des montants triés
     remunerationValuesDivs.forEach(item => {
         const div = document.getElementById(item.id);
-        parentTop.appendChild(div); // Réinsérer chaque div dans l'ordre trié en haut
+        parentTop.appendChild(div);
     });
 
-    // Étape 2 : Réorganisation des chiffres dans les rectangles (bas de la grille)
+    // Étape 2 : Réorganisation des chiffres dans les rectangles
     const remunerationValues = [
         { value: eurlFinalAmount, socialForm: 'EURL' },
         { value: sasuFinalAmount, socialForm: 'SASU' },
@@ -300,29 +296,16 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         { value: microFinalAmount, socialForm: 'MICRO' }
     ];
 
-    // Trier les montants par ordre décroissant
     remunerationValues.sort((a, b) => b.value - a.value);
 
-    // Sélectionner le parent des rectangles du bas
     const parentBottom = document.querySelector('.simulator_comparison_grid_bottom');
-
-    // Réorganiser les rectangles dans le DOM en fonction des montants triés
     remunerationValues.forEach((item, index) => {
-        // Sélectionner l'élément avec le bon data-socialform
         const element = document.querySelector(`[data-socialform="${item.socialForm}"]`);
-        
         if (element) {
-            // Sélectionner le rectangle correspondant à l'index (0 = premier, 1 = deuxième, etc.)
             const targetRectangle = document.querySelectorAll('.comparison_result_block')[index];
-            
             if (targetRectangle) {
-                // Insérer le texte dans le bon rectangle dans la section du bas
-                parentBottom.appendChild(targetRectangle);
-            } else {
-                console.warn(`Rectangle not found for index ${index}`);
+                parentBottom.appendChild(targetRectangle.cloneNode(true));
             }
-        } else {
-            console.warn(`Element with data-socialform="${item.socialForm}" not found`);
         }
     });
 }
