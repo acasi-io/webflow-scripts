@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -286,6 +286,16 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     remunerationValues.forEach(item => {
         const div = document.getElementById(item.id);
         parent.appendChild(div); // Réinsérer chaque div dans l'ordre trié
+
+        // Mettre à jour le chiffre dans le rectangle associé
+        // Supposons que le montant du rectangle a l'attribut 'data-socialform' pour chaque forme sociale (ex: EURL, SASU, etc.)
+        const socialForm = item.id.split('-')[0].toUpperCase(); // Extraire "EURL", "SASU", etc.
+        const rectangleElement = document.querySelector(`[data-socialform="${socialForm}"]`);
+        
+        if (rectangleElement) {
+            // Mettre à jour le texte avec le montant formaté
+            rectangleElement.textContent = item.value.toLocaleString() + '€';
+        }
     });
 }
 
