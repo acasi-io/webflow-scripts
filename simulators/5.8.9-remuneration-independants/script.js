@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -271,7 +271,22 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     document.getElementById('best-dividends').textContent = bestDividends.toLocaleString('fr-FR') + '€';
 }
 
+function resetSimulation() {
+    // Rendre visibles tous les éléments masqués
+    document.querySelectorAll('[data-socialform]').forEach(el => {
+        el.style.display = 'block'; // Rendre visible
+    });
+
+    // Remettre tous les éléments '.comparison_result_block' en display: none
+    document.querySelectorAll('.comparison_result_block').forEach(el => {
+        el.style.display = 'none'; // Masquer les blocs
+        el.innerHTML = ''; // Nettoyer leur contenu
+    });
+}
+
 function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+    resetSimulation();
+    
     // Étape 1 : Réorganisation des divs du haut
     const remunerationValuesDivs = [
         { id: 'eurl-comparison-component', value: eurlFinalAmount },
