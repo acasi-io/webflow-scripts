@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -270,10 +270,10 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
     // Créer un tableau d'objets avec les ids des divs et leurs montants
     const remunerationValues = [
-        { id: 'eurl-comparison-component', value: eurlFinalAmount },
-        { id: 'sasu-comparison-component', value: sasuFinalAmount },
-        { id: 'ei-comparison-component', value: eiFinalAmount },
-        { id: 'micro-comparison-component', value: microFinalAmount }
+        { id: 'eurl-comparison-component', value: eurlFinalAmount, socialForm: 'EURL' },
+        { id: 'sasu-comparison-component', value: sasuFinalAmount, socialForm: 'SASU' },
+        { id: 'ei-comparison-component', value: eiFinalAmount, socialForm: 'EI' },
+        { id: 'micro-comparison-component', value: microFinalAmount, socialForm: 'MICRO' }
     ];
 
     // Trier les montants par ordre décroissant
@@ -289,12 +289,13 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
 
         // Mettre à jour le chiffre dans le rectangle associé
         // Supposons que le montant du rectangle a l'attribut 'data-socialform' pour chaque forme sociale (ex: EURL, SASU, etc.)
-        const socialForm = item.id.split('-')[0].toUpperCase(); // Extraire "EURL", "SASU", etc.
-        const rectangleElement = document.querySelector(`[data-socialform="${socialForm}"]`);
-        
+        const rectangleElement = document.querySelector(`[data-socialform="${item.socialForm}"]`);
+
         if (rectangleElement) {
             // Mettre à jour le texte avec le montant formaté
             rectangleElement.textContent = item.value.toLocaleString() + '€';
+        } else {
+            console.warn(`Element with data-socialform="${item.socialForm}" not found`);
         }
     });
 }
