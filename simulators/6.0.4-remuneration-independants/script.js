@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -322,11 +322,24 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         if (div) parentTop.appendChild(div);
     });
 
-    // Mettre à jour les montants dans les blocs
-    if (eurlFinalAmount !== null) document.querySelector('[data-socialform="EURL"]').textContent = eurlFinalAmount.toLocaleString('fr-FR') + '€';
-    if (sasuFinalAmount !== null) document.querySelector('[data-socialform="SASU"]').textContent = sasuFinalAmount.toLocaleString('fr-FR') + '€';
-    if (eiFinalAmount !== null) document.querySelector('[data-socialform="EI"]').textContent = eiFinalAmount.toLocaleString('fr-FR') + '€';
-    if (microFinalAmount !== null) document.querySelector('[data-socialform="MICRO"]').textContent = microFinalAmount.toLocaleString('fr-FR') + '€';
+    // Mettre à jour les montants dans les blocs (vérification que chaque élément existe)
+    const eurlElement = document.querySelector('[data-socialform="EURL"]');
+    const sasuElement = document.querySelector('[data-socialform="SASU"]');
+    const eiElement = document.querySelector('[data-socialform="EI"]');
+    const microElement = document.querySelector('[data-socialform="MICRO"]');
+
+    if (eurlFinalAmount !== null && eurlElement) {
+        eurlElement.textContent = eurlFinalAmount.toLocaleString('fr-FR') + '€';
+    }
+    if (sasuFinalAmount !== null && sasuElement) {
+        sasuElement.textContent = sasuFinalAmount.toLocaleString('fr-FR') + '€';
+    }
+    if (eiFinalAmount !== null && eiElement) {
+        eiElement.textContent = eiFinalAmount.toLocaleString('fr-FR') + '€';
+    }
+    if (microFinalAmount !== null && microElement) {
+        microElement.textContent = microFinalAmount.toLocaleString('fr-FR') + '€';
+    }
 
     // Étape 2 : Réorganisation des chiffres dans les rectangles
     const remunerationValues = [
