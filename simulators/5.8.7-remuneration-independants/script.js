@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -280,13 +280,9 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         { id: 'micro-comparison-component', value: microFinalAmount }
     ];
 
-    // Trier les montants par ordre décroissant pour les divs du haut
     remunerationValuesDivs.sort((a, b) => b.value - a.value);
 
-    // Sélectionner le parent des divs du haut
     const parentTop = document.querySelector('.simulator_comparison_grid_top');
-
-    // Réorganiser les divs de texte dans le DOM
     remunerationValuesDivs.forEach(item => {
         const div = document.getElementById(item.id);
         parentTop.appendChild(div);
@@ -302,20 +298,13 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
 
     remunerationValues.sort((a, b) => b.value - a.value);
 
-    // Sélectionner les éléments contenant les chiffres
     const parentBottom = document.querySelector('.simulator_comparison_grid_bottom');
-
     remunerationValues.forEach((item, index) => {
         const element = document.querySelector(`[data-socialform="${item.socialForm}"]`);
         if (element) {
             const targetRectangle = document.querySelectorAll('.comparison_result_block')[index];
-
             if (targetRectangle) {
-                // Clone l'élément, l'ajoute dans le bon rectangle, et cache l'élément original
-                const clonedElement = element.cloneNode(true);
-                targetRectangle.appendChild(clonedElement);
-                
-                // Cacher l'élément original pour qu'on ne le voie plus
+                parentBottom.appendChild(targetRectangle.cloneNode(true));
                 element.style.display = 'none';
             }
         }
