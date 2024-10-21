@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -322,7 +322,26 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         if (div) parentTop.appendChild(div);
     });
 
-    // Étape 2 : Mettre à jour directement les montants dans les divs sans cloner
+    // Mettre à jour les montants dans les blocs (vérification que chaque élément existe)
+    const eurlElement = document.querySelector('[data-socialform="EURL"]');
+    const sasuElement = document.querySelector('[data-socialform="SASU"]');
+    const eiElement = document.querySelector('[data-socialform="EI"]');
+    const microElement = document.querySelector('[data-socialform="MICRO"]');
+
+    if (eurlFinalAmount !== null && eurlElement) {
+        eurlElement.textContent = eurlFinalAmount.toLocaleString('fr-FR') + '€';
+    }
+    if (sasuFinalAmount !== null && sasuElement) {
+        sasuElement.textContent = sasuFinalAmount.toLocaleString('fr-FR') + '€';
+    }
+    if (eiFinalAmount !== null && eiElement) {
+        eiElement.textContent = eiFinalAmount.toLocaleString('fr-FR') + '€';
+    }
+    if (microFinalAmount !== null && microElement) {
+        microElement.textContent = microFinalAmount.toLocaleString('fr-FR') + '€';
+    }
+
+    // Étape 2 : Réorganisation des chiffres dans les rectangles
     const remunerationValues = [
         { value: eurlFinalAmount, socialForm: 'EURL' },
         { value: sasuFinalAmount, socialForm: 'SASU' },
@@ -336,17 +355,30 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     // Trier les montants par ordre décroissant
     filteredRemunerationValues.sort((a, b) => b.value - a.value);
 
-    // Réorganiser les chiffres directement dans les rectangles
+    // Réorganiser les chiffres dans les rectangles
     filteredRemunerationValues.forEach((item, index) => {
         const element = document.querySelector(`[data-socialform="${item.socialForm}"]`);
-        const targetRectangle = document.querySelectorAll('.comparison_result_block')[index];
 
-        if (element && targetRectangle) {
-            // Remplacer directement le contenu du rectangle par le montant
-            targetRectangle.textContent = item.value.toLocaleString('fr-FR') + '€';
-            targetRectangle.style.display = 'block'; // S'assurer que le rectangle est visible
+        if (element) {
+            // Sélectionner le rectangle correspondant
+            const targetRectangle = document.querySelectorAll('.comparison_result_block')[index];
+
+            if (targetRectangle) {
+                targetRectangle.innerHTML = ''; // Nettoyer le contenu
+                const clonedElement = element.cloneNode(true); // Cloner l'élément
+
+                clonedElement.style.display = 'block'; // Afficher le clone
+                targetRectangle.style.display = 'block'; // Afficher le rectangle
+
+                targetRectangle.appendChild(clonedElement); // Ajouter le clone au rectangle
+
+                // Masquer l'élément d'origine
+                element.style.display = 'none';
+            } else {
+                console.warn(`Rectangle not found for index ${index}`);
+            }
         } else {
-            console.warn(`Element or target rectangle not found for socialForm: ${item.socialForm}`);
+            console.warn(`Element with data-socialform="${item.socialForm}" not found`);
         }
     });
 }
