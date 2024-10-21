@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -286,10 +286,10 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     // Sélectionner le parent des divs qui contient les textes
     const parent = document.querySelector('.simulator_comparison_grid');
 
-    // Réorganiser les divs de texte dans le DOM (ils seront en haut de la grille)
+    // Réorganiser les divs de texte dans le DOM, en fonction des montants triés
     remunerationValuesDivs.forEach(item => {
         const div = document.getElementById(item.id);
-        parent.insertBefore(div, parent.firstChild); // Réinsérer chaque div au début du parent
+        parent.appendChild(div); // Réinsérer chaque div dans l'ordre trié
     });
 
     // Étape 2 : Réorganisation des chiffres dans les rectangles
@@ -313,8 +313,8 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
             const targetRectangle = document.querySelectorAll('.comparison_result_block')[index];
             
             if (targetRectangle) {
-                // Insérer le texte dans le rectangle, mais cette fois-ci, positionner les rectangles en bas
-                parent.appendChild(targetRectangle); // Met les rectangles en bas de la grille
+                // Insérer le texte dans le bon rectangle
+                targetRectangle.appendChild(element);
             } else {
                 console.warn(`Rectangle not found for index ${index}`);
             }
