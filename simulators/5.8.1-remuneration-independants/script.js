@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -283,16 +283,16 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     // Trier les montants par ordre décroissant pour les divs du haut
     remunerationValuesDivs.sort((a, b) => b.value - a.value);
 
-    // Sélectionner le parent des divs qui contient les textes (haut de la grille)
-    const parentTop = document.querySelector('.simulator_comparison_grid_top');
+    // Sélectionner le parent des divs qui contient les textes
+    const parent = document.querySelector('.simulator_comparison_grid');
 
     // Réorganiser les divs de texte dans le DOM (ils seront en haut de la grille)
     remunerationValuesDivs.forEach(item => {
         const div = document.getElementById(item.id);
-        parentTop.appendChild(div); // Réinsérer chaque div dans l'ordre trié
+        parent.insertBefore(div, parent.firstChild); // Réinsérer chaque div au début du parent
     });
 
-    // Étape 2 : Réorganisation des chiffres dans les rectangles (bas de la grille)
+    // Étape 2 : Réorganisation des chiffres dans les rectangles
     const remunerationValues = [
         { value: eurlFinalAmount, socialForm: 'EURL' },
         { value: sasuFinalAmount, socialForm: 'SASU' },
@@ -300,26 +300,26 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         { value: microFinalAmount, socialForm: 'MICRO' }
     ];
 
-    // Trier les montants par ordre décroissant pour les rectangles
+    // Trier les montants par ordre décroissant
     remunerationValues.sort((a, b) => b.value - a.value);
 
-    // Sélectionner le parent des rectangles (bas de la grille)
-    const parentBottom = document.querySelector('.simulator_comparison_grid_bottom');
-
-    // Réorganiser les rectangles dans le DOM en fonction des montants triés
+    // Sélectionner les éléments ayant le data-socialform attribué
     remunerationValues.forEach((item, index) => {
         // Sélectionner l'élément avec le bon data-socialform
         const element = document.querySelector(`[data-socialform="${item.socialForm}"]`);
-
+        
         if (element) {
-            // Assurer que le texte à l'intérieur est toujours présent et visible
-            const textElement = element.querySelector('.comparison_grid_remuneration_text'); // Ajuster la classe selon ton HTML
-            if (textElement) {
-                textElement.style.visibility = 'visible'; // Rendre visible si masqué
+            // Sélectionner le rectangle correspondant à l'index (0 = premier, 1 = deuxième, etc.)
+            const targetRectangle = document.querySelectorAll('.comparison_result_block')[index];
+            
+            if (targetRectangle) {
+                // Insérer le texte dans le rectangle, mais cette fois-ci, positionner les rectangles en bas
+                parent.appendChild(targetRectangle); // Met les rectangles en bas de la grille
+            } else {
+                console.warn(`Rectangle not found for index ${index}`);
             }
-
-            // Insérer chaque rectangle dans le parent du bas
-            parentBottom.appendChild(element);
+        } else {
+            console.warn(`Element with data-socialform="${item.socialForm}" not found`);
         }
     });
 }
