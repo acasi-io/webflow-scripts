@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -324,7 +324,7 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
 
     // Réorganiser les chiffres dans les rectangles
     remunerationValues.forEach((item, index) => {
-        const element = document.querySelector(`[data-socialform="${item.socialForm}"]`);
+        const element = document.querySelector(['data-socialform="${item.socialForm}"']);
 
         if (element) {
             // Sélectionner le rectangle correspondant
@@ -334,25 +334,22 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
                 targetRectangle.innerHTML = ''; // Nettoyer le contenu
                 const clonedElement = element.cloneNode(true); // Cloner l'élément
 
-                // Forcer l'affichage en utilisant setAttribute
-                clonedElement.setAttribute('style', 'display: block !important;');
-                targetRectangle.setAttribute('style', 'display: block !important;');
+                clonedElement.style.display = 'block'; // Afficher le clone
+                targetRectangle.style.display = 'block'; // Afficher le rectangle
 
                 targetRectangle.appendChild(clonedElement); // Ajouter le clone au rectangle
 
                 // Masquer l'élément d'origine
                 element.style.display = 'none';
 
-                // Forcer l'affichage des textes dans les rectangles
-                document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f52-2338269e .comparison_grid_remuneration_text').setAttribute('style', 'display: block !important;');
-                document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f59-2338269e .comparison_grid_remuneration_text').setAttribute('style', 'display: block !important;');
-                document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f60-2338269e .comparison_grid_remuneration_text').setAttribute('style', 'display: block !important;');
-                document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f67-2338269e .comparison_grid_remuneration_text').setAttribute('style', 'display: block !important;');
-            } else {
-                console.warn(`Rectangle not found for index ${index}`);
+                clonedElement.style.removeProperty('display');
+                targetRectangle.style.removeProperty('display');
+
+                document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f52-2338269e .comparison_grid_remuneration_text').style.display = 'block !important';
+                document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f59-2338269e .comparison_grid_remuneration_text').style.display = 'block !important';
+                document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f60-2338269e .comparison_grid_remuneration_text').style.display = 'block !important';
+                document.querySelector('#w-node-bedd2736-f42c-d131-4b1e-439381032f67-2338269e .comparison_grid_remuneration_text').style.display = 'block !important';
             }
-        } else {
-            console.warn(`Element with data-socialform="${item.socialForm}" not found`);
         }
     });
 }
