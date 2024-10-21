@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -263,23 +263,29 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 }
 
 function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
-    // Créer un tableau d'objets avec les montants et leurs identifiants
-    const amounts = [
-        { amount: microFinalAmount, id: 'comparison_fourth_best_remuneration' }, // 4ème
-        { amount: eurlFinalAmount, id: 'comparison_best_remuneration' }, // 2ème
-        { amount: eiFinalAmount, id: 'comparison_third_best_remuneration' }, // 3ème
-        { amount: sasuFinalAmount, id: 'comparison_second_best_remuneration' } // 1er
+    const eurlDiv = document.getElementById('eurl-comparison-component');
+    const sasuDiv = document.getElementById('sasu-comparison-component');
+    const eiDiv = document.getElementById('ei-comparison-component');
+    const microDiv = document.getElementById('micro-comparison-component');
+
+    // Les montants de rémunération affichés dans les rectangles de couleur
+    const remunerationValues = [
+        { id: 'eurl-comparison-component', value: eurlFinalAmount },
+        { id: 'sasu-comparison-component', value: sasuFinalAmount },
+        { id: 'ei-comparison-component', value: eiFinalAmount },
+        { id: 'micro-comparison-component', value: microFinalAmount }
     ];
   
-    // Trier le tableau par montant décroissant
-    amounts.sort((a, b) => b.amount - a.amount);
-  
-    // Attribuer les montants triés aux IDs respectifs
-    amounts.forEach((item, index) => {
-        // Utiliser l'index pour remplir les IDs appropriés
-        if (index < amounts.length) {
-            document.getElementById(item.id).textContent = item.amount;
-        }
+    // Trier les montants par ordre décroissant
+    remunerationValues.sort((a, b) => b.value - a.value);
+
+    // Sélectionne le parent des divs qui contient le texte
+    const parent = document.querySelector('.simulator_comparison_grid');
+
+    // Réorganise uniquement les divs de texte dans le DOM, sans toucher aux rectangles
+    remunerationValues.forEach(item => {
+        const div = document.getElementById(item.id);
+        parent.appendChild(div); // Réinsère chaque div dans le nouvel ordre
     });
 }
 
