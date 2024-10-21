@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -273,10 +273,10 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
 
 function resetSimulation() {
     // Réinitialiser les éléments clonés (les rendre invisibles au début de chaque simulation)
-    document.querySelectorAll('.comparison_result_block').forEach(el => {
+    /*document.querySelectorAll('.comparison_result_block').forEach(el => {
         el.style.display = 'none'; // Masquer les blocs
         el.innerHTML = ''; // Nettoyer leur contenu
-    });
+    });*/
 
     // Réafficher tous les éléments d'origine
     document.querySelectorAll('[data-socialform]').forEach(el => {
