@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.7.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -312,9 +312,23 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         const element = document.querySelector(`[data-socialform="${item.socialForm}"]`);
 
         if (element) {
+            // Sélectionner le rectangle correspondant à l'index (0 = premier, 1 = deuxième, etc.)
+            const targetRectangle = document.querySelectorAll('.comparison_result_block')[index];
+            
+            if (targetRectangle) {
+                // Insérer le texte dans le rectangle, mais cette fois-ci, positionner les rectangles en bas
+                parentBottom.appendChild(targetRectangle); // Met les rectangles en bas de la grille
+            } else {
+                console.warn(`Rectangle not found for index ${index}`);
+            }
+        } else {
+            console.warn(`Element with data-socialform="${item.socialForm}" not found`);
+        }
+
+        /*if (element) {
             // Insérer chaque rectangle dans le parent du bas
             parentBottom.appendChild(element);
-        }
+        }*/
     });
 }
 
