@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -255,11 +255,6 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     //orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
     orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
 
-    document.querySelector('[data-socialform="EURL"').textContent = eurlFinalAmount.toLocaleString('fr-FR') + '€';
-    document.querySelector('[data-socialform="SASU"').textContent = sasuFinalAmount.toLocaleString('fr-FR') + '€';
-    document.querySelector('[data-socialform="EI"').textContent = eiFinalAmount.toLocaleString('fr-FR') + '€';
-    document.querySelector('[data-socialform="MICRO"').textContent = microFinalAmount.toLocaleString('fr-FR') + '€';
-
     const contributionsTotal = document.getElementById('contributions-total');
     document.getElementById('best-contributions').textContent = contributionsTotal.textContent;
 
@@ -305,6 +300,11 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         const div = document.getElementById(item.id);
         parentTop.appendChild(div);
     });
+
+    document.querySelector('[data-socialform="EURL"').textContent = eurlFinalAmount.toLocaleString('fr-FR') + '€';
+    document.querySelector('[data-socialform="SASU"').textContent = sasuFinalAmount.toLocaleString('fr-FR') + '€';
+    document.querySelector('[data-socialform="EI"').textContent = eiFinalAmount.toLocaleString('fr-FR') + '€';
+    document.querySelector('[data-socialform="MICRO"').textContent = microFinalAmount.toLocaleString('fr-FR') + '€';
 
     // Étape 2 : Réorganisation des chiffres dans les rectangles
     const remunerationValues = [
