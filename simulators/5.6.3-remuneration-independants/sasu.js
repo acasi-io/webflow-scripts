@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.6.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -30,7 +30,11 @@ function retirementText() {
     document.getElementById('pension-scheme').textContent = `${pensionSchemeAmount.toLocaleString('fr-FR')}€`;
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
-    document.getElementById('retirement-points').textContent = retirementPoints.nodeValue;
+    if (isNaN(retirementPoints)) {
+        document.getElementById('retirement-points').textContent = 'O';
+    } else {
+        document.getElementById('retirement-points').textContent = retirementPoints.nodeValue;
+    }
 }
 
 
@@ -360,7 +364,12 @@ function fillSasuComparison() {
 
     document.getElementById('sasu-comparison-wage').textContent = sasuRemuneration.toLocaleString('fr-FR');
     document.getElementById('sasu-comparison-dividends').textContent = sasuDividends.toLocaleString('fr-FR');
-    document.getElementById('sasu-comparison-contributions').textContent = sasuContributions.toLocaleString('fr-FR');
+
+    if (isNaN(sasuContributions)) {
+        document.getElementById('sasu-comparison-contributions').textContent = '0';
+    } else {
+        document.getElementById('sasu-comparison-contributions').textContent = sasuContributions.toLocaleString('fr-FR');
+    }
 }
 
 
