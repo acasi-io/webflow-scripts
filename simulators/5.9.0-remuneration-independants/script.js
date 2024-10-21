@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.8.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/5.9.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -285,8 +285,9 @@ function resetSimulation() {
 }
 
 function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+    // Réinitialiser la simulation
     resetSimulation();
-    
+
     // Étape 1 : Réorganisation des divs du haut
     const remunerationValuesDivs = [
         { id: 'eurl-comparison-component', value: eurlFinalAmount },
@@ -295,13 +296,9 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         { id: 'micro-comparison-component', value: microFinalAmount }
     ];
 
-    // Trier les montants par ordre décroissant pour les divs du haut
     remunerationValuesDivs.sort((a, b) => b.value - a.value);
 
-    // Sélectionner le parent des divs du haut
     const parentTop = document.querySelector('.simulator_comparison_grid_top');
-
-    // Réorganiser les divs de texte dans le DOM, en fonction des montants triés
     remunerationValuesDivs.forEach(item => {
         const div = document.getElementById(item.id);
         parentTop.appendChild(div);
@@ -315,30 +312,23 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         { value: microFinalAmount, socialForm: 'MICRO' }
     ];
 
-    // Trier les montants par ordre décroissant
     remunerationValues.sort((a, b) => b.value - a.value);
 
-    // Sélectionner les éléments contenant les chiffres (en bas)
     const parentBottom = document.querySelector('.simulator_comparison_grid_bottom');
-
     remunerationValues.forEach((item, index) => {
-        // Sélectionner l'élément contenant le chiffre basé sur data-socialform
         const element = document.querySelector(`[data-socialform="${item.socialForm}"]`);
         
         if (element) {
             const targetRectangle = document.querySelectorAll('.comparison_result_block')[index];
             
             if (targetRectangle) {
-                // Supprimer le contenu existant dans le rectangle cible pour éviter le chevauchement
                 targetRectangle.innerHTML = '';
-
-                // Cloner l'élément et le placer dans le rectangle correct
                 const clonedElement = element.cloneNode(true);
-                clonedElement.style.display = 'block';  // S'assurer que le clone est visible
+
+                clonedElement.style.display = 'block'; 
+                targetRectangle.style.display = 'block'; 
 
                 targetRectangle.appendChild(clonedElement);
-
-                // Masquer l'élément original
                 element.style.display = 'none';
             } else {
                 console.warn(`Rectangle not found for index ${index}`);
@@ -348,6 +338,7 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         }
     });
 }
+
 
 
 
