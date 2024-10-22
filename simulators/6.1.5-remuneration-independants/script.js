@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -343,7 +343,7 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
 
 function updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount) {
     // Liste des montants avec leurs éléments de texte associés
-   /* const textBlocks = [
+   const textBlocks = [
         { amount: eurlFinalAmount, id: 'text-green' },
         { amount: sasuFinalAmount, id: 'text-orange-large' },
         { amount: eiFinalAmount, id: 'text-orange-small' },
@@ -365,14 +365,14 @@ function updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microF
             const correspondingBlock = textElement.closest('.comparison_block_mobile');
             parentGrid.appendChild(correspondingBlock);
         }
-    });*/
+    });
 
     // Tableau pour gérer les montants avec les classes associées aux rectangles
-    const comparisonData = [
+    /*const comparisonData = [
     { id: 'eurl-rectangle', value: eurlFinalAmount, colorClass: 'rectangle-green' },
     { id: 'sasu-rectangle', value: sasuFinalAmount, colorClass: 'rectangle-orange' },
-    { id: 'ei-rectangle', value: eiFinalAmount, colorClass: 'rectangle-blue' },
-    { id: 'micro-rectangle', value: microFinalAmount, colorClass: 'rectangle-yellow' }
+    { id: 'ei-rectangle', value: eiFinalAmount, colorClass: 'rectangle-orange-small' },
+    { id: 'micro-rectangle', value: microFinalAmount, colorClass: 'rectangle-red' }
     ];
 
     // Mise à jour des montants dans le DOM pour chaque rectangle
@@ -395,7 +395,7 @@ function updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microF
 
     document.querySelectorAll('.rectangle').forEach((rectangle) => {
         rectangle.style.display = 'block !important';
-    });
+    });*/
 }
 
 
