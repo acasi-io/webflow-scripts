@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -366,12 +366,6 @@ function updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microF
             parentGrid.appendChild(correspondingBlock);
         }
     });*/
-
-    // Récupération des montants stockés depuis le localStorage pour chaque comparaison
-    const microFinalAmount = localStorage.getItem('microTotal') || 0;
-    const eurlFinalAmount = localStorage.getItem('eurlTotal') || 0;
-    const eiFinalAmount = localStorage.getItem('eiTotal') || 0;
-    const sasuFinalAmount = localStorage.getItem('sasuTotal') || 0;
 
     // Tableau pour gérer les montants avec les classes associées aux rectangles
     const comparisonData = [
