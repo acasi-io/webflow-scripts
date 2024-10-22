@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -517,12 +517,12 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         explanationText.textContent = "La SASU est une forme juridique de société par actions simplifiée avec un seul associé. Les principaux avantages incluent la protection du patrimoine personnel, la flexibilité dans l'organisation, la liberté de fixation du capital, la possibilité de transition vers une structure pluripersonnelle sans formalités complexes et l’absences de cotisations sociales sur les dividendes.";
         attentionText.textContent = "La SASU offre souplesse et l'absence de cotisations sociales sur les dividendes, mais certains aspects sont à surveiller. En tant que président assimilé salarié, vous relevez du régime général, avec des charges sociales plus élevées mais une meilleure couverture sociale et retraite. Vous pouvez choisir de vous verser plus de dividendes pour réduire ces charges, mais cela diminue votre protection sociale, notamment en matière de retraite. Enfin, la gestion administrative reste rigoureuse et la responsabilité limitée, sauf en cas de garanties personnelles.";
     } else {
+        microConditions(turnover);
+        
         let eurlTotal = parseInt(localStorage.getItem('eurlTotal'));
         let eiTotal = parseInt(localStorage.getItem('eiTotal'));
         let sasuTotal = parseInt(localStorage.getItem('sasuTotal'));
         let microTotal = parseInt(localStorage.getItem('microTotal'));
-
-        microConditions(turnover);
         
         compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         let bestSocialForm = localStorage.getItem('bestSocialForm');
