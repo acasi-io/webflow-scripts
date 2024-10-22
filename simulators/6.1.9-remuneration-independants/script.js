@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -386,7 +386,7 @@ function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, micr
     // Mettre à jour les textes des rectangles avec les valeurs correspondantes
     staticDivs.forEach((staticDiv, index) => {
         const value = dynamicDivs[index].getAttribute('data-value'); // Récupérer la valeur correspondante
-        staticDiv.textContent = `Valeur: ${value}`; // Mettre à jour le texte
+        staticDiv.textContent = `${value}€`; // Mettre à jour le texte
     });
 }
   
