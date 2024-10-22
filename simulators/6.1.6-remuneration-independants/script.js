@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -255,7 +255,9 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     //orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
     orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
 
-    updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount);
+    // updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount);
+
+    updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
 
     console.log(sasuFinalAmount);
     console.log(eurlFinalAmount);
@@ -341,7 +343,55 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     });
 }
 
-function updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount) {
+
+function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+    const dynamicValues = {
+        EURL: eurlFinalAmount,
+        SASU: sasuFinalAmount,
+        EI: eiFinalAmount,
+        MICRO: microFinalAmount
+    };
+    
+    // Sélectionner toutes les divs dynamiques
+    const dynamicDivs = Array.from(document.querySelectorAll('.dynamic'));
+  
+    // Mettre à jour les data-value avec les valeurs fournies
+    dynamicDivs.forEach(div => {
+        const socialForm = div.getAttribute('data-socialformmobile');
+        if (values[socialForm] !== undefined) {
+            iv.setAttribute('data-value', values[socialForm]);
+        }
+    });
+  
+    // Trier les divs en fonction de la valeur des attributs data-value
+    dynamicDivs.sort((a, b) => {
+        return parseFloat(b.getAttribute('data-value')) - parseFloat(a.getAttribute('data-value'));
+    });
+  
+    // Réinsérer les divs triées dans le conteneur
+    const gridContainer = document.querySelector('.grid-container');
+      
+    // Créer un tableau des divs statiques pour les réinsérer au bon endroit
+    const staticDivs = Array.from(document.querySelectorAll('.static'));
+  
+    // Réinsérer les divs triées et les statiques
+    gridContainer.innerHTML = ''; // Vider le conteneur
+  
+    // Réinsérer les divs triées et statiques dans le bon ordre
+    for (let i = 0; i < dynamicDivs.length; i++) {
+        gridContainer.appendChild(dynamicDivs[i]);
+        gridContainer.appendChild(staticDivs[i]); // Assure que chaque rectangle statique suit un dynamique
+    }
+  
+    // Mettre à jour les textes des rectangles avec les valeurs correspondantes
+    staticDivs.forEach((staticDiv, index) => {
+        const value = dynamicDivs[index].getAttribute('data-value'); // Récupérer la valeur correspondante
+        staticDiv.textContent = `Valeur: ${value}`; // Mettre à jour le texte
+    });
+}
+  
+
+/*function updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount) {
     // Liste des montants avec leurs éléments de texte associés
    const textBlocks = [
         { amount: eurlFinalAmount, id: 'text-green' },
@@ -396,7 +446,7 @@ function updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microF
     document.querySelectorAll('.rectangle').forEach((rectangle) => {
         rectangle.style.display = 'block !important';
     });*/
-}
+// }
 
 
 
