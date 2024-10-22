@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -20,6 +20,17 @@ function yearFillText(urssafData, htmlTag) {
         dataYear = 0;
     }
     document.querySelector(htmlTag).textContent = dataYear.toLocaleString('fr-FR') + '€';
+}
+
+function fillSameClassTexts(urssafData, htmlTag) {
+    const dataUrssaf = engine.evaluate(urssafData);
+    let data = dataUrssaf.nodeValue;
+    if (isNaN(data)) {
+        data = 0;
+    }
+    document.querySelectorAll(htmlTag).forEach(element => {
+        element.textContent = data.toLocaleString('fr-FR') + '€';
+    });
 }
 
 function microRetirement() {
@@ -105,8 +116,12 @@ function fillMicroComparison(turnoverMinusCost, situation, numberOfChild, househ
     microSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, 'non', singleParent);
 
     yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions", '#micro-comparison-contributions');
-    fillText("dirigeant . auto-entrepreneur . revenu net . après impôt", '#micro-comparison-wage');
-    fillText("dirigeant . rémunération . impôt", '#micro-comparison-tax');
+    yearFillText("dirigeant . auto-entrepreneur . cotisations et contributions", '#micro-comparison-contributions-mobile');
+    // fillText("dirigeant . auto-entrepreneur . revenu net . après impôt", '#micro-comparison-wage');
+    // fillText("dirigeant . rémunération . impôt", '#micro-comparison-tax');
+
+    fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net . après impôt", '.micro_comparison_wage');
+    fillSameClassTexts("dirigeant . rémunération . impôt", '.micro_comparison_tax');
     // fillText("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations . répartition . retraite", "#micro-comparison-retirement");
 }
 

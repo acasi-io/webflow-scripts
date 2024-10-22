@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -362,13 +362,26 @@ function fillSasuComparison() {
     const sasuRemuneration = parseInt(bestSasuObject.afterTaxAmount);
     const sasuContributions = parseInt(localStorage.getItem('sasuContributions'));
 
-    document.getElementById('sasu-comparison-wage').textContent = sasuRemuneration.toLocaleString('fr-FR');
-    document.getElementById('sasu-comparison-dividends').textContent = sasuDividends.toLocaleString('fr-FR');
+    // document.getElementById('sasu-comparison-wage').textContent = sasuRemuneration.toLocaleString('fr-FR');
+    document.querySelectorAll('.sasu_comparison_wage').forEach((element) => {
+        element.textContent = sasuRemuneration.toLocaleString('fr-FR');
+    });
+    // document.getElementById('sasu-comparison-dividends').textContent = sasuDividends.toLocaleString('fr-FR');
+
+    document.querySelectorAll('.sasu_comparison_dividends').forEach((element) => {
+        element.textContent = sasuDividends.toLocaleString('fr-FR');
+    });
 
     if (isNaN(sasuContributions)) {
-        document.getElementById('sasu-comparison-contributions').textContent = '0';
+        document.querySelectorAll('.sasu_comparison_contributions').forEach((element) => {
+            element.textContent = '0';
+        });
+        // document.getElementById('sasu-comparison-contributions').textContent = '0';
     } else {
-        document.getElementById('sasu-comparison-contributions').textContent = sasuContributions.toLocaleString('fr-FR');
+        document.querySelectorAll('.sasu_comparison_contributions').forEach((element) => {
+            element.textContent = sasuContributions.toLocaleString('fr-FR');
+        });
+        // document.getElementById('sasu-comparison-contributions').textContent = sasuContributions.toLocaleString('fr-FR');
     }
 }
 
