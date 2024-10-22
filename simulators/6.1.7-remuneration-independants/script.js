@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.1.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -358,8 +358,8 @@ function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, micr
     // Mettre à jour les data-value avec les valeurs fournies
     dynamicDivs.forEach(div => {
         const socialForm = div.getAttribute('data-socialformmobile');
-        if (values[socialForm] !== undefined) {
-            iv.setAttribute('data-value', values[socialForm]);
+        if (dynamicValues[socialForm] !== undefined) {
+            iv.setAttribute('data-value', dynamicValues[socialForm]);
         }
     });
   
