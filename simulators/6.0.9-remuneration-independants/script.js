@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.0.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -255,6 +255,8 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     //orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
     orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
 
+    updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount);
+
     console.log(sasuFinalAmount);
     console.log(eurlFinalAmount);
     console.log(eiFinalAmount);
@@ -335,6 +337,33 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
             targetRectangle.innerHTML = `<p class="comparison_grid_remuneration_text">${valueFormatted}</p>`; // Mettre à jour le contenu avec le texte formaté
         } else {
             console.warn(`Target rectangle not found for index ${index}`);
+        }
+    });
+}
+
+function updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount) {
+    // Liste des montants avec leurs éléments de texte associés
+    const textBlocks = [
+        { amount: eurlFinalAmount, id: 'text-green' },
+        { amount: sasuFinalAmount, id: 'text-orange-large' },
+        { amount: eiFinalAmount, id: 'text-orange-small' },
+        { amount: microFinalAmount, id: 'text-red' }
+    ];
+
+    // Trier les textes par montant décroissant
+    textBlocks.sort((a, b) => b.amount - a.amount);
+
+    // Sélectionner le parent pour les blocs de texte
+    const parentGrid = document.querySelector('.simulator_comparison_grid_mobile');
+
+    // Réorganiser les blocs de texte en fonction des montants
+    textBlocks.forEach((block, index) => {
+        const textElement = document.getElementById(block.id);
+
+        if (textElement) {
+            // Déplacer chaque bloc de texte au bon endroit
+            const correspondingBlock = textElement.closest('.comparison_block_mobile');
+            parentGrid.appendChild(correspondingBlock);
         }
     });
 }
