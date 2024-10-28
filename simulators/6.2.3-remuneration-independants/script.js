@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -54,6 +54,25 @@ function showLoader() {
 function hideLoader() {
     document.getElementById('loader').style.display = 'none';
 }
+
+const situationField = document.getElementById('personal-situation');
+const childrenField = document.getElementById('child');
+const singleParentWrapper = document.getElementById('single-parent-wrapper');
+
+function checkConditions() {
+  const situation = situationField.value;
+  const numberOfChildren = parseInt(childrenField.value);
+
+  if (situation === 'célibataire' && numberOfChildren > 0) {
+    singleParentWrapper.style.display = 'block';
+  } else {
+    singleParentWrapper.style.display = 'none';
+  }
+}
+
+situationField.addEventListener('change', checkConditions);
+childrenField.addEventListener('input', checkConditions);
+
 
 
 calculBtn.addEventListener('click', () => {
@@ -228,7 +247,7 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
         bestDividends = eurlDividends;
         comparisonTitle.textContent = 'EURL';
         explanationText.textContent = "L'EURL est une SARL à associé unique, offrant une protection du patrimoine personnel et une grande flexibilité. Les principaux avantages incluent la protection du patrimoine personnel, la flexibilité dans l'organisation, la liberté de fixation du capital, et la transition automatique vers une SARL en cas d'arrivée de nouveaux associés.";
-        attentionText.textContent = "L’EURL à l’IS offre une fiscalité avantageuse, mais attention à la gestion des dividendes, soumis à cotisations sociales. En tant que gérant TNS, vous bénéficiez de charges sociales réduites, mais d'une couverture sociale et retraite moins favorable. La responsabilité est limitée sauf en cas de garanties personnelles, et des formalités comptables rigoureuses sont nécessaires pour rester conforme.";
+        attentionText.textContent = "L’EURL à l’IS offre une fiscalité avantageuse, mais attention à la gestion des dividendes, soumis à cotisations sociales. Le calcul du montant des dividendes nettes a été fait sur la base d'un capital social de 1.500€, ce montant peut donc légèrement différent. En tant que gérant TNS, vous bénéficiez de charges sociales réduites, mais d'une couverture sociale et retraite moins favorable. La responsabilité est limitée sauf en cas de garanties personnelles, et des formalités comptables rigoureuses sont nécessaires pour rester conforme.";
     } else if (bestSocialForm === 'sasu') {
         bestTotalWage = sasuFinalAmount;
         bestWage = sasuRemuneration;
