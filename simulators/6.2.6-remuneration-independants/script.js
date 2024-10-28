@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -490,9 +490,11 @@ function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, micr
 }*/
 
 function microConditions(turnover) {
+    document.querySelector('.comparison_micro_text').style.display = 'none';
     if (turnover > 50000) {
         localStorage.setItem('microTotal', 0);
-        document.querySelectorAll('.micro_comparison_wage').forEach((element) => {
+        document.querySelector('.comparison_micro_text').style.display = 'block';
+        /*document.querySelectorAll('.micro_comparison_wage').forEach((element) => {
             element.textContent = '0€';
         });
         document.querySelectorAll('.micro_comparison_tax').forEach((element) => {
@@ -500,7 +502,7 @@ function microConditions(turnover) {
         });
         document.querySelectorAll('.micro_comparison_contributions').forEach((element) => {
             element.textContent = '0€';
-        });
+        });*/
         // document.getElementById('micro-comparison-wage').textContent = '0€';
         // document.getElementById('micro-comparison-contributions').textContent = '0€';
         // document.getElementById('micro-comparison-tax').textContent = '0€';
