@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -21,6 +21,7 @@ function yearFillText(urssafData, htmlTag) {
 function retirementText() {
     const gainTrimester = engine.evaluate("protection sociale . retraite . trimestres");
     document.getElementById('gain-trimester').textContent = gainTrimester.nodeValue;
+    localStorage.setItem('sasuRetraite', gainTrimester.nodeValue);
 
     const pensionScheme = engine.evaluate("protection sociale . retraite . base");
     let pensionSchemeAmount = Math.round(pensionScheme.nodeValue * 12);
@@ -361,6 +362,7 @@ function fillSasuComparison() {
 
     const sasuRemuneration = parseInt(bestSasuObject.afterTaxAmount);
     const sasuContributions = parseInt(localStorage.getItem('sasuContributions'));
+    const sasuRetirement = parseInt(localStorage.getItem('sasuRetraite'));
 
     // document.getElementById('sasu-comparison-wage').textContent = sasuRemuneration.toLocaleString('fr-FR');
     document.querySelectorAll('.sasu_comparison_wage').forEach((element) => {
@@ -370,6 +372,10 @@ function fillSasuComparison() {
 
     document.querySelectorAll('.sasu_comparison_dividends').forEach((element) => {
         element.textContent = sasuDividends.toLocaleString('fr-FR');
+    });
+
+    document.querySelectorAll('.sasu_comparison_retirement').forEach((element) => {
+        element.textContent = sasuRetirement.toLocaleString('fr-FR');
     });
 
     if (isNaN(sasuContributions)) {

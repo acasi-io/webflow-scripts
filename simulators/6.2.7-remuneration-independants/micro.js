@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -56,6 +56,10 @@ function storageMicroTotal(turnoverMinusCost, situation, numberOfChild, househol
     const microAfterTaxIsUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . revenu net . après impôt");
     const microAfterTaxIsAmount = Math.round(microAfterTaxIsUrssaf.nodeValue);
     localStorage.setItem('microTotal', microAfterTaxIsAmount);
+
+    const gainTrimester = engine.evaluate("protection sociale . retraite . trimestres");
+    const gainTrimesterAmount = Math.round(gainTrimester.nodeValue);
+    localStorage.setItem('microRetirement', gainTrimesterAmount);
 }
 
 function microResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
@@ -122,6 +126,7 @@ function fillMicroComparison(turnoverMinusCost, situation, numberOfChild, househ
 
     fillSameClassTexts("dirigeant . auto-entrepreneur . revenu net . après impôt", '.micro_comparison_wage');
     fillSameClassTexts("dirigeant . rémunération . impôt", '.micro_comparison_tax');
+    fillSameClassTexts("protection sociale . retraite . trimestres", '.micro_comparison_retirement');
     // fillText("dirigeant . auto-entrepreneur . cotisations et contributions . cotisations . répartition . retraite", "#micro-comparison-retirement");
 }
 

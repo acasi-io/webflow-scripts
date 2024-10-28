@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -27,8 +27,11 @@ function retirementText() {
     document.getElementById('pension-scheme').textContent = `${pensionSchemeAmount.toLocaleString('fr-FR')}€`;
 
     const retirementPoints = engine.evaluate("protection sociale . retraite . complémentaire . RCI . points acquis");
-    document.getElementById('retirement-points').textContent = retirementPoints.nodeValue;
-
+    const retirementPointsAmount = retirementPoints.nodeValue;
+    if (isNaN(retirementPointsAmount)) {
+        retirementPointsAmount = 0;
+    }
+    document.getElementById('retirement-points').textContent = retirementPointsAmount.nodeValue;
     // eurl-comparison-wagfillText("protection sociale . retraite", "#retirement-amount");
 }
 
@@ -128,7 +131,7 @@ function compareBestDividends(eurlDividendsPfu, eurlDividendsBaremeAmount) {
     return bestDividends;
 }
 
-function createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, total) {
+function createObjectForResult(pourcentage, cotisationsTotalAmount, gainTrimesterAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, total) {
     let bestResult = {
         pourcentage: pourcentage,
         cotisations: cotisationsTotalAmount,
@@ -138,6 +141,7 @@ function createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration
         grossDividends: eurlDividendsBrut,
         pfuDividends: eurlDividendsPfu,
         baremeDividends: eurlDividendsBaremeAmount,
+        gainTrimesterAmount: gainTrimesterAmount,
         // retirementAmount: retirementAmount,
         total: total
     };
@@ -160,6 +164,9 @@ function comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, househ
         let cotisationsUrssaf = engine.evaluate("dirigeant . indépendant . cotisations et contributions");
         let cotisationsAmount = Math.round(cotisationsUrssaf.nodeValue);
 
+        const gainTrimester = engine.evaluate("protection sociale . retraite . trimestres");
+        let gainTrimesterAmount = Math.round(gainTrimester.nodeValue);
+
         // let retirementAmountUrssaf = engine.evaluate("protection sociale . retraite");
         // let retirementAmount = Math.round(retirementAmountUrssaf.nodeValue);
 
@@ -171,11 +178,11 @@ function comparerRemunerations(maxWage, turnoverMinusCost, numberOfChild, househ
 
         let total = remunerationAfterTaxAmount + bestDividends;
 
-        let resultArray = createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, total);
+        let resultArray = createObjectForResult(pourcentage, cotisationsTotalAmount, gainTrimesterAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, total);
         eurlArray.push(resultArray);
 
         if (total > bestResult.total) {
-            bestResult = createObjectForResult(pourcentage, cotisationsTotalAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, total);
+            bestResult = createObjectForResult(pourcentage, cotisationsTotalAmount, gainTrimesterAmount, remuneration, remunerationAfterTaxAmount, bestDividends, eurlDividendsBrut, eurlDividendsPfu, eurlDividendsBaremeAmount, total);
         }
     }
 
@@ -249,6 +256,7 @@ function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, household
     localStorage.setItem('bestEurlDividends', resultat.bestDividends);
     localStorage.setItem('eurlAfterTax', resultat.remunerationAfterTax);
     localStorage.setItem('eurlContributionsTotal', resultat.cotisations);
+    localStorage.setItem('eurlRetirement', resultat.gainTrimesterAmount);
     // localStorage.setItem('eurlRetirementAmount', resultat.retirementAmount);
 }
 
@@ -266,6 +274,7 @@ function fillEurlComparison() {
     const dividends = parseInt(localStorage.getItem('bestEurlDividends'));
     const remuneration = parseInt(localStorage.getItem('eurlAfterTax'));
     const contributions = parseInt(localStorage.getItem('eurlContributionsTotal'));
+    const retirement = parseInt(localStorage.getItem('eurlRetirement'));
     // const retirementAmount = parseInt(localStorage.getItem('eurlRetirementAmount'));
 
     // document.getElementById('eurl-comparison-wage').textContent = remuneration.toLocaleString('fr-FR');
@@ -277,6 +286,9 @@ function fillEurlComparison() {
     });
     document.querySelectorAll('.eurl_comparison_contributions').forEach((element) => {
         element.textContent = contributions.toLocaleString('fr-FR');
+    });
+    document.querySelectorAll('.eurl_comparison_retirement').forEach((element) => {
+        element.textContent = retirement.toLocaleString('fr-FR');
     });
     // document.getElementById('eurl-comparison-dividends').textContent = dividends.toLocaleString('fr-FR');
     // document.getElementById('eurl-comparison-contributions').textContent = contributions.toLocaleString('fr-FR');
