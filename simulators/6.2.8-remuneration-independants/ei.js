@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -65,8 +65,6 @@ function storageEiTotal(turnoverMinusCost, situation, numberOfChild, householdIn
     eiSituation(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent, 'IR');
     const eiAfterTaxIrUrssaf = engine.evaluate("dirigeant . rémunération . net . après impôt");
     const eiAfterTaxIrAmount = Math.round(eiAfterTaxIrUrssaf.nodeValue);
-    const gainTrimester = engine.evaluate("protection sociale . retraite . trimestres");
-    localStorage.setItem('eiRetraite', gainTrimester.nodeValue);
 
     let bestEiResult;
     let bestTax;
@@ -147,7 +145,6 @@ function fillEiComparison(turnoverMinusCost, situation, numberOfChild, household
     fillSameClassTexts("dirigeant . rémunération . net . après impôt", '.ei_comparison_wage');
     fillSameClassTexts("dirigeant . indépendant . cotisations et contributions", '.ei_comparison_contributions');
     fillSameClassTexts("impôt . montant", '.ei_comparison_tax');
-    fillSameClassTexts("protection sociale . retraite . trimestres", '.ei_comparison_retirement');
 
     // fillText("dirigeant . indépendant . cotisations et contributions", '#ei-comparison-contributions');
     // fillText("dirigeant . rémunération . net . après impôt", '#ei-comparison-wage');
