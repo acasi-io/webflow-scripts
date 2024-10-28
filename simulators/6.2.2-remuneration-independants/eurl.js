@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -73,7 +73,7 @@ function calculIs(turnoverMinusCost, remuneration, cotisationsAmount) {
 function calculDividendsPfu(turnoverMinusCost, remuneration, cotisationsAmount) {
     let eurlDividendsBrut = calculIs(turnoverMinusCost, remuneration, cotisationsAmount);
 
-    let shareCapital = parseInt(document.getElementById('share-capital').value);
+    let shareCapital = 1500;
     let eurlDividendsPfu;
     if (eurlDividendsBrut < (shareCapital * 0.1)) {
         eurlDividendsPfu = eurlDividendsBrut - (eurlDividendsBrut * 0.3);
