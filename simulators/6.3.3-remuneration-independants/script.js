@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.3.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.3.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.3.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.3.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -109,11 +109,18 @@ calculBtn.addEventListener('click', () => {
 
         sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         fillSasuComparison();
+        if (document.getElementById('gain-trimester').textContent = '') {
+            document.getElementById('gain-trimester').textContent = '0';
+        }
         fillComparisonRetirementText('sasu');
 
         checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, householdIncome, singleParent);
 
         microConditions(turnover);
+
+        if (document.getElementById('retirement-points').textContent = 'NaN') {
+            document.getElementById('retirement-points').textContent = '0';
+        }
 
         checkUnemploymentAndSocialSecurityProtection();
 
