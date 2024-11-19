@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.3.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.3.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.3.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.3.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -114,6 +114,8 @@ calculBtn.addEventListener('click', () => {
         checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, householdIncome, singleParent);
 
         microConditions(turnover);
+
+        checkUnemploymentAndSocialSecurityProtection();
 
         simulatorResults.classList.remove('hidden');
         simulatorResults.scrollIntoView({
@@ -581,6 +583,60 @@ function showBestSocialForm(bestSocialForm, bestSocialFormForComponent) {
     
     if (bestSocialForm === 'sasu' || bestSocialForm === 'eurl') {
         document.querySelector('.details_dividends_component').classList.remove('hidden');
+    }
+}
+
+function fillSameClassText(className, textToShow) {
+    document.querySelectorAll(`.${className}`).forEach((element) => {
+        element.textContent = textToShow;
+    });
+}
+
+function checkUnemploymentAndSocialSecurityProtection() {
+    // EURL
+    const eurlRemuneration = parseInt((document.getElementById('eurl-comparison-wage').textContent).replace(/\s+/g, ""));
+    if (eurlRemuneration < 20000) {
+        fillSameClassText('eurl_social_security', 'Mauvaise');
+    } else if (eurlRemuneration >= 20000 && eurlRemuneration < 50000) {
+        fillSameClassText('eurl_social_security', 'Moyenne');
+    } else {
+        fillSameClassText('eurl_social_security', 'Bonne');
+    }
+
+    // SASU
+    const sasuRemuneration = parseInt((document.getElementById('sasu-comparison-wage').textContent).replace(/\s+/g, ""));
+    if (sasuRemuneration < 25000) {
+        fillSameClassText('sasu_social_security', 'Moyenne');
+    } else if (sasuRemuneration >= 25000 && sasuRemuneration < 50000) {
+        fillSameClassText('sasu_social_security', 'Bonne');
+    } else {
+        fillSameClassText('sasu_social_security', 'Très bonne');
+    }
+
+    if (sasuRemuneration < 20000) {
+        fillSameClassText('sasu_unemployment', 'Mauvaise');
+    } else {
+        fillSameClassText('sasu_unemployment', 'Moyenne');
+    }
+
+    // EI
+    const eiRemuneration = parseInt((document.getElementById('ei-comparison-wages').textContent).replace(/\s+/g, ""));
+    if (eiRemuneration < 15000) {
+        fillSameClassText('ei_social_security', 'Mauvaise');
+    } else if (eiRemuneration >= 15000 && eiRemuneration < 40000) {
+        fillSameClassText('ei_social_security', 'Moyenne');
+    } else {
+        fillSameClassText('ei_social_security', 'Bonne');
+    }
+
+    // Micro
+    const microRemuneration = parseInt((document.getElementById('micro-comparison-wage').textContent).replace(/\s+/g, ""));
+    if (microRemuneration < 12000) {
+        fillSameClassText('micro_social_security', 'Mauvaise');
+    } else if (microRemuneration >= 12000 && microRemuneration < 30000) {
+        fillSameClassText('micro_social_security', 'Moyenne');
+    } else {
+        fillSameClassText('micro_social_security', 'Bonne');
     }
 }
 
