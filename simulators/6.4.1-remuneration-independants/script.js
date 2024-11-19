@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -120,6 +120,11 @@ calculBtn.addEventListener('click', () => {
         }
 
         checkUnemploymentAndSocialSecurityProtection();
+
+        if (turnover > 50000) {
+            const microRemuneration = parseInt((document.getElementById('micro-comparison-wage').textContent).replace(/\s+/g, ""));
+            document.getElementById('comparison_fourth_best_remuneration').textContent = microRemuneration;
+        }
 
         simulatorResults.classList.remove('hidden');
         simulatorResults.scrollIntoView({
@@ -514,8 +519,6 @@ function microConditions(turnover) {
     if (turnover > 50000) {
         localStorage.setItem('microTotal', 0);
         document.querySelector('.comparison_micro_text').style.display = 'block';
-        const microRemuneration = parseInt((document.getElementById('micro-comparison-wage').textContent).replace(/\s+/g, ""));
-        document.getElementById('comparison_fourth_best_remuneration').textContent = microRemuneration;
         /*document.querySelectorAll('.micro_comparison_wage').forEach((element) => {
             element.textContent = '0€';
         });
