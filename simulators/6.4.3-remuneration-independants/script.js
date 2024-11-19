@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -376,10 +376,16 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         if (targetRectangle) {
             targetRectangle.style.display = 'block'; // S'assurer que le rectangle est visible
             targetRectangle.innerHTML = `<p class="comparison_grid_remuneration_text">${valueFormatted}</p>`; // Mettre à jour le contenu avec le texte formaté
+            // Ajouter ta condition pour le chiffre d'affaires > 50 000 €
             if (chiffreAffaires > 50000 && item.socialForm === 'MICRO') {
-                // Mettre à jour le rectangle spécifique pour MICRO
-                const microRemuneration = parseInt(item.value); // Convertir en nombre si nécessaire
-                targetRectangle.innerHTML = `<p class="comparison_grid_remuneration_text">${microRemuneration}€</p>`;
+                // Récupérer la valeur actuelle de l'élément micro-comparison-wage
+                const microComparisonElement = document.getElementById('micro-comparison-wage');
+                if (microComparisonElement) {
+                    const microRemunerationText = microComparisonElement.textContent.replace(/\s+/g, '').replace('€', '');
+                    const microRemuneration = parseInt(microRemunerationText, 10); // Convertir en nombre
+                    // Mettre à jour le rectangle pour MICRO avec la nouvelle valeur
+                    targetRectangle.innerHTML = `<p class="comparison_grid_remuneration_text">${microRemuneration.toLocaleString('fr-FR')}€ (Condition spéciale)</p>`;
+                }
             }
         } else {
             console.warn(`Target rectangle not found for index ${index}`);
