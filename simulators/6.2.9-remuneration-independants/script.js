@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -94,15 +94,19 @@ calculBtn.addEventListener('click', () => {
 
         storageMicroTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         fillMicroComparison(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        fillComparisonRetirementText('micro');
 
         storageEiTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         fillEiComparison(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+        fillComparisonRetirementText('ei');
 
         storageEurlTotal(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         fillEurlComparison();
+        fillComparisonRetirementText('eurl');
 
         sasuResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         fillSasuComparison();
+        fillComparisonRetirementText('sasu');
 
         checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, householdIncome, singleParent);
 
@@ -144,6 +148,11 @@ function fillSameClassTexts(urssafData, htmlTag) {
     document.querySelectorAll(htmlTag).forEach(element => {
         element.textContent = data.toLocaleString('fr-FR') + '€';
     });
+}
+
+function fillComparisonRetirementText(socialForm) {
+    const retirementGainTrimester = document.getElementById('gain-trimester').textContent;
+    document.querySelectorAll(`.${socialForm}_comparison_retirement`).textContent = retirementGainTrimester;
 }
 
 function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag) {
