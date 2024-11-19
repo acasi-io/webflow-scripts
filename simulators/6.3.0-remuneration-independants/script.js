@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.2.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.3.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.3.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -152,7 +152,9 @@ function fillSameClassTexts(urssafData, htmlTag) {
 
 function fillComparisonRetirementText(socialForm) {
     const retirementGainTrimester = document.getElementById('gain-trimester').textContent;
-    document.querySelectorAll(`.${socialForm}_comparison_retirement`).textContent = retirementGainTrimester;
+    document.querySelectorAll(`.${socialForm}_comparison_retirement`).forEach((element) => {
+        element.textContent = retirementGainTrimester;
+    });
 }
 
 function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag) {
