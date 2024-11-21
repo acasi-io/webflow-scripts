@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -350,6 +350,7 @@ function fillSasuComparison(turnover, cost) {
     const bestSasuTotal = Math.max(...sasuArray.map(obj => obj.remunerationPlusDividendsBestAmount));
     const bestSasuObject = sasuArray.find(obj => obj.remunerationPlusDividendsBestAmount === bestSasuTotal);
 
+    const maxDividends = parseInt(bestSasuObject.maxDividends);
     const sasuPfuDividends = parseInt(bestSasuObject.dividendsNetsPfuAmount);
     const sasuProgressiveDividends = parseInt(bestSasuObject.dividendsNetsProgressiveAmount);
     let sasuDividends;
@@ -376,13 +377,13 @@ function fillSasuComparison(turnover, cost) {
         document.querySelectorAll('.sasu_comparison_contributions').forEach((element) => {
             element.textContent = '0';
         });
-        calculTaxAmount(turnover, cost, sasuRemuneration, sasuDividends, 0);
+        calculTaxAmount(turnover, cost, sasuRemuneration, maxDividends, 0);
         // document.getElementById('sasu-comparison-contributions').textContent = '0';
     } else {
         document.querySelectorAll('.sasu_comparison_contributions').forEach((element) => {
             element.textContent = sasuContributions.toLocaleString('fr-FR');
         });
-        calculTaxAmount(turnover, cost, sasuRemuneration, sasuDividends, sasuContributions);
+        calculTaxAmount(turnover, cost, sasuRemuneration, maxDividends, sasuContributions);
         // document.getElementById('sasu-comparison-contributions').textContent = sasuContributions.toLocaleString('fr-FR');
     }
 }
@@ -390,7 +391,7 @@ function fillSasuComparison(turnover, cost) {
 function calculTaxAmount(turnover, cost, remuneration, dividends, contributions) {
     let taxAmount = turnover - cost - remuneration - dividends - contributions;
     document.querySelectorAll('.sasu_comparison_tax').forEach((element) => {
-        element.textContent = taxAmount;
+        element.textContent = taxAmount.toLocaleString('fr-FR') + '€';
     });
 }
 
