@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -240,6 +240,10 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     let bestWage;
     let bestDividends;
 
+    document.getElementById('best-choice-dividends').style.display = 'flex';
+    document.getElementById('best-choice-dividends').style.justifyContent = 'space-between';
+    document.getElementById('best-choice-dividends').style.width = '18rem';
+
     microConditions(turnover);
 
     const microFinalAmount = parseInt(localStorage.getItem('microTotal'));
@@ -282,17 +286,19 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     } else if (bestSocialForm === 'micro') {
         bestTotalWage = microFinalAmount;
         bestWage = microFinalAmount;
-        bestDividends = '0';
+        bestDividends = 0;
         comparisonTitle.textContent = 'Micro';
         explanationText.innerHTML = `La micro-entreprise est <strong>simple à créer et à gérer</strong>, avec un régime fiscal et social allégé. Les cotisations sont calculées sur le chiffre d’affaires, et la <strongTVA peut être exonérée></strong> sous certains seuils. De plus, les formalités comptables sont réduites, ce qui en fait un statut idéal pour démarrer une activité sans lourdes contraintes administratives.`;
         attentionText.innerHTML = `Les <strong>plafonds de chiffre d’affaires</strong> limitent la croissance et obligent à changer de statut en cas de dépassement. La <strong>couverture sociale et retraite est moindre</strong>, et l’absence de séparation entre patrimoine personnel et professionnel expose l'entrepreneur à un risque financier en cas de difficultés.`;
+        document.getElementById('best-choice-dividends').style.display = 'none';
     } else {
         bestTotalWage = eiFinalAmount;
         bestWage = eiFinalAmount;
-        bestDividends = '0';
+        bestDividends = 0;
         comparisonTitle.textContent = 'EI';
         explanationText.innerHTML = "L'entreprise individuelle permet à un entrepreneur de démarrer une activité sans créer une entité juridique distincte. La responsabilité est limitée au patrimoine professionnel, offrant une protection des biens personnels sans formalités. L'entrepreneur peut librement apporter des fonds et gérer la trésorerie.<br>L'imposition est basée sur le bénéfice réalisé, avec des cotisations sociales en fonction des rémunérations.";
         attentionText.innerHTML = "Bien que l'EI simplifie la gestion, la responsabilité de l'entrepreneur peut être engagée en cas de dettes si le patrimoine professionnel n'est pas bien séparé. De plus, les cotisations sociales sont calculées sur le bénéfice, même si celui-ci est réinvesti dans l'activité, ce qui peut affecter la trésorerie. Enfin, la couverture sociale et retraite peut être moins avantageuse que dans d'autres statuts plus protecteurs.";
+        document.getElementById('best-choice-dividends').style.display = 'none';
     }
 
     //orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
@@ -308,7 +314,9 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     console.log(microFinalAmount);
 
     const contributionsTotal = document.getElementById('contributions-total');
-    document.getElementById('best-contributions').textContent = contributionsTotal.textContent;
+    let taxAmount = turnover - cost - bestWage - bestDividends - contributionsTotal;
+    let contributionsPlusTax = contributionsTotal + taxAmount;
+    document.getElementById('best-contributions').textContent = contributionsPlusTax.textContent;
 
     document.querySelector('.simulator_result_ca').textContent = turnover.toLocaleString('fr-FR');
 

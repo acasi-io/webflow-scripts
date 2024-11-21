@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.6-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.6-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.7-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.7-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -377,13 +377,13 @@ function fillSasuComparison(turnover, cost) {
         document.querySelectorAll('.sasu_comparison_contributions').forEach((element) => {
             element.textContent = '0';
         });
-        calculTaxAmount(turnover, cost, sasuRemuneration, maxDividends, 0);
+        calculTaxAmount(turnover, cost, sasuRemuneration, sasuDividends, 0);
         // document.getElementById('sasu-comparison-contributions').textContent = '0';
     } else {
         document.querySelectorAll('.sasu_comparison_contributions').forEach((element) => {
             element.textContent = sasuContributions.toLocaleString('fr-FR');
         });
-        calculTaxAmount(turnover, cost, sasuRemuneration, maxDividends, sasuContributions);
+        calculTaxAmount(turnover, cost, sasuRemuneration, sasuDividends, sasuContributions);
         // document.getElementById('sasu-comparison-contributions').textContent = sasuContributions.toLocaleString('fr-FR');
     }
 }
