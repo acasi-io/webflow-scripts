@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -48,7 +48,11 @@ numberOfChildSelect.addEventListener('change', (input) => {
 });
 
 function showLoader() {
-    document.getElementById('loader').style.display = 'block';
+    const loader = document.getElementById('loader')
+    loader.style.display = 'flex';
+    loader.style.flexDirection = 'column';
+    loader.style.alignItems = 'center';
+    loader.style.gap = '1rem';
 }
 
 function hideLoader() {
@@ -161,7 +165,7 @@ function fillSameClassTexts(urssafData, htmlTag) {
 
 function fillComparisonRetirementText(socialForm) {
     const retirementGainTrimester = document.getElementById('gain-trimester').textContent;
-    document.querySelectorAll(`.${socialForm}_comparison_retirement`).forEach((element) => {
+    document.querySelectorAll(`.${socialForm}_comparison_gain-trimester`).forEach((element) => {
         element.textContent = retirementGainTrimester;
     });
 }
@@ -601,9 +605,10 @@ function showBestSocialForm(bestSocialForm, bestSocialFormForComponent) {
     }
 }
 
-function fillSameClassText(className, textToShow) {
+function fillSameClassTextRecapProtection(className, textToShow, colorText) {
     document.querySelectorAll(`.${className}`).forEach((element) => {
         element.textContent = textToShow;
+        element.style.color = `${colorText}`;
     });
 }
 
@@ -611,47 +616,56 @@ function checkUnemploymentAndSocialSecurityProtection() {
     // EURL
     const eurlRemuneration = parseInt((document.getElementById('eurl-comparison-wage').textContent).replace(/\s+/g, ""));
     if (eurlRemuneration < 20000) {
-        fillSameClassText('eurl_social_security', 'Mauvaise');
+        fillSameClassTextRecapProtection('eurl_social_security', 'Mauvaise', '#ff2b44');
+        fillSameClassTextRecapProtection('eurl_comparison_retirement', 'Mauvaise', '#ff2b44');
     } else if (eurlRemuneration >= 20000 && eurlRemuneration < 50000) {
-        fillSameClassText('eurl_social_security', 'Moyenne');
+        fillSameClassTextRecapProtection('eurl_social_security', 'Moyenne', '#ffb13c');
+        fillSameClassTextRecapProtection('eurl_comparison_retirement', 'Moyenne', '#ffb13c');
     } else {
-        fillSameClassText('eurl_social_security', 'Bonne');
+        fillSameClassTextRecapProtection('eurl_social_security', 'Bonne', '#6fcf97');
+        fillSameClassTextRecapProtection('eurl_comparison_retirement', 'Bonne', '#6fcf97');
     }
 
     // SASU
     const sasuRemuneration = parseInt((document.getElementById('sasu-comparison-wage').textContent).replace(/\s+/g, ""));
     if (sasuRemuneration < 25000) {
-        fillSameClassText('sasu_social_security', 'Moyenne');
+        fillSameClassTextRecapProtection('sasu_social_security', 'Moyenne', '#ffb13c');
+        fillSameClassTextRecapProtection('sasu_comparison_retirement', 'Mauvaise', '#ff2b44');
     } else if (sasuRemuneration >= 25000 && sasuRemuneration < 50000) {
-        fillSameClassText('sasu_social_security', 'Bonne');
+        fillSameClassTextRecapProtection('sasu_social_security', 'Bonne', '#6fcf97');
+        fillSameClassTextRecapProtection('sasu_comparison_retirement', 'Moyenne', '#ffb13c');
     } else {
-        fillSameClassText('sasu_social_security', 'Très bonne');
+        fillSameClassTextRecapProtection('sasu_social_security', 'Bonne', '#6fcf97');
+        fillSameClassTextRecapProtection('sasu_comparison_retirement', 'Bonne', '#6fcf97');
     }
 
     if (sasuRemuneration < 20000) {
-        fillSameClassText('sasu_unemployment', 'Mauvaise');
+        fillSameClassTextRecapProtection('sasu_unemployment', 'Mauvaise', '#ff2b44');
     } else {
-        fillSameClassText('sasu_unemployment', 'Moyenne');
+        fillSameClassTextRecapProtection('sasu_unemployment', 'Moyenne', '#ffb13c');
     }
 
     // EI
     const eiRemuneration = parseInt((document.getElementById('ei-comparison-wages').textContent).replace(/\s+/g, ""));
-    if (eiRemuneration < 15000) {
-        fillSameClassText('ei_social_security', 'Mauvaise');
-    } else if (eiRemuneration >= 15000 && eiRemuneration < 40000) {
-        fillSameClassText('ei_social_security', 'Moyenne');
+    if (eiRemuneration < 20000) {
+        fillSameClassTextRecapProtection('ei_social_security', 'Mauvaise', '#ff2b44');
+        fillSameClassTextRecapProtection('ei_comparison_retirement', 'Mauvaise', '#ff2b44');
+    } else if (eiRemuneration >= 20000 && eiRemuneration < 40000) {
+        fillSameClassTextRecapProtection('ei_social_security', 'Moyenne', '#ffb13c');
+        fillSameClassTextRecapProtection('ei_comparison_retirement', 'Moyenne', '#ffb13c');
     } else {
-        fillSameClassText('ei_social_security', 'Bonne');
+        fillSameClassTextRecapProtection('ei_social_security', 'Bonne', '#6fcf97');
+        fillSameClassTextRecapProtection('ei_comparison_retirement', 'Bonne', '#6fcf97');
     }
 
     // Micro
     const microRemuneration = parseInt((document.getElementById('micro-comparison-wage').textContent).replace(/\s+/g, ""));
-    if (microRemuneration < 12000) {
-        fillSameClassText('micro_social_security', 'Mauvaise');
-    } else if (microRemuneration >= 12000 && microRemuneration < 30000) {
-        fillSameClassText('micro_social_security', 'Moyenne');
+    if (microRemuneration < 15000) {
+        fillSameClassTextRecapProtection('micro_social_security', 'Mauvaise', '#ff2b44');
+        fillSameClassTextRecapProtection('micro_comparison_retirement', 'Mauvaise', '#ff2b44');
     } else {
-        fillSameClassText('micro_social_security', 'Bonne');
+        fillSameClassTextRecapProtection('micro_social_security', 'Moyenne', '#ffb13c');
+        fillSameClassTextRecapProtection('micro_comparison_retirement', 'Moyenne', '#ffb13c');
     }
 }
 
