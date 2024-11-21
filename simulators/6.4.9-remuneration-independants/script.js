@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -115,7 +115,7 @@ calculBtn.addEventListener('click', () => {
         fillSasuComparison(turnover, cost);
         fillComparisonRetirementText('sasu');
 
-        checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, householdIncome, singleParent);
+        checkUnemployment(turnoverMinusCost, turnover, cost, numberOfChildValue, situationValue, householdIncome, singleParent);
 
         microConditions(turnover);
 
@@ -224,7 +224,7 @@ function fillRetireRecap(turnoverMinusCost, turnover) {
     document.getElementById('ei-retire-recap').textContent = eiRetirement.toLocaleString('fr-FR') + '€';
 }
 
-function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
+function fillBestChoiceText(turnover, cost, situationValue, bestSocialForm) {
     let unemploymentText;
     if (isUnemployment === 'true' && unemploymentDuration === 'less_six_months') {
         unemploymentText = 'touchez le chômage depuis moins de six mois';
@@ -313,7 +313,7 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     console.log(eiFinalAmount);
     console.log(microFinalAmount);
 
-    const contributionsTotal = parseInt((document.getElementById('contributions-total').textContent).replace(/\s+/g, ""))
+    const contributionsTotal = parseInt((document.getElementById('contributions-total').textContent).replace(/\s+/g, ""));
     let taxAmount = turnover - cost - bestWage - bestDividends - contributionsTotal;
     let contributionsPlusTax = contributionsTotal + taxAmount;
     document.getElementById('best-contributions').textContent = contributionsPlusTax + '€';
@@ -552,7 +552,7 @@ function microConditions(turnover) {
     }
 }
 
-function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situationValue, householdIncome, singleParent) {
+function checkUnemployment(turnoverMinusCost, turnover, cost, numberOfChildValue, situationValue, householdIncome, singleParent) {
     if (isUnemployment.value === "true" && unemploymentDuration.value === "more_six_months") {    
         document.querySelectorAll('.is_ca_recap').forEach(element => {
             element.textContent = turnover.toLocaleString('fr-FR') + '€';
@@ -577,7 +577,7 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         comparisonTitle.textContent = 'SASU';
 
         showBestSocialForm('sasu', 'sasu');
-        fillBestChoiceText(turnover, situationValue, 'sasu');
+        fillBestChoiceText(turnover, cost, situationValue, 'sasu');
         explanationText.textContent = `La SASU est une forme juridique de société par actions simplifiée avec un seul associé. Les principaux avantages incluent la <strong>protection du patrimoine personnel</strong>, la <strong>flexibilité dans l'organisation</strong>, la <strong>liberté de fixation du capital</strong>, la <strong>possibilité de transition</strong> vers une structure pluripersonnelle sans formalités complexes et l’absences de cotisations sociales sur les dividendes.`;
         attentionText.textContent = `La SASU offre souplesse et l'absence de cotisations sociales sur les dividendes, mais certains aspects sont à surveiller. En tant que président assimilé salarié, vous relevez du régime général, avec des <strong>charges sociales plus élevées</strong> mais une meilleure couverture sociale et retraite.<br>Vous pouvez choisir de vous verser plus de dividendes pour réduire ces charges, mais cela <strong>diminue votre protection sociale</strong>, notamment en matière de retraite. Enfin, la <strong>gestion administrative reste rigoureuse</strong> et la responsabilité limitée, sauf en cas de garanties personnelles.`;
     } else {
@@ -590,7 +590,7 @@ function checkUnemployment(turnoverMinusCost, turnover, numberOfChildValue, situ
         
         compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         let bestSocialForm = localStorage.getItem('bestSocialForm');
-        fillBestChoiceText(turnover, situationValue, bestSocialForm);
+        fillBestChoiceText(turnover, cost, situationValue, bestSocialForm);
         let bestSocialFormForComponent = localStorage.getItem('bestSocialFormForComponent');
         showBestSocialForm(bestSocialForm, bestSocialFormForComponent);
     };
