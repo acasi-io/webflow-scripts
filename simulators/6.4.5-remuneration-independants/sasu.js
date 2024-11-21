@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -345,7 +345,7 @@ function sasuRetirement() {
     return totalRetirement;
 }*/
 
-function fillSasuComparison() {
+function fillSasuComparison(turnover, cost) {
     const sasuArray = JSON.parse(localStorage.getItem('arraySasu'));
     const bestSasuTotal = Math.max(...sasuArray.map(obj => obj.remunerationPlusDividendsBestAmount));
     const bestSasuObject = sasuArray.find(obj => obj.remunerationPlusDividendsBestAmount === bestSasuTotal);
@@ -376,13 +376,22 @@ function fillSasuComparison() {
         document.querySelectorAll('.sasu_comparison_contributions').forEach((element) => {
             element.textContent = '0';
         });
+        calculTaxAmount(turnover, cost, sasuRemuneration, sasuDividends, 0);
         // document.getElementById('sasu-comparison-contributions').textContent = '0';
     } else {
         document.querySelectorAll('.sasu_comparison_contributions').forEach((element) => {
             element.textContent = sasuContributions.toLocaleString('fr-FR');
         });
+        calculTaxAmount(turnover, cost, sasuRemuneration, sasuDividends, sasuContributions);
         // document.getElementById('sasu-comparison-contributions').textContent = sasuContributions.toLocaleString('fr-FR');
     }
+}
+
+function calculTaxAmount(turnover, cost, remuneration, dividends, contributions) {
+    let taxAmount = turnover - cost - remuneration - dividends - contributions;
+    document.querySelectorAll('.sasu_comparison_tax').forEach((element) => {
+        element.textContent = taxAmount;
+    });
 }
 
 
