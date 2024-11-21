@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.4.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -313,10 +313,10 @@ function fillBestChoiceText(turnover, situationValue, bestSocialForm) {
     console.log(eiFinalAmount);
     console.log(microFinalAmount);
 
-    const contributionsTotal = document.getElementById('contributions-total');
+    const contributionsTotal = parseInt((document.getElementById('contributions-total').textContent).replace(/\s+/g, ""))
     let taxAmount = turnover - cost - bestWage - bestDividends - contributionsTotal;
     let contributionsPlusTax = contributionsTotal + taxAmount;
-    document.getElementById('best-contributions').textContent = contributionsPlusTax.textContent;
+    document.getElementById('best-contributions').textContent = contributionsPlusTax + '€';
 
     document.querySelector('.simulator_result_ca').textContent = turnover.toLocaleString('fr-FR');
 
