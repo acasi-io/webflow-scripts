@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -365,6 +365,16 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
             elementId: 'micro-comparison-component' 
         }
     ];
+
+    // Étape 2 : Si la condition du chômage est remplie, on met la SASU en première position
+    if (isUnemployment.value === "true" && unemploymentDuration.value === "more_six_months") {
+        // Mettre la SASU en première position, même si elle est dans la liste initiale
+        const sasuIndex = remunerationValues.findIndex(item => item.socialForm === 'SASU');
+        if (sasuIndex !== -1) {
+            const [sasuItem] = remunerationValues.splice(sasuIndex, 1);
+            remunerationValues.unshift(sasuItem); // Mettre en première position
+        }
+    }
 
     // Étape 3 : Filtrer les montants non nulles
     const filteredRemunerationValues = remunerationValues.filter(item => item.value !== null);
