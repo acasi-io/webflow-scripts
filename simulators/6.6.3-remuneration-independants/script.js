@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -306,7 +306,7 @@ function fillBestChoiceText(turnover, cost, situationValue, bestSocialForm) {
 
     // updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount);
 
-    updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
+    updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, false);
 
     const contributionsTotal = parseInt((document.getElementById('contributions-total').textContent).replace(/\s+/g, ""));
     let taxAmount = turnover - cost - bestWage - bestDividends - contributionsTotal;
@@ -366,19 +366,6 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
         }
     ];
 
-    // Étape 2 : Masquer EURL et EI si le chiffre d'affaires est inférieur à 50 000 €
-    /*if (chiffreAffaires < 50000) {
-        remunerationValues.forEach(item => {
-            if (item.socialForm === 'EURL' || item.socialForm === 'EI') {
-                item.value = null; // On ne montre pas ces valeurs
-                const elementToHide = document.querySelector(`[data-socialform="${item.socialForm}"]`);
-                if (elementToHide) {
-                    elementToHide.style.display = 'none'; // Masquer l'élément
-                }
-            }
-        });
-    }*/
-
     // Étape 3 : Filtrer les montants non nulles
     const filteredRemunerationValues = remunerationValues.filter(item => item.value !== null);
 
@@ -409,70 +396,76 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     });
 }
 
-/*function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, chiffreAffaires) {
-    // Réinitialiser la simulation
-    resetSimulation();
+function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, forceSasuFirst = false) {
+    // Valeur dynamique réelle de MICRO pour l'affichage (extrait de localStorage)
+    const microDisplayAmount = parseFloat(localStorage.getItem('microTotalRealAmount')) || microFinalAmount;
 
-    // Étape 1 : Créer une liste des montants par forme sociale
-    const remunerationValues = [
-        { value: eurlFinalAmount, socialForm: 'EURL', elementId: 'eurl-comparison-component' },
-        { value: sasuFinalAmount, socialForm: 'SASU', elementId: 'sasu-comparison-component' },
-        { value: eiFinalAmount, socialForm: 'EI', elementId: 'ei-comparison-component' },
-        { value: microFinalAmount, socialForm: 'MICRO', elementId: 'micro-comparison-component' }
-    ];
+    const dynamicValues = {
+        EURL: eurlFinalAmount,
+        SASU: sasuFinalAmount,
+        EI: eiFinalAmount,
+        MICRO: microFinalAmount > 50000 ? 0 : microFinalAmount // Si > 50 000, trié avec une valeur de 0
+    };
 
-    // Étape 2 : Masquer EURL et EI si le chiffre d'affaires est inférieur à 50 000 €
-    if (chiffreAffaires < 50000) {
-        remunerationValues.forEach(item => {
-            if (item.socialForm === 'EURL' || item.socialForm === 'EI') {
-                item.value = null; // On ne montre pas ces valeurs
-                const elementToHide = document.querySelector(`[data-socialform="${item.socialForm}"]`);
-                if (elementToHide) {
-                    elementToHide.style.display = 'none'; // Masquer l'élément
-                }
-            }
-        });
+    // Sélectionner toutes les divs dynamiques
+    const dynamicDivs = Array.from(document.querySelectorAll('.dynamic'));
+
+    // Mettre à jour les data-value avec les valeurs fournies
+    dynamicDivs.forEach(div => {
+        const socialForm = div.getAttribute('data-socialformmobile');
+        if (dynamicValues[socialForm] !== undefined) {
+            div.setAttribute('data-value', dynamicValues[socialForm]);
+        }
+    });
+
+    // Trier les divs en fonction de la valeur des attributs data-value
+    dynamicDivs.sort((a, b) => {
+        const aValue = parseFloat(a.getAttribute('data-value'));
+        const bValue = parseFloat(b.getAttribute('data-value'));
+
+        // Priorité à SASU si forceSasuFirst est activé
+        if (forceSasuFirst) {
+            if (a.getAttribute('data-socialformmobile') === "SASU") return -1; // SASU toujours en premier
+            if (b.getAttribute('data-socialformmobile') === "SASU") return 1;
+        }
+
+        // Tri normal par valeur
+        return bValue - aValue;
+    });
+
+    // Réinsérer les divs triées dans le conteneur
+    const gridContainer = document.querySelector('.grid-container');
+
+    // Créer un tableau des divs statiques pour les réinsérer au bon endroit
+    const staticDivs = Array.from(document.querySelectorAll('.static'));
+
+    // Vider le conteneur
+    gridContainer.innerHTML = '';
+
+    // Réinsérer les divs triées et statiques dans le bon ordre
+    for (let i = 0; i < dynamicDivs.length; i++) {
+        gridContainer.appendChild(dynamicDivs[i]);
+        gridContainer.appendChild(staticDivs[i]); // Assure que chaque rectangle statique suit un dynamique
     }
 
-    // Étape 3 : Filtrer les montants non nulles
-    const filteredRemunerationValues = remunerationValues.filter(item => item.value !== null);
+    // Mettre à jour les textes des rectangles avec les valeurs correspondantes
+    staticDivs.forEach((staticDiv, index) => {
+        const dynamicDiv = dynamicDivs[index];
+        const socialForm = dynamicDiv.getAttribute('data-socialformmobile');
 
-    // Étape 4 : Trier les montants par ordre décroissant
-    filteredRemunerationValues.sort((a, b) => b.value - a.value);
-
-    // Étape 5 : Réorganiser les divs du haut selon les montants triés
-    const parentTop = document.querySelector('.simulator_comparison_grid_top');
-    filteredRemunerationValues.forEach(item => {
-        const div = document.getElementById(item.elementId);
-        if (div) {
-            parentTop.appendChild(div); // Réorganiser les divs
-        }
-    });
-
-    // Étape 6 : Mettre à jour les montants directement dans les rectangles
-    const rectangles = document.querySelectorAll('.comparison_result_block');
-    filteredRemunerationValues.forEach((item, index) => {
-        const targetRectangle = rectangles[index];
-        const valueFormatted = item.value.toLocaleString('fr-FR') + '€';
-
-        if (targetRectangle) {
-            targetRectangle.style.display = 'block'; // S'assurer que le rectangle est visible
-            targetRectangle.innerHTML = `<p class="comparison_grid_remuneration_text">${valueFormatted}</p>`; // Mettre à jour le contenu avec le texte formaté
-            // Ajouter ta condition pour le chiffre d'affaires > 50 000 €
-            if (chiffreAffaires > 50000 && item.socialForm === 'MICRO') {
-                if (microComparisonElement) {
-                    // Mettre à jour le rectangle pour MICRO avec la nouvelle valeur
-                    const microTotalRealAmount = parseInt(localStorage.getItem('microTotalRealAmount'));
-                    targetRectangle.innerHTML = `<p class="comparison_grid_remuneration_text">${microTotalRealAmount.toLocaleString('fr-FR')}€ (Condition spéciale)</p>`;
-                }
-            }
+        let value;
+        if (socialForm === "MICRO") {
+            // Afficher la vraie valeur de MICRO même si elle est triée différemment
+            value = microDisplayAmount;
         } else {
-            console.warn(`Target rectangle not found for index ${index}`);
+            value = dynamicDiv.getAttribute('data-value'); // Récupérer la valeur pour les autres divs
         }
-    });
-}*/
 
-function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+        staticDiv.textContent = `${value}€`; // Mettre à jour le texte
+    });
+}
+
+/*function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
     // Valeur dynamique réelle de MICRO pour l'affichage (extrait de localStorage)
     const microDisplayAmount = parseFloat(localStorage.getItem('microTotalRealAmount')) || microFinalAmount;
 
@@ -529,151 +522,14 @@ function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, micr
 
         staticDiv.textContent = `${value}€`; // Mettre à jour le texte
     });
-}
-
-/*function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
-    const dynamicValues = {
-        EURL: eurlFinalAmount,
-        SASU: sasuFinalAmount,
-        EI: eiFinalAmount,
-        MICRO: microFinalAmount
-    };
-    
-    // Sélectionner toutes les divs dynamiques
-    const dynamicDivs = Array.from(document.querySelectorAll('.dynamic'));
-  
-    // Mettre à jour les data-value avec les valeurs fournies
-    dynamicDivs.forEach(div => {
-        const socialForm = div.getAttribute('data-socialformmobile');
-        if (dynamicValues[socialForm] !== undefined) {
-            div.setAttribute('data-value', dynamicValues[socialForm]);
-        }
-    });
-  
-    // Trier les divs en fonction de la valeur des attributs data-value
-    dynamicDivs.sort((a, b) => {
-        return parseFloat(b.getAttribute('data-value')) - parseFloat(a.getAttribute('data-value'));
-    });
-  
-    // Réinsérer les divs triées dans le conteneur
-    const gridContainer = document.querySelector('.grid-container');
-      
-    // Créer un tableau des divs statiques pour les réinsérer au bon endroit
-    const staticDivs = Array.from(document.querySelectorAll('.static'));
-  
-    // Réinsérer les divs triées et les statiques
-    gridContainer.innerHTML = ''; // Vider le conteneur
-  
-    // Réinsérer les divs triées et statiques dans le bon ordre
-    for (let i = 0; i < dynamicDivs.length; i++) {
-        gridContainer.appendChild(dynamicDivs[i]);
-        gridContainer.appendChild(staticDivs[i]); // Assure que chaque rectangle statique suit un dynamique
-    }
-  
-    // Mettre à jour les textes des rectangles avec les valeurs correspondantes
-    staticDivs.forEach((staticDiv, index) => {
-        const value = dynamicDivs[index].getAttribute('data-value'); // Récupérer la valeur correspondante
-        staticDiv.textContent = `${value}€`; // Mettre à jour le texte
-    });
 }*/
-  
 
-/*function updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount) {
-    // Liste des montants avec leurs éléments de texte associés
-   const textBlocks = [
-        { amount: eurlFinalAmount, id: 'text-green' },
-        { amount: sasuFinalAmount, id: 'text-orange-large' },
-        { amount: eiFinalAmount, id: 'text-orange-small' },
-        { amount: microFinalAmount, id: 'text-red' }
-    ];
-
-    // Trier les textes par montant décroissant
-    textBlocks.sort((a, b) => b.amount - a.amount);
-
-    // Sélectionner le parent pour les blocs de texte
-    const parentGrid = document.querySelector('.simulator_comparison_grid_mobile');
-
-    // Réorganiser les blocs de texte en fonction des montants
-    textBlocks.forEach((block, index) => {
-        const textElement = document.getElementById(block.id);
-
-        if (textElement) {
-            // Déplacer chaque bloc de texte au bon endroit
-            const correspondingBlock = textElement.closest('.comparison_block_mobile');
-            parentGrid.appendChild(correspondingBlock);
-        }
-    });
-
-    // Tableau pour gérer les montants avec les classes associées aux rectangles
-    /*const comparisonData = [
-    { id: 'eurl-rectangle', value: eurlFinalAmount, colorClass: 'rectangle-green' },
-    { id: 'sasu-rectangle', value: sasuFinalAmount, colorClass: 'rectangle-orange' },
-    { id: 'ei-rectangle', value: eiFinalAmount, colorClass: 'rectangle-orange-small' },
-    { id: 'micro-rectangle', value: microFinalAmount, colorClass: 'rectangle-red' }
-    ];
-
-    // Mise à jour des montants dans le DOM pour chaque rectangle
-    comparisonData.forEach(item => {
-    const rectangle = document.getElementById(item.id);
-    if (rectangle) {
-        rectangle.textContent = item.value + '€';  // Mettre le montant dans le rectangle
-    }
-    });
-
-    // Optionnel: si tu veux trier les rectangles en fonction des montants
-    comparisonData.sort((a, b) => b.value - a.value); // Tri par montant décroissant
-
-    comparisonData.forEach((item, index) => {
-    const rectangle = document.getElementById(item.id);
-    if (rectangle) {
-        rectangle.style.order = index;  // Changer l'ordre si nécessaire
-    }
-    });
-
-    document.querySelectorAll('.rectangle').forEach((rectangle) => {
-        rectangle.style.display = 'block !important';
-    });*/
-// }
-
-
-
-
-/*function orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
-    let results = [
-        { id: "sasu-comparison-component", remuneration: sasuFinalAmount },
-        { id: "eurl-comparison-component", remuneration: eurlFinalAmount },
-        { id: "ei-comparison-component", remuneration: eiFinalAmount },
-        { id: "micro-comparison-component", remuneration: microFinalAmount }
-    ];
-
-    results.sort((a, b) => b.remuneration - a.remuneration);
-
-    for (let i = 0; i < results.length; i++) {
-        let result = document.getElementById(results[i].id);
-        result.style.gridColumn = i + 1; // Garder la colonne correcte
-
-        // Mettre à jour le contenu de rémunération en fonction de l'ordre
-        document.getElementById(`comparison_${i + 1}_best_remuneration`).textContent = results[i].remuneration;
-    }
-}*/
 
 function microConditions(turnover) {
     document.querySelector('.comparison_micro_text').style.display = 'none';
     if (turnover > 50000) {
         localStorage.setItem('microTotal', 0);
         document.querySelector('.comparison_micro_text').style.display = 'block';
-        /*document.querySelectorAll('.micro_comparison_wage').forEach((element) => {
-            element.textContent = '0€';
-        });
-        document.querySelectorAll('.micro_comparison_tax').forEach((element) => {
-            element.textContent = '0€';
-        });
-        document.querySelectorAll('.micro_comparison_contributions').forEach((element) => {
-            element.textContent = '0€';
-        });*/
-        // document.getElementById('micro-comparison-wage').textContent = '0€';
-        // document.getElementById('micro-comparison-contributions').textContent = '0€';
-        // document.getElementById('micro-comparison-tax').textContent = '0€';
     }
 }
 
@@ -700,6 +556,8 @@ function checkUnemployment(turnoverMinusCost, turnover, cost, numberOfChildValue
         });
 
         comparisonTitle.textContent = 'SASU';
+
+        updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, true);
 
         showBestSocialForm('sasu', 'sasu');
         fillBestChoiceText(turnover, cost, situationValue, 'sasu');
