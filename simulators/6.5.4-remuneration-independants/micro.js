@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -56,6 +56,7 @@ function storageMicroTotal(turnoverMinusCost, situation, numberOfChild, househol
     const microAfterTaxIsUrssaf = engine.evaluate("dirigeant . auto-entrepreneur . revenu net . après impôt");
     const microAfterTaxIsAmount = Math.round(microAfterTaxIsUrssaf.nodeValue);
     localStorage.setItem('microTotal', microAfterTaxIsAmount);
+    localStorage.setItem('microTotalRealAmount', microAfterTaxIsAmount);
 }
 
 function microResult(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {

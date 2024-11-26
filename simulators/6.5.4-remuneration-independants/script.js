@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.3-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.3-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.4-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.4-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -307,11 +307,6 @@ function fillBestChoiceText(turnover, cost, situationValue, bestSocialForm) {
 
     updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
 
-    console.log(sasuFinalAmount);
-    console.log(eurlFinalAmount);
-    console.log(eiFinalAmount);
-    console.log(microFinalAmount);
-
     const contributionsTotal = parseInt((document.getElementById('contributions-total').textContent).replace(/\s+/g, ""));
     let taxAmount = turnover - cost - bestWage - bestDividends - contributionsTotal;
     let contributionsPlusTax = contributionsTotal + taxAmount;
@@ -389,13 +384,11 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
             targetRectangle.innerHTML = `<p class="comparison_grid_remuneration_text">${valueFormatted}</p>`; // Mettre à jour le contenu avec le texte formaté
             // Ajouter ta condition pour le chiffre d'affaires > 50 000 €
             if (chiffreAffaires > 50000 && item.socialForm === 'MICRO') {
-                // Récupérer la valeur actuelle de l'élément micro-comparison-wage
-                const microComparisonElement = document.getElementById('micro-comparison-wage');
                 if (microComparisonElement) {
-                    const microRemunerationText = microComparisonElement.textContent.replace(/\s+/g, '').replace('€', '');
                     const microRemuneration = parseInt(microRemunerationText, 10); // Convertir en nombre
                     // Mettre à jour le rectangle pour MICRO avec la nouvelle valeur
-                    targetRectangle.innerHTML = `<p class="comparison_grid_remuneration_text">${microRemuneration.toLocaleString('fr-FR')}€ (Condition spéciale)</p>`;
+                    const microTotalRealAmount = parseInt(localStorage.getItem('microTotalRealAmount'));
+                    targetRectangle.innerHTML = `<p class="comparison_grid_remuneration_text">${microTotalRealAmount.toLocaleString('fr-FR')}€ (Condition spéciale)</p>`;
                 }
             }
         } else {
