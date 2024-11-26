@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.4-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.4-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.5-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.5-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -567,6 +567,9 @@ function checkUnemployment(turnoverMinusCost, turnover, cost, numberOfChildValue
 
         comparisonTitle.textContent = 'SASU';
 
+        const microFinalAmount = parseInt(localStorage.getItem('microTotal'));
+        const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal'));
+        const eiFinalAmount = parseInt(localStorage.getItem('eiTotal'));
         updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, true);
 
         showBestSocialForm('sasu', 'sasu');
