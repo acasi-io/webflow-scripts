@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.5-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.5-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.6-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.6-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -190,27 +190,27 @@ function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinus
         localStorage.setItem('bestSocialFormForComponent', 'eurl_ei');
         calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         resultRecapTitle.forEach((title) => {
-            title.textContent = "EURL à l'Impôt sur les Sociétés";
+            title.textContent = "l'EURL à l'Impôt sur les Sociétés";
         });
     } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
         localStorage.setItem('bestSocialForm', 'sasu');
         localStorage.setItem('bestSocialFormForComponent', 'sasu');
         resultRecapTitle.forEach((title) => {
-            title.textContent = "SASU à l'Impôt sur les Sociétés";
+            title.textContent = "la SASU à l'Impôt sur les Sociétés";
         });
     } else if (microTotal > eurlTotal && microTotal > eiTotal && microTotal > sasuTotal) {
         localStorage.setItem('bestSocialForm', 'micro');
         localStorage.setItem('bestSocialFormForComponent', 'micro');
         microResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         resultRecapTitle.forEach((title) => {
-            title.textContent = "MICRO";
+            title.textContent = "la MICRO";
         });
     } else if (eiTotal > eurlTotal && eiTotal > sasuTotal && eiTotal > microTotal) {
         localStorage.setItem('bestSocialForm', 'ei');
         localStorage.setItem('bestSocialFormForComponent', 'eurl_ei');
         eiResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
         resultRecapTitle.forEach((title) => {
-            title.textContent = "EI";
+            title.textContent = "l'EI";
         });
     }
 }
