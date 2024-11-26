@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -367,7 +367,7 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     ];
 
     // Étape 2 : Masquer EURL et EI si le chiffre d'affaires est inférieur à 50 000 €
-    if (chiffreAffaires < 50000) {
+    /*if (chiffreAffaires < 50000) {
         remunerationValues.forEach(item => {
             if (item.socialForm === 'EURL' || item.socialForm === 'EI') {
                 item.value = null; // On ne montre pas ces valeurs
@@ -377,7 +377,7 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
                 }
             }
         });
-    }
+    }*/
 
     // Étape 3 : Filtrer les montants non nulles
     const filteredRemunerationValues = remunerationValues.filter(item => item.value !== null);
