@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -262,7 +262,7 @@ function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome
     // calculPumaTax();
 }
 
-function fillEurlComparison() {
+function fillEurlComparison(turnover, cost) {
     const dividends = parseInt(localStorage.getItem('bestEurlDividends'));
     const remuneration = parseInt(localStorage.getItem('eurlAfterTax'));
     const contributions = parseInt(localStorage.getItem('eurlContributionsTotal'));
@@ -278,9 +278,19 @@ function fillEurlComparison() {
     document.querySelectorAll('.eurl_comparison_contributions').forEach((element) => {
         element.textContent = contributions.toLocaleString('fr-FR');
     });
+
+    calculTaxAmount(turnover, cost, remuneration, dividends, contributions);
+
     // document.getElementById('eurl-comparison-dividends').textContent = dividends.toLocaleString('fr-FR');
     // document.getElementById('eurl-comparison-contributions').textContent = contributions.toLocaleString('fr-FR');
     // document.getElementById('eurl-comparison-retirement').textContent = retirementAmount.toLocaleString('fr-FR');
+}
+
+function calculTaxAmount(turnover, cost, remuneration, dividends, contributions) {
+    let taxAmount = turnover - cost - remuneration - dividends - contributions;
+    document.querySelectorAll('.eurl_comparison_tax').forEach((element) => {
+        element.textContent = taxAmount.toLocaleString('fr-FR') + '€';
+    });
 }
 
 
