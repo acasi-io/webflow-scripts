@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.1-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.1-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.2-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.2-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -306,7 +306,7 @@ function fillBestChoiceText(turnover, cost, situationValue, bestSocialForm) {
 
     // updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount);
 
-    updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalRealAmount);
+    updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
 
     const contributionsTotal = parseInt((document.getElementById('contributions-total').textContent).replace(/\s+/g, ""));
     let taxAmount = turnover - cost - bestWage - bestDividends - contributionsTotal;
@@ -472,79 +472,66 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     });
 }*/
 
-/*function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+    // Valeur dynamique réelle de MICRO pour l'affichage (extrait de localStorage)
+    const microDisplayAmount = parseFloat(localStorage.getItem('microTotalRealAmount')) || microFinalAmount;
+
     const dynamicValues = {
         EURL: eurlFinalAmount,
         SASU: sasuFinalAmount,
         EI: eiFinalAmount,
-        MICRO: microFinalAmount
+        MICRO: microFinalAmount > 50000 ? 0 : microFinalAmount // Si > 50 000, trié avec une valeur de 0
     };
 
     // Sélectionner toutes les divs dynamiques
     const dynamicDivs = Array.from(document.querySelectorAll('.dynamic'));
 
-    if (dynamicDivs.length === 0) {
-        console.error("Aucune div dynamique trouvée.");
-        return;
-    }
-
     // Mettre à jour les data-value avec les valeurs fournies
     dynamicDivs.forEach(div => {
         const socialForm = div.getAttribute('data-socialformmobile');
-        if (socialForm && dynamicValues[socialForm] !== undefined) {
+        if (dynamicValues[socialForm] !== undefined) {
             div.setAttribute('data-value', dynamicValues[socialForm]);
-        } else {
-            console.warn(`Forme sociale manquante ou inconnue pour : ${div}`);
         }
     });
 
-    // Trouver la div MICRO et la retirer temporairement
-    const microDiv = dynamicDivs.find(div => div.getAttribute('data-socialformmobile') === 'MICRO');
-    const otherDivs = dynamicDivs.filter(div => div !== microDiv);
-
-    // Trier les autres divs en fonction des valeurs data-value
-    otherDivs.sort((a, b) => {
+    // Trier les divs en fonction de la valeur des attributs data-value
+    dynamicDivs.sort((a, b) => {
         return parseFloat(b.getAttribute('data-value')) - parseFloat(a.getAttribute('data-value'));
     });
 
-    // Sélectionner le conteneur principal
+    // Réinsérer les divs triées dans le conteneur
     const gridContainer = document.querySelector('.grid-container');
-    if (!gridContainer) {
-        console.error("Le conteneur .grid-container est introuvable.");
-        return;
-    }
+
+    // Créer un tableau des divs statiques pour les réinsérer au bon endroit
+    const staticDivs = Array.from(document.querySelectorAll('.static'));
 
     // Vider le conteneur
     gridContainer.innerHTML = '';
 
-    // Réinsérer les divs triées
-    otherDivs.forEach(div => {
-        gridContainer.appendChild(div);
-    });
-
-    // Ajouter la div MICRO à la fin
-    if (microDiv) {
-        gridContainer.appendChild(microDiv);
-    } else {
-        console.warn("La div MICRO est introuvable.");
+    // Réinsérer les divs triées et statiques dans le bon ordre
+    for (let i = 0; i < dynamicDivs.length; i++) {
+        gridContainer.appendChild(dynamicDivs[i]);
+        gridContainer.appendChild(staticDivs[i]); // Assure que chaque rectangle statique suit un dynamique
     }
 
-    // Mettre à jour les textes des rectangles statiques
-    const staticDivs = Array.from(document.querySelectorAll('.static'));
+    // Mettre à jour les textes des rectangles avec les valeurs correspondantes
     staticDivs.forEach((staticDiv, index) => {
         const dynamicDiv = dynamicDivs[index];
-        if (dynamicDiv) {
-            const value = dynamicDiv.getAttribute('data-value');
-            staticDiv.textContent = `${value}€`; // Mettre à jour avec la bonne valeur
+        const socialForm = dynamicDiv.getAttribute('data-socialformmobile');
+
+        let value;
+        if (socialForm === "MICRO") {
+            // Afficher la vraie valeur de MICRO même si elle est triée différemment
+            value = microDisplayAmount;
         } else {
-            console.warn(`Pas de div dynamique correspondante pour la statique à l'index ${index}.`);
+            value = dynamicDiv.getAttribute('data-value'); // Récupérer la valeur pour les autres divs
         }
+
+        staticDiv.textContent = `${value}€`; // Mettre à jour le texte
     });
-}*/
+}
 
-
-
-function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+/*function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
     const dynamicValues = {
         EURL: eurlFinalAmount,
         SASU: sasuFinalAmount,
@@ -588,7 +575,7 @@ function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, micr
         const value = dynamicDivs[index].getAttribute('data-value'); // Récupérer la valeur correspondante
         staticDiv.textContent = `${value}€`; // Mettre à jour le texte
     });
-}
+}*/
   
 
 /*function updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount) {
