@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -483,44 +483,61 @@ function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, micr
     // Sélectionner toutes les divs dynamiques
     const dynamicDivs = Array.from(document.querySelectorAll('.dynamic'));
 
+    if (dynamicDivs.length === 0) {
+        console.error("Aucune div dynamique trouvée.");
+        return;
+    }
+
     // Mettre à jour les data-value avec les valeurs fournies
     dynamicDivs.forEach(div => {
         const socialForm = div.getAttribute('data-socialformmobile');
-        if (dynamicValues[socialForm] !== undefined) {
+        if (socialForm && dynamicValues[socialForm] !== undefined) {
             div.setAttribute('data-value', dynamicValues[socialForm]);
+        } else {
+            console.warn(`Forme sociale manquante ou inconnue pour : ${div}`);
         }
     });
 
-    // Trouver la div correspondant à MICRO et la retirer temporairement
+    // Trouver la div MICRO et la retirer temporairement
     const microDiv = dynamicDivs.find(div => div.getAttribute('data-socialformmobile') === 'MICRO');
     const otherDivs = dynamicDivs.filter(div => div !== microDiv);
 
-    // Trier les autres divs en fonction de la valeur des attributs data-value
+    // Trier les autres divs en fonction des valeurs data-value
     otherDivs.sort((a, b) => {
         return parseFloat(b.getAttribute('data-value')) - parseFloat(a.getAttribute('data-value'));
     });
 
-    // Réinsérer les divs triées dans le conteneur
+    // Sélectionner le conteneur principal
     const gridContainer = document.querySelector('.grid-container');
-    gridContainer.innerHTML = ''; // Vider le conteneur
+    if (!gridContainer) {
+        console.error("Le conteneur .grid-container est introuvable.");
+        return;
+    }
 
-    // Ajouter les divs triées
+    // Vider le conteneur
+    gridContainer.innerHTML = '';
+
+    // Réinsérer les divs triées
     otherDivs.forEach(div => {
         gridContainer.appendChild(div);
     });
 
-    // Ajouter la div MICRO en dernier
+    // Ajouter la div MICRO à la fin
     if (microDiv) {
         gridContainer.appendChild(microDiv);
+    } else {
+        console.warn("La div MICRO est introuvable.");
     }
 
-    // Mettre à jour les textes des rectangles avec les valeurs correspondantes
+    // Mettre à jour les textes des rectangles statiques
     const staticDivs = Array.from(document.querySelectorAll('.static'));
     staticDivs.forEach((staticDiv, index) => {
         const dynamicDiv = dynamicDivs[index];
         if (dynamicDiv) {
-            const value = dynamicDiv.getAttribute('data-value'); // Récupérer la valeur correspondante
-            staticDiv.textContent = `${value}€`; // Mettre à jour le texte
+            const value = dynamicDiv.getAttribute('data-value');
+            staticDiv.textContent = `${value}€`; // Mettre à jour avec la bonne valeur
+        } else {
+            console.warn(`Pas de div dynamique correspondante pour la statique à l'index ${index}.`);
         }
     });
 }
