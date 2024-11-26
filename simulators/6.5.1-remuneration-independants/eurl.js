@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.5.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -87,7 +87,7 @@ function calculDividendsPfu(turnoverMinusCost, remuneration, cotisationsAmount) 
         let cotisationsOnDividendsAmount = Math.round(cotisationsOnDividendsUrssaf.nodeValue);
         cotisationsAmount = cotisationsAmount + cotisationsOnDividendsAmount;
         let tenPercentShareCapital = shareCapital * 0.1;
-        eurlDividendsPfu = Math.round(eurlDividendsBrut - ((tenPercentShareCapital * 0.3) + ((eurlDividendsBrut - tenPercentShareCapital) * 0.128)));
+        eurlDividendsPfu = Math.round(eurlDividendsBrut - (((tenPercentShareCapital * 0.3) + ((eurlDividendsBrut - tenPercentShareCapital) * 0.128)) - cotisationsOnDividendsAmount));
     }
 
     localStorage.setItem('eurlPfuDividends', eurlDividendsPfu);
