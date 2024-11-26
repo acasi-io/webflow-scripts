@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -472,7 +472,7 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     });
 }*/
 
-function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+/*function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
     const dynamicValues = {
         EURL: eurlFinalAmount,
         SASU: sasuFinalAmount,
@@ -540,11 +540,11 @@ function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, micr
             console.warn(`Pas de div dynamique correspondante pour la statique à l'index ${index}.`);
         }
     });
-}
+}*/
 
 
 
-/*function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
     const dynamicValues = {
         EURL: eurlFinalAmount,
         SASU: sasuFinalAmount,
@@ -588,7 +588,7 @@ function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, micr
         const value = dynamicDivs[index].getAttribute('data-value'); // Récupérer la valeur correspondante
         staticDiv.textContent = `${value}€`; // Mettre à jour le texte
     });
-}*/
+}
   
 
 /*function updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount) {
