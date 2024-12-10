@@ -4,9 +4,10 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
     const vehicleValue = document.getElementById('vehicle-input').value;
     const vehicleCvValue = parseInt(document.getElementById('vehicle-cv').value);
     const totalHousingM2Value = parseInt(document.getElementById('total-housing-m2').value);
+    const housingBooleanValue = document.getElementById('housing-boolean-input').value;
     const housingRentValue = parseInt(document.getElementById('housing-rent').value);
     const professionnalHousingM2Value = parseInt(document.getElementById('profesionnal-housing-m2').value);
-    const formationBooleanValue = document.getElementById('formation-input').value;
+    const formationBooleanValue = document.getElementById('formation-boolean-input').value;
     const formationHoursValue = parseInt(document.getElementById('formation-hours').value);
     const perAmountValue = parseInt(document.getElementById('per-amount').value);
     const perInterestValue = parseInt(document.getElementById('per-interest').value);
@@ -55,7 +56,7 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
 
     let housingEconomyAmount;
 
-    if (socialFormValue === 'micro') {
+    if (socialFormValue === 'micro' || housingBooleanValue === 'non') {
         housingEconomyAmount = 0;
     } else {
         housingEconomyAmount = calculHousingEconomy(totalHousingM2Value, housingRentValue, professionnalHousingM2Value);
@@ -63,27 +64,103 @@ document.getElementById('calcul-btn').addEventListener('click', () => {
 
     let totalEconomyAmount = housingEconomyAmount + perEconomyAmount + shareholderCurrentAccountEconomyAmount + formationEconomyTotalAmount + vacationVouchersEconomyAmount + serviceVouchersEconomyAmount + kilometricAllowancesEconomyAmount;
 
-    console.log('Kilometric allowance economy : ' + kilometricAllowancesEconomyAmount);
-    console.log('Housing economy : ' + housingEconomyAmount);
-    console.log('PER economy : ' + perEconomyAmount);
-    console.log('Shareholder current account economy : ' + shareholderCurrentAccountEconomyAmount);
-    console.log('Formation economy : ' + formationEconomyTotalAmount);
-    console.log('Vacation Vouchers economy : ' + vacationVouchersEconomyAmount);
-    console.log('Service Vouchers economy : ' + serviceVouchersEconomyAmount);
-    console.log('Total economy : ' + totalEconomyAmount);
-
     fillResultTexts(totalEconomyAmount, kilometricAllowancesEconomyAmount, formationEconomyTotalAmount, housingEconomyAmount, shareholderCurrentAccountEconomyAmount, perEconomyAmount, vacationVouchersEconomyAmount, serviceVouchersEconomyAmount);
 });
 
+document.getElementById('social-form-input').addEventListener('change', (input) => {
+    const vehicleBooleanWrapper = document.getElementById('vehicle-boolean-wrapper');
+    const housingBooleanWrapper = document.getElementById('housing-boolean-wrapper');
+    const formationBooleanWrapper = document.getElementById('formation-boolean-wrapper');
+    const perBooleanWrapper = document.getElementById('per-boolean-wrapper');
+    const shareholderAccountBooleanWrapper = document.getElementById('shareholder-account-boolean-wrapper');
+
+    if (input.target.value === 'micro') {
+        vehicleBooleanWrapper.style.display = 'flex';
+        formationBooleanWrapper.style.display = 'flex';
+        housingBooleanWrapper.style.display = 'none';
+        perBooleanWrapper.style.display = 'none';
+        shareholderAccountBooleanWrapper.style.display = 'none';
+    } else if (input.target.value === 'ei') {
+        vehicleBooleanWrapper.style.display = 'flex';
+        formationBooleanWrapper.style.display = 'flex';
+        housingBooleanWrapper.style.display = 'flex';
+        perBooleanWrapper.style.display = 'flex';
+        shareholderAccountBooleanWrapper.style.display = 'none';
+    } else if (input.target.value === 'eurl') {
+        vehicleBooleanWrapper.style.display = 'flex';
+        formationBooleanWrapper.style.display = 'flex';
+        housingBooleanWrapper.style.display = 'flex';
+        perBooleanWrapper.style.display = 'flex';
+        shareholderAccountBooleanWrapper.style.display = 'flex';
+    } else if (input.target.value === 'sasu') {
+        vehicleBooleanWrapper.style.display = 'flex';
+        formationBooleanWrapper.style.display = 'flex';
+        housingBooleanWrapper.style.display = 'flex';
+        perBooleanWrapper.style.display = 'none';
+        shareholderAccountBooleanWrapper.style.display = 'flex';
+    } 
+});
+
+document.getElementById('per-boolean-input').addEventListener('change', (input) => {
+    const perSentenceWrapper = document.getElementById('per-sentence-wrapper');
+
+    if (input.target.value === 'oui') {
+        perSentenceWrapper.style.display = 'flex';
+    } else {
+        perSentenceWrapper.style.display = 'none';
+    }
+});
+
+document.getElementById('formation-boolean-input').addEventListener('change', (input) => {
+    const formationSentenceWrapper = document.getElementById('formation-sentence-wrapper');
+
+    if (input.target.value === 'oui') {
+        formationSentenceWrapper.style.display = 'flex';
+    } else {
+        formationSentenceWrapper.style.display = 'none';
+    }
+});
+
+document.getElementById('vehicle-boolean-input').addEventListener('change', (input) => {
+    const vehicleSentenceWrapper = document.getElementById('vehicle-sentence-wrapper');
+
+    if (input.target.value === 'oui') {
+        vehicleSentenceWrapper.style.display = 'flex';
+    } else {
+        vehicleSentenceWrapper.style.display = 'none';
+    }
+});
+
+document.getElementById('shareholder-account-boolean-input').addEventListener('change', (input) => {
+    const shareholderAccountSentenceWrapper = document.getElementById('shareholder-account-sentence-wrapper');
+
+    if (input.target.value === 'oui') {
+        shareholderAccountSentenceWrapper.style.display = 'flex';
+    } else {
+        shareholderAccountSentenceWrapper.style.display = 'none';
+    }
+});
+
+document.getElementById('housing-boolean-input').addEventListener('change', (input) => {
+    const housingSentenceWrapper = document.getElementById('housing-sentence-wrapper');
+
+    if (input.target.value === 'oui') {
+        housingSentenceWrapper.style.display = 'block';
+    } else {
+        housingSentenceWrapper.style.display = 'none';
+    }
+});
+
+
 function fillResultTexts(totalEconomyAmount, kilometricAllowancesEconomyAmount, formationEconomyTotalAmount, housingEconomyAmount, shareholderCurrentAccountEconomyAmount, perEconomyAmount, vacationVouchersEconomyAmount, serviceVouchersEconomyAmount) {
-    document.getElementById('total-economy-amount').textContent = totalEconomyAmount;
-    document.getElementById('vehicle-economy-amount').textContent = kilometricAllowancesEconomyAmount;
-    document.getElementById('formation-economy-amount').textContent = formationEconomyTotalAmount;
-    document.getElementById('rent-economy-amount').textContent = housingEconomyAmount;
-    document.getElementById('shareholder-account-economy-amount').textContent = shareholderCurrentAccountEconomyAmount;
-    document.getElementById('per-economy-amount').textContent = perEconomyAmount;
-    document.getElementById('vacation-vouchers-economy-amount').textContent = vacationVouchersEconomyAmount;
-    document.getElementById('service-vouchers-economy-amount').textContent = serviceVouchersEconomyAmount;
+    document.getElementById('total-economy-amount').textContent = totalEconomyAmount.toLocaleString('fr-FR');
+    document.getElementById('vehicle-economy-amount').textContent = kilometricAllowancesEconomyAmount.toLocaleString('fr-FR');
+    document.getElementById('formation-economy-amount').textContent = formationEconomyTotalAmount.toLocaleString('fr-FR');
+    document.getElementById('rent-economy-amount').textContent = housingEconomyAmount.toLocaleString('fr-FR');
+    document.getElementById('shareholder-account-economy-amount').textContent = shareholderCurrentAccountEconomyAmount.toLocaleString('fr-FR');
+    document.getElementById('per-economy-amount').textContent = perEconomyAmount.toLocaleString('fr-FR');
+    document.getElementById('vacation-vouchers-economy-amount').textContent = vacationVouchersEconomyAmount.toLocaleString('fr-FR');
+    document.getElementById('service-vouchers-economy-amount').textContent = serviceVouchersEconomyAmount.toLocaleString('fr-FR');
 }
 
 
