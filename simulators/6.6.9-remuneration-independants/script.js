@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.8-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.8-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.9-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.9-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -340,76 +340,80 @@ function resetSimulation() {
     });
 }
 
-function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, chiffreAffaires) {
-    // Réinitialiser la simulation
-    resetSimulation();
-
-    // Étape 1 : Créer une liste des montants par forme sociale
-    const remunerationValues = [
+function resetAndPrepareValues(sasu, eurl, ei, micro, chiffreAffaires) {
+    return [
         { 
-            value: eurlFinalAmount, 
-            displayValue: eurlFinalAmount, 
+            value: eurl, 
+            displayValue: eurl, 
             socialForm: 'EURL', 
             elementId: 'eurl-comparison-component' 
         },
         { 
-            value: sasuFinalAmount, 
-            displayValue: sasuFinalAmount, 
+            value: sasu, 
+            displayValue: sasu, 
             socialForm: 'SASU', 
             elementId: 'sasu-comparison-component' 
         },
         { 
-            value: eiFinalAmount, 
-            displayValue: eiFinalAmount, 
+            value: ei, 
+            displayValue: ei, 
             socialForm: 'EI', 
             elementId: 'ei-comparison-component' 
         },
         { 
-            value: chiffreAffaires > 50000 ? 0 : microFinalAmount, // Utilisé pour le tri
-            displayValue: microFinalAmount, // Utilisé pour l'affichage
+            value: chiffreAffaires > 50000 ? 0 : micro, 
+            displayValue: micro, 
             socialForm: 'MICRO', 
             elementId: 'micro-comparison-component' 
         }
     ];
+}
 
-    // Étape 2 : Si la condition du chômage est remplie, on met la SASU en première position
+function prioritizeSASU(remunerationValues) {
     if (isUnemployment.value === "true" && unemploymentDuration.value === "more_six_months") {
-        // Mettre la SASU en première position, même si elle est dans la liste initiale
         const sasuIndex = remunerationValues.findIndex(item => item.socialForm === 'SASU');
         if (sasuIndex !== -1) {
             const [sasuItem] = remunerationValues.splice(sasuIndex, 1);
-            remunerationValues.unshift(sasuItem); // Mettre en première position
+            remunerationValues.unshift(sasuItem);
         }
     }
+    return remunerationValues;
+}
 
-    // Étape 3 : Filtrer les montants non nulles
-    const filteredRemunerationValues = remunerationValues.filter(item => item.value !== null);
+function sortAndFilterRemunerations(remunerationValues) {
+    return remunerationValues.filter(item => item.value !== null).sort((a, b) => b.value - a.value);
+}
 
-    // Étape 4 : Trier les montants par ordre décroissant
-    filteredRemunerationValues.sort((a, b) => b.value - a.value);
-
-    // Étape 5 : Réorganiser les divs du haut selon les montants triés
+function rearrangeDivs(filteredRemunerationValues) {
     const parentTop = document.querySelector('.simulator_comparison_grid_top');
     filteredRemunerationValues.forEach(item => {
         const div = document.getElementById(item.elementId);
-        if (div) {
-            parentTop.appendChild(div); // Réorganiser les divs
-        }
+        if (div) parentTop.appendChild(div);
     });
+}
 
-    // Étape 6 : Mettre à jour les montants directement dans les rectangles
+function updateResultBlocks(filteredRemunerationValues) {
     const rectangles = document.querySelectorAll('.comparison_result_block');
     filteredRemunerationValues.forEach((item, index) => {
         const targetRectangle = rectangles[index];
-        const valueFormatted = item.displayValue.toLocaleString('fr-FR') + '€';
-
+        const valueFormatted = `${item.displayValue.toLocaleString('fr-FR')}€`;
         if (targetRectangle) {
-            targetRectangle.style.display = 'block'; // S'assurer que le rectangle est visible
+            targetRectangle.style.display = 'block';
             targetRectangle.innerHTML = `<p class="comparison_grid_remuneration_text">${valueFormatted}</p>`;
-        } else {
-            console.warn(`Target rectangle not found for index ${index}`);
         }
     });
+}
+
+function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, chiffreAffaires) {
+    resetSimulation();
+
+    let remunerationValues = resetAndPrepareValues(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, chiffreAffaires);
+    remunerationValues = prioritizeSASU(remunerationValues);
+
+    const filteredRemunerationValues = sortAndFilterRemunerations(remunerationValues);
+
+    rearrangeDivs(filteredRemunerationValues);
+    updateResultBlocks(filteredRemunerationValues);
 }
 
 function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, forceSasuFirst = false) {
