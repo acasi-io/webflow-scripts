@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.9-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.9-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.7.0-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.7.0-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -253,22 +253,22 @@ function updateComparisonTexts(bestSocialForm, comparisonTitle, explanationText,
         eurl: {
             title: 'EURL',
             explanation: `L'EURL est une SARL à associé unique, offrant une protection du patrimoine personnel et une grande flexibilité. Les principaux avantages incluent la <strong>protection du patrimoine personnel</strong>, la <strong>flexibilité dans l'organisation</strong>, la <strong>liberté de fixation du capital</strong>, et la <strong>transition automatique vers une SARL</strong> en cas d'arrivée de nouveaux associés.`,
-            attention: `L’EURL à l’IS offre une fiscalité avantageuse, mais attention à la <strong>gestion des dividendes</strong>, soumis à cotisations sociales...`,
+            attention: `L’EURL à l’IS offre une fiscalité avantageuse, mais attention à la <strong>gestion des dividendes</strong>, soumis à cotisations sociales. Le calcul du montant des dividendes nettes a été fait sur la base d'un capital social de 1.500€, ce montant peut donc légèrement différent.<br>En tant que gérant TNS, vous bénéficiez de charges sociales réduites, mais d'une <strong>couverture sociale et retraite moins favorable</strong> par rapport à la SASU. La responsabilité est limitée sauf en cas de garanties personnelles, et des <strong>formalités comptables rigoureuses</strong> sont nécessaires pour rester conforme.`,
         },
         sasu: {
             title: 'SASU',
-            explanation: `La SASU est une forme juridique de société par actions simplifiée avec un seul associé. Les principaux avantages incluent...`,
-            attention: `La SASU offre souplesse et l'absence de cotisations sociales sur les dividendes, mais certains aspects sont à surveiller...`,
+            explanation: `La SASU est une forme juridique de société par actions simplifiée avec un seul associé. Les principaux avantages incluent la <strong>protection du patrimoine personnel</strong>, la <strong>flexibilité dans l'organisation</strong>, la <strong>liberté de fixation du capital</strong>, la <strong>possibilité de transition</strong> vers une structure pluripersonnelle sans formalités complexes et l’absences de cotisations sociales sur les dividendes.`,
+            attention: `La SASU offre souplesse et l'absence de cotisations sociales sur les dividendes, mais certains aspects sont à surveiller. En tant que président assimilé salarié, vous relevez du régime général, avec des <strong>charges sociales plus élevées</strong> mais une meilleure couverture sociale et retraite.<br>Vous pouvez choisir de vous verser plus de dividendes pour réduire ces charges, mais cela <strong>diminue votre protection sociale</strong>, notamment en matière de retraite. Enfin, la <strong>gestion administrative reste rigoureuse</strong> et la responsabilité limitée, sauf en cas de garanties personnelles.`,
         },
         micro: {
             title: 'Micro',
-            explanation: `La micro-entreprise est <strong>simple à créer et à gérer</strong>, avec un régime fiscal et social allégé...`,
-            attention: `Les <strong>plafonds de chiffre d’affaires</strong> limitent la croissance et obligent à changer de statut...`,
+            explanation: `La micro-entreprise est <strong>simple à créer et à gérer</strong>, avec un régime fiscal et social allégé. Les cotisations sont calculées sur le chiffre d’affaires, et la <strongTVA peut être exonérée></strong> sous certains seuils. De plus, les formalités comptables sont réduites, ce qui en fait un statut idéal pour démarrer une activité sans lourdes contraintes administratives.`,
+            attention: `Les <strong>plafonds de chiffre d’affaires</strong> limitent la croissance et obligent à changer de statut en cas de dépassement. La <strong>couverture sociale et retraite est moindre</strong>, et l’absence de séparation entre patrimoine personnel et professionnel expose l'entrepreneur à un risque financier en cas de difficultés.`,
         },
         ei: {
             title: 'EI',
-            explanation: `L'entreprise individuelle permet à un entrepreneur de démarrer une activité sans créer une entité juridique distincte...`,
-            attention: `Bien que l'EI simplifie la gestion, la responsabilité de l'entrepreneur peut être engagée en cas de dettes...`,
+            explanation: `L'entreprise individuelle permet à un entrepreneur de démarrer une activité sans créer une entité juridique distincte. La responsabilité est limitée au patrimoine professionnel, offrant une protection des biens personnels sans formalités. L'entrepreneur peut librement apporter des fonds et gérer la trésorerie.<br>L'imposition est basée sur le bénéfice réalisé, avec des cotisations sociales en fonction des rémunérations.`,
+            attention: `Bien que l'EI simplifie la gestion, la responsabilité de l'entrepreneur peut être engagée en cas de dettes si le patrimoine professionnel n'est pas bien séparé. De plus, les cotisations sociales sont calculées sur le bénéfice, même si celui-ci est réinvesti dans l'activité, ce qui peut affecter la trésorerie. Enfin, la couverture sociale et retraite peut être moins avantageuse que dans d'autres statuts plus protecteurs.`,
         },
     };
 
@@ -416,73 +416,69 @@ function orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, 
     updateResultBlocks(filteredRemunerationValues);
 }
 
-function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, forceSasuFirst = false) {
-    // Valeur dynamique réelle de MICRO pour l'affichage (extrait de localStorage)
-    const microDisplayAmount = parseFloat(localStorage.getItem('microTotalRealAmount')) || microFinalAmount;
+function getMicroDisplayAmount(microFinalAmount) {
+    return parseFloat(localStorage.getItem('microTotalRealAmount')) || (microFinalAmount > 50000 ? 0 : microFinalAmount);
+}
 
-    const dynamicValues = {
-        EURL: eurlFinalAmount,
-        SASU: sasuFinalAmount,
-        EI: eiFinalAmount,
-        MICRO: microFinalAmount > 50000 ? 0 : microFinalAmount // Si > 50 000, trié avec une valeur de 0
-    };
-
-    // Sélectionner toutes les divs dynamiques
-    const dynamicDivs = Array.from(document.querySelectorAll('.dynamic'));
-
-    // Mettre à jour les data-value avec les valeurs fournies
+function updateDivValues(dynamicDivs, dynamicValues) {
     dynamicDivs.forEach(div => {
         const socialForm = div.getAttribute('data-socialformmobile');
         if (dynamicValues[socialForm] !== undefined) {
             div.setAttribute('data-value', dynamicValues[socialForm]);
         }
     });
+}
 
-    // Trier les divs en fonction de la valeur des attributs data-value
-    dynamicDivs.sort((a, b) => {
+function sortDivs(dynamicDivs, forceSasuFirst) {
+    return dynamicDivs.sort((a, b) => {
         const aValue = parseFloat(a.getAttribute('data-value'));
         const bValue = parseFloat(b.getAttribute('data-value'));
 
-        // Priorité à SASU si forceSasuFirst est activé
         if (forceSasuFirst) {
-            if (a.getAttribute('data-socialformmobile') === "SASU") return -1; // SASU toujours en premier
+            if (a.getAttribute('data-socialformmobile') === "SASU") return -1;
             if (b.getAttribute('data-socialformmobile') === "SASU") return 1;
         }
 
-        // Tri normal par valeur
         return bValue - aValue;
     });
+}
 
-    // Réinsérer les divs triées dans le conteneur
-    const gridContainer = document.querySelector('.grid-container');
-
-    // Créer un tableau des divs statiques pour les réinsérer au bon endroit
-    const staticDivs = Array.from(document.querySelectorAll('.static'));
-
-    // Vider le conteneur
-    gridContainer.innerHTML = '';
-
-    // Réinsérer les divs triées et statiques dans le bon ordre
-    for (let i = 0; i < dynamicDivs.length; i++) {
-        gridContainer.appendChild(dynamicDivs[i]);
-        gridContainer.appendChild(staticDivs[i]); // Assure que chaque rectangle statique suit un dynamique
-    }
-
-    // Mettre à jour les textes des rectangles avec les valeurs correspondantes
+function updateStaticDivs(dynamicDivs, staticDivs, microDisplayAmount) {
     staticDivs.forEach((staticDiv, index) => {
         const dynamicDiv = dynamicDivs[index];
         const socialForm = dynamicDiv.getAttribute('data-socialformmobile');
-
-        let value;
-        if (socialForm === "MICRO") {
-            // Afficher la vraie valeur de MICRO même si elle est triée différemment
-            value = microDisplayAmount;
-        } else {
-            value = dynamicDiv.getAttribute('data-value'); // Récupérer la valeur pour les autres divs
-        }
-
-        staticDiv.textContent = `${value}€`; // Mettre à jour le texte
+        const value = (socialForm === "MICRO") ? microDisplayAmount : dynamicDiv.getAttribute('data-value');
+        staticDiv.textContent = `${value}€`;
     });
+}
+
+function updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, forceSasuFirst = false) {
+    const microDisplayAmount = getMicroDisplayAmount(microFinalAmount);
+
+    const dynamicValues = {
+        EURL: eurlFinalAmount,
+        SASU: sasuFinalAmount,
+        EI: eiFinalAmount,
+        MICRO: microFinalAmount
+    };
+
+    const dynamicDivs = Array.from(document.querySelectorAll('.dynamic'));
+
+    updateDivValues(dynamicDivs, dynamicValues);
+
+    const sortedDivs = sortDivs(dynamicDivs, forceSasuFirst);
+
+    const gridContainer = document.querySelector('.grid-container');
+    const staticDivs = Array.from(document.querySelectorAll('.static'));
+
+    gridContainer.innerHTML = '';
+
+    sortedDivs.forEach((div, index) => {
+        gridContainer.appendChild(div);
+        gridContainer.appendChild(staticDivs[index]);
+    });
+
+    updateStaticDivs(sortedDivs, staticDivs, microDisplayAmount);
 }
 
 function microConditions(turnover) {
