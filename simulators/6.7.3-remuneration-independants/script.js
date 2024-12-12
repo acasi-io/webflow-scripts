@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.7.2-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.7.2-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.7.3-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.7.3-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -562,60 +562,51 @@ function fillSameClassTextRecapProtection(className, textToShow, colorText) {
 }
 
 function checkUnemploymentAndSocialSecurityProtection() {
-    // EURL
-    const eurlRemuneration = parseInt((document.getElementById('eurl-comparison-wage').textContent).replace(/\s+/g, ""));
-    if (eurlRemuneration < 20000) {
-        fillSameClassTextRecapProtection('eurl_social_security', 'Mauvaise', '#ff2b44');
-        fillSameClassTextRecapProtection('eurl_comparison_retirement', 'Mauvaise', '#ff2b44');
-    } else if (eurlRemuneration >= 20000 && eurlRemuneration < 50000) {
-        fillSameClassTextRecapProtection('eurl_social_security', 'Moyenne', '#ffb13c');
-        fillSameClassTextRecapProtection('eurl_comparison_retirement', 'Moyenne', '#ffb13c');
-    } else {
-        fillSameClassTextRecapProtection('eurl_social_security', 'Bonne', '#6fcf97');
-        fillSameClassTextRecapProtection('eurl_comparison_retirement', 'Bonne', '#6fcf97');
-    }
+    const eurlWageElement = document.getElementById('eurl-comparison-wage');
+    const sasuWageElement = document.getElementById('sasu-comparison-wage');
+    const eiWageElement = document.getElementById('ei-comparison-wages');
+    const microWageElement = document.getElementById('micro-comparison-wage');
 
-    // SASU
-    const sasuRemuneration = parseInt((document.getElementById('sasu-comparison-wage').textContent).replace(/\s+/g, ""));
-    if (sasuRemuneration < 25000) {
-        fillSameClassTextRecapProtection('sasu_social_security', 'Moyenne', '#ffb13c');
-        fillSameClassTextRecapProtection('sasu_comparison_retirement', 'Mauvaise', '#ff2b44');
-    } else if (sasuRemuneration >= 25000 && sasuRemuneration < 50000) {
-        fillSameClassTextRecapProtection('sasu_social_security', 'Bonne', '#6fcf97');
-        fillSameClassTextRecapProtection('sasu_comparison_retirement', 'Moyenne', '#ffb13c');
-    } else {
-        fillSameClassTextRecapProtection('sasu_social_security', 'Bonne', '#6fcf97');
-        fillSameClassTextRecapProtection('sasu_comparison_retirement', 'Bonne', '#6fcf97');
-    }
+    const eurlRemuneration = parseInt(eurlWageElement.textContent.replace(/\s+/g, ""));
+    const sasuRemuneration = parseInt(sasuWageElement.textContent.replace(/\s+/g, ""));
+    const eiRemuneration = parseInt(eiWageElement.textContent.replace(/\s+/g, ""));
+    const microRemuneration = parseInt(microWageElement.textContent.replace(/\s+/g, ""));
 
-    if (sasuRemuneration < 20000) {
-        fillSameClassTextRecapProtection('sasu_unemployment', 'Mauvaise', '#ff2b44');
-    } else {
-        fillSameClassTextRecapProtection('sasu_unemployment', 'Moyenne', '#ffb13c');
-    }
+    const remunerationCategories = [
+        { id: 'eurl', wage: eurlRemuneration, thresholds: [
+            { min: 0, max: 20000, social: 'Mauvaise', retirement: 'Mauvaise', color: '#ff2b44' },
+            { min: 20000, max: 50000, social: 'Moyenne', retirement: 'Moyenne', color: '#ffb13c' },
+            { min: 50000, max: Infinity, social: 'Bonne', retirement: 'Bonne', color: '#6fcf97' }
+        ]},
+        { id: 'sasu', wage: sasuRemuneration, thresholds: [
+            { min: 0, max: 25000, social: 'Moyenne', retirement: 'Mauvaise', color: '#ffb13c' },
+            { min: 25000, max: 50000, social: 'Bonne', retirement: 'Moyenne', color: '#6fcf97' },
+            { min: 50000, max: Infinity, social: 'Bonne', retirement: 'Bonne', color: '#6fcf97' }
+        ], additionalUnemployment: { min: 20000, status: 'Moyenne', color: '#ffb13c' }},
+        { id: 'ei', wage: eiRemuneration, thresholds: [
+            { min: 0, max: 20000, social: 'Mauvaise', retirement: 'Mauvaise', color: '#ff2b44' },
+            { min: 20000, max: 40000, social: 'Moyenne', retirement: 'Moyenne', color: '#ffb13c' },
+            { min: 40000, max: Infinity, social: 'Bonne', retirement: 'Bonne', color: '#6fcf97' }
+        ]},
+        { id: 'micro', wage: microRemuneration, thresholds: [
+            { min: 0, max: 15000, social: 'Mauvaise', retirement: 'Mauvaise', color: '#ff2b44' },
+            { min: 15000, max: Infinity, social: 'Moyenne', retirement: 'Moyenne', color: '#ffb13c' }
+        ]}
+    ];
 
-    // EI
-    const eiRemuneration = parseInt((document.getElementById('ei-comparison-wages').textContent).replace(/\s+/g, ""));
-    if (eiRemuneration < 20000) {
-        fillSameClassTextRecapProtection('ei_social_security', 'Mauvaise', '#ff2b44');
-        fillSameClassTextRecapProtection('ei_comparison_retirement', 'Mauvaise', '#ff2b44');
-    } else if (eiRemuneration >= 20000 && eiRemuneration < 40000) {
-        fillSameClassTextRecapProtection('ei_social_security', 'Moyenne', '#ffb13c');
-        fillSameClassTextRecapProtection('ei_comparison_retirement', 'Moyenne', '#ffb13c');
-    } else {
-        fillSameClassTextRecapProtection('ei_social_security', 'Bonne', '#6fcf97');
-        fillSameClassTextRecapProtection('ei_comparison_retirement', 'Bonne', '#6fcf97');
-    }
+    remunerationCategories.forEach(category => {
+        const matchedThreshold = category.thresholds.find(threshold => category.wage >= threshold.min && category.wage < threshold.max);
+        if (matchedThreshold) {
+            fillSameClassTextRecapProtection(`${category.id}_social_security`, matchedThreshold.social, matchedThreshold.color);
+            fillSameClassTextRecapProtection(`${category.id}_comparison_retirement`, matchedThreshold.retirement, matchedThreshold.color);
+        }
 
-    // Micro
-    const microRemuneration = parseInt((document.getElementById('micro-comparison-wage').textContent).replace(/\s+/g, ""));
-    if (microRemuneration < 15000) {
-        fillSameClassTextRecapProtection('micro_social_security', 'Mauvaise', '#ff2b44');
-        fillSameClassTextRecapProtection('micro_comparison_retirement', 'Mauvaise', '#ff2b44');
-    } else {
-        fillSameClassTextRecapProtection('micro_social_security', 'Moyenne', '#ffb13c');
-        fillSameClassTextRecapProtection('micro_comparison_retirement', 'Moyenne', '#ffb13c');
-    }
+        if (category.id === 'sasu') {
+            const unemploymentStatus = category.wage < category.additionalUnemployment.min ? 'Mauvaise' : category.additionalUnemployment.status;
+            const unemploymentColor = category.wage < category.additionalUnemployment.min ? '#ff2b44' : category.additionalUnemployment.color;
+            fillSameClassTextRecapProtection('sasu_unemployment', unemploymentStatus, unemploymentColor);
+        }
+    });
 }
 
 
