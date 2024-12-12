@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.7.0-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.7.0-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.7.1-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.7.1-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -489,55 +489,79 @@ function microConditions(turnover) {
     }
 }
 
-function checkUnemployment(turnoverMinusCost, turnover, cost, numberOfChildValue, situationValue, householdIncome, singleParent) {
-    if (isUnemployment.value === "true" && unemploymentDuration.value === "more_six_months") {    
-        document.querySelectorAll('.is_ca_recap').forEach(element => {
-            element.textContent = turnover.toLocaleString('fr-FR') + '€';
-        });
-
-        microConditions(turnover);
-
-        const sasuDividends = parseInt(localStorage.getItem('bestSasuDividends')).toLocaleString('fr-FR');
-        const sasuRemuneration = parseInt(localStorage.getItem('sasuAfterTax')).toLocaleString('fr-FR');
-        const sasuFinalAmount = parseInt(localStorage.getItem('sasuTotal')).toLocaleString('fr-FR');
-
-        document.querySelector('.simulator_result_ca').textContent = turnover.toLocaleString('fr-FR');
-        document.querySelector('.simulator_result_revenu').textContent = sasuFinalAmount + '€';
-
-        document.getElementById('best-remuneration').textContent = sasuRemuneration.toLocaleString('fr-FR') + '€';
-        document.getElementById('best-dividends').textContent = sasuDividends.toLocaleString('fr-FR') + '€';
-
-        resultRecapTitle.forEach((title) => {
-            title.textContent = "SASU à l'Impôt sur les Sociétés";
-        });
-
-        comparisonTitle.textContent = 'SASU';
-
-        const microFinalAmount = parseInt(localStorage.getItem('microTotal'));
-        const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal'));
-        const eiFinalAmount = parseInt(localStorage.getItem('eiTotal'));
-        updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, true);
-
-        showBestSocialForm('sasu', 'sasu');
-        fillBestChoiceText(turnover, cost, situationValue, 'sasu');
-        explanationText.innerHTML = `La SASU est une forme juridique de société par actions simplifiée avec un seul associé. Les principaux avantages incluent la <strong>protection du patrimoine personnel</strong>, la <strong>flexibilité dans l'organisation</strong>, la <strong>liberté de fixation du capital</strong>, la <strong>possibilité de transition</strong> vers une structure pluripersonnelle sans formalités complexes et l’absences de cotisations sociales sur les dividendes.`;
-        attentionText.innerHTML = `La SASU offre souplesse et l'absence de cotisations sociales sur les dividendes, mais certains aspects sont à surveiller. En tant que président assimilé salarié, vous relevez du régime général, avec des <strong>charges sociales plus élevées</strong> mais une meilleure couverture sociale et retraite.<br>Vous pouvez choisir de vous verser plus de dividendes pour réduire ces charges, mais cela <strong>diminue votre protection sociale</strong>, notamment en matière de retraite. Enfin, la <strong>gestion administrative reste rigoureuse</strong> et la responsabilité limitée, sauf en cas de garanties personnelles.`;
-    } else {
-        microConditions(turnover);
-        
-        let eurlTotal = parseInt(localStorage.getItem('eurlTotal'));
-        let eiTotal = parseInt(localStorage.getItem('eiTotal'));
-        let sasuTotal = parseInt(localStorage.getItem('sasuTotal'));
-        let microTotal = parseInt(localStorage.getItem('microTotal'));
-        
-        compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
-        let bestSocialForm = localStorage.getItem('bestSocialForm');
-        fillBestChoiceText(turnover, cost, situationValue, bestSocialForm);
-        let bestSocialFormForComponent = localStorage.getItem('bestSocialFormForComponent');
-        showBestSocialForm(bestSocialForm, bestSocialFormForComponent);
-    };
+function updateCAandIncome(turnover) {
+    document.querySelectorAll('.is_ca_recap').forEach(element => {
+        element.textContent = turnover.toLocaleString('fr-FR') + '€';
+    });
 }
 
+function updateSasuData() {
+    const sasuDividends = parseInt(localStorage.getItem('bestSasuDividends')).toLocaleString('fr-FR');
+    const sasuRemuneration = parseInt(localStorage.getItem('sasuAfterTax')).toLocaleString('fr-FR');
+    const sasuFinalAmount = parseInt(localStorage.getItem('sasuTotal')).toLocaleString('fr-FR');
+
+    document.querySelector('.simulator_result_ca').textContent = turnover.toLocaleString('fr-FR');
+    document.querySelector('.simulator_result_revenu').textContent = sasuFinalAmount + '€';
+    document.getElementById('best-remuneration').textContent = sasuRemuneration + '€';
+    document.getElementById('best-dividends').textContent = sasuDividends + '€';
+}
+
+function updateTitlesForSasu() {
+    resultRecapTitle.forEach(title => {
+        title.textContent = "SASU à l'Impôt sur les Sociétés";
+    });
+    comparisonTitle.textContent = 'SASU';
+}
+
+function updateSocialFormDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount) {
+    updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, true);
+}
+
+function updateExplanations() {
+    explanationText.innerHTML = `La SASU est une forme juridique de société par actions simplifiée avec un seul associé. Les principaux avantages incluent la <strong>protection du patrimoine personnel</strong>, la <strong>flexibilité dans l'organisation</strong>, la <strong>liberté de fixation du capital</strong>, la <strong>possibilité de transition</strong> vers une structure pluripersonnelle sans formalités complexes et l’absences de cotisations sociales sur les dividendes.`;
+    attentionText.innerHTML = `La SASU offre souplesse et l'absence de cotisations sociales sur les dividendes, mais certains aspects sont à surveiller. En tant que président assimilé salarié, vous relevez du régime général, avec des <strong>charges sociales plus élevées</strong> mais une meilleure couverture sociale et retraite.<br>Vous pouvez choisir de vous verser plus de dividendes pour réduire ces charges, mais cela <strong>diminue votre protection sociale</strong>, notamment en matière de retraite. Enfin, la <strong>gestion administrative reste rigoureuse</strong> et la responsabilité limitée, sauf en cas de garanties personnelles.`;
+}
+
+function handleUnemploymentCase(turnover) {
+    const sasuFinalAmount = parseInt(localStorage.getItem('sasuTotal'));
+    const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal'));
+    const eiFinalAmount = parseInt(localStorage.getItem('eiTotal'));
+    const microFinalAmount = parseInt(localStorage.getItem('microTotal'));
+
+    updateCAandIncome(turnover);
+    microConditions(turnover);
+    updateSasuData();
+    updateTitlesForSasu();
+    updateSocialFormDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
+    showBestSocialForm('sasu', 'sasu');
+    fillBestChoiceText(turnover, cost, situationValue, 'sasu');
+    updateExplanations();
+}
+
+function handleOtherCase(turnoverMinusCost, turnover, situationValue, numberOfChildValue, householdIncome, singleParent) {
+    microConditions(turnover);
+
+    const eurlTotal = parseInt(localStorage.getItem('eurlTotal'));
+    const eiTotal = parseInt(localStorage.getItem('eiTotal'));
+    const sasuTotal = parseInt(localStorage.getItem('sasuTotal'));
+    const microTotal = parseInt(localStorage.getItem('microTotal'));
+
+    compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
+
+    const bestSocialForm = localStorage.getItem('bestSocialForm');
+    fillBestChoiceText(turnover, cost, situationValue, bestSocialForm);
+
+    const bestSocialFormForComponent = localStorage.getItem('bestSocialFormForComponent');
+    showBestSocialForm(bestSocialForm, bestSocialFormForComponent);
+}
+
+function checkUnemployment(turnoverMinusCost, turnover, cost, numberOfChildValue, situationValue, householdIncome, singleParent) {
+    if (isUnemployment.value === "true" && unemploymentDuration.value === "more_six_months") {
+        handleUnemploymentCase(turnover);
+    } else {
+        handleOtherCase(turnoverMinusCost, turnover, situationValue, numberOfChildValue, householdIncome, singleParent);
+    }
+}
 
 function showBestSocialForm(bestSocialForm, bestSocialFormForComponent) {
     document.querySelector('.details_dividends_component').classList.add('hidden');
