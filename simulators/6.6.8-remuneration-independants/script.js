@@ -1,5 +1,5 @@
-import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine,{ formatValue } from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { calculEurl, storageEurlTotal, fillEurlComparison } from './eurl.js';
 import { microResult, microCalculRetraite, storageMicroTotal, fillMicroComparison } from './micro.js';
@@ -185,34 +185,27 @@ function retirementText(gainTrimesterTag, pensionSchemeTag, retirementPointsTag)
 }
 
 function compareResults(sasuTotal, eurlTotal, eiTotal, microTotal, turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent) {
-    if (eurlTotal > eiTotal && eurlTotal > sasuTotal && eurlTotal > microTotal) {
-        localStorage.setItem('bestSocialForm', 'eurl');
-        localStorage.setItem('bestSocialFormForComponent', 'eurl_ei');
-        calculEurl(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
-        resultRecapTitle.forEach((title) => {
-            title.textContent = "l'EURL à l'Impôt sur les Sociétés";
-        });
-    } else if (sasuTotal > eurlTotal && sasuTotal > eiTotal && sasuTotal > microTotal) {
-        localStorage.setItem('bestSocialForm', 'sasu');
-        localStorage.setItem('bestSocialFormForComponent', 'sasu');
-        resultRecapTitle.forEach((title) => {
-            title.textContent = "la SASU à l'Impôt sur les Sociétés";
-        });
-    } else if (microTotal > eurlTotal && microTotal > eiTotal && microTotal > sasuTotal) {
-        localStorage.setItem('bestSocialForm', 'micro');
-        localStorage.setItem('bestSocialFormForComponent', 'micro');
-        microResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
-        resultRecapTitle.forEach((title) => {
-            title.textContent = "la MICRO";
-        });
-    } else if (eiTotal > eurlTotal && eiTotal > sasuTotal && eiTotal > microTotal) {
-        localStorage.setItem('bestSocialForm', 'ei');
-        localStorage.setItem('bestSocialFormForComponent', 'eurl_ei');
-        eiResult(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
-        resultRecapTitle.forEach((title) => {
-            title.textContent = "l'EI";
-        });
+    const options = [
+        { key: 'eurl', total: eurlTotal, component: 'eurl_ei', title: "l'EURL à l'Impôt sur les Sociétés", func: calculEurl },
+        { key: 'sasu', total: sasuTotal, component: 'sasu', title: "la SASU à l'Impôt sur les Sociétés", func: null },
+        { key: 'micro', total: microTotal, component: 'micro', title: "la MICRO", func: microResult },
+        { key: 'ei', total: eiTotal, component: 'eurl_ei', title: "l'EI", func: eiResult },
+    ];
+
+    const bestOption = options.reduce((best, current) => {
+        return current.total > best.total ? current : best;
+    });
+
+    localStorage.setItem('bestSocialForm', bestOption.key);
+    localStorage.setItem('bestSocialFormForComponent', bestOption.component);
+
+    if (bestOption.func) {
+        bestOption.func(turnoverMinusCost, situationValue, numberOfChildValue, householdIncome, singleParent);
     }
+
+    resultRecapTitle.forEach((title) => {
+        title.textContent = bestOption.title;
+    });
 }
 
 function fillRetireRecap(turnoverMinusCost, turnover) {
@@ -223,103 +216,116 @@ function fillRetireRecap(turnoverMinusCost, turnover) {
     document.getElementById('ei-retire-recap').textContent = eiRetirement.toLocaleString('fr-FR') + '€';
 }
 
+function configureDividendsDisplay() {
+    const dividendsDiv = document.getElementById('best-choice-dividends');
+    dividendsDiv.style.display = 'flex';
+    dividendsDiv.style.justifyContent = 'space-between';
+    dividendsDiv.style.width = '18rem';
+}
+
+function getSocialFormAmounts() {
+    return {
+        micro: parseInt(localStorage.getItem('microTotal')),
+        eurl: {
+            total: parseInt(localStorage.getItem('eurlTotal')),
+            dividends: parseInt(localStorage.getItem('bestEurlDividends')),
+            remuneration: parseInt(localStorage.getItem('eurlAfterTax')),
+        },
+        ei: parseInt(localStorage.getItem('eiTotal')),
+        sasu: (() => {
+            const sasuArray = JSON.parse(localStorage.getItem('arraySasu'));
+            const bestSasuTotal = Math.max(...sasuArray.map(obj => obj.remunerationPlusDividendsBestAmount));
+            const bestSasuObject = sasuArray.find(obj => obj.remunerationPlusDividendsBestAmount === bestSasuTotal);
+            return {
+                total: parseInt(bestSasuObject.remunerationPlusDividendsBestAmount),
+                dividends: Math.max(
+                    parseInt(bestSasuObject.dividendsNetsPfuAmount),
+                    parseInt(bestSasuObject.dividendsNetsProgressiveAmount)
+                ),
+                remuneration: parseInt(bestSasuObject.afterTaxAmount),
+            };
+        })(),
+    };
+}
+
+function updateComparisonTexts(bestSocialForm, comparisonTitle, explanationText, attentionText) {
+    const texts = {
+        eurl: {
+            title: 'EURL',
+            explanation: `L'EURL est une SARL à associé unique, offrant une protection du patrimoine personnel et une grande flexibilité. Les principaux avantages incluent la <strong>protection du patrimoine personnel</strong>, la <strong>flexibilité dans l'organisation</strong>, la <strong>liberté de fixation du capital</strong>, et la <strong>transition automatique vers une SARL</strong> en cas d'arrivée de nouveaux associés.`,
+            attention: `L’EURL à l’IS offre une fiscalité avantageuse, mais attention à la <strong>gestion des dividendes</strong>, soumis à cotisations sociales...`,
+        },
+        sasu: {
+            title: 'SASU',
+            explanation: `La SASU est une forme juridique de société par actions simplifiée avec un seul associé. Les principaux avantages incluent...`,
+            attention: `La SASU offre souplesse et l'absence de cotisations sociales sur les dividendes, mais certains aspects sont à surveiller...`,
+        },
+        micro: {
+            title: 'Micro',
+            explanation: `La micro-entreprise est <strong>simple à créer et à gérer</strong>, avec un régime fiscal et social allégé...`,
+            attention: `Les <strong>plafonds de chiffre d’affaires</strong> limitent la croissance et obligent à changer de statut...`,
+        },
+        ei: {
+            title: 'EI',
+            explanation: `L'entreprise individuelle permet à un entrepreneur de démarrer une activité sans créer une entité juridique distincte...`,
+            attention: `Bien que l'EI simplifie la gestion, la responsabilité de l'entrepreneur peut être engagée en cas de dettes...`,
+        },
+    };
+
+    comparisonTitle.textContent = texts[bestSocialForm].title;
+    explanationText.innerHTML = texts[bestSocialForm].explanation;
+    attentionText.innerHTML = texts[bestSocialForm].attention;
+
+    if (bestSocialForm === 'micro' || bestSocialForm === 'ei') {
+        document.getElementById('best-choice-dividends').style.display = 'none';
+    }
+}
+
+function calculateContributions(turnover, cost, bestWage, bestDividends) {
+    const contributionsTotal = parseInt(document.getElementById('contributions-total').textContent.replace(/\s+/g, ""));
+    const taxAmount = turnover - cost - bestWage - bestDividends - contributionsTotal;
+    const contributionsPlusTax = contributionsTotal + taxAmount;
+
+    document.getElementById('best-contributions').textContent = `${contributionsPlusTax}€`;
+}
+
+function updateSimulatorResults(turnover, bestTotalWage, bestWage, bestDividends) {
+    document.querySelector('.simulator_result_ca').textContent = turnover.toLocaleString('fr-FR');
+    document.querySelector('.simulator_result_revenu').textContent = `${bestTotalWage.toLocaleString('fr-FR')}€`;
+    document.getElementById('best-remuneration').textContent = `${bestWage.toLocaleString('fr-FR')}€`;
+    document.getElementById('best-dividends').textContent = `${bestDividends.toLocaleString('fr-FR')}€`;
+}
+
 function fillBestChoiceText(turnover, cost, situationValue, bestSocialForm) {
-    let unemploymentText;
-    if (isUnemployment === 'true' && unemploymentDuration === 'less_six_months') {
-        unemploymentText = 'touchez le chômage depuis moins de six mois';
-    } else {
-        unemploymentText = 'ne touchez pas le chômage';
-    }
-
-    if (situationValue === 'couple') {
-        situationValue = 'en couple';
-    }
-
-    let bestTotalWage;
-    let bestWage;
-    let bestDividends;
-
-    document.getElementById('best-choice-dividends').style.display = 'flex';
-    document.getElementById('best-choice-dividends').style.justifyContent = 'space-between';
-    document.getElementById('best-choice-dividends').style.width = '18rem';
-
+    configureDividendsDisplay();
     microConditions(turnover);
 
-    const microFinalAmount = parseInt(localStorage.getItem('microTotal'));
+    const { micro, eurl, ei, sasu } = getSocialFormAmounts();
 
-    const eurlFinalAmount = parseInt(localStorage.getItem('eurlTotal'));
-    const eurlDividends = parseInt(localStorage.getItem('bestEurlDividends'));
-    const eurlRemuneration = parseInt(localStorage.getItem('eurlAfterTax'));
-
-    const eiFinalAmount = parseInt(localStorage.getItem('eiTotal'));
-
-    const sasuArray = JSON.parse(localStorage.getItem('arraySasu'));
-    const bestSasuTotal = Math.max(...sasuArray.map(obj => obj.remunerationPlusDividendsBestAmount));
-    const bestSasuObject = sasuArray.find(obj => obj.remunerationPlusDividendsBestAmount === bestSasuTotal);
-
-    const sasuFinalAmount = parseInt(bestSasuObject.remunerationPlusDividendsBestAmount);
-    const sasuPfuDividends = parseInt(bestSasuObject.dividendsNetsPfuAmount);
-    const sasuProgressiveDividends = parseInt(bestSasuObject.dividendsNetsProgressiveAmount);
-    let sasuDividends;
-    if (sasuPfuDividends > sasuProgressiveDividends) {
-        sasuDividends = sasuPfuDividends;
-    } else {
-        sasuDividends = sasuProgressiveDividends;
-    }
-    const sasuRemuneration = parseInt(bestSasuObject.afterTaxAmount);
-
+    let bestTotalWage, bestWage, bestDividends;
     if (bestSocialForm === 'eurl') {
-        bestTotalWage = eurlFinalAmount;
-        bestWage = eurlRemuneration;
-        bestDividends = eurlDividends;
-        comparisonTitle.textContent = 'EURL';
-        explanationText.innerHTML = `L'EURL est une SARL à associé unique, offrant une protection du patrimoine personnel et une grande flexibilité. Les principaux avantages incluent la <strong>protection du patrimoine personnel</strong>, la <strong>flexibilité dans l'organisation</strong>, la <strong>liberté de fixation du capital</strong>, et la <strong>transition automatique vers une SARL</strong> en cas d'arrivée de nouveaux associés.`;
-        attentionText.innerHTML = `L’EURL à l’IS offre une fiscalité avantageuse, mais attention à la <strong>gestion des dividendes</strong>, soumis à cotisations sociales. Le calcul du montant des dividendes nettes a été fait sur la base d'un capital social de 1.500€, ce montant peut donc légèrement différent.<br>En tant que gérant TNS, vous bénéficiez de charges sociales réduites, mais d'une <strong>couverture sociale et retraite moins favorable</strong> par rapport à la SASU. La responsabilité est limitée sauf en cas de garanties personnelles, et des <strong>formalités comptables rigoureuses</strong> sont nécessaires pour rester conforme.`;
+        bestTotalWage = eurl.total;
+        bestWage = eurl.remuneration;
+        bestDividends = eurl.dividends;
     } else if (bestSocialForm === 'sasu') {
-        bestTotalWage = sasuFinalAmount;
-        bestWage = sasuRemuneration;
-        bestDividends = sasuDividends;
-        comparisonTitle.textContent = 'SASU';
-        explanationText.innerHTML = `La SASU est une forme juridique de société par actions simplifiée avec un seul associé. Les principaux avantages incluent la <strong>protection du patrimoine personnel</strong>, la <strong>flexibilité dans l'organisation</strong>, la <strong>liberté de fixation du capital</strong>, la <strong>possibilité de transition</strong> vers une structure pluripersonnelle sans formalités complexes et l’absences de cotisations sociales sur les dividendes.`;
-        attentionText.innerHTML = `La SASU offre souplesse et l'absence de cotisations sociales sur les dividendes, mais certains aspects sont à surveiller. En tant que président assimilé salarié, vous relevez du régime général, avec des <strong>charges sociales plus élevées</strong> mais une meilleure couverture sociale et retraite.<br>Vous pouvez choisir de vous verser plus de dividendes pour réduire ces charges, mais cela <strong>diminue votre protection sociale</strong>, notamment en matière de retraite. Enfin, la <strong>gestion administrative reste rigoureuse</strong> et la responsabilité limitée, sauf en cas de garanties personnelles.`;
+        bestTotalWage = sasu.total;
+        bestWage = sasu.remuneration;
+        bestDividends = sasu.dividends;
     } else if (bestSocialForm === 'micro') {
-        bestTotalWage = microFinalAmount;
-        bestWage = microFinalAmount;
+        bestTotalWage = bestWage = micro;
         bestDividends = 0;
-        comparisonTitle.textContent = 'Micro';
-        explanationText.innerHTML = `La micro-entreprise est <strong>simple à créer et à gérer</strong>, avec un régime fiscal et social allégé. Les cotisations sont calculées sur le chiffre d’affaires, et la <strongTVA peut être exonérée></strong> sous certains seuils. De plus, les formalités comptables sont réduites, ce qui en fait un statut idéal pour démarrer une activité sans lourdes contraintes administratives.`;
-        attentionText.innerHTML = `Les <strong>plafonds de chiffre d’affaires</strong> limitent la croissance et obligent à changer de statut en cas de dépassement. La <strong>couverture sociale et retraite est moindre</strong>, et l’absence de séparation entre patrimoine personnel et professionnel expose l'entrepreneur à un risque financier en cas de difficultés.`;
-        document.getElementById('best-choice-dividends').style.display = 'none';
     } else {
-        bestTotalWage = eiFinalAmount;
-        bestWage = eiFinalAmount;
+        bestTotalWage = bestWage = ei;
         bestDividends = 0;
-        comparisonTitle.textContent = 'EI';
-        explanationText.innerHTML = "L'entreprise individuelle permet à un entrepreneur de démarrer une activité sans créer une entité juridique distincte. La responsabilité est limitée au patrimoine professionnel, offrant une protection des biens personnels sans formalités. L'entrepreneur peut librement apporter des fonds et gérer la trésorerie.<br>L'imposition est basée sur le bénéfice réalisé, avec des cotisations sociales en fonction des rémunérations.";
-        attentionText.innerHTML = "Bien que l'EI simplifie la gestion, la responsabilité de l'entrepreneur peut être engagée en cas de dettes si le patrimoine professionnel n'est pas bien séparé. De plus, les cotisations sociales sont calculées sur le bénéfice, même si celui-ci est réinvesti dans l'activité, ce qui peut affecter la trésorerie. Enfin, la couverture sociale et retraite peut être moins avantageuse que dans d'autres statuts plus protecteurs.";
-        document.getElementById('best-choice-dividends').style.display = 'none';
     }
 
-    //orderResults(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount);
-    const microFinalRealAmount = parseInt(localStorage.getItem('microTotalRealAmount'));
-    orderBestRemuneration(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalRealAmount, turnover);
-
-    // updateTextOrder(eurlFinalAmount, sasuFinalAmount, eiFinalAmount, microFinalAmount);
-
-    updateAndSortDivs(sasuFinalAmount, eurlFinalAmount, eiFinalAmount, microFinalAmount, false);
-
-    const contributionsTotal = parseInt((document.getElementById('contributions-total').textContent).replace(/\s+/g, ""));
-    let taxAmount = turnover - cost - bestWage - bestDividends - contributionsTotal;
-    let contributionsPlusTax = contributionsTotal + taxAmount;
-    document.getElementById('best-contributions').textContent = contributionsPlusTax + '€';
-
-    document.querySelector('.simulator_result_ca').textContent = turnover.toLocaleString('fr-FR');
-
-    document.querySelector('.simulator_result_revenu').textContent = bestTotalWage.toLocaleString('fr-FR') + '€';
-    document.getElementById('best-remuneration').textContent = bestWage.toLocaleString('fr-FR') + '€';
-
-    document.getElementById('best-dividends').textContent = bestDividends.toLocaleString('fr-FR') + '€';
+    updateComparisonTexts(bestSocialForm, comparisonTitle, explanationText, attentionText);
+    orderBestRemuneration(sasu.total, eurl.total, ei, micro, turnover);
+    updateAndSortDivs(sasu.total, eurl.total, ei, micro, false);
+    calculateContributions(turnover, cost, bestWage, bestDividends);
+    updateSimulatorResults(turnover, bestTotalWage, bestWage, bestDividends);
 }
+
 
 function resetSimulation() {
     // Réinitialiser les éléments clonés (les rendre invisibles au début de chaque simulation)

@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 import { halfPass, fifthPass } from './script.js';
 
@@ -249,7 +249,6 @@ function storageEurlTotal(turnoverMinusCost, situation, numberOfChild, household
     localStorage.setItem('bestEurlDividends', resultat.bestDividends);
     localStorage.setItem('eurlAfterTax', resultat.remunerationAfterTax);
     localStorage.setItem('eurlContributionsTotal', resultat.cotisations);
-    // localStorage.setItem('eurlRetirementAmount', resultat.retirementAmount);
 }
 
 function calculEurl(turnoverMinusCost, situation, numberOfChild, householdIncome, singleParent) {
@@ -266,9 +265,7 @@ function fillEurlComparison(turnover, cost) {
     const dividends = parseInt(localStorage.getItem('bestEurlDividends'));
     const remuneration = parseInt(localStorage.getItem('eurlAfterTax'));
     const contributions = parseInt(localStorage.getItem('eurlContributionsTotal'));
-    // const retirementAmount = parseInt(localStorage.getItem('eurlRetirementAmount'));
 
-    // document.getElementById('eurl-comparison-wage').textContent = remuneration.toLocaleString('fr-FR');
     document.querySelectorAll('.eurl_comparison_wage').forEach((element) => {
         element.textContent = remuneration.toLocaleString('fr-FR');
     });
@@ -280,10 +277,6 @@ function fillEurlComparison(turnover, cost) {
     });
 
     calculTaxAmount(turnover, cost, remuneration, dividends, contributions);
-
-    // document.getElementById('eurl-comparison-dividends').textContent = dividends.toLocaleString('fr-FR');
-    // document.getElementById('eurl-comparison-contributions').textContent = contributions.toLocaleString('fr-FR');
-    // document.getElementById('eurl-comparison-retirement').textContent = retirementAmount.toLocaleString('fr-FR');
 }
 
 function calculTaxAmount(turnover, cost, remuneration, dividends, contributions) {

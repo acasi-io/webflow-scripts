@@ -1,5 +1,5 @@
-import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.7-remuneration-independants/node_modules/publicodes/dist/index.js';
-import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.7-remuneration-independants/node_modules/modele-social/dist/index.js';
+import Engine from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.8-remuneration-independants/node_modules/publicodes/dist/index.js';
+import rules from 'https://cdn.jsdelivr.net/gh/acasi-io/webflow-scripts/simulators/6.6.8-remuneration-independants/node_modules/modele-social/dist/index.js';
 
 const engine = new Engine(rules);
 
@@ -145,10 +145,6 @@ function fillEiComparison(turnoverMinusCost, situation, numberOfChild, household
     fillSameClassTexts("dirigeant . rémunération . net . après impôt", '.ei_comparison_wage');
     fillSameClassTexts("dirigeant . indépendant . cotisations et contributions", '.ei_comparison_contributions');
     fillSameClassTexts("impôt . montant", '.ei_comparison_tax');
-
-    // fillText("dirigeant . indépendant . cotisations et contributions", '#ei-comparison-contributions');
-    // fillText("dirigeant . rémunération . net . après impôt", '#ei-comparison-wage');
-    // fillText("impôt . montant", '#ei-comparison-tax');
 }
 
 
