@@ -1,3 +1,9 @@
+document.getElementById('start-btn').addEventListener('click', () => {
+    document.querySelector('.section_opti-sim-hero').classList.add('hide');
+    document.querySelector('.section_opti-sim').classList.remove('hide');
+});
+
+
 document.addEventListener('DOMContentLoaded', () => {
     let selectedAnswers = {};
 
@@ -87,6 +93,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const activeStep = steps.find(step => !step.classList.contains('hide'));
         const currentStep = parseInt(activeStep.dataset.step);
         const nextStep = currentStep + 1;
+
+        const nextStepElement = steps.find(step => parseInt(step.dataset.step) === nextStep);
+
+        if (nextStepElement) {
+            activeStep.classList.add('hide');
+            nextStepElement.classList.remove('hide');
+        }
+    });
+
+    document.getElementById('prev-btn').addEventListener('click', () => {
+        const steps = Array.from(document.querySelectorAll('.opti-sim_question-container'));
+        const activeStep = steps.find(step => !step.classList.contains('hide'));
+        const currentStep = parseInt(activeStep.dataset.step);
+        const nextStep = currentStep - 1;
 
         const nextStepElement = steps.find(step => parseInt(step.dataset.step) === nextStep);
 
