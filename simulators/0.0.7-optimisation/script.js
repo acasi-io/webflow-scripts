@@ -185,6 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentStep = parseInt(activeStep.dataset.step);
         const nextStep = direction === 'next' ? currentStep + 1 : currentStep - 1;
         const nextStepElement = steps.find(step => parseInt(step.dataset.step) === nextStep);
+
+        showCheckImgae(nextStep);
         
         if (!nextStepElement) return;
     
@@ -199,10 +201,21 @@ document.addEventListener('DOMContentLoaded', () => {
         updateNextButtonState(questionTheme, nextStep);
     
         prevButton.style.opacity = nextStep === 1 ? 0 : 1;
-    }    
+    }
 
     nextButton.addEventListener('click', () => changeQuestion('next'));
     prevButton.addEventListener('click', () => changeQuestion('prev'));
+
+    function showCheckImgae(nextStep) {
+        const administratifDiv = document.querySelector(`.opti-sim_theme-item[data-theme='administratif']`);
+        const organisationDiv = document.querySelector(`.opti-sim_theme-item[data-theme='organisation']`);
+
+        if (nextStep === 11) {
+            administratifDiv.querySelector('.opti-sim_check-icon').style.display = 'block';
+        } else if (nextStep === 17) {
+            organisationDiv.querySelector('.opti-sim_check-icon').style.display = 'block';
+        }
+    }
 
     function initializeQuiz() {
         steps.forEach(step => {
