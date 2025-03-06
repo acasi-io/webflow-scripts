@@ -55,14 +55,62 @@ function applyCurrentThemeOnFirstQuestion(questionTheme) {
 function updateProgressBar(questionTheme) {
     const totalQuestions = totalQuestionsByTheme[questionTheme];
     if (!totalQuestions) return;
-    
-    const answeredQuestions = Object.keys(selectedAnswers).filter(key => key.startsWith(questionTheme)).length;
+
+    /*const answeredQuestions = Object.keys(selectedAnswers).filter(key => key.startsWith(questionTheme)).length;
     const progressPercentage = (answeredQuestions / totalQuestions) * 100;
     
     const progressBar = document.querySelector(`.opti-sim_theme-item[data-theme="${questionTheme}"] .opti-sim_progress-bar`);
     if (progressBar) {
         progressBar.style.width = `${progressPercentage}%`;
+    }*/
+
+    const maxPoints = totalQuestions * 5;
+    let totalPoints = 0;
+    let answeredQuestions = 0;
+
+    Object.keys(selectedAnswers).forEach(key => {
+        if (key.startsWith(questionTheme)) {
+            answeredQuestions++;
+            const answerValue = selectedAnswers[key];
+
+            if (answerValue === 'sasu') {
+                totalPoints = 5;
+            } else if (answerValue === 'eurl') {
+                totalPoints = 4;
+            } else if (answerValue === 'ei') {
+                totalPoints = 3;
+            } else if (answerValue === 'micro') {
+                totalPoints = 1;
+            }
+
+            if (answerValue === 'oui') {
+                totalPoints += 5;
+            } else if (answerValue === 'medium') {
+                totalPoints += 3;
+            } else if (answerValue === 'non') {
+                totalPoints += 0;
+            }
+        }
+    });
+
+    const progressPercentage = (answeredQuestions / totalQuestions) * 100;
+    const goodPercentage = (totalPoints / maxPoints) * 100;
+    const badPercentage = progressPercentage - goodPercentage;
+
+    const progressBar = document.querySelector(`.opti-sim_theme-item[data-theme="${questionTheme}"] .opti-sim_progress-bar-wrapper`);
+    const goodBar = progressBar?.querySelector('.opti-sim_progress-bar.is-good');
+    const badBar = progressBar?.querySelector('.opti-sim_progress-bar.is-bad');
+
+    if (progressBar && goodBar && badBar) {
+        goodBar.style.width = `${goodPercentage}%`;
+        badBar.style.width = `${Math.max(0, badPercentage)}%`;
     }
+}
+
+
+function showMaxNumberOptimisation() {
+    document.getElementById('administratif-max').textContent = totalQuestionsByTheme['administratif'] * 5;
+    document.getElementById('organisation-max').textContent = totalQuestionsByTheme['organisation'] * 5;
 }
 
 function handleAnswerClick(event) {
@@ -89,10 +137,11 @@ function handleAnswerClick(event) {
 
     let currentScoreText = document.getElementById(`${questionTheme}-result`);
     let currentScore = parseInt(currentScoreText.textContent);
+    let currentScoreMax = parseInt(document.getElementById(`${questionTheme}-max`).textContent);
 
-    if (currentScore <= 50) {
+    if (currentScore <= (currentScoreMax / 2)) {
         currentScoreText.classList.add('is-bad');
-    } else if (currentScore > 50 && currentScore <= 75) {
+    } else if (currentScore > (currentScoreMax / 2) && currentScore <= (currentScoreMax / 1.5)) {
         currentScoreText.classList.add('is-medium');
     } else {
         currentScoreText.classList.add('is-good');
@@ -155,9 +204,11 @@ function calculAdministratif() {
     result = calculThreeAnswers('administratif-9', result);
     result = calculThreeAnswers('administratif-10', result);
 
-    const resultOptimisation = (result / maxResultPossible) * 100;
+    // const resultOptimisation = (result / maxResultPossible) * 100;
 
-    document.getElementById('administratif-result').textContent = Math.round(resultOptimisation);
+    // document.getElementById('administratif-result').textContent = Math.round(resultOptimisation);
+
+    document.getElementById('administratif-result').textContent = result;
 }
 
 function calculOrganisation() {
@@ -172,9 +223,11 @@ function calculOrganisation() {
     result = calculThreeAnswers('organisation-15', result);
     result = calculThreeAnswers('organisation-16', result);
 
-    const resultOptimisation = (result / maxResultPossible) * 100;
+    // const resultOptimisation = (result / maxResultPossible) * 100;
 
-    document.getElementById('organisation-result').textContent = Math.round(resultOptimisation);
+    // document.getElementById('organisation-result').textContent = Math.round(resultOptimisation);
+
+    document.getElementById('organisation-result').textContent = result;
 }
 
 function changeQuestion(direction) {
@@ -227,3 +280,4 @@ function initializeQuiz() {
 }
 
 initializeQuiz();
+showMaxNumberOptimisation();
