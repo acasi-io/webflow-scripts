@@ -27,6 +27,10 @@ const nextButton = document.getElementById('next-btn');
 const prevButton = document.getElementById('prev-btn');
 const steps = Array.from(document.querySelectorAll('.opti-sim_question-container'));
 
+function getStepIndex(stepElement) {
+    return steps.indexOf(stepElement);
+}
+
 function disableNextButton() {
     nextButton.classList.add('is-disabled');
     nextButton.disabled = true;
@@ -45,7 +49,6 @@ function updateNextButtonState(questionTheme, questionStep) {
 function applyCurrentThemeOnFirstQuestion(questionTheme) {
     const currentTheme = document.querySelector(`.opti-sim_theme-item[data-theme="${questionTheme}"]`);
     if (currentTheme) {
-        // currentTheme.classList.add('is-current');
         currentTheme.querySelectorAll('p').forEach((p) => {
             p.style.color = '#484848';
         });
@@ -56,14 +59,6 @@ function updateProgressBar(questionTheme) {
     const totalQuestions = totalQuestionsByTheme[questionTheme];
     if (!totalQuestions) return;
 
-    /*const answeredQuestions = Object.keys(selectedAnswers).filter(key => key.startsWith(questionTheme)).length;
-    const progressPercentage = (answeredQuestions / totalQuestions) * 100;
-    
-    const progressBar = document.querySelector(`.opti-sim_theme-item[data-theme="${questionTheme}"] .opti-sim_progress-bar`);
-    if (progressBar) {
-        progressBar.style.width = `${progressPercentage}%`;
-    }*/
-
     const maxPoints = totalQuestions * 5;
     let totalPoints = 0;
     let answeredQuestions = 0;
@@ -73,23 +68,26 @@ function updateProgressBar(questionTheme) {
             answeredQuestions++;
             const answerValue = selectedAnswers[key];
 
+            let pointsForAnswer = 0;
             if (answerValue === 'sasu') {
-                totalPoints = 5;
+                pointsForAnswer = 5;
             } else if (answerValue === 'eurl') {
-                totalPoints = 4;
+                pointsForAnswer = 4;
             } else if (answerValue === 'ei') {
-                totalPoints = 3;
+                pointsForAnswer = 3;
             } else if (answerValue === 'micro') {
-                totalPoints = 1;
+                pointsForAnswer = 1;
             }
 
             if (answerValue === 'oui') {
-                totalPoints += 5;
+                pointsForAnswer += 5;
             } else if (answerValue === 'medium') {
-                totalPoints += 3;
+                pointsForAnswer += 3;
             } else if (answerValue === 'non') {
-                totalPoints += 0;
+                pointsForAnswer += 0;
             }
+
+            totalPoints += pointsForAnswer; // Accumuler les points
         }
     });
 
@@ -160,68 +158,73 @@ function calculTwoAnswers(questionKey, result) {
 }
 
 function calculAdministratif() {
-    let numberOfQuestion = 10;
-    let maxResultPossible = numberOfQuestion * 5;
+    const questions = steps.filter(step => step.dataset.theme === 'administratif');
+    let maxResultPossible = questions.length * 5;
     let result = 0;
+    let answeredQuestions = 0;
 
-    const socialForm = selectedAnswers['administratif-1'];
+    questions.forEach((question, index) => {
+        const questionKey = `administratif-${index + 1}`;
+        let answerValue = selectedAnswers[questionKey];
 
-    if (socialForm === 'sasu') {
-        result = 5;
-    } else if (socialForm === 'eurl') {
-        result = 4;
-    } else if (socialForm === 'ei') {
-        result = 3;
-    } else if (socialForm === 'micro') {
-        result = 1;
-    }
+        if (answerValue === 'sasu') {
+            result += 5;
+        } else if (answerValue === 'eurl') {
+            result += 4;
+        } else if (answerValue === 'ei') {
+            result += 3;
+        } else if (answerValue === 'micro') {
+            result += 1;
+        } else if (answerValue === 'oui') {
+            result += 5;
+        } else if (answerValue === 'medium') {
+            result += 3;
+        } else if (answerValue === 'non') {
+            result += 0;
+        }
 
-    result = calculThreeAnswers('administratif-2', result);
-    result = calculThreeAnswers('administratif-3', result);
-    result = calculThreeAnswers('administratif-4', result);
-    result = calculThreeAnswers('administratif-5', result);
-    result = calculThreeAnswers('administratif-6', result);
-    result = calculThreeAnswers('administratif-7', result);
-    result = calculThreeAnswers('administratif-8', result);
-    result = calculThreeAnswers('administratif-9', result);
-    result = calculThreeAnswers('administratif-10', result);
+        if (selectedAnswers[questionKey]) {
+            answeredQuestions++;
+        }
 
-    const resultOptimisation = (result / maxResultPossible) * 100;
+        const resultOptimisation = (result / (answeredQuestions * 5)) * 100;
+        document.getElementById('administratif-result').textContent = Math.round(resultOptimisation);
+    });
 
-    document.getElementById('administratif-result').textContent = Math.round(resultOptimisation);
-
-    // document.getElementById('administratif-result').textContent = result;
+    // document.getElementById('administratif-result').textContent = Math.round((result / maxResultPossible) * 100);
 }
 
 function calculOrganisation() {
-    let numberOfQuestion = 6;
-    let maxResultPossible = numberOfQuestion * 5;
+    const questions = steps.filter(step => step.dataset.theme === 'organisation');
+    let maxResultPossible = questions.length * 5;
     let result = 0;
+    let answeredQuestions = 0;
 
-    result = calculThreeAnswers('organisation-11', result);
-    result = calculThreeAnswers('organisation-12', result);
-    result = calculThreeAnswers('organisation-13', result);
-    result = calculThreeAnswers('organisation-14', result);
-    result = calculThreeAnswers('organisation-15', result);
-    result = calculThreeAnswers('organisation-16', result);
+    questions.forEach((question, index) => {
+        const questionKey = `organisation-${index + 1}`;
+        result = calculThreeAnswers(questionKey, result);
 
-    const resultOptimisation = (result / maxResultPossible) * 100;
+        if (selectedAnswers[questionKey]) {
+            answeredQuestions++;
+        }
 
-    document.getElementById('organisation-result').textContent = Math.round(resultOptimisation);
+        const resultOptimisation = (result / (answeredQuestions * 5)) * 100;
+        document.getElementById('organisation-result').textContent = Math.round(resultOptimisation);
+    });
 
-    // document.getElementById('organisation-result').textContent = result;
+    // document.getElementById('organisation-result').textContent = Math.round((result / maxResultPossible) * 100);
 }
 
 function changeQuestion(direction) {
     const activeStep = steps.find(step => !step.classList.contains('hide'));
     if (!activeStep) return;
 
-    const currentStep = parseInt(activeStep.dataset.step);
-    const nextStep = direction === 'next' ? currentStep + 1 : currentStep - 1;
-    const nextStepElement = steps.find(step => parseInt(step.dataset.step) === nextStep);
+    const currentIndex = getStepIndex(activeStep);
+    const nextIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
     
-    if (!nextStepElement) return;
+    if (nextIndex < 0 || nextIndex >= steps.length) return;
 
+    const nextStepElement = steps[nextIndex];
     const questionTheme = nextStepElement.dataset.theme;
     
     updateProgressBar(questionTheme);
@@ -230,9 +233,9 @@ function changeQuestion(direction) {
     nextStepElement.classList.remove('hide');
 
     applyCurrentThemeOnFirstQuestion(questionTheme);
-    updateNextButtonState(questionTheme, nextStep);
+    updateNextButtonState(questionTheme, nextIndex);
 
-    prevButton.style.opacity = nextStep === 1 ? 0 : 1;
+    prevButton.style.opacity = nextIndex === 0 ? 0 : 1;
 }
 
 nextButton.addEventListener('click', () => changeQuestion('next'));
