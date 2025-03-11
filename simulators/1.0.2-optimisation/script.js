@@ -27,6 +27,12 @@ const nextButton = document.getElementById('next-btn');
 const prevButton = document.getElementById('prev-btn');
 const steps = Array.from(document.querySelectorAll('.opti-sim_question-container'));
 
+document.querySelectorAll('.opti-sim_question-container').forEach((step, index) => {
+    if (!step.dataset.step) {
+        step.dataset.step = index + 1;
+    }
+});
+
 function getStepIndex(stepElement) {
     return steps.indexOf(stepElement);
 }
@@ -56,6 +62,9 @@ function applyCurrentThemeOnFirstQuestion(questionTheme) {
 }
 
 function updateProgressBar(questionTheme) {
+    console.log("Mise à jour de la barre pour le thème :", questionTheme);
+    console.log("Réponses sélectionnées :", selectedAnswers);
+    
     const totalQuestions = totalQuestionsByTheme[questionTheme];
     if (!totalQuestions) return;
 
@@ -87,7 +96,7 @@ function updateProgressBar(questionTheme) {
                 pointsForAnswer += 0;
             }
 
-            totalPoints += pointsForAnswer; // Accumuler les points
+            totalPoints += pointsForAnswer;
         }
     });
 
@@ -111,7 +120,8 @@ function handleAnswerClick(event) {
 
     const questionContainer = answerDiv.closest('.opti-sim_question-container');
     const questionTheme = questionContainer.dataset.theme;
-    const questionStep = questionContainer.dataset.step;
+    // const questionStep = questionContainer.dataset.step;
+    const questionStep = questionContainer.dataset.step || getStepIndex(questionContainer) + 1;
     const answerValue = answerDiv.dataset.answer;
 
     selectedAnswers[`${questionTheme}-${questionStep}`] = answerValue;
@@ -188,10 +198,12 @@ function calculAdministratif() {
         }
 
         const resultOptimisation = (result / (answeredQuestions * 5)) * 100;
+
         document.getElementById('administratif-result').textContent = Math.round(resultOptimisation);
     });
 
-    // document.getElementById('administratif-result').textContent = Math.round((result / maxResultPossible) * 100);
+    // const resultOptimisation = (result / maxResultPossible) * 100;
+    // document.getElementById('administratif-result').textContent = Math.round(resultOptimisation);
 }
 
 function calculOrganisation() {
@@ -209,10 +221,9 @@ function calculOrganisation() {
         }
 
         const resultOptimisation = (result / (answeredQuestions * 5)) * 100;
+
         document.getElementById('organisation-result').textContent = Math.round(resultOptimisation);
     });
-
-    // document.getElementById('organisation-result').textContent = Math.round((result / maxResultPossible) * 100);
 }
 
 function changeQuestion(direction) {
