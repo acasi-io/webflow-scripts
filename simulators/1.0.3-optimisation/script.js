@@ -3,7 +3,7 @@ document.getElementById('start-btn').addEventListener('click', () => {
     document.querySelector('.section_opti-sim').classList.remove('hide');
 });
 
-document.querySelectorAll('.opti-sim_answer-item').forEach((answer) => {
+/*document.querySelectorAll('.opti-sim_answer-item').forEach((answer) => {
     answer.addEventListener('mouseover', () => {
         answer.querySelector('p').style.color = 'white';
     });
@@ -13,7 +13,7 @@ document.querySelectorAll('.opti-sim_answer-item').forEach((answer) => {
             answer.querySelector('p').style.color = '#484848';
         }
     });
-});
+});*/
 
 let selectedAnswers = {};
 
@@ -47,24 +47,7 @@ function enableNextButton() {
     nextButton.disabled = false;
 }
 
-function updateNextButtonState(questionTheme, questionStep) {
-    const key = `${questionTheme}-${questionStep}`;
-    selectedAnswers[key] ? enableNextButton() : disableNextButton();
-}
-
-function applyCurrentThemeOnFirstQuestion(questionTheme) {
-    const currentTheme = document.querySelector(`.opti-sim_theme-item[data-theme="${questionTheme}"]`);
-    if (currentTheme) {
-        currentTheme.querySelectorAll('p').forEach((p) => {
-            p.style.color = '#484848';
-        });
-    }
-}
-
 function updateProgressBar(questionTheme) {
-    console.log("Mise à jour de la barre pour le thème :", questionTheme);
-    console.log("Réponses sélectionnées :", selectedAnswers);
-    
     const totalQuestions = totalQuestionsByTheme[questionTheme];
     if (!totalQuestions) return;
 
@@ -74,6 +57,8 @@ function updateProgressBar(questionTheme) {
 
     Object.keys(selectedAnswers).forEach(key => {
         if (key.startsWith(questionTheme)) {
+            if (selectedAnswers[key] === '' || selectedAnswers[key] === null || selectedAnswers[key] === 'no-effect') return;
+
             answeredQuestions++;
             const answerValue = selectedAnswers[key];
 
@@ -120,7 +105,6 @@ function handleAnswerClick(event) {
 
     const questionContainer = answerDiv.closest('.opti-sim_question-container');
     const questionTheme = questionContainer.dataset.theme;
-    // const questionStep = questionContainer.dataset.step;
     const questionStep = questionContainer.dataset.step || getStepIndex(questionContainer) + 1;
     const answerValue = answerDiv.dataset.answer;
 
@@ -128,11 +112,11 @@ function handleAnswerClick(event) {
 
     questionContainer.querySelectorAll('.opti-sim_answer-item').forEach(div => {
         div.classList.remove('is-selected');
-        div.querySelector('p').style.color = '#484848';
+        div.style.color = '#484848';
     });
 
     answerDiv.classList.add('is-selected');
-    answerDiv.querySelector('p').style.color = 'white';
+    answerDiv.style.color = 'white';
 
     if (questionTheme === 'administratif') calculAdministratif();
     if (questionTheme === 'organisation') calculOrganisation();
@@ -169,7 +153,7 @@ function calculTwoAnswers(questionKey, result) {
 
 function calculAdministratif() {
     const questions = steps.filter(step => step.dataset.theme === 'administratif');
-    let maxResultPossible = questions.length * 5;
+    let maxResultPossible = 0;
     let result = 0;
     let answeredQuestions = 0;
 
@@ -177,53 +161,70 @@ function calculAdministratif() {
         const questionKey = `administratif-${index + 1}`;
         let answerValue = selectedAnswers[questionKey];
 
-        if (answerValue === 'sasu') {
-            result += 5;
-        } else if (answerValue === 'eurl') {
-            result += 4;
-        } else if (answerValue === 'ei') {
-            result += 3;
-        } else if (answerValue === 'micro') {
-            result += 1;
-        } else if (answerValue === 'oui') {
-            result += 5;
-        } else if (answerValue === 'medium') {
-            result += 3;
-        } else if (answerValue === 'non') {
-            result += 0;
+        if (answerValue !== 'no-effect' && answerValue !== null && answerValue !== '') {
+            if (answerValue === 'sasu') {
+                result += 5;
+            } else if (answerValue === 'eurl') {
+                result += 4;
+            } else if (answerValue === 'ei') {
+                result += 3;
+            } else if (answerValue === 'micro') {
+                result += 1;
+            } else if (answerValue === 'oui') {
+                result += 5;
+            } else if (answerValue === 'medium') {
+                result += 3;
+            } else if (answerValue === 'non') {
+                result += 0;
+            }
+
+            if (selectedAnswers[questionKey]) {
+                answeredQuestions++;
+            }
+
+            const resultOptimisation = (result / (answeredQuestions * 5)) * 100;
+            document.getElementById('administratif-result').textContent = Math.round(resultOptimisation);
         }
-
-        if (selectedAnswers[questionKey]) {
-            answeredQuestions++;
-        }
-
-        const resultOptimisation = (result / (answeredQuestions * 5)) * 100;
-
-        document.getElementById('administratif-result').textContent = Math.round(resultOptimisation);
     });
-
-    // const resultOptimisation = (result / maxResultPossible) * 100;
-    // document.getElementById('administratif-result').textContent = Math.round(resultOptimisation);
 }
 
 function calculOrganisation() {
     const questions = steps.filter(step => step.dataset.theme === 'organisation');
-    let maxResultPossible = questions.length * 5;
+    let maxResultPossible = 0;
     let result = 0;
     let answeredQuestions = 0;
 
     questions.forEach((question, index) => {
         const questionKey = `organisation-${index + 1}`;
-        result = calculThreeAnswers(questionKey, result);
+        const answerValue = selectedAnswers[questionKey];
 
-        if (selectedAnswers[questionKey]) {
-            answeredQuestions++;
+        if (answerValue !== 'no-effect' && answerValue !== null && answerValue !== '') {
+            result = calculThreeAnswers(questionKey, result);
+            
+            if (selectedAnswers[questionKey]) {
+                answeredQuestions++;
+            }
+
+            const resultOptimisation = (result / (answeredQuestions * 5)) * 100;
+            document.getElementById('organisation-result').textContent = Math.round(resultOptimisation);
         }
-
-        const resultOptimisation = (result / (answeredQuestions * 5)) * 100;
-
-        document.getElementById('organisation-result').textContent = Math.round(resultOptimisation);
     });
+}
+
+function updateNextButtonState(questionTheme, questionStep) {
+    const key = `${questionTheme}-${questionStep}`;
+
+    if (selectedAnswers[key]) {
+        enableNextButton();
+    } else {
+        disableNextButton();
+    }
+
+    if (questionStep === 1) {
+        prevButton.style.opacity = 0;
+    } else {
+        prevButton.style.opacity = 1;
+    }
 }
 
 function changeQuestion(direction) {
@@ -232,21 +233,20 @@ function changeQuestion(direction) {
 
     const currentIndex = getStepIndex(activeStep);
     const nextIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
-    
+
     if (nextIndex < 0 || nextIndex >= steps.length) return;
 
     const nextStepElement = steps[nextIndex];
     const questionTheme = nextStepElement.dataset.theme;
-    
-    updateProgressBar(questionTheme);
+    const questionStep = nextStepElement.dataset.step || getStepIndex(nextStepElement) + 1;
+
+    updateNextButtonState(questionTheme, questionStep);
 
     activeStep.classList.add('hide');
     nextStepElement.classList.remove('hide');
 
     applyCurrentThemeOnFirstQuestion(questionTheme);
-    updateNextButtonState(questionTheme, nextIndex);
-
-    prevButton.style.opacity = nextIndex === 0 ? 0 : 1;
+    updateProgressBar(questionTheme);
 }
 
 nextButton.addEventListener('click', () => changeQuestion('next'));
