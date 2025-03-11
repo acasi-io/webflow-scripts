@@ -45,7 +45,7 @@ function updateNextButtonState(questionTheme, questionStep) {
 function applyCurrentThemeOnFirstQuestion(questionTheme) {
     const currentTheme = document.querySelector(`.opti-sim_theme-item[data-theme="${questionTheme}"]`);
     if (currentTheme) {
-        currentTheme.classList.add('is-current');
+        // currentTheme.classList.add('is-current');
         currentTheme.querySelectorAll('p').forEach((p) => {
             p.style.color = '#484848';
         });
@@ -107,12 +107,6 @@ function updateProgressBar(questionTheme) {
     }
 }
 
-
-function showMaxNumberOptimisation() {
-    document.getElementById('administratif-max').textContent = totalQuestionsByTheme['administratif'] * 5;
-    document.getElementById('organisation-max').textContent = totalQuestionsByTheme['organisation'] * 5;
-}
-
 function handleAnswerClick(event) {
     const answerDiv = event.target.closest('.opti-sim_answer-item');
     if (!answerDiv) return;
@@ -134,18 +128,6 @@ function handleAnswerClick(event) {
 
     if (questionTheme === 'administratif') calculAdministratif();
     if (questionTheme === 'organisation') calculOrganisation();
-
-    let currentScoreText = document.getElementById(`${questionTheme}-result`);
-    let currentScore = parseInt(currentScoreText.textContent);
-    let currentScoreMax = parseInt(document.getElementById(`${questionTheme}-max`).textContent);
-
-    if (currentScore <= (currentScoreMax / 2)) {
-        currentScoreText.classList.add('is-bad');
-    } else if (currentScore > (currentScoreMax / 2) && currentScore <= (currentScoreMax / 1.5)) {
-        currentScoreText.classList.add('is-medium');
-    } else {
-        currentScoreText.classList.add('is-good');
-    }
 
     updateProgressBar(questionTheme);
     enableNextButton();
@@ -204,11 +186,11 @@ function calculAdministratif() {
     result = calculThreeAnswers('administratif-9', result);
     result = calculThreeAnswers('administratif-10', result);
 
-    // const resultOptimisation = (result / maxResultPossible) * 100;
+    const resultOptimisation = (result / maxResultPossible) * 100;
 
-    // document.getElementById('administratif-result').textContent = Math.round(resultOptimisation);
+    document.getElementById('administratif-result').textContent = Math.round(resultOptimisation);
 
-    document.getElementById('administratif-result').textContent = result;
+    // document.getElementById('administratif-result').textContent = result;
 }
 
 function calculOrganisation() {
@@ -223,11 +205,11 @@ function calculOrganisation() {
     result = calculThreeAnswers('organisation-15', result);
     result = calculThreeAnswers('organisation-16', result);
 
-    // const resultOptimisation = (result / maxResultPossible) * 100;
+    const resultOptimisation = (result / maxResultPossible) * 100;
 
-    // document.getElementById('organisation-result').textContent = Math.round(resultOptimisation);
+    document.getElementById('organisation-result').textContent = Math.round(resultOptimisation);
 
-    document.getElementById('organisation-result').textContent = result;
+    // document.getElementById('organisation-result').textContent = result;
 }
 
 function changeQuestion(direction) {
@@ -237,8 +219,6 @@ function changeQuestion(direction) {
     const currentStep = parseInt(activeStep.dataset.step);
     const nextStep = direction === 'next' ? currentStep + 1 : currentStep - 1;
     const nextStepElement = steps.find(step => parseInt(step.dataset.step) === nextStep);
-
-    showCheckImgae(nextStep);
     
     if (!nextStepElement) return;
 
@@ -258,17 +238,6 @@ function changeQuestion(direction) {
 nextButton.addEventListener('click', () => changeQuestion('next'));
 prevButton.addEventListener('click', () => changeQuestion('prev'));
 
-function showCheckImgae(nextStep) {
-    const administratifDiv = document.querySelector(`.opti-sim_theme-item[data-theme='administratif']`);
-    const organisationDiv = document.querySelector(`.opti-sim_theme-item[data-theme='organisation']`);
-
-    if (nextStep === 11) {
-        administratifDiv.querySelector('.opti-sim_check-icon').style.display = 'block';
-    } else if (nextStep === 17) {
-        organisationDiv.querySelector('.opti-sim_check-icon').style.display = 'block';
-    }
-}
-
 function initializeQuiz() {
     steps.forEach(step => {
         const questionTheme = step.dataset.theme;
@@ -280,4 +249,3 @@ function initializeQuiz() {
 }
 
 initializeQuiz();
-showMaxNumberOptimisation();
