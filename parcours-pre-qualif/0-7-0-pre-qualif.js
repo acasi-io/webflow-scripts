@@ -53,7 +53,19 @@ document.querySelectorAll('.prequalif_answers_item').forEach(answer => {
             document.getElementById('coach_answer').classList.remove('hidden');
         }, 1000);
 
-        if (question.dataset.hubspotProperty) {
+        const property = question.dataset.hubspotProperty;
+        const shouldStore = question.dataset.store !== "false";
+
+        if (property && shouldStore) {
+            const value = answer.dataset.hubspotPropertyValue === 'true' || answer.dataset.hubspotPropertyValue === 'false'
+                ? JSON.parse(answer.dataset.hubspotPropertyValue)
+                : answer.dataset.hubspotPropertyValue;
+
+            storageAnswers[property] = value;
+            localStorage.setItem('choices', JSON.stringify(storageAnswers));
+        }
+
+        /*if (question.dataset.hubspotProperty) {
             if (answer.dataset.hubspotPropertyValue === 'true' || answer.dataset.hubspotPropertyValue === 'false') {
                 storageAnswers[question.dataset.hubspotProperty] = JSON.parse(answer.dataset.hubspotPropertyValue);
             } else {
@@ -61,7 +73,7 @@ document.querySelectorAll('.prequalif_answers_item').forEach(answer => {
             }
         } else {
             return
-        }
+        }*/
 
         localStorage.setItem('choices', JSON.stringify(storageAnswers));
 	});
