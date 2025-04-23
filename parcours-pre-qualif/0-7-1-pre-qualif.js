@@ -29,6 +29,7 @@ document.querySelectorAll('.prequalif_answers_item').forEach(answer => {
         
         answer.classList.add('input-checked');
 
+        localStorage.setItem('currentChoiceId', answer.id);
         localStorage.setItem('currentChoice', answer.dataset.hubspotPropertyValue);
 
         document.getElementById('wrapper-coach-answer').classList.remove('hidden');
@@ -64,16 +65,6 @@ document.querySelectorAll('.prequalif_answers_item').forEach(answer => {
             storageAnswers[property] = value;
             localStorage.setItem('choices', JSON.stringify(storageAnswers));
         }
-
-        /*if (question.dataset.hubspotProperty) {
-            if (answer.dataset.hubspotPropertyValue === 'true' || answer.dataset.hubspotPropertyValue === 'false') {
-                storageAnswers[question.dataset.hubspotProperty] = JSON.parse(answer.dataset.hubspotPropertyValue);
-            } else {
-                storageAnswers[question.dataset.hubspotProperty] = answer.dataset.hubspotPropertyValue;
-            }
-        } else {
-            return
-        }*/
 
         localStorage.setItem('choices', JSON.stringify(storageAnswers));
 	});
