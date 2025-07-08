@@ -36,7 +36,23 @@ function enableNextButton() {
 }
 
 function updateProgressBar(questionTheme) {
-  // Filtrer les questions pour le thème concerné qui comptent pour le score
+  // Liste, par thème, des questions à cases multiples
+  const multiIds = {
+    development: [
+      'chosen-protection-plan',
+      'retirement-contribution-type',
+      'ai-task-usage'
+    ],
+    wage: [
+      'investment-cashflow-tax-optimization'
+    ],
+    protection: [
+      'treasury-investment-supports',
+      'subscribed-insurances-list'
+    ]
+  };
+
+  // on filtre les steps « notées »
   const themeSteps = steps.filter(
     step => step.dataset.theme === questionTheme && step.dataset.point !== 'false'
   );
@@ -47,49 +63,133 @@ function updateProgressBar(questionTheme) {
   let totalPoints = 0;
   let answeredQuestions = 0;
 
+  // récupère la liste des multi‐IDs pour ce thème
+  const themeMulti = multiIds[questionTheme] || [];
+
   themeSteps.forEach(step => {
-    const questionStep = step.dataset.step;
-    const key = `${questionTheme}-${questionStep}`;
-    const answerValue = selectedAnswers[key];
-    if (answerValue && answerValue !== '' && answerValue !== 'no-effect') {
+    // clé « normale »
+    let key = `${questionTheme}-${step.dataset.step}`;
+
+    // si c'est une de vos questions à cases multiples, on utilise l'ID
+    if (themeMulti.includes(step.id)) {
+      key = `${questionTheme}-${step.id}`;
+    }
+
+    const answer = selectedAnswers[key];
+
+    // on compte la question comme « répondue » dès qu'il y a :
+    //  • un tableau non vide (cases multiples)
+    //  • ou une valeur unique « oui/medium/non » autre que '' / 'no-effect'
+    if (Array.isArray(answer) ? answer.length > 0 : answer && answer !== '' && answer !== 'no-effect') {
       answeredQuestions++;
-      if (answerValue === 'oui') {
-        totalPoints += 5;
-      } else if (answerValue === 'medium') {
-        totalPoints += 3;
+
+      // on ajoute des points *seulement* pour les réponses oui/medium (pas pour les tableaux)
+      if (!Array.isArray(answer)) {
+        if (answer === 'oui') {
+          totalPoints += 5;
+        } else if (answer === 'medium') {
+          totalPoints += 3;
+        }
       }
     }
   });
 
   const progressPercentage = (answeredQuestions / totalQuestions) * 100;
   let goodPercentage = (totalPoints / maxPoints) * 100;
-  if (goodPercentage > 100) { goodPercentage = 100; }
+  if (goodPercentage > 100) goodPercentage = 100;
   let badPercentage = progressPercentage - goodPercentage;
-  if (badPercentage < 0) { badPercentage = 0; }
+  if (badPercentage < 0) badPercentage = 0;
 
-  /*console.log(
-    `updateProgressBar [${questionTheme}]: answeredQuestions=${answeredQuestions}/${totalQuestions}, totalPoints=${totalPoints}, maxPoints=${maxPoints}`
-  );
-  console.log(
-    `goodPercentage=${goodPercentage}%, progressPercentage=${progressPercentage}%, badPercentage=${badPercentage}%`
-  );*/
-
-  const progressBar = document.querySelector(
+  // mise à jour du DOM
+  const wrapper = document.querySelector(
     `.opti-sim_theme-item[data-theme="${questionTheme}"] .opti-sim_progress-bar-wrapper`
   );
-  if (!progressBar) {
-    // console.warn("Aucun élément progressBar trouvé pour le thème:", questionTheme);
-    return;
-  }
-  const goodBar = progressBar.querySelector('.opti-sim_progress-bar.is-good');
-  const badBar = progressBar.querySelector('.opti-sim_progress-bar.is-bad');
-  if (!goodBar || !badBar) {
-    // console.warn("Les éléments goodBar ou badBar sont introuvables pour le thème:", questionTheme);
-    return;
-  }
+  if (!wrapper) return;
+  wrapper.querySelector('.opti-sim_progress-bar.is-good').style.width = `${goodPercentage}%`;
+  wrapper.querySelector('.opti-sim_progress-bar.is-bad' ).style.width = `${badPercentage}%`;
+}
 
-  goodBar.style.width = `${goodPercentage}%`;
-  badBar.style.width = `${badPercentage}%`;
+function updateProgressBar(questionTheme) {
+  // les IDs multi par thème
+  const multiIds = {
+    development: [
+      'chosen-protection-plan',
+      'retirement-contribution-type',
+      'ai-task-usage'
+    ],
+    wage: [
+      'investment-cashflow-tax-optimization'
+    ],
+    protection: [
+      'treasury-investment-supports',
+      'subscribed-insurances-list'
+    ]
+  };
+
+  // on ne prend que les steps « notées »
+  const themeSteps = steps.filter(
+    step => step.dataset.theme === questionTheme && step.dataset.point !== 'false'
+  );
+  if (themeSteps.length === 0) return;
+
+  let totalPoints = 0;
+  let answeredQuestions = 0;
+  let maxPoints = 0;
+
+  // liste des multi pour ce thème
+  const themeMulti = multiIds[questionTheme] || [];
+
+  themeSteps.forEach(step => {
+    // pour chaque step on détermine :
+    //  • combien de points elle peut rapporter (5 ou #checkbox)
+    //  • combien elle rapporte effectivement (oui/medium ou length du tableau)
+    let stepMax = 5;
+    if (themeMulti.includes(step.id)) {
+      // question multi : max = nombre de cases
+      stepMax = step.querySelectorAll('input[type="checkbox"]').length;
+    }
+    maxPoints += stepMax;
+
+    // clé dans selectedAnswers
+    const key = themeMulti.includes(step.id)
+      ? `${questionTheme}-${step.id}`
+      : `${questionTheme}-${step.dataset.step}`;
+
+    const answer = selectedAnswers[key];
+
+    // si c'est coché / répondu
+    const isAnswered = Array.isArray(answer)
+      ? answer.length > 0
+      : answer && answer !== '' && answer !== 'no-effect';
+
+    if (isAnswered) {
+      answeredQuestions++;
+
+      // on calcule les points rapportés
+      if (Array.isArray(answer)) {
+        totalPoints += answer.length;
+      } else if (answer === 'oui') {
+        totalPoints += 5;
+      } else if (answer === 'medium') {
+        totalPoints += 3;
+      }
+    }
+  });
+
+  // calcul des pourcentages
+  const goodPercentage = Math.min(100, (totalPoints / maxPoints) * 100);
+  // si on a répondu à X/Y questions, progress = X/Y*100
+  const progressPercentage = (answeredQuestions / themeSteps.length) * 100;
+  // mais pour le rouge, on veut tout sauf le vert
+  const badPercentage = Math.max(0, progressPercentage - goodPercentage);
+
+  // mise à jour du DOM
+  const wrapper = document.querySelector(
+    `.opti-sim_theme-item[data-theme="${questionTheme}"] .opti-sim_progress-bar-wrapper`
+  );
+  if (!wrapper) return;
+  wrapper.querySelector('.opti-sim_progress-bar.is-good').style.width = `${goodPercentage}%`;
+  wrapper.querySelector('.opti-sim_progress-bar.is-bad' ).style.width = `${badPercentage}%`;
 }
 
 function handleAnswerClick(event) {
@@ -222,6 +322,31 @@ function updateNextButtonState(questionTheme, questionStep) {
   }
   prevButton.style.opacity = questionStep === 1 ? 0 : 1;
 }
+
+/*function updateNextButtonState(questionTheme, questionId) {
+  const question = document.getElementById(questionId);
+  const nextButton = document.querySelector('.simulator-nav_button.next');
+  let isAnswered = false;
+
+  if (!question) return;
+
+  const selectedInput = question.querySelector('input[type="radio"]:checked, select:valid');
+  const checkboxes = question.querySelectorAll('input[type="checkbox"]');
+
+  if (selectedInput) {
+    isAnswered = true;
+  } else if (checkboxes.length) {
+    isAnswered = Array.from(checkboxes).some(cb => cb.checked);
+  }
+
+  // Active/désactive le bouton
+  if (isAnswered) {
+    enableNextButton();
+  } else {
+    disableNextButton();
+  }
+}*/
+
 
 /*function changeQuestion(direction) {
   const activeStep = steps.find(step => !step.classList.contains('hide'));
@@ -1030,6 +1155,7 @@ function calculDevelopment(answerValue, questionContainerId) {
   const questions = steps.filter(step => step.dataset.theme === 'development');
   let result = 0;
   let answeredQuestions = 0;
+  // const multiAnswerIds = ['chosen-protection-plan', 'retirement-contribution-type', 'ai-task-usage'];
 
   questions.forEach(question => {
     /*const questionKey = `development-${question.dataset.step}`;
@@ -1312,6 +1438,18 @@ function calculDevelopment(answerValue, questionContainerId) {
       result = calculThreeAnswersOrganisation(prevAnswer, result);
       answeredQuestions++;
     }
+
+      /*if (multiAnswerIds.includes(questionId)) {
+        let selectedRaw = selectedAnswers[questionKey];
+        let selectedValues = Array.isArray(selectedRaw) ? selectedRaw : typeof selectedRaw === 'string' ? [selectedRaw] : [];
+        const pointCount = selectedValues.length;
+        result += pointCount;
+        answeredQuestions++;
+      } else if (selectedAnswers[questionKey]) {
+        const prevAnswer = selectedAnswers[questionKey];
+        result = calculThreeAnswersOrganisation(prevAnswer, result);
+        answeredQuestions++;
+      }*/    
   });
 
   const resultOptimisation = answeredQuestions > 0 ? (result / (answeredQuestions * 5)) * 100 : 0;
