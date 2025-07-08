@@ -5,6 +5,9 @@ document.getElementById('start-btn').addEventListener('click', () => {
 
 let selectedAnswers = {};
 
+const finalResults = {};
+
+
 /*const totalQuestionsByTheme = {
   gestion: 13,
   organisation: 10,
@@ -35,7 +38,7 @@ function enableNextButton() {
   nextButton.disabled = false;
 }
 
-function updateProgressBar(questionTheme) {
+/*function updateProgressBar(questionTheme) {
   // Liste, par thème, des questions à cases multiples
   const multiIds = {
     development: [
@@ -107,18 +110,23 @@ function updateProgressBar(questionTheme) {
   if (!wrapper) return;
   wrapper.querySelector('.opti-sim_progress-bar.is-good').style.width = `${goodPercentage}%`;
   wrapper.querySelector('.opti-sim_progress-bar.is-bad' ).style.width = `${badPercentage}%`;
-}
+}*/
 
 function updateProgressBar(questionTheme) {
   // les IDs multi par thème
   const multiIds = {
+    organisation: [
+      'learning-methods',
+    ],
     development: [
       'chosen-protection-plan',
       'retirement-contribution-type',
       'ai-task-usage'
     ],
     wage: [
-      'investment-cashflow-tax-optimization'
+      'eligible-benefit-cases',
+      'investment-cashflow-tax-optimization',
+      'benefits-in-kind-tax-reduction'
     ],
     protection: [
       'treasury-investment-supports',
@@ -347,7 +355,6 @@ function updateNextButtonState(questionTheme, questionStep) {
   }
 }*/
 
-
 /*function changeQuestion(direction) {
   const activeStep = steps.find(step => !step.classList.contains('hide'));
   if (!activeStep) return;
@@ -368,6 +375,10 @@ function changeQuestion(direction) {
 
   let currentIndex = getStepIndex(activeStep);
   let nextIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+
+  if (direction === 'next' && currentIndex === steps.length - 1) {
+    return showResults();
+  }
 
   // 🔁 Boucle pour sauter les questions avec data-ignore="true"
   while (
@@ -390,6 +401,45 @@ function changeQuestion(direction) {
   activeStep.classList.add('hide');
   nextStepElement.classList.remove('hide');
 }
+
+function showResults() {
+  // masque le quiz
+  document.querySelector('.opti-sim_content-wrapper').classList.add('hide');
+  // affiche la zone de résultats
+  const resultWrapper = document.querySelector('.opti-sim_results-wrapper');
+  resultWrapper.classList.remove('hide');
+  renderResults(resultWrapper);
+}
+
+function renderResults(container) {
+  // tu peux prévoir ici un <div class="results"></div> dans ton HTML
+  const resultsDiv = container.querySelector('.results') ||
+    (() => {
+      const d = document.createElement('div');
+      d.classList.add('results');
+      container.appendChild(d);
+      return d;
+    })();
+
+  // paramètres pour le libellé selon le score
+  const comments = pct => pct >= 80
+    ? "Excellent, vous maîtrisez ce point !"
+    : pct >= 50
+    ? "Bon, mais vous pouvez encore progresser."
+    : "À améliorer, repensez votre stratégie.";
+
+  // vide et reconstruit
+  resultsDiv.innerHTML = '';
+  Object.entries(finalResults).forEach(([theme, pct]) => {
+    const section = document.createElement('section');
+    section.innerHTML = `
+      <h3>${theme.charAt(0).toUpperCase()+theme.slice(1)}: ${pct}%</h3>
+      <p>${comments(pct)}</p>
+    `;
+    resultsDiv.appendChild(section);
+  });
+}
+
 
 nextButton.addEventListener('click', () => changeQuestion('next'));
 prevButton.addEventListener('click', () => changeQuestion('prev'));
@@ -931,8 +981,11 @@ function calculGestion() {
   }
 
   // Calcul du score en pourcentage pour l'affichage textuel
-  const resultOptimisationText = answeredQuestions > 0 ? (result / (answeredQuestions * 5)) * 100 : 0;
-  document.getElementById('gestion-result').textContent = Math.round(resultOptimisationText);
+  const resultOptimisation = answeredQuestions > 0 ? (result / (answeredQuestions * 5)) * 100 : 0;
+  document.getElementById('gestion-result').textContent = Math.round(resultOptimisation);
+  // Exemple dans calculDevelopment, juste avant updateProgressBar('development'):
+  finalResults.gestion = Math.round(resultOptimisation);
+
 
   // Calcul de la barre de progression en se basant sur le nombre réel de questions "notées"
   const maxPointsGestion = totalQuestionsForGestion * 5;
@@ -1149,6 +1202,7 @@ function calculOrganisation(answerValue, questionContainerId) {
   const resultOptimisation = answeredQuestions > 0 ? (result / (answeredQuestions * 5)) * 100 : 0;
   document.getElementById('organisation-result').textContent = Math.round(resultOptimisation);
   updateProgressBar('organisation');
+  finalResults.organisation = Math.round(resultOptimisation);
 }
 
 function calculDevelopment(answerValue, questionContainerId) {
@@ -1455,6 +1509,7 @@ function calculDevelopment(answerValue, questionContainerId) {
   const resultOptimisation = answeredQuestions > 0 ? (result / (answeredQuestions * 5)) * 100 : 0;
   document.getElementById('development-result').textContent = Math.round(resultOptimisation);
   updateProgressBar('development');
+  finalResults.development = Math.round(resultOptimisation);
 }
 
 function calculWage(answerValue, questionContainerId) {
@@ -1727,6 +1782,7 @@ function calculWage(answerValue, questionContainerId) {
   const resultOptimisation = (result / maxPossibleScore) * 100;
   document.getElementById('wage-result').textContent = Math.round(resultOptimisation);
   updateProgressBar('wage');
+  finalResults.wage = Math.round(resultOptimisation);
 }
 
 function calculProtection(answerValue, questionContainerId) {
@@ -1954,4 +2010,5 @@ function calculProtection(answerValue, questionContainerId) {
   const resultOptimisation = answeredQuestions > 0 ? (result / (answeredQuestions * 5)) * 100 : 0;
   document.getElementById('protection-result').textContent = Math.round(resultOptimisation);
   updateProgressBar('protection');
+  finalResults.protection = Math.round(resultOptimisation);
 }
