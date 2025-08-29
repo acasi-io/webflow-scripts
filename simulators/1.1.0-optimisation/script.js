@@ -421,35 +421,6 @@ function showResults() {
   renderResults(resultWrapper);
 }
 
-/*function renderResults(container) {
-  // tu peux prévoir ici un <div class="results"></div> dans ton HTML
-  const resultsDiv = container.querySelector('.results') ||
-    (() => {
-      const d = document.createElement('div');
-      d.classList.add('results');
-      container.appendChild(d);
-      return d;
-    })();
-
-  // paramètres pour le libellé selon le score
-  const comments = pct => pct >= 80
-    ? "Excellent, vous maîtrisez ce point !"
-    : pct >= 50
-    ? "Bon, mais vous pouvez encore progresser."
-    : "À améliorer, repensez votre stratégie.";
-
-  // vide et reconstruit
-  resultsDiv.innerHTML = '';
-  Object.entries(finalResults).forEach(([theme, pct]) => {
-    const section = document.createElement('section');
-    section.innerHTML = `
-      <h3>${theme.charAt(0).toUpperCase()+theme.slice(1)}: ${pct}%</h3>
-      <p>${comments(pct)}</p>
-    `;
-    resultsDiv.appendChild(section);
-  });
-}*/
-
 function renderResults(container) {
   const resultsDiv = container.querySelector('.results') ||
     (() => {
@@ -460,20 +431,64 @@ function renderResults(container) {
     })();
 
   resultsDiv.innerHTML = '';
+
+  // Légende des couleurs
+  const legend = document.createElement('div');
+  legend.className = 'result-legend';
+  legend.innerHTML = `
+    <span><span class="dot red"></span> urgent</span>
+    <span><span class="dot orange"></span> moyen</span>
+    <span><span class="dot green"></span> vous avez le temps</span>
+  `;
+  resultsDiv.appendChild(legend);
+
+  // Affichage des sections
   Object.entries(finalResults).forEach(([theme, pct]) => {
     const section = document.createElement('section');
-    section.innerHTML = `
-      <h3>${theme.charAt(0).toUpperCase()+theme.slice(1)}: ${pct}%</h3>
-    `;
-    // on ajoute les messages à <5 points
-    detailedResults[theme]
-      .filter(entry => entry.points < 5)
-      .forEach(entry => {
-        const p = document.createElement('p');
-        p.textContent = entry.message;
-        section.appendChild(p);
-      });
+    section.classList.add('result-section');
 
+    const resultGrid = document.createElement('div');
+    resultGrid.classList.add('result-grid');
+
+    // Titre (ex: Organisation: 62%)
+    const title = document.createElement('h3');
+    title.textContent = `${theme.charAt(0).toUpperCase() + theme.slice(1)}: ${pct}%`;
+
+    // Container des messages
+    const messagesContainer = document.createElement('div');
+    messagesContainer.classList.add('result-messages');
+
+    detailedResults[theme].forEach(entry => {
+      const messageWrapper = document.createElement('div');
+      messageWrapper.classList.add('result-message');
+
+      // Ajout de la classe couleur selon les points
+      if (entry.points >= 5) {
+        messageWrapper.classList.add('green');
+      } else if (entry.points >= 3) {
+        messageWrapper.classList.add('orange');
+      } else {
+        messageWrapper.classList.add('red');
+      }
+
+      // Bullet rond
+      const bullet = document.createElement('div');
+      bullet.classList.add('bullet');
+
+      // Texte du message
+      const messageText = document.createElement('div');
+      messageText.textContent = entry.message;
+
+      // Structure finale
+      messageWrapper.appendChild(bullet);
+      messageWrapper.appendChild(messageText);
+      messagesContainer.appendChild(messageWrapper);
+    });
+
+    // Construction finale du bloc
+    resultGrid.appendChild(title);
+    resultGrid.appendChild(messagesContainer);
+    section.appendChild(resultGrid);
     resultsDiv.appendChild(section);
   });
 }
