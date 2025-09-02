@@ -281,20 +281,6 @@ document.querySelectorAll('.opti-sim_answer-item').forEach(answer => {
   answer.addEventListener('click', handleAnswerClick);
 });
 
-
-/*document.querySelectorAll('.opti-sim_answer-item').forEach(answer => {
-  const parentQuestion = answer.closest('.opti-sim_question-container');
-  const questionStep = parentQuestion?.dataset.step;
-  const questionTheme = parentQuestion?.dataset.theme;
-
-  // Exclure uniquement si c'est la question "learning-methods"
-  const isLearningMethods = questionTheme === 'organisation' && questionStep === 'learning-methods';
-
-  if (!isLearningMethods) {
-    answer.addEventListener('click', handleAnswerClick);
-  }
-});*/
-
 function calculThreeAnswers(questionKey, result) {
   const question = selectedAnswers[questionKey];
   if (question === 'oui') {
@@ -338,44 +324,6 @@ function updateNextButtonState(questionTheme, questionStep) {
   }
   prevButton.style.opacity = questionStep === 1 ? 0 : 1;
 }
-
-/*function updateNextButtonState(questionTheme, questionId) {
-  const question = document.getElementById(questionId);
-  const nextButton = document.querySelector('.simulator-nav_button.next');
-  let isAnswered = false;
-
-  if (!question) return;
-
-  const selectedInput = question.querySelector('input[type="radio"]:checked, select:valid');
-  const checkboxes = question.querySelectorAll('input[type="checkbox"]');
-
-  if (selectedInput) {
-    isAnswered = true;
-  } else if (checkboxes.length) {
-    isAnswered = Array.from(checkboxes).some(cb => cb.checked);
-  }
-
-  // Active/désactive le bouton
-  if (isAnswered) {
-    enableNextButton();
-  } else {
-    disableNextButton();
-  }
-}*/
-
-/*function changeQuestion(direction) {
-  const activeStep = steps.find(step => !step.classList.contains('hide'));
-  if (!activeStep) return;
-  const currentIndex = getStepIndex(activeStep);
-  const nextIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
-  if (nextIndex < 0 || nextIndex >= steps.length) return;
-  const nextStepElement = steps[nextIndex];
-  const questionTheme = nextStepElement.dataset.theme;
-  const questionStep = nextStepElement.dataset.step || getStepIndex(nextStepElement) + 1;
-  updateNextButtonState(questionTheme, questionStep);
-  activeStep.classList.add('hide');
-  nextStepElement.classList.remove('hide');
-}*/
 
 function changeQuestion(direction) {
   const activeStep = steps.find(step => !step.classList.contains('hide'));
@@ -509,82 +457,6 @@ function initializeQuiz() {
 
 initializeQuiz();
 
-/*const learningMethodsQuestion = document.getElementById('learning-methods');
-if (learningMethodsQuestion) {
-  const checkboxes = learningMethodsQuestion.querySelectorAll('input[type="checkbox"]');
-  checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', () => {
-      const selected = Array.from(checkboxes)
-        .filter(cb => cb.checked)
-        .map(cb => cb.value);
-      selectedAnswers['organisation-learning-methods'] = selected;
-
-      calculOrganisation(null, 'learning-methods');
-    });
-  });
-}*/
-
-/*const learningMethodsQuestion = document.getElementById('learning-methods');
-
-if (learningMethodsQuestion) {
-  const checkboxes = learningMethodsQuestion.querySelectorAll('input[type="checkbox"]');
-
-  checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', () => {
-      const clickedItem = checkbox.closest('.opti-sim_answer-item');
-      const clickedValue = clickedItem?.dataset.answer;
-
-      if (!clickedValue) return;
-
-      // Si on clique sur "non" → décocher tous les autres
-      if (clickedValue === 'non' && checkbox.checked) {
-        checkboxes.forEach(cb => {
-          if (cb !== checkbox) {
-            cb.checked = false;
-            cb.closest('.opti-sim_answer-item')?.classList.remove('is-selected');
-          }
-        });
-      }
-
-      // Si on clique sur autre chose que "non" → décocher "non" si elle était sélectionnée
-      if (clickedValue !== 'non' && checkbox.checked) {
-        checkboxes.forEach(cb => {
-          const item = cb.closest('.opti-sim_answer-item');
-          if (item?.dataset.answer === 'non' && cb.checked) {
-            cb.checked = false;
-            item.classList.remove('is-selected');
-          }
-        });
-      }
-
-      // Mettre à jour les classes is-selected
-      checkboxes.forEach(cb => {
-        const item = cb.closest('.opti-sim_answer-item');
-        if (item) {
-          if (cb.checked) {
-            item.classList.add('is-selected');
-          } else {
-            item.classList.remove('is-selected');
-          }
-        }
-      });
-
-      // Mettre à jour selectedAnswers
-      const selectedValues = Array.from(checkboxes)
-        .filter(cb => cb.checked)
-        .map(cb => cb.closest('.opti-sim_answer-item')?.dataset.answer)
-        .filter(Boolean);
-
-      selectedAnswers['organisation-learning-methods'] = selectedValues;
-
-      // Recalculer
-      calculOrganisation(null, 'learning-methods');
-
-      // ➕ Mise à jour de l'état du bouton "suivant"
-      updateNextButtonState('organisation', 'learning-methods');
-    });
-  });
-}*/
 
 function setupExclusiveMultiCheckbox({ questionId, answerKey, theme }) {
   const questionElement = document.getElementById(questionId);
@@ -668,39 +540,6 @@ setupExclusiveMultiCheckbox({
   theme: 'wage'
 });
 
-
-/*const protectionPlanQuestion = document.getElementById('chosen-protection-plan');
-
-if (protectionPlanQuestion) {
-  const checkboxes = protectionPlanQuestion.querySelectorAll('input[type="checkbox"]');
-
-  checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', () => {
-      const items = Array.from(checkboxes);
-      const selectedValues = items
-        .filter(cb => cb.checked)
-        .map(cb => cb.closest('.opti-sim_answer-item')?.dataset.answer)
-        .filter(Boolean);
-
-      // Ajouter les classes is-selected
-      items.forEach(cb => {
-        const item = cb.closest('.opti-sim_answer-item');
-        if (item) {
-          item.classList.toggle('is-selected', cb.checked);
-        }
-      });
-
-      // Stocker les réponses
-      selectedAnswers['development-chosen-protection-plan'] = selectedValues;
-
-      // Recalculer
-      calculDevelopment(null, 'chosen-protection-plan');
-
-      // Activer le bouton "Suivant" si au moins une réponse
-      updateNextButtonState('development', 'chosen-protection-plan');
-    });
-  });
-}*/
 
 function setupMultiAnswerQuestion({ questionId, answerKey, theme }) {
   const questionElement = document.getElementById(questionId);
@@ -888,99 +727,99 @@ function calculGestion() {
         answerValue,
         question,
         'Bravo',
-        'Une analyse approfondie de votre statut juridique vous permet d’optimiser votre fiscalité, votre protection sociale et votre accès au financement. Excellente stratégie !',
+        'Vous avez choisi votre statut juridique après une analyse approfondie. C’est une excellente stratégie qui vous permet d’optimiser votre fiscalité, votre protection sociale et vos possibilités de financement.',
         'Bon début',
-        'Une étude plus détaillée pourrait vous permettre d’optimiser davantage votre statut juridique en fonction de votre activité et de vos objectifs. N’hésitez pas à consulter un expert.',
+        'Vous avez choisi un statut juridique, mais sans étude détaillée. C’est un bon début, mais une analyse plus poussée pourrait vous permettre de mieux aligner votre statut avec vos objectifs et votre activité. N’hésitez pas à consulter un expert.',
         'Attention',
-        'Il est essentiel de choisir son statut juridique en fonction d’une véritable stratégie pour maximiser ses avantages fiscaux et sociaux. Une analyse avec un professionnel pourrait vous aider à ajuster votre choix.'
+        'Votre statut juridique n’a pas été choisi dans le cadre d’une stratégie réfléchie. Pour optimiser vos avantages fiscaux et sociaux, une analyse approfondie avec un professionnel serait une étape clé.'
       );
     } else if (questionId === 'change-status') {
       fillInfoTextAnswerCondition(
         answerValue,
         question,
         'Excellente démarche',
-        'Anticiper un changement de statut en fonction de l’évolution de votre activité est une approche stratégique qui vous permet de rester compétitif.',
+        'Vous avez déjà envisagé (ou effectué) un changement de statut pour optimiser votre situation. Cette anticipation est une démarche stratégique qui vous permet d’adapter votre structure à l’évolution de votre activité.',
         'Bonne réflexion',
-        'Il pourrait être intéressant d’approfondir cette question avec un expert pour évaluer les bénéfices concrets d’un changement de statut.',
+        'Vous avez déjà réfléchi à un changement de statut, sans avoir encore agi. C’est une bonne piste : approfondir cette démarche avec un expert pourrait vous aider à mesurer les bénéfices concrets.',
         'Songez-y',
-        'Il peut être judicieux d’envisager un changement de statut en fonction de l’évolution de votre entreprise. Une analyse avec un professionnel vous permettrait d’identifier les opportunités d’optimisation.'
+        'Vous n’avez pas encore envisagé de changement de statut. Pourtant, adapter sa structure à l’évolution de l’activité peut représenter une opportunité d’optimisation fiscale et sociale. Une analyse avec un professionnel vous permettrait d’identifier les opportunités d’optimisation.'
       );
     } else if (questionId === 'other-company-optimisation') {
       fillInfoTextAnswerCondition(
         answerValue,
         question,
         'Félicitations',
-        'Une structuration optimisée de votre activité vous permet de maximiser vos avantages fiscaux et d’améliorer la gestion de votre entreprise. Vous êtes sur la bonne voie !',
+        'Vous avez structuré votre activité avec un montage optimisé (holding, SCI, etc.). C’est une excellente stratégie pour maximiser vos avantages fiscaux et améliorer la gestion globale de votre entreprise.',
         'Bonne initiative',
-        'Un audit de votre structuration pourrait vous permettre d’optimiser encore plus votre fiscalité et votre organisation. N’hésitez pas à approfondir cette réflexion.',
+        'Vous avez mis en place une structuration, mais elle n’est pas forcément optimisée. Un audit de votre organisation pourrait vous aider à identifier de nouvelles pistes d’optimisation fiscale et organisationnelle.',
         'Attention',
-        'Structurer son activité avec des montages adaptés (holding, SCI, etc.) peut être une excellente stratégie pour optimiser votre fiscalité et votre gestion. Pensez à explorer cette option avec un conseiller.'
+        'Vous n’avez pas encore structuré votre activité avec d’autres sociétés. Pourtant, des montages adaptés (holding, SCI, etc.) peuvent être de puissants leviers pour optimiser votre fiscalité et votre gestion. Pensez à explorer cette option avec un conseiller.'
       );
     } else if (questionId === 'organized-administrative-management') {
       fillInfoTextAnswerCondition(
         answerValue,
         question,
         'Super',
-        'Vous avez optimisé la gestion administrative en déléguant à un expert, ce qui vous permet de gagner du temps et de bénéficier de conseils stratégiques. Continuez ainsi !',
+        'Vous avez délégué la gestion administrative à un prestataire externe (expert-comptable, gestionnaire de paie, etc.). C’est une excellente décision qui vous fait gagner du temps et vous apporte un suivi fiable et stratégique.',
         'Bon début',
-        'Un outil interne est une bonne solution, mais l’accompagnement d’un expert-comptable pourrait vous apporter encore plus d’optimisation et de sérénité.',
+        'Vous gérez l’administratif en interne avec un outil adapté. C’est une bonne solution, mais l’accompagnement d’un expert pourrait renforcer la fiabilité et optimiser encore davantage votre organisation.',
         'Attention',
-        'Pensez à déléguer la gestion administrative à un expert-comptable ou à utiliser un outil adapté. Cela vous fera gagner un temps précieux et vous assurera d’être en conformité avec la réglementation.'
+        'Vous gérez seul(e) toute la partie administrative. Cela peut vite devenir chronophage et source d’erreurs. Déléguer ou vous équiper d’un outil adapté vous permettrait de gagner en sérénité et en efficacité.'
       );
     } else if (questionId === 'has-management-calendar') {
       fillInfoTextAnswerCondition(
         answerValue,
         question,
         'Excellente organisation',
-        'Avoir un calendrier bien défini et respecter les échéances est une clé essentielle pour une gestion sereine et efficace.',
+        'Vous avez un calendrier précis et respectez vos échéances. C’est une excellente organisation qui sécurise votre gestion et limite les risques d’oubli ou de sanction.',
         'Vous êtes sur la bonne voie',
-        'Veillez à améliorer le suivi de votre calendrier pour éviter les retards et les imprévus. Des rappels automatisés pourraient vous aider.',
+        'Vous avez un calendrier mais le suivi reste irrégulier. Améliorer votre rigueur ou automatiser des rappels vous permettrait d’éviter retards et imprévus.',
         'Attention',
-        'Il est crucial d’instaurer un calendrier pour gérer vos échéances administratives. Cela vous évitera les oublis et les pénalités. Un outil numérique pourrait être une excellente solution !'
+        'Vous n’avez pas de calendrier pour vos échéances administratives. C’est un risque majeur d’oubli ou de pénalité. Mettre en place un suivi, même simple avec un outil numérique, serait une vraie optimisation.'
       );
     } else if (questionId === 'how-follow-payments') {
       fillInfoTextAnswerCondition(
         answerValue,
         question,
         'Parfait',
-        'Votre suivi automatisé garantit une gestion fluide de votre trésorerie et minimise les impayés. Continuez ainsi !',
+        'Vous utilisez un outil automatisé pour vos paiements et relances. C’est une excellente pratique qui sécurise votre trésorerie et réduit les risques d’impayés.',
         'Bon suivi',
-        'L’automatisation pourrait vous faire gagner du temps et sécuriser davantage vos paiements. Pensez à investir dans un outil adapté.',
+        'Vous faites un suivi manuel régulier. C’est sérieux, mais l’automatisation vous ferait gagner en temps et en fiabilité.',
         'Attention',
-        'Un suivi structuré est essentiel pour éviter les impayés et les tensions de trésorerie. Pensez à mettre en place un processus clair ou à utiliser un outil dédié.'
+        'Vous gérez vos paiements et relances au cas par cas, sans processus clair. C’est risqué pour votre trésorerie. Mettre en place un suivi structuré ou un outil dédié serait une priorité d’optimisation.'
       );
     } else if (questionId === 'has-optimized-billing-software') {
       fillInfoTextAnswerCondition(
         answerValue,
         question,
         "Bravo",
-        "Un logiciel de facturation automatisé est un atout majeur pour optimiser la gestion de votre activité et sécuriser votre trésorerie.",
+        "Vous utilisez un logiciel de facturation avec automatisations complètes (facturation, paiements, relances). C’est un levier puissant pour sécuriser et fluidifier votre gestion.",
         "C'est un bon début",
-        "Ajouter l’automatisation des paiements et des relances vous permettrait d’optimiser encore plus votre gestion et de réduire les retards de paiement.",
+        "Vous avez un logiciel de facturation, mais sans automatisations pour les paiements et relances. Ajouter ces fonctions permettrait d’aller plus loin dans l’optimisation.",
         "Attention",
-        "Un logiciel de facturation optimisé vous ferait gagner un temps précieux et limiterait les erreurs. Pensez à vous équiper d’un outil adapté à votre activité."
+        "Vous n’utilisez pas encore de logiciel de facturation optimisé. C’est une étape essentielle pour gagner du temps, limiter les erreurs et améliorer le suivi de votre trésorerie."
       );
     } else if (questionId === 'has-optimized-pro-account') {
       fillInfoTextAnswerCondition(
         answerValue,
         question,
         "Excellent choix",
-        "Une banque optimisée réduit vos frais et vous offre des services adaptés pour une gestion plus efficace de votre trésorerie.",
+        "Votre banque est adaptée à votre activité, avec des frais réduits et des services performants. C’est un excellent choix pour optimiser la gestion financière de votre entreprise.",
         "C'est un bon début",
-        "Votre banque répond en partie à vos besoins, mais il pourrait être intéressant d’évaluer d’autres options pour optimiser vos coûts et services.",
+        "Votre banque répond partiellement à vos besoins. Comparer d’autres offres pourrait vous permettre de réduire vos frais et de bénéficier de services plus adaptés.",
         "Attention",
-        "Une banque inadaptée peut engendrer des frais inutiles et limiter votre flexibilité. Pensez à comparer les offres pour trouver une solution mieux adaptée à votre activité."
+        "Vous utilisez une banque peu ou pas adaptée à votre activité. Cela peut vous coûter cher en frais et limiter votre flexibilité. Explorer des solutions spécialisées serait une optimisation clé."
       );
     } else if (questionId === 'is-up-to-date') {
       fillInfoTextAnswerCondition(
         answerValue,
         question,
         "Félicitations",
-        "Être à jour est essentiel pour éviter les sanctions et assurer une gestion sereine de votre entreprise.",
+        "Vous êtes parfaitement à jour dans vos obligations. Bravo, c’est un pilier essentiel pour la stabilité et la sérénité de votre gestion.",
         "C'est un bon début",
-        "Vous êtes globalement à jour, mais veillez à anticiper encore mieux pour éviter les retards et les imprévus. Un suivi plus rigoureux pourrait être bénéfique.",
+        "Vous êtes globalement à jour, mais parfois en retard. Anticiper davantage et mettre en place un suivi plus rigoureux vous éviterait les imprévus.",
         "Attention",
-        "Il est important de régulariser votre situation pour éviter des complications. Pensez à mettre en place un suivi administratif ou à vous faire accompagner par un expert"
+        "Vous n’êtes pas à jour dans vos obligations administratives et fiscales. C’est un risque important. Mettre en place un suivi ou vous faire accompagner par un expert serait fortement recommandé."
       );
     }
 
@@ -1110,23 +949,23 @@ function calculOrganisation(questionContainerId) {
   const learningMethods = {
     "tutoriels-videos": {
       title: "Tutoriels et vidéos",
-      body:  "Super ! Les tutoriels et vidéos sont un excellent moyen d’apprentissage pratique et accessible. Complétez avec d’autres ressources pour diversifier vos connaissances."
+      body:  "Vous privilégiez les tutoriels et vidéos, un format pratique et accessible pour apprendre rapidement. Compléter avec d’autres supports permettrait de diversifier vos compétences."
     },
     "blogs-articles": {
       title: "Blogs et articles",
-      body:  "Très bien ! Lire des articles spécialisés vous permet d’acquérir des connaissances régulièrement. Pensez à combiner avec d’autres supports pour approfondir."
+      body:  "Vous vous formez via des blogs et articles. C’est une bonne habitude pour rester à jour, à compléter par des formats plus approfondis."
     },
     "livres-specialises": {
       title: "Livres spécialisés",
-      body:  "Excellent choix ! Les livres spécialisés offrent une expertise approfondie. Associez-les à des formations pratiques pour maximiser votre apprentissage."
+      body:  "Vous utilisez des livres spécialisés. Excellent choix pour acquérir une expertise approfondie, surtout s’ils sont associés à de la pratique."
     },
     "autre": {
       title: "Autre",
-      body:  "Bonne initiative ! Quelle que soit la méthode choisie, l’essentiel est de rester en veille et de continuer à apprendre."
+      body:  "Vous avez une méthode de formation personnelle. L’essentiel est de rester en veille et de continuer à apprendre régulièrement."
     },
     "non": {
       title: "Non, je ne me forme pas",
-      body:  "Se former est essentiel pour progresser et s’adapter aux évolutions de votre secteur. Essayez d’intégrer un peu de formation dans votre emploi du temps !"
+      body:  "Vous ne consacrez pas de temps à la formation. Or, c’est un levier clé pour évoluer et rester compétitif. Même un petit temps de formation régulier ferait une grande différence."
     }
   };
 
@@ -1176,49 +1015,49 @@ function calculOrganisation(questionContainerId) {
       body  = info.body;
     }
     else if (qid === 'hours-worked') {
-      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Vous avez trouvé un bon équilibre entre productivité et bien-être. Cette gestion vous permet d’être performant sans risquer l’épuisement.'; }
-      else if (answerValue === 'medium') { title = 'Bon équilibre entre travail et vie personnelle'; body = 'Assurez-vous que ce rythme vous permet d’atteindre vos objectifs sans compromettre votre croissance.'; }
-      else                                { title = 'Attention'; body = 'Travailler intensément sur une courte période peut être nécessaire, mais veillez à ne pas tomber dans le surmenage. Une organisation plus optimisée pourrait vous aider à mieux répartir votre charge de travail.'; }
+      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Vous travaillez entre 35 et 45h par semaine, un rythme équilibré qui maximise votre productivité tout en préservant votre bien-être.'; }
+      else if (answerValue === 'medium') { title = 'Bon équilibre entre travail et vie personnelle'; body = 'Vous travaillez entre 25 et 35h par semaine. C’est un bon équilibre pro/perso, veillez toutefois à ce que ce rythme reste compatible avec vos objectifs de croissance.'; }
+      else                                { title = 'Attention'; body = 'Vous travaillez entre 45 et 55h par semaine. Ce rythme intensif peut être efficace à court terme, mais attention au risque de surmenage. Une meilleure organisation pourrait répartir la charge plus durablement.'; }
     }
     else if (qid === 'planned-weeks') {
-      if      (answerValue === 'oui')    { title = 'Excellent'; body = 'Une planification détaillée vous permet d’optimiser votre temps et d’anticiper vos priorités efficacement. Continuez ainsi !'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Une planification plus précise vous aiderait à mieux prioriser vos tâches et à éviter les imprévus. Pensez à utiliser un outil de gestion du temps.'; }
-      else                                { title = 'Attention'; body = 'Gérer les tâches au jour le jour peut entraîner du stress et un manque de visibilité. Essayez de structurer votre semaine avec un planning clair pour gagner en efficacité.'; }
+      if      (answerValue === 'oui')    { title = 'Excellent'; body = 'Vous planifiez votre semaine avec précision et anticipez vos priorités. C’est une excellente stratégie pour optimiser votre temps et rester concentré.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous planifiez partiellement vos semaines. C’est une bonne base, mais un planning plus structuré vous aiderait à mieux gérer vos priorités et éviter les imprévus.'; }
+      else                                { title = 'Attention'; body = 'Vous gérez vos tâches au jour le jour, sans plan clair. Cela peut générer stress et désorganisation. Structurer vos semaines avec un planning précis vous ferait gagner en efficacité.'; }
     }
     else if (qid === 'daily-routine-productivity') {
-      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Avoir des rituels bien définis favorise la productivité et la concentration. Vous optimisez votre temps de manière efficace !'; }
-      else if (answerValue === 'medium') { title = 'Vous êtes sur la bonne voie'; body = 'Une routine plus régulière pourrait encore améliorer votre efficacité et votre gestion du temps.'; }
-      else                                { title = 'Attention'; body = 'Travailler sans structure peut être contre-productif. Mettre en place une routine avec des rituels précis vous aidera à mieux gérer votre énergie et vos priorités.'; }
+      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Vous avez une routine quotidienne avec des rituels bien définis. C’est une excellente habitude pour rester productif et concentré.'; }
+      else if (answerValue === 'medium') { title = 'Vous êtes sur la bonne voie'; body = 'Vous avez une certaine routine, mais sans régularité. En l’ancrant davantage, vous pourriez améliorer encore votre efficacité et votre gestion du temps.'; }
+      else                                { title = 'Attention'; body = 'Vous n’avez pas de routine structurée. Cela peut nuire à votre concentration et à votre énergie. Mettre en place quelques rituels fixes renforcerait votre productivité.'; }
     }
     else if (qid === 'client-acquisition-strategy') {
-      if      (answerValue === 'oui')    { title = 'Super'; body = 'Une stratégie de prospection claire et suivie est essentielle pour assurer un développement commercial régulier et prévisible.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Structurer vos actions et les rendre plus régulières vous permettrait d’optimiser encore plus vos résultats.'; }
-      else                                { title = 'Attention'; body = 'Une prospection aléatoire peut nuire à votre croissance. Mettre en place un plan structuré avec des actions précises vous aidera à trouver des clients plus efficacement.'; }
+      if      (answerValue === 'oui')    { title = 'Super'; body = 'Vous avez une stratégie claire et structurée pour prospecter, avec des actions régulières. C’est une approche idéale pour développer votre activité de manière prévisible.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez une stratégie, mais vos actions manquent de régularité ou de suivi. Les rendre plus systématiques vous aiderait à améliorer vos résultats.'; }
+      else                                { title = 'Attention'; body = 'Vous prospectez sans véritable stratégie. Cela freine votre croissance. Construire un plan structuré avec des actions mesurables renforcerait votre acquisition de clients.'; }
     }
     else if (qid === 'weekly-admin-time') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Consacrer un temps dédié à l’administratif vous permet d’être rigoureux et d’éviter l’accumulation des tâches.'; }
-      else if (answerValue === 'medium') { title = 'Bonne initiative'; body = 'Mais optimiser davantage votre organisation pourrait vous faire gagner du temps et réduire la charge mentale.'; }
-      else                                { title = 'Attention'; body = 'Gérer l’administratif au jour le jour peut entraîner des oublis et du stress. Bloquez un créneau régulier pour ces tâches afin d’être plus efficace.'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous réservez un créneau précis chaque semaine pour vos tâches administratives. C’est une excellente organisation qui évite l’accumulation et les oublis.'; }
+      else if (answerValue === 'medium') { title = 'Bonne initiative'; body = 'Vous consacrez du temps à l’administratif, mais de manière peu optimisée. Structurer davantage ce temps pourrait réduire la charge mentale et améliorer l’efficacité.'; }
+      else                                { title = 'Attention'; body = 'Vous gérez l’administratif au jour le jour, ce qui augmente les risques d’oublis et de stress. Bloquer un créneau régulier serait une optimisation clé.'; }
     }
     else if (qid === 'burnout-prevention-breaks') {
-      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Prendre des pauses régulières est essentiel pour maintenir votre énergie et éviter le burn-out.'; }
-      else if (answerValue === 'medium') { title = 'Bonne initiative'; body = 'Vous prenez du repos, mais il pourrait être bénéfique d’assurer une vraie régularité pour un meilleur équilibre.'; }
-      else                                { title = 'Attention'; body = 'Ne pas prendre de pauses peut nuire à votre santé et à votre productivité sur le long terme. Planifiez du repos pour recharger vos batteries.'; }
+      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Vous prenez régulièrement au moins 5 semaines de repos par an. C’est une excellente habitude pour préserver votre énergie et éviter le burn-out.'; }
+      else if (answerValue === 'medium') { title = 'Bonne initiative'; body = 'ous prenez des vacances, mais pas assez ou de manière irrégulière. Planifier davantage de vraies pauses vous aiderait à maintenir un meilleur équilibre.'; }
+      else                                { title = 'Attention'; body = 'Vous prenez rarement, voire jamais, de pauses. Cela met votre santé et votre productivité en danger. Intégrer du repos dans votre agenda est essentiel.'; }
     }
     else if (qid === 'work-schedule-balance') {
-      if      (answerValue === 'oui')    { title = 'Parfait'; body = 'Des horaires fixes et adaptés permettent d’être plus productif tout en maintenant un bon équilibre de vie.'; }
-      else if (answerValue === 'medium') { title = 'Vous avez une certaine organisation'; body = 'Mais la stabilité de vos horaires pourrait encore améliorer votre efficacité.'; }
-      else                                { title = 'Attention'; body = 'Travailler sans cadre défini peut nuire à votre productivité et à votre bien-être. Fixer des plages horaires adaptées vous aidera à mieux structurer vos journées.'; }
+      if      (answerValue === 'oui')    { title = 'Parfait'; body = 'Vos horaires sont fixes et adaptés à vos pics de productivité. C’est une excellente manière d’allier efficacité et équilibre de vie.'; }
+      else if (answerValue === 'medium') { title = 'Vous avez une certaine organisation'; body = 'Vous avez une organisation horaire, mais vos variations fréquentes nuisent parfois à votre efficacité. Stabiliser vos horaires pourrait améliorer vos journées.'; }
+      else                                { title = 'Attention'; body = 'Vous travaillez à n’importe quelle heure, sans cadre défini. Cela peut nuire à la fois à votre productivité et à votre équilibre personnel. Fixer des plages régulières serait bénéfique.'; }
     }
     else if (qid === 'task-delegation') {
-      if      (answerValue === 'oui')    { title = 'Très bonne approche'; body = 'Déléguer ce qui n’est pas votre cœur de métier vous permet de vous concentrer sur l’essentiel et d’optimiser votre temps.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Déléguer plus systématiquement certaines tâches pourrait encore améliorer votre productivité et alléger votre charge de travail.'; }
-      else                                { title = 'Attention'; body = 'Tout gérer seul peut vite devenir une surcharge. Déléguer certaines tâches (comptabilité, communication, etc.) vous permettrait de vous concentrer sur votre véritable valeur ajoutée.'; }
+      if      (answerValue === 'oui')    { title = 'Très bonne approche'; body = 'Vous déléguez ce qui n’est pas votre cœur de métier (comptabilité, communication, etc.). C’est une excellente stratégie pour gagner du temps et vous concentrer sur l’essentiel.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous déléguez, mais de manière limitée. Externaliser davantage de tâches pourrait renforcer votre productivité et réduire votre charge de travail.'; }
+      else                                { title = 'Attention'; body = 'Vous gérez tout vous-même. Cela peut rapidement devenir une surcharge. Déléguer certaines missions vous permettrait de vous recentrer sur votre véritable valeur ajoutée.'; }
     }
     else if (qid === 'monthly-learning-time') {
-      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Investir du temps dans votre formation vous permet de rester compétitif et d’évoluer constamment. Continuez ainsi !'; }
-      else if (answerValue === 'medium') { title = 'Bon investissement'; body = 'Augmenter légèrement votre temps de formation pourrait vous permettre d’acquérir encore plus de compétences stratégiques.'; }
-      else                                { title = 'Attention'; body = 'Se former régulièrement est essentiel pour rester à jour et développer son activité. Essayez d’y consacrer un peu plus de temps chaque mois !'; }
+      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Vous consacrez entre 6 et 9h par mois à votre formation. C’est un excellent investissement pour rester compétitif et progresser constamment.'; }
+      else if (answerValue === 'medium') { title = 'Bon investissement'; body = 'Aous consacrez entre 3 et 6h par mois à vous former. C’est une bonne base, mais augmenter légèrement ce temps renforcerait encore vos compétences.'; }
+      else                                { title = 'Attention'; body = 'Vous consacrez moins de 3h par mois à la formation. Or, rester en veille et apprendre régulièrement est essentiel pour évoluer. Intégrer plus de formation à votre emploi du temps serait une vraie optimisation.'; }
     }
 
     // f) Injecter dans le simulateur si c’est la question active
@@ -1302,111 +1141,112 @@ function calculDevelopment(questionContainerId) {
     let title = '', body = '';
 
     if (qid === 'unique-value-proposition') {
-      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Une proposition de valeur bien définie vous permet de vous démarquer sur votre marché et d’attirer les bons clients. Continuez à l’affiner et à la mettre en avant !'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Il serait intéressant d’affiner encore votre positionnement pour le rendre plus percutant et différenciant. Un travail sur votre message et votre communication peut vous aider.'; }
-      else                                { title = 'Attention'; body = 'Avoir une proposition de valeur claire est essentiel pour convaincre vos clients et vous différencier. Prenez le temps de définir ce qui vous rend unique et mettez-le en avant !'; }
+      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Vous avez une proposition de valeur claire et différenciante. C’est un atout majeur pour attirer les bons clients et vous démarquer. Continuez à la mettre en avant et à l’affiner.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Votre proposition de valeur existe mais manque encore de clarté ou de différenciation. Travailler sur votre message et votre communication permettrait de la rendre plus percutante.'; }
+      else                                { title = 'Attention'; body = 'Vous n’avez pas encore défini clairement votre proposition de valeur. C’est pourtant essentiel pour convaincre vos clients et vous distinguer. Prendre le temps de clarifier ce qui vous rend unique est une priorité.'; }
     }
     else if (qid === 'networking-events-participation') {
-      if      (answerValue === 'oui')    { title = 'Excellente démarche'; body = 'Participer régulièrement à des événements stratégiques vous permet de développer votre réseau et d’accéder à de nouvelles opportunités.'; }
-      else if (answerValue === 'medium') { title = 'C\'est un bon début'; body = 'Structurer davantage votre participation en choisissant les bons événements et en établissant des objectifs clairs pourrait améliorer votre impact.'; }
-      else                                { title = 'Attention'; body = 'Les événements professionnels sont un excellent moyen de rencontrer des partenaires et des clients potentiels. Essayez d’en intégrer quelques-uns à votre agenda pour élargir votre réseau !'; }
+      if      (answerValue === 'oui')    { title = 'Excellente démarche'; body = 'Vous participez régulièrement à des événements stratégiques. C’est une excellente démarche pour développer votre réseau et accéder à de nouvelles opportunités.'; }
+      else if (answerValue === 'medium') { title = 'C\'est un bon début'; body = 'Vous participez à certains événements, mais sans réelle stratégie. En choisissant mieux vos rendez-vous et en fixant des objectifs, vous pourriez en tirer davantage de bénéfices.'; }
+      else                                { title = 'Attention'; body = 'Vous ne participez pas à des événements professionnels. Or, ces rencontres sont un excellent moyen de développer votre réseau et de trouver des clients. En intégrer quelques-uns à votre agenda serait un vrai plus.'; }
     }
     else if (qid === 'online-visibility-channels') {
-      if      (answerValue === 'oui')    { title = 'Parfait'; body = 'Une présence régulière et stratégique sur LinkedIn et d’autres canaux renforce votre crédibilité et attire de nouveaux clients. Continuez ainsi !'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Structurer votre approche avec un plan de contenu et une régularité accrue pourrait améliorer encore votre visibilité.'; }
-      else                                { title = 'Attention'; body = 'LinkedIn et d’autres plateformes sont d’excellents leviers pour trouver des clients et asseoir votre expertise. Pensez à y consacrer du temps pour développer votre activité.'; }
+      if      (answerValue === 'oui')    { title = 'Parfait'; body = 'Vous utilisez LinkedIn (et d’autres canaux) de manière régulière et stratégique. C’est une excellente façon d’asseoir votre crédibilité et de trouver de nouveaux clients.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous êtes présent(e) sur LinkedIn ou d’autres canaux, mais sans réelle stratégie. Mettre en place un plan de contenu clair et régulier améliorerait considérablement votre visibilité.'; }
+      else                                { title = 'Attention'; body = 'Vous n’utilisez pas encore LinkedIn ou d’autres canaux pour développer votre visibilité. Pourtant, ce sont des leviers puissants pour attirer des clients et renforcer votre positionnement.'; }
     }
     else if (qid === 'client-conversion-system') {
-      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Une stratégie bien pensée et suivie est un levier puissant pour développer votre activité de manière prévisible et efficace.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'L’optimisation de vos actions marketing et une analyse plus poussée de leurs performances pourraient améliorer vos résultats.'; }
-      else                                { title = 'Attention'; body = 'Un système d’acquisition client structuré est essentiel pour assurer une croissance stable. Pensez à mettre en place des actions claires (SEO, publicité, inbound marketing) pour attirer plus de prospects.'; }
+      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Vous avez mis en place une stratégie d’acquisition claire, optimisée et suivie. C’est un levier puissant pour développer votre activité de manière stable et prévisible.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez un système d’acquisition, mais il n’est pas encore totalement optimisé. L’analyser et l’améliorer vous permettrait d’obtenir de meilleurs résultats.'; }
+      else                                { title = 'Attention'; body = 'Vous n’avez pas encore de système structuré pour attirer des clients. Construire une stratégie (SEO, publicité, inbound marketing) serait une étape clé pour booster votre croissance.'; }
     }
     else if (qid === 'mentorship-or-peer-support') {
-      if      (answerValue === 'oui')    { title = 'Super'; body = 'Être entouré d’un mentor ou d’un groupe de pairs vous permet de prendre du recul, d’accélérer votre développement et d’éviter les erreurs courantes.'; }
-      else if (answerValue === 'medium') { title = 'C\'est un bon début'; body = 'Un accompagnement plus régulier et approfondi pourrait encore renforcer votre croissance et votre stratégie.'; }
-      else                                { title = 'Attention'; body = 'Un mentor ou un réseau d’entrepreneurs peut vous apporter des conseils précieux et vous aider à surmonter vos défis plus rapidement. Pensez à rejoindre un groupe ou à solliciter un accompagnement.'; }
+      if      (answerValue === 'oui')    { title = 'Super'; body = 'Vous bénéficiez de l’accompagnement d’un mentor ou d’un groupe d’entrepreneurs. C’est une excellente ressource pour progresser plus vite, prendre du recul et éviter les erreurs.'; }
+      else if (answerValue === 'medium') { title = 'C\'est un bon début'; body = 'Vous avez un accompagnement, mais pas régulier ou approfondi. En le rendant plus constant, vous pourriez accélérer encore davantage votre développement.'; }
+      else                                { title = 'Attention'; body = 'Vous n’êtes pas accompagné par un mentor ni un réseau d’entrepreneurs. Pourtant, ces échanges peuvent apporter des conseils précieux et accélérer votre progression.'; }
     }
     else if (qid === 'competitor-analysis') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Une veille concurrentielle régulière vous permet d’ajuster votre stratégie et de rester compétitif. Continuez à surveiller les tendances du marché.'; }
-      else if (answerValue === 'medium') { title = 'C\'est un bon début'; body = 'Une analyse plus approfondie et régulière pourrait vous donner un avantage encore plus fort sur vos concurrents.'; }
-      else                                { title = 'Attention'; body = 'Connaître ses concurrents est essentiel pour se positionner et se différencier. Essayez de mettre en place une veille simple pour identifier leurs forces et faiblesses.'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous analysez régulièrement vos concurrents et ajustez votre offre en conséquence. C’est une excellente pratique pour rester compétitif et pertinent sur votre marché.'; }
+      else if (answerValue === 'medium') { title = 'C\'est un bon début'; body = 'Vous observez vos concurrents, mais de manière irrégulière. Structurer votre veille renforcerait votre positionnement et vos opportunités d’innovation.'; }
+      else                                { title = 'Attention'; body = 'Vous n’analysez pas vos concurrents. Or, les connaître est essentiel pour vous différencier et affiner votre offre. Mettre en place une veille simple serait déjà un vrai pas en avant.'; }
     }
     else if (qid === 'offer-or-model-innovation') {
-      if      (answerValue === 'oui')    { title = 'Excellent'; body = 'Innover régulièrement vous permet de rester compétitif et de répondre aux nouvelles attentes de vos clients. Continuez à tester et à vous adapter !'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Rendre l’innovation plus systématique et fréquente pourrait vous aider à capter de nouvelles opportunités sur votre marché.'; }
-      else                                { title = 'Attention'; body = 'L’innovation est clé pour se démarquer et anticiper les évolutions du marché. Pensez à analyser les tendances et à tester de nouvelles approches pour dynamiser votre activité.'; }
+      if      (answerValue === 'oui')    { title = 'Excellent'; body = 'Vous innovez régulièrement dans votre offre ou votre modèle économique. C’est une excellente stratégie pour rester compétitif et répondre aux attentes du marché.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous innovez de temps en temps, mais pas de manière systématique. En rendant ce processus plus régulier, vous pourriez capter de nouvelles opportunités.'; }
+      else                                { title = 'Attention'; body = 'Votre offre n’a pas évolué récemment. L’innovation est pourtant clé pour se démarquer et anticiper les évolutions du marché. Explorer de nouvelles idées dynamiserait votre activité.'; }
     }
     else if (qid === 'business-diversification-plan') {
-      if      (answerValue === 'oui')    { title = 'Très bonne stratégie'; body = 'Anticiper et structurer la diversification permet d’assurer la pérennité et la croissance de votre activité. Continuez à explorer de nouvelles opportunités !'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Structurer davantage votre approche avec des actions concrètes pourrait vous permettre d’accélérer votre diversification et de minimiser les risques.'; }
-      else                                { title = 'Attention'; body = 'Diversifier son activité permet de réduire les risques et d’explorer de nouveaux marchés. Il peut être intéressant d’y réfléchir et d’élaborer un plan à moyen terme.'; }
+      if      (answerValue === 'oui')    { title = 'Très bonne stratégie'; body = 'Vous avez une stratégie claire de diversification. C’est une excellente approche pour assurer la pérennité et la croissance de votre activité.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous envisagez une diversification mais sans plan structuré. Définir des actions concrètes vous aiderait à passer à l’étape suivante.'; }
+      else                                { title = 'Attention'; body = 'Vous n’avez pas prévu de diversifier votre activité. Pourtant, cela permet de réduire les risques et d’ouvrir de nouveaux marchés. Y réfléchir dès maintenant pourrait être une bonne opportunité.'; }
     }
     else if (qid === 'mileage-allowance-usage') {
-      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'En utilisant les indemnités kilométriques, vous optimisez vos frais de déplacement tout en bénéficiant d’un avantage fiscal intéressant. Continuez ainsi !'; }
-      else if (answerValue === 'medium') { title = 'Bon choix'; body = 'Utiliser un véhicule professionnel est une bonne alternative, mais pensez à bien optimiser vos frais en fonction de votre situation.'; }
-      else                                { title = 'Bon à savoir'; body = 'Vous pourriez récupérer une somme intéressante en demandant vos indemnités kilométriques. Pensez à les inclure dans votre gestion pour réduire vos charges !'; }
+      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Vous utilisez les indemnités kilométriques. Très bon choix : cela vous permet d’optimiser vos frais de déplacement et de profiter d’un avantage fiscal intéressant.'; }
+      else if (answerValue === 'medium') { title = 'Bon choix'; body = 'Vous utilisez un véhicule professionnel. C’est une bonne alternative, mais pensez à vérifier si les indemnités kilométriques ou d’autres dispositifs seraient plus avantageux dans votre situation.'; }
+      else if (answerValue === 'non')     { title = 'Bon à savoir'; body = 'Vous utilisez votre voiture personnelle sans demander les indemnités kilométriques. Vous pourriez récupérer une somme intéressante en les réclamant. C’est une optimisation à intégrer à votre gestion.'; }
+      else { title = "Pas d'optimisation supplémentaire"; body = 'Vous n’utilisez pas de véhicule personnel pour vos déplacements professionnels. Pas de frais à optimiser sur ce point.' }
     }
     else if (qid === 'holiday-voucher-setup') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous maximisez les avantages fiscaux tout en profitant d’un complément pour vos vacances. Continuez à en tirer pleinement profit !'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous utilisez les chèques vacances, mais vous pourriez optimiser davantage en atteignant le plafond maximal de 540,54 € en 2025.'; }
-      else                                { title = 'Bon à savoir'; body = 'Les chèques vacances permettent de réduire vos charges tout en bénéficiant d’un avantage fiscal. Pensez à les mettre en place pour vous ou vos salariés !'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous maximisez le montant des chèques vacances (jusqu’à 554,40 € en 2024). Excellente optimisation qui réduit vos charges tout en améliorant votre qualité de vie.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous utilisez les chèques vacances, mais pas à leur plein potentiel. Atteindre le plafond de 554,40 € vous permettrait d’optimiser davantage vos avantages fiscaux.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’utilisez pas encore les chèques vacances. C’est une opportunité simple pour réduire vos charges et bénéficier d’un avantage fiscal intéressant.'; }
     }
     else if (qid === 'cesu-tax-benefits') {
-      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Vous exploitez pleinement les CESU pour bénéficier d’une réduction fiscale optimale. Une excellente stratégie d’optimisation !'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous pourriez encore maximiser vos économies en utilisant le montant plafond de 2 540 €.'; }
-      else                                { title = 'Bon à savoir'; body = 'Les CESU permettent d’alléger votre fiscalité tout en bénéficiant de services à domicile. Pourquoi ne pas en profiter pour optimiser vos charges ?'; }
+      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Vous exploitez pleinement le dispositif CESU (jusqu’à 2 540 €). Félicitations : c’est une excellente manière d’alléger vos impôts tout en bénéficiant de services à domicile.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous utilisez les CESU partiellement. Augmenter le montant jusqu’au plafond de 2 540 € vous permettrait de maximiser vos économies fiscales.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’utilisez pas le dispositif CESU. Pourtant, il permet de réduire vos charges tout en facilitant le recours à des services personnels (ménage, garde d’enfants, etc.).'; }
     }
     else if (qid === 'expense-tracking-setup') {
-      if      (answerValue === 'oui')    { title = 'Parfait'; body = 'Un suivi rigoureux des notes de frais garantit une gestion optimale et des économies substantielles. Continuez ainsi !'; }
-      else if (answerValue === 'medium') { title = 'Vous êtes sur la bonne voie'; body = 'Mais un suivi encore plus précis pourrait vous faire gagner du temps et éviter des pertes financières.'; }
-      else                                { title = 'Bon à savoir'; body = 'Une gestion efficace des notes de frais est essentielle pour éviter les erreurs et optimiser votre fiscalité. Pensez à structurer un suivi régulier !'; }
+      if      (answerValue === 'oui')    { title = 'Parfait'; body = 'Vous suivez et optimisez chaque dépense. C’est une excellente pratique qui garantit des économies substantielles et une gestion fiable.'; }
+      else if (answerValue === 'medium') { title = 'Vous êtes sur la bonne voie'; body = 'Vous enregistrez vos notes de frais, mais pas de manière totalement rigoureuse. Un suivi plus précis éviterait des pertes financières et faciliterait la gestion.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous ne suivez pas vos notes de frais. Cela peut entraîner des erreurs et des coûts supplémentaires. Structurer un suivi régulier est une optimisation clé.'; }
     }
     else if (qid === 'expense-optimization-strategies') {
-      if      (answerValue === 'oui')    { title = 'Excellent'; body = 'Vous exploitez tous les leviers possibles pour optimiser vos charges et réduire vos coûts. Une gestion exemplaire !'; }
-      else if (answerValue === 'medium') { title = 'Vous avez déjà pris de bonnes initiatives'; body = 'Mais il existe encore des opportunités pour aller plus loin dans l’optimisation. Un audit régulier de vos charges peut être bénéfique.'; }
-      else                                { title = 'Bon à savoir'; body = 'L’optimisation des charges permet de réduire les coûts et d’améliorer la rentabilité. Pourquoi ne pas explorer les exonérations et autres dispositifs fiscaux disponibles ?'; }
+      if      (answerValue === 'oui')    { title = 'Excellent'; body = 'Vous exploitez tous les leviers possibles (primes, exonérations, forfaits, etc.) pour réduire vos charges. Très bonne gestion !'; }
+      else if (answerValue === 'medium') { title = 'Vous avez déjà pris de bonnes initiatives'; body = 'Vous optimisez déjà certaines charges, mais pas encore toutes. Un audit régulier pourrait révéler d’autres pistes d’économies.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’avez pas encore exploré les dispositifs d’optimisation des charges. C’est pourtant une opportunité directe d’améliorer votre rentabilité.'; }
     }
     else if (qid === 'project-tools-automation') {
-      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Votre gestion optimisée avec des outils comme Notion, Trello ou Zapier vous permet d’automatiser et d’améliorer votre productivité. Continuez ainsi !'; }
-      else if (answerValue === 'medium') { title = 'Vous utilisez déjà des outils, c’est un bon début'; body = 'Mais une meilleure intégration et automatisation pourraient encore améliorer votre efficacité.'; }
-      else                                { title = 'Bon à savoir'; body = 'Les outils de gestion et d’automatisation peuvent vous faire gagner du temps et réduire votre charge mentale. Pourquoi ne pas tester Notion, Trello ou Zapier ?'; }
+      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Vous utilisez pleinement des outils comme Notion, Trello ou Zapier. Excellente gestion : vous gagnez en productivité et réduisez votre charge mentale.'; }
+      else if (answerValue === 'medium') { title = 'Vous utilisez déjà des outils, c’est un bon début'; body = 'Vous utilisez déjà certains outils, mais de manière partielle. Une meilleure intégration et automatisation vous permettrait de franchir un cap en efficacité.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’utilisez pas encore d’outils de gestion ou d’automatisation. Tester Notion, Trello ou Zapier pourrait vous faire gagner beaucoup de temps et de clarté.'; }
     }
     else if (qid === 'optimized-work-routine') {
-      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Une routine bien établie permet d’améliorer votre concentration et votre efficacité au quotidien.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez une routine, mais gagner en discipline pourrait maximiser votre productivité. Pourquoi ne pas essayer de la structurer davantage ?'; }
-      else                                { title = 'Bon à savoir'; body = 'Une routine efficace vous aidera à rester productif et à mieux gérer votre énergie. Pensez à en mettre une en place progressivement !'; }
+      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Vous avez mis en place une routine claire et régulière. C’est une excellente habitude pour maximiser votre concentration et votre productivité.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez une routine, mais elle manque de discipline. La rendre plus régulière améliorerait votre efficacité.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’avez pas encore de routine structurée. En mettre une en place progressivement vous aiderait à mieux gérer votre énergie au quotidien.'; }
     }
     else if (qid === 'time-management-techniques') {
-      if      (answerValue === 'oui')    { title = 'Excellent'; body = 'Les techniques comme Pomodoro ou le Time-Blocking vous aident à rester efficace et à mieux structurer votre temps. Continuez ainsi !'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous appliquez ces techniques, mais pas de manière systématique. Une meilleure régularité pourrait encore améliorer votre organisation.'; }
-      else                                { title = 'Bon à savoir'; body = 'Gérer son temps efficacement est clé pour être productif. Pourquoi ne pas tester la méthode Pomodoro ou le Time-Blocking pour mieux structurer votre travail ?'; }
+      if      (answerValue === 'oui')    { title = 'Excellent'; body = 'Vous appliquez rigoureusement des techniques de gestion du temps. C’est un levier puissant pour rester productif et concentré.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous utilisez certaines techniques, mais pas régulièrement. Les appliquer plus systématiquement renforcerait leur efficacité.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’utilisez pas de techniques spécifiques. Tester Pomodoro, Time-Blocking ou d’autres méthodes simples pourrait transformer votre organisation.'; }
     }
     else if (qid === 'goal-tracking-strategy') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Avoir un système de suivi précis permet de garder le cap et d’atteindre plus facilement vos objectifs.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous suivez vos objectifs, mais un meilleur suivi pourrait vous aider à prioriser plus efficacement vos tâches.'; }
-      else                                { title = 'Bon à savoir'; body = 'Suivre ses objectifs permet de rester motivé et productif. Pourquoi ne pas essayer un outil comme Notion ou ClickUp pour structurer vos progrès ?'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous disposez d’un système clair pour suivre vos objectifs et prioriser vos tâches. C’est une excellente façon de garder le cap.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous suivez vos objectifs, mais de manière peu rigoureuse. Améliorer le suivi et la priorisation renforcerait vos résultats.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous ne suivez pas vos objectifs de manière organisée. Mettre en place un outil comme Notion ou ClickUp vous aiderait à mieux structurer vos progrès.'; }
     }
     else if (qid === 'decision-making-method') {
-      if      (answerValue === 'oui')    { title = 'Parfait'; body = 'Une prise de décision rapide et méthodique permet d’éviter les pertes de temps et d’optimiser votre efficacité.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous prenez des décisions, mais parfois avec hésitation. Travailler sur une méthode plus claire vous aidera à gagner en rapidité.'; }
-      else                                { title = 'Bon à savoir'; body = 'Une bonne méthodologie de décision permet d’éviter l’indécision et de gagner en efficacité. Pourquoi ne pas tester la matrice d’Eisenhower ou la règle des 2 minutes ?'; }
+      if      (answerValue === 'oui')    { title = 'Parfait'; body = 'Vous prenez vos décisions rapidement grâce à une méthodologie claire. Cela vous permet de gagner du temps et d’optimiser vos actions.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous prenez vos décisions, mais parfois trop lentement. Travailler sur une méthode plus structurée renforcerait votre efficacité.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’avez pas de méthode de décision claire. Utiliser la matrice d’Eisenhower ou la règle des 2 minutes pourrait vous aider à décider plus vite.'; }
     }
     else if (qid === 'email-automation-tools') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'L’automatisation des emails avec des outils comme Sanebox ou Clean Email vous fait gagner du temps et améliore votre gestion.'; }
-      else                                { title = 'Bon à savoir'; body = 'Gérer manuellement tous ses emails peut être chronophage. Des outils d’automatisation peuvent vous aider à trier et organiser vos messages plus efficacement.'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous utilisez des outils comme Sanebox ou Clean Email pour trier et automatiser la gestion de vos emails. Excellente optimisation de votre temps.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous gérez vos emails manuellement. C’est chronophage : des outils d’automatisation pourraient vous aider à gagner en efficacité.'; }
     }
     else if (qid === 'task-planning-tools') {
-      if      (answerValue === 'oui')    { title = 'Excellent'; body = 'Utiliser des outils comme Trello ou Asana permet une gestion plus efficace de vos tâches et de vos priorités.'; }
-      else                                { title = 'Bon à savoir'; body = 'Planifier ses tâches avec des outils numériques facilite l’organisation et la productivité. Pourquoi ne pas essayer Trello ou Notion ?'; }
+      if      (answerValue === 'oui')    { title = 'Excellent'; body = 'Vous planifiez vos tâches avec des outils comme Trello ou Asana. C’est une excellente méthode pour gérer vos priorités efficacement.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous ne planifiez pas vos tâches avec des outils numériques. Pourtant, cela simplifierait votre organisation et augmenterait votre productivité.'; }
     }
     else if (qid === 'reminder-deadline-tools') {
-      if      (answerValue === 'oui')    { title = 'Parfait'; body = 'Google Calendar ou Outlook sont d’excellents outils pour ne jamais oublier une échéance et rester organisé.'; }
-      else                                { title = 'Bon à savoir'; body = 'Suivre ses rappels et échéances manuellement peut être compliqué. Pourquoi ne pas automatiser cela avec un calendrier numérique ?'; }
+      if      (answerValue === 'oui')    { title = 'Parfait'; body = 'Vous utilisez des outils comme Google Calendar ou Outlook pour vos rappels et échéances. C’est une très bonne pratique pour ne rien oublier.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous ne digitalisez pas vos rappels et échéances. Cela peut entraîner des oublis. Automatiser avec un calendrier numérique serait un vrai gain de sérénité.'; }
     }
     else if (qid === 'ai-use-professional') {
-      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'L’IA vous permet d’optimiser votre travail, d’automatiser certaines tâches et d’améliorer votre productivité.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous utilisez déjà l’IA, mais pas de manière systématique. Explorer davantage ses possibilités pourrait vous apporter encore plus d’avantages.'; }
-      else                                { title = 'Bon à savoir'; body = 'L’IA peut être un excellent levier d’optimisation. Pourquoi ne pas tester des outils comme ChatGPT, DALL·E ou des IA de gestion automatisée ?'; }
+      if      (answerValue === 'oui')    { title = 'Excellent'; body = 'Vous utilisez l’IA régulièrement pour automatiser, analyser et optimiser. Excellente stratégie pour rester compétitif et productif.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous utilisez l’IA ponctuellement, mais pas encore de manière systématique. Explorer davantage ses usages pourrait vous apporter encore plus de bénéfices.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’utilisez pas l’IA dans votre travail. Pourtant, des outils comme ChatGPT, DALL·E ou d’autres IA spécialisées pourraient booster votre activité.'; }
     }
 
     // f) Injection dans le simulateur pour la question active
@@ -1506,81 +1346,81 @@ function calculWage(questionContainerId) {
     let title = '', body = '';
 
     if (qid === 'eligible-benefit-cases') {
-      if      (answerValue.includes('non'))   { title = 'Bon à savoir'; body = 'Il existe plusieurs dispositifs d’allégements fiscaux selon votre activité et votre localisation. Une analyse approfondie pourrait vous permettre de réduire votre fiscalité.'; }
-      else if (answerValue.length === 1)      { title = 'Bon début'; body = 'Vous bénéficiez d’un dispositif fiscal, ce qui est un bon début. Avez-vous exploré d’autres possibilités d’exonérations auxquelles vous pourriez avoir droit ?'; }
-      else                                     { title = 'Très bien'; body = 'Vous profitez de plusieurs dispositifs fiscaux, ce qui vous permet de réduire vos charges et d’optimiser votre fiscalité. Continuez ainsi !'; }
+      if      (answerValue.includes('non'))   { title = 'Bon à savoir'; body = 'Vous ne profitez d’aucun dispositif spécifique. Pourtant, il existe de nombreuses exonérations selon votre activité et votre localisation. Une analyse approfondie pourrait vous faire économiser beaucoup.'; }
+      else if (answerValue.length === 1)      { title = 'Bon début'; body = 'Vous bénéficiez déjà d’un dispositif fiscal, mais vous pourriez explorer d’autres leviers pour aller plus loin.'; }
+      else                                     { title = 'Très bien'; body = 'Vous profitez de plusieurs dispositifs fiscaux (JEI, ZFU, exonération TVA, etc.). Excellent travail d’optimisation pour réduire vos charges.!'; }
     }
     else if (qid === 'benefits-in-kind-tax-reduction') {
-      if      (answerValue.includes('non'))           { title = 'Bon à savoir'; body = 'Vous ne bénéficiez pas d’avantages en nature. Certains dispositifs (véhicule de fonction, matériel, repas professionnels) peuvent alléger vos charges fiscales.'; }
-      else if (answerValue.length <= 3)               { title = 'Bon début'; body = 'Vous utilisez quelques avantages en nature. Il serait intéressant d’examiner s’il y a d’autres opportunités d’optimisation adaptées à votre situation.'; }
-      else                                            { title = 'Excellent'; body = 'Vous profitez de plusieurs avantages en nature, ce qui optimise votre fiscalité tout en réduisant vos charges personnelles.'; }
+      if      (answerValue.includes('non'))           { title = 'Bon à savoir'; body = 'Vous ne bénéficiez pas d’avantages en nature. Pourtant, certains dispositifs simples pourraient vous permettre d’alléger vos charges.'; }
+      else if (answerValue.length <= 3)               { title = 'Bon début'; body = 'Vous utilisez certains avantages en nature, mais il existe encore des leviers (matériel, frais de transport, repas, etc.) pour aller plus loin.'; }
+      else                                            { title = 'Excellent'; body = 'Vous profitez de plusieurs avantages en nature (véhicule, repas, télétravail, etc.). Excellente optimisation qui réduit vos charges personnelles et votre imposition.'; }
     }
     else if (qid === 'investment-cashflow-tax-optimization') {
       title = `Vous avez sélectionné ${answerValue.length} option(s)`; 
       body  = 'Cela représente autant de leviers d’optimisation potentiels sur votre trésorerie.'; 
     }
     else if (qid === 'per-subscription-tax-saving') {
-      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'En versant le montant maximal chaque année, vous optimisez votre épargne retraite tout en réduisant votre imposition. Continuez ainsi !'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez déjà un PER, ce qui est une bonne démarche. Cependant, des versements plus réguliers pourraient améliorer votre optimisation fiscale et votre capital pour la retraite.'; }
-      else                                { title = 'Bon à savoir'; body = 'Un PER est un excellent moyen d’épargner tout en réduisant vos impôts. Pourquoi ne pas en ouvrir un et commencer par des versements progressifs ?'; }
+      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Vous alimentez régulièrement votre PER avec le montant maximal déductible. Bravo ! C’est une excellente stratégie pour préparer votre avenir tout en réduisant vos impôts.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez déjà un PER, mais vos versements restent partiels ou occasionnels. Les rendre plus réguliers permettrait de renforcer votre optimisation fiscale et votre capital retraite.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’avez pas encore de PER. Pourtant, c’est un dispositif très avantageux qui permet d’épargner pour la retraite tout en réduisant vos impôts. Commencer par des versements progressifs pourrait être une bonne approche.'; }
     }
     else if (qid === 'training-tax-credit') {
-      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'En utilisant pleinement le crédit d’impôt formation, vous investissez dans votre montée en compétences tout en réduisant vos impôts.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous utilisez ce crédit, mais il pourrait être optimisé davantage. Vérifiez si certaines formations supplémentaires pourraient être éligibles !'; }
-      else                                { title = 'Bon à savoir'; body = 'Le crédit d’impôt formation est une opportunité précieuse pour financer votre montée en compétences. Pensez à vous renseigner sur les formations éligibles à ce dispositif.'; }
+      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Vous utilisez pleinement le crédit d’impôt formation (40 % des dépenses). Félicitations : vous investissez dans vos compétences tout en réduisant vos impôts.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous utilisez ce crédit, mais pas dans son intégralité. Vérifiez si d’autres formations éligibles pourraient renforcer votre optimisation.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous ne profitez pas du crédit d’impôt formation. Pourtant, c’est un levier précieux pour financer votre montée en compétences et alléger vos charges.'; }
     }
     else if (qid === 'energy-transition-tax-credit') {
-      if      (answerValue === 'oui')    { title = 'Excellent choix'; body = 'En optimisant ce crédit d’impôt, vous réduisez vos dépenses énergétiques tout en bénéficiant d’un allègement fiscal.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez déjà utilisé ce crédit, mais il pourrait être maximisé. Avez-vous exploré toutes les options possibles pour vos travaux de rénovation énergétique ?'; }
-      else                                { title = 'Bon à savoir'; body = 'Ce crédit permet d’alléger vos dépenses pour des travaux de rénovation énergétique. Pourquoi ne pas étudier les dispositifs disponibles pour en bénéficier ?'; }
+      if      (answerValue === 'oui')    { title = 'Excellent choix'; body = 'Vous bénéficiez du CITE pour vos travaux de rénovation énergétique. Très bon choix : vous réduisez vos dépenses et vos impôts tout en améliorant votre logement.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous utilisez déjà ce crédit, mais pas pleinement. Vérifiez si d’autres travaux sont éligibles pour maximiser vos avantages.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’utilisez pas le CITE. C’est pourtant une belle opportunité pour financer des rénovations énergétiques et alléger votre fiscalité.'; }
     }
     else if (qid === 'tax-deferral-mechanism') {
-      if      (answerValue === 'oui')    { title = 'Très bonne stratégie'; body = 'Différer vos revenus vous permet d’optimiser votre fiscalité et de lisser votre imposition sur plusieurs années.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous utilisez certains mécanismes, mais une stratégie plus poussée pourrait encore améliorer votre fiscalité. Pensez à consulter un expert pour affiner votre approche !'; }
-      else                                { title = 'Bon à savoir'; body = 'L’étalement et le report d’imposition sont des leviers puissants pour optimiser vos charges fiscales. Pourquoi ne pas en discuter avec un expert-comptable ?'; }
+      if      (answerValue === 'oui')    { title = 'Très bonne stratégie'; body = 'Vous utilisez des mécanismes d’étalement ou de report d’imposition (par exemple différer vos revenus). C’est une excellente stratégie pour lisser vos charges fiscales.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous appliquez certains mécanismes, mais sans réelle stratégie. Les approfondir avec un expert permettrait d’aller plus loin.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’utilisez pas ces leviers. Pourtant, l’étalement et le report d’imposition sont des outils puissants pour optimiser votre fiscalité.'; }
     }
     else if (qid === 'annual-tax-review-expert') {
-      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Un suivi précis de votre fiscalité chaque année permet de maximiser vos déductions et d’optimiser votre gestion financière.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous consultez un expert, mais pas systématiquement. Une approche plus régulière pourrait encore améliorer votre situation fiscale.'; }
-      else                                { title = 'Bon à savoir'; body = 'Un bilan fiscal annuel avec un expert permet d’éviter les erreurs et de maximiser vos déductions. Pourquoi ne pas en planifier un prochainement ?'; }
+      if      (answerValue === 'oui')    { title = 'Bravo'; body = 'Vous réalisez un bilan fiscal précis chaque année avec un expert. C’est une excellente pratique pour maximiser vos déductions et sécuriser votre situation.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous consultez un expert, mais pas systématiquement. En le faisant chaque année, vous pourriez renforcer vos optimisations.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous ne réalisez pas de bilan fiscal annuel. C’est pourtant essentiel pour éviter les erreurs et identifier toutes vos déductions possibles.'; }
     }
     else if (qid === 'vat-recovery-optimization') {
-      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Vous récupérez toute la TVA éligible, ce qui optimise la gestion de vos finances et réduit vos coûts.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous récupérez la TVA, mais il pourrait y avoir des opportunités non exploitées. Un audit de vos déclarations pourrait vous aider à maximiser cette récupération.'; }
-      else                                { title = 'Bon à savoir'; body = 'La récupération de la TVA est un levier clé pour réduire vos charges. Il serait intéressant d’analyser si vous pouvez récupérer davantage de TVA sur vos achats.'; }
+      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Vous récupérez toute la TVA éligible. Félicitations, vous optimisez vos charges et réduisez vos coûts.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous récupérez la TVA, mais pas toujours de manière complète. Un audit de vos déclarations pourrait révéler des opportunités supplémentaires.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous ne récupérez pas systématiquement la TVA. Or, c’est un levier direct pour alléger vos dépenses. Il serait intéressant d’analyser si vous pouvez récupérer davantage de TVA sur vos achats.'; }
     }
     else if (qid === 'current-income-perception') {
       // cas à 5 options
-      if      (answerValue === 'oui')        { title = 'Très bon choix'; body = 'En privilégiant les dividendes avec un faible salaire, vous réduisez vos charges sociales et optimisez votre imposition.'; }
-      else if (answerValue === 'mediumyes')  { title = 'Bien optimisé'; body = 'Votre mix salaire/dividendes est optimisé, ce qui vous permet de bénéficier d’une fiscalité plus avantageuse. Continuez ainsi !'; }
-      else if (answerValue === 'medium')     { title = 'Bon début'; body = 'Vous percevez uniquement un salaire, ce qui simplifie votre gestion, mais pourrait être optimisé en intégrant une part de dividendes.'; }
-      else if (answerValue === 'mediumno')   { title = 'Bon à savoir'; body = 'En micro-entreprise, vos bénéfices sont imposés directement. Pensez à étudier d’autres statuts si vous souhaitez optimiser votre imposition.'; }
-      else                                   { title = 'Attention'; body = 'Vous n’avez pas encore optimisé votre mode de rémunération. Une analyse avec un expert-comptable pourrait vous aider à réduire vos charges fiscales.'; }
+      if      (answerValue === 'oui')        { title = 'Très bon choix'; body = 'Vous privilégiez les dividendes avec un faible salaire. C’est une très bonne stratégie pour réduire vos charges sociales et optimiser votre imposition.'; }
+      else if (answerValue === 'mediumyes')  { title = 'Bien optimisé'; body = 'Votre mix salaire/dividendes est optimisé, ce qui vous permet de profiter d’une fiscalité plus avantageuse. Continuez ainsi !'; }
+      else if (answerValue === 'medium')     { title = 'Bon début'; body = 'Vous percevez uniquement un salaire. C’est simple à gérer, mais inclure une part de dividendes pourrait améliorer votre optimisation.'; }
+      else if (answerValue === 'mediumno')   { title = 'Bon à savoir'; body = 'Vos bénéfices sont imposés directement. C’est adapté dans certains cas, mais étudier d’autres statuts peut vous ouvrir de meilleures opportunités fiscales.'; }
+      else                                   { title = 'Attention'; body = 'Vous n’avez pas encore optimisé votre mode de rémunération. Une analyse avec un expert-comptable pourrait réduire vos charges et améliorer votre fiscalité.'; }
     }
     else if (qid === 'home-office-rent-tax-optimization') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Déclarer un loyer avec une convention de location est une excellente manière de réduire votre base imposable tout en restant conforme à la législation.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez mis en place un loyer, mais sans convention de location. Formaliser cela avec un document officiel pourrait sécuriser cette déduction fiscale.'; }
-      else                                { title = 'Bon à savoir'; body = 'Vous n’exploitez pas cette possibilité. Un loyer au domicile du dirigeant peut être un bon levier d’optimisation fiscale si bien déclaré.'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous avez mis en place un loyer avec convention. Excellente optimisation pour réduire votre base imposable en toute conformité.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous facturez un loyer mais sans convention de location. Formaliser cela avec un document officiel sécuriserait la déduction.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’exploitez pas cette possibilité. Pourtant, un loyer correctement déclaré peut être un levier fiscal intéressant.'; }
     }
     else if (qid === 'remuneration-split-optimization') {
-      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Vous avez optimisé la répartition de vos revenus avec une approche détaillée, ce qui réduit efficacement vos charges sociales et impôts.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez commencé à optimiser votre rémunération, mais une analyse plus approfondie pourrait encore améliorer votre fiscalité.'; }
-      else                                { title = 'Bon à savoir'; body = 'Votre rémunération n’est pas optimisée. Un mix entre salaires, dividendes et autres compensations pourrait être plus avantageux.'; }
+      if      (answerValue === 'oui')    { title = 'Félicitations'; body = 'Vous avez optimisé la répartition de vos revenus (salaires, dividendes, compensations) après analyse approfondie. C’est une excellente stratégie pour réduire vos cotisations et vos impôts.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez commencé à optimiser, mais sans étude détaillée. Une analyse plus fine pourrait vous permettre de maximiser vos économies.'; }
+      else                                { title = 'Bon à savoir'; body = 'Votre rémunération n’est pas optimisée. Travailler sur un mix plus adapté avec un expert pourrait réduire vos charges.'; }
     }
     else if (qid === 'holding-structure-income-optimization') {
-      if      (answerValue === 'oui')    { title = 'Très bonne stratégie'; body = 'Une holding vous permet d’optimiser la distribution de vos revenus et de structurer votre patrimoine professionnel.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous y réfléchissez, ce qui est une bonne démarche. Si votre chiffre d’affaires est élevé, cela peut être un levier intéressant à mettre en place.'; }
-      else                                { title = 'Bon à savoir'; body = 'Une holding n’est pas toujours nécessaire, mais si votre entreprise génère un chiffre d’affaires important, cela peut être une option intéressante à étudier.'; }
+      if      (answerValue === 'oui')    { title = 'Très bonne stratégie'; body = 'Vous avez mis en place une holding. C’est une très bonne stratégie pour optimiser la distribution de vos revenus et structurer votre patrimoine.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous envisagez une holding. Si votre chiffre d’affaires est élevé, cela peut devenir un levier fiscal et patrimonial puissant.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’avez pas de holding. Cela n’est pas toujours nécessaire, mais si votre CA est élevé, ce dispositif pourrait être intéressant.'; }
     }
     else if (qid === 'dividends-income-tax-option') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'En optant pour l’imposition sur le revenu avec l’abattement de 40 %, vous réduisez efficacement votre fiscalité sur les dividendes.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez choisi cette option, mais une analyse approfondie pourrait vous permettre d’optimiser davantage votre imposition.'; }
-      else                                { title = 'Bon à savoir'; body = 'Vous avez préféré le PFU à 30 %, ce qui est plus simple mais parfois moins avantageux que l’imposition sur le revenu avec abattement.'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous optez pour l’imposition au barème de l’IR avec abattement de 40 %. Très bon choix : cela permet souvent de réduire la fiscalité sur vos dividendes.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez choisi cette option, mais sans certitude d’optimisation totale. Une analyse plus approfondie permettrait de confirmer que c’est le meilleur choix pour vous.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous avez choisi le PFU à 30 %. C’est simple, mais parfois moins avantageux que l’imposition au barème avec abattement. Une comparaison pourrait être utile.'; }
     }
     else if (qid === 'cca-cash-injection') {
       const vals = answerValue;
-      if (vals.includes('oui'))            { title = 'Très bien'; body = 'Vous utilisez le compte courant d’associé pour financer votre société, ce qui est une bonne pratique pour la gestion de trésorerie.'; }
-      else                                  { title = 'Bon à savoir'; body = 'Vous n’injectez pas d’argent dans le CCA. Cette option peut être un levier intéressant pour optimiser la trésorerie et la fiscalité de votre entreprise.'; }
+      if (vals.includes('oui'))            { title = 'Très bien'; body = 'Vous utilisez le compte courant d’associé pour injecter de la trésorerie. Bonne pratique qui permet de soutenir votre société tout en gardant une trace comptable claire.'; }
+      else                                  { title = 'Bon à savoir'; body = 'Vous n’utilisez pas le CCA. Pourtant, ce mécanisme peut être un levier intéressant pour optimiser votre trésorerie et votre fiscalité.'; }
     }
 
     // f) Injection dans le simulateur pour la question active
@@ -1680,70 +1520,70 @@ function calculProtection(questionContainerId) {
 
     if (qid === 'treasury-investment-supports') {
       const n = answerValue.length;
-      if      (n === 0)      { title = 'Bon à savoir';       body = 'Vous n’avez pas encore placé votre trésorerie. Il existe plusieurs solutions (assurance vie, SCPI, obligations, etc.) qui permettent d’allier rendement et optimisation fiscale.'; }
-      else if (n <= 2)       { title = 'Bon début';          body = 'Vous avez placé votre trésorerie sur 1 à 2 supports. Une diversification plus large pourrait améliorer la gestion de vos liquidités.'; }
-      else                   { title = 'Excellente diversification'; body = 'Vous exploitez plusieurs supports pour placer votre trésorerie, ce qui vous permet d’optimiser vos rendements et votre fiscalité.'; }
+      if      (n === 0)      { title = 'Bon à savoir';       body = 'Votre trésorerie n’est pas placée. Pourtant, de nombreux supports existent (assurance vie, SCPI, SICAV, etc.) pour générer des rendements et optimiser vos impôts.'; }
+      else if (n <= 2)       { title = 'Bon début';          body = 'Vous avez placé votre trésorerie sur quelques supports. Une diversification plus large pourrait améliorer vos performances et votre fiscalité.'; }
+      else                   { title = 'Excellente diversification'; body = 'Vous diversifiez vos placements (assurance vie, SCPI, obligations, etc.). C’est une excellente stratégie pour optimiser vos rendements et réduire vos risques.'; }
     }
     else if (qid === 'subscribed-insurances-list') {
       const n = answerValue.length;
-      if      (n === 0)      { title = 'Bon à savoir';       body = 'Vous n’avez souscrit aucune assurance professionnelle. Cela représente un risque en cas de litige, de sinistre ou de problème juridique.'; }
-      else if (n <= 2)       { title = 'Bon début';          body = 'Vous avez souscrit entre 1 et 2 assurances. Une couverture plus large pourrait être envisagée selon votre secteur d’activité.'; }
-      else                   { title = 'Très bien';          body = 'Vous avez souscrit plus de 2 assurances professionnelles, ce qui vous protège efficacement contre divers risques liés à votre activité.'; }
+      if      (n === 0)      { title = 'Bon à savoir';       body = 'Vous n’avez pas d’assurance professionnelle. Cela vous expose à des risques financiers importants en cas de litige ou de sinistre.'; }
+      else if (n <= 2)       { title = 'Bon début';          body = 'Vous avez une protection partielle. Ajouter d’autres assurances adaptées à votre secteur pourrait renforcer votre sécurité.'; }
+      else                   { title = 'Très bien';          body = 'Vous avez souscrit plusieurs assurances professionnelles (RCP, multirisque, protection juridique, etc.). Très bonne couverture qui sécurise votre activité.'; }
     }
     else if (qid === 'holding-investment-tax-optimization') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Votre holding est bien optimisée et active, ce qui vous permet de maximiser votre fiscalité et votre gestion patrimoniale.'; }
-      else if (answerValue === 'medium') { title = 'Bon début';  body = 'Votre holding est en place mais encore sous-exploitée. Il pourrait être intéressant d’approfondir son utilisation pour optimiser davantage votre fiscalité.'; }
-      else                                { title = 'Bon à savoir'; body = 'Vous n’avez pas encore structuré vos investissements avec une holding. Si votre chiffre d’affaires est élevé, cela peut être une solution à considérer.'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Votre holding est optimisée et active. Très bon choix : elle vous permet de maximiser vos avantages fiscaux et de structurer efficacement votre patrimoine.'; }
+      else if (answerValue === 'medium') { title = 'Bon début';  body = 'Vous avez une holding mais elle est sous-exploitée. Un usage plus stratégique pourrait améliorer encore vos optimisations fiscales.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’avez pas encore structuré vos investissements via une holding. Si votre chiffre d’affaires est élevé, c’est une piste à envisager pour optimiser vos revenus et vos placements.'; }
     }
     else if (qid === 'startup-sme-private-equity-investment') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Investir dans des startups ou des PME vous permet de diversifier votre patrimoine tout en bénéficiant de réductions fiscales attractives.'; }
-      else if (answerValue === 'medium') { title = 'Bon début';  body = 'Vous envisagez ces investissements mais ne les avez pas encore mis en place. Il pourrait être intéressant d’explorer ces opportunités plus en détail.'; }
-      else                                { title = 'Bon à savoir'; body = 'Vous n’investissez pas encore dans ce type d’opportunités. Pourtant, elles offrent des avantages fiscaux et un fort potentiel de valorisation à long terme.'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous investissez déjà dans des startups ou PME et bénéficiez des réductions fiscales associées. Très bonne stratégie de diversification et d’optimisation.'; }
+      else if (answerValue === 'medium') { title = 'Bon début';  body = 'Vous envisagez ce type d’investissement mais ne l’avez pas encore concrétisé. Lancer un premier placement pourrait être intéressant.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’investissez pas dans ces opportunités. Pourtant, elles offrent à la fois des avantages fiscaux et un potentiel de rendement à long terme.'; }
     }
     else if (qid === 'passive-income-distribution-plan') {
-      if      (answerValue === 'oui')    { title = 'Excellente stratégie'; body = 'Vous avez mis en place une distribution optimisée de vos revenus passifs, ce qui réduit votre fiscalité et améliore vos gains nets.'; }
-      else if (answerValue === 'medium') { title = 'Bon début';          body = 'Vous gérez vos revenus passifs de manière basique. Une optimisation plus poussée pourrait améliorer votre rentabilité après impôts.'; }
-      else                                { title = 'Bon à savoir';       body = 'Vous n’avez pas encore optimisé la distribution de vos revenus passifs. Une meilleure structuration pourrait vous permettre de réduire vos charges fiscales.'; }
+      if      (answerValue === 'oui')    { title = 'Excellente stratégie'; body = 'Vous avez mis en place une stratégie fiscale claire pour vos revenus passifs (intérêts, loyers, dividendes). Excellente optimisation de votre rentabilité nette.'; }
+      else if (answerValue === 'medium') { title = 'Bon début';          body = 'Vous gérez vos revenus passifs de manière basique. Une meilleure structuration fiscale pourrait améliorer vos gains.'; }
+      else                                { title = 'Bon à savoir';       body = 'Vous n’avez pas encore optimisé la distribution de vos revenus passifs. C’est une piste importante pour réduire vos charges fiscales.'; }
     }
     else if (qid === 'investment-diversification-tax-optimization') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous avez diversifié vos investissements tout en maximisant les opportunités fiscales, ce qui réduit les risques et améliore votre rendement.'; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez commencé à diversifier vos investissements, mais il reste encore des opportunités d’optimisation fiscale à explorer.'; }
-      else                                { title = 'Bon à savoir'; body = 'Vos investissements ne sont pas suffisamment diversifiés. Une meilleure répartition pourrait améliorer votre gestion des risques et votre fiscalité.'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Votre portefeuille est bien diversifié et fiscalement optimisé. Très bonne gestion qui réduit les risques et augmente vos opportunités.'; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = 'Vous avez commencé à diversifier vos investissements, mais pas suffisamment. Une meilleure répartition permettrait d’améliorer votre sécurité et vos optimisations fiscales.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vos investissements ne sont pas assez diversifiés. Cela peut augmenter vos risques. Élargir vos placements renforcerait votre stratégie patrimoniale.'; }
     }
     else if (qid === 'long-term-investment-capital-gains-tax') {
-      if      (answerValue === 'oui')    { title = 'Excellente approche'; body = 'Vous bénéficiez des régimes fiscaux avantageux sur le long terme (PEA, assurance-vie…), ce qui optimise vos plus-values.'; }
-      else if (answerValue === 'medium') { title = 'Bon début';        body = 'Vous avez une approche à long terme mais ne profitez pas encore de toutes les stratégies fiscales disponibles. Il serait intéressant d’explorer d’autres solutions.'; }
-      else                                { title = 'Bon à savoir';     body = 'Vous n’avez pas encore mis en place de stratégie d’investissement à long terme.'; }
+      if      (answerValue === 'oui')    { title = 'Excellente approche'; body = 'Vous utilisez des dispositifs à long terme (PEA, assurance-vie, etc.) et profitez des régimes fiscaux avantageux. Excellente stratégie pour optimiser vos plus-values.'; }
+      else if (answerValue === 'medium') { title = 'Bon début';        body = 'Vous investissez à long terme, mais sans exploiter toutes les stratégies fiscales disponibles. Explorer d’autres solutions renforcerait votre plan.'; }
+      else                                { title = 'Bon à savoir';     body = 'Vous n’avez pas encore mis en place de stratégie d’investissement à long terme. Pourtant, c’est un levier majeur pour sécuriser et optimiser votre patrimoine.'; }
     }
     else if (qid === 'supplementary-retirement-plan') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous avez mis en place un plan de retraite complémentaire (PER, Madelin, SCPI) avec des versements optimisés, ce qui sécurise votre avenir financier tout en optimisant votre fiscalité.'; }
-      else if (answerValue === 'medium') { title = 'Bon début';  body = 'Vous avez un plan de retraite complémentaire, mais sans stratégie précise. Une analyse plus poussée pourrait améliorer vos bénéfices.'; }
-      else                                { title = 'Bon à savoir'; body = 'Vous n’avez pas encore de plan de retraite complémentaire. Il serait intéressant d’explorer des solutions adaptées à votre situation.'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous avez mis en place un plan de retraite complémentaire (PER, Madelin, SCPI) avec des versements optimisés. Très bonne stratégie : vous sécurisez votre avenir financier tout en réduisant vos impôts.'; }
+      else if (answerValue === 'medium') { title = 'Bon début';  body = 'Vous avez un plan de retraite complémentaire, mais sans stratégie précise. Une analyse plus approfondie permettrait d’améliorer vos bénéfices et votre optimisation fiscale.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’avez pas encore de plan de retraite complémentaire. Explorer des solutions comme le PER ou le Madelin pourrait renforcer votre protection et vos avantages fiscaux.'; }
     }
     else if (qid === 'health-insurance-family-coverage') {
-      if      (answerValue === 'oui')    { title = 'Excellente couverture'; body = 'Votre mutuelle est optimisée tant en termes de protection que de coût, ce qui vous permet de bénéficier des meilleurs soins sans surcoût.'; }
-      else if (answerValue === 'medium') { title = 'Bon début';            body = 'Vous avez une mutuelle, mais elle est soit trop coûteuse, soit avec une couverture moyenne. Une réévaluation pourrait être bénéfique.'; }
-      else                                { title = 'Bon à savoir';         body = 'Vous n’avez pas de mutuelle adaptée. Il est recommandé d’en souscrire une pour couvrir vos besoins de santé et ceux de votre famille.'; }
+      if      (answerValue === 'oui')    { title = 'Excellente couverture'; body = 'Vous disposez d’une mutuelle optimisée en termes de couverture et de coût. Excellente protection pour vous et votre famille.'; }
+      else if (answerValue === 'medium') { title = 'Bon début';            body = 'Vous avez une mutuelle, mais elle est trop coûteuse ou avec une couverture insuffisante. Une réévaluation vous permettrait d’optimiser votre protection.'; }
+      else                                { title = 'Bon à savoir';         body = 'Vous n’avez pas de mutuelle adaptée. Pourtant, elle est essentielle pour couvrir vos besoins de santé et ceux de vos proches.'; }
     }
     else if (qid === 'disability-work-interruption-insurance') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Votre prévoyance couvre efficacement les risques d’arrêt de travail ou d’invalidité avec des indemnités optimisées.'; }
-      else if (answerValue === 'medium') { title = 'Bon début';  body = 'Vous avez une prévoyance, mais elle n’a pas été optimisée. Une analyse plus fine pourrait améliorer votre couverture et vos prestations.'; }
-      else                                { title = 'Bon à savoir'; body = 'Vous n’avez pas de prévoyance. En cas de problème de santé, cela peut avoir un impact financier important.'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous êtes bien couvert avec une prévoyance complète et des indemnités optimisées. C’est une excellente protection en cas de coup dur.'; }
+      else if (answerValue === 'medium') { title = 'Bon début';  body = 'Vous avez une prévoyance, mais sans optimisation réelle. Une analyse détaillée pourrait améliorer vos garanties.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’avez pas de prévoyance. Cela représente un risque majeur en cas de problème de santé ou d’invalidité.'; }
     }
     else if (qid === 'unemployment-protection-strategy') {
-      if      (answerValue === 'oui')    { title = 'Excellente anticipation'; body = 'Vous avez mis en place un dispositif (contrat cadre dirigeant, maintien ARE, cumul emploi) qui vous assure des revenus en cas d’arrêt d’activité.'; }
-      else if (answerValue === 'medium') { title = 'Bon début';             body = 'Vous avez quelques protections, mais elles ne sont pas totalement optimisées. Il serait intéressant de mieux sécuriser votre situation.'; }
-      else                                { title = 'Bon à savoir';          body = 'Vous n’avez pas prévu de solution en cas de chômage. Une réflexion sur ce sujet pourrait être utile.'; }
+      if      (answerValue === 'oui')    { title = 'Excellente anticipation'; body = 'Vous avez mis en place une protection efficace (contrat cadre dirigeant, ARE, cumul emploi…). Excellente anticipation qui sécurise vos revenus.'; }
+      else if (answerValue === 'medium') { title = 'Bon début';             body = 'Vous disposez de quelques sécurités, mais elles restent limitées. Les renforcer permettrait d’assurer une meilleure stabilité financière.'; }
+      else                                { title = 'Bon à savoir';          body = 'Vous n’avez pas de dispositif en cas de chômage. Cela peut fragiliser votre sécurité financière.'; }
     }
     else if (qid === 'retirement-income-forecast-optimization') {
-      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous savez précisément combien vous toucherez à la retraite et avez mis en place une stratégie d’optimisation adaptée.'; }
-      else if (answerValue === 'medium') { title = 'Bon début';  body = 'Vous avez une idée de votre retraite, mais il reste des axes d’amélioration à explorer pour optimiser vos revenus futurs.'; }
-      else                                { title = 'Bon à savoir'; body = 'Vous ne savez pas combien vous toucherez à la retraite. Une étude plus approfondie pourrait vous permettre de mieux préparer votre avenir.'; }
+      if      (answerValue === 'oui')    { title = 'Très bien'; body = 'Vous savez précisément combien vous toucherez à la retraite et avez mis en place une stratégie optimisée. Très bonne anticipation.'; }
+      else if (answerValue === 'medium') { title = 'Bon début';  body = 'Vous avez une idée de votre future retraite, mais sans optimisation complète. Approfondir ce point vous permettrait d’améliorer vos revenus futurs.'; }
+      else                                { title = 'Bon à savoir'; body = 'Vous n’avez pas évalué vos revenus de retraite. Une étude approfondie serait utile pour préparer sereinement votre avenir.'; }
     }
     else if (qid === 'estate-planning-inheritance-tax-optimization') {
-      if      (answerValue === 'oui')    { title = 'Excellente gestion'; body = 'Vous avez une stratégie optimisée pour transmettre votre patrimoine et réduire les droits de succession (donation, SCI, démembrement…).'; }
-      else if (answerValue === 'medium') { title = 'Bon début';           body = 'Vous avez commencé à structurer la transmission de votre patrimoine, mais sans stratégie complète. Une approche plus optimisée pourrait être bénéfique.'; }
-      else                                { title = 'Bon à savoir';        body = 'Vous n’avez pas de stratégie en place pour la transmission de votre patrimoine. Des solutions existent pour réduire les droits de succession et optimiser la transmission à vos proches.'; }
+      if      (answerValue === 'oui')    { title = 'Excellente gestion'; body = 'Vous avez mis en place une stratégie optimisée de transmission (donation, SCI, démembrement…). Excellent moyen de réduire les droits de succession.'; }
+      else if (answerValue === 'medium') { title = 'Bon début';           body = 'Vous avez commencé à préparer la transmission, mais sans stratégie complète. Approfondir cette démarche optimiserait vos avantages fiscaux.'; }
+      else                                { title = 'Bon à savoir';        body = 'Vous n’avez pas de stratégie de transmission. Pourtant, il existe des solutions simples pour réduire les droits de succession et protéger vos proches.'; }
     }
 
     // f) Injecter dans le simulateur uniquement si c'est la question active
