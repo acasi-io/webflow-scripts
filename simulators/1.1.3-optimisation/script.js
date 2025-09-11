@@ -1084,7 +1084,7 @@ function calculOrganisation(questionContainerId) {
       const textEl  = question.querySelector('.opti-sim_info-text');
       if (wrap)   wrap.style.display = 'block';
       if (tEl)    tEl.textContent      = title;
-      if (textEl) textEl.textContent   = body;
+      if (textEl) textEl.innerHTML   = body;
     }
 
     // g) Compter comme répondue
@@ -1273,7 +1273,7 @@ function calculDevelopment(questionContainerId) {
       const textEl  = question.querySelector('.opti-sim_info-text');
       if (wrapper) wrapper.style.display = 'block';
       if (titleEl) titleEl.textContent = title;
-      if (textEl ) textEl.textContent  = body;
+      if (textEl ) textEl.innerHTML  = body;
     }
 
     // g) Compter comme répondue
@@ -1447,7 +1447,7 @@ function calculWage(questionContainerId) {
       const textEl  = question.querySelector('.opti-sim_info-text');
       if (wrapper) wrapper.style.display = 'block';
       if (titleEl) titleEl.textContent = title;
-      if (textEl ) textEl.textContent  = body;
+      if (textEl ) textEl.innerHTML  = body;
     }
 
     // g) Compter comme répondue
@@ -1610,7 +1610,7 @@ function calculProtection(questionContainerId) {
       const bEl  = question.querySelector('.opti-sim_info-text');
       if (wrap) wrap.style.display = 'block';
       if (tEl ) tEl.textContent = title;
-      if (bEl ) bEl.textContent = body;
+      if (bEl ) bEl.innerHTML = body;
     }
 
     // g) Compter comme répondue
