@@ -446,7 +446,7 @@ function renderResults(container) {
 
       // Texte du message
       const messageText = document.createElement('div');
-      messageText.textContent = entry.message;
+      messageText.innerHTML = entry.message;
 
       // Structure finale
       messageWrapper.appendChild(bullet);
