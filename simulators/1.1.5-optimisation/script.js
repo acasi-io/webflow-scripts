@@ -379,7 +379,7 @@ function showResults() {
   renderResults(resultWrapper);
 }
 
-function renderResults(container) {
+/*function renderResults(container) {
   const resultsDiv = container.querySelector('.results') ||
     (() => {
       const d = document.createElement('div');
@@ -460,7 +460,96 @@ function renderResults(container) {
     section.appendChild(resultGrid);
     resultsDiv.appendChild(section);
   });
+}*/
+
+function renderResults(container) {
+  const resultsDiv = container.querySelector('.results') ||
+    (() => {
+      const d = document.createElement('div');
+      d.classList.add('results');
+      container.appendChild(d);
+      return d;
+    })();
+
+  resultsDiv.innerHTML = '';
+
+  // --- Légende simplifiée ---
+  /*const legend = document.createElement('div');
+  legend.className = 'result-legend';
+  legend.innerHTML = `
+    <span><span class="dot red"></span> urgent</span>
+    <span><span class="dot orange"></span> à améliorer</span>
+  `;
+  resultsDiv.appendChild(legend);*/
+
+  // --- Libellés des thèmes ---
+  const THEME_LABELS = {
+    wage: 'Rémunération',
+    development: 'Développement',
+    organisation: 'Organisation',
+    gestion: 'Gestion',
+    protection: 'Protection'
+  };
+
+  const capitalize = (str) => !str ? '' : str.charAt(0).toUpperCase() + str.slice(1);
+
+  // --- Affichage des sections ---
+  Object.entries(finalResults).forEach(([theme, pct]) => {
+    const section = document.createElement('section');
+    section.classList.add('result-section');
+
+    const resultGrid = document.createElement('div');
+    resultGrid.classList.add('result-grid');
+
+    // Titre principal (ex: Organisation : 64%)
+    const title = document.createElement('h3');
+    const themeName = THEME_LABELS[theme] || capitalize(theme);
+    title.textContent = `${themeName} : ${pct}%`;
+
+    const messagesContainer = document.createElement('div');
+    messagesContainer.classList.add('result-messages');
+
+    // --- Groupes de messages ---
+    const entries = Array.isArray(detailedResults[theme]) ? detailedResults[theme] : [];
+
+    const redMessages = entries.filter(e => e.points < 3);
+    const orangeMessages = entries.filter(e => e.points >= 3 && e.points < 5);
+
+    // --- Fonction de création d’un bloc de messages ---
+    function createMessageBlock(messages, titleText, colorClass) {
+      if (!messages.length) return null;
+
+      const block = document.createElement('div');
+      block.classList.add('result-message-group', colorClass);
+
+      const blockTitle = document.createElement('h4');
+      blockTitle.textContent = titleText;
+      block.appendChild(blockTitle);
+
+      messages.forEach(entry => {
+        const p = document.createElement('p');
+        p.innerHTML = entry.message;
+        block.appendChild(p);
+      });
+
+      return block;
+    }
+
+    // Ajouter blocs si contenu
+    const redBlock = createMessageBlock(redMessages, 'Il est urgent de se pencher sur ces points', 'red');
+    const orangeBlock = createMessageBlock(orangeMessages, 'À améliorer', 'orange');
+
+    if (redBlock) messagesContainer.appendChild(redBlock);
+    if (orangeBlock) messagesContainer.appendChild(orangeBlock);
+
+    // Append au grid
+    resultGrid.appendChild(title);
+    resultGrid.appendChild(messagesContainer);
+    section.appendChild(resultGrid);
+    resultsDiv.appendChild(section);
+  });
 }
+
 
 
 
@@ -746,9 +835,9 @@ function calculGestion() {
         'Bravo',
         `Vous avez choisi votre statut juridique <strong>après une analyse approfondie</strong>. C’est une excellente stratégie qui vous permet d’<strong>optimiser votre fiscalité, votre protection sociale et vos possibilités de financement</strong>.`,
         'Bon début',
-        `Vous avez choisi un statut juridique, mais <strong>sans étude détaillée</strong>. C’est un bon début, mais <strong>une analyse plus poussée</strong> pourrait vous permettre de mieux aligner votre statut avec vos objectifs et votre activité. <strong>L’accompagnement d’un expert</strong> serait précieux.`,
+        `<strong>Analysez</strong> plus finement votre statut <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong> pour <strong>mieux l’adapter</strong>.`,
         'Attention',
-        `Votre statut juridique <strong>n’a pas été choisi dans le cadre d’une stratégie réfléchie</strong>. Pour <strong>optimiser vos avantages fiscaux et sociaux</strong>, une analyse approfondie avec un professionnel serait une étape clé.`
+        `Prenez rendez-vous <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong> pour discuter de votre statut et <strong>optimiser</strong> fiscalité et protection sociale.`
       );
     } else if (questionId === 'change-status') {
       fillInfoTextAnswerCondition(
@@ -757,9 +846,9 @@ function calculGestion() {
         'Excellente démarche',
         `Vous avez déjà <strong>envisagé (ou effectué) un changement de statut</strong> pour optimiser votre situation. Cette anticipation est une <strong>démarche stratégique</strong> qui vous permet d’<strong>adapter votre structure à l’évolution de votre activité</strong>.`,
         'Bonne réflexion',
-        `Vous avez déjà <strong>réfléchi à un changement de statut</strong>, sans avoir encore agi. C’est une bonne piste : <strong>approfondir cette démarche avec un expert</strong> pourrait vous aider à mesurer les bénéfices concrets.`,
+        `Approfondissez la possibilité de changer de staut <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong> pour <strong>mesurer les gains</strong>.`,
         'Songez-y',
-        `Vous <strong>n’avez pas encore envisagé de changement de statut</strong>. Pourtant, <strong>adapter sa structure à l’évolution de l’activité</strong> peut représenter une opportunité d’<strong>optimisation fiscale et sociale</strong>. Un conseiller peut vous aider à explorer ces options.`
+        `Pensez à envisager un <strong>changement de statut</strong> pour <strong>optimiser</strong> votre activité. Prenez rendez-vous <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong> maintenant.`
       );
     } else if (questionId === 'other-company-optimisation') {
       fillInfoTextAnswerCondition(
@@ -768,9 +857,9 @@ function calculGestion() {
         'Félicitations',
         `Vous avez structuré votre activité avec un <strong>montage optimisé (holding, SCI, etc.)</strong>. C’est une excellente stratégie pour <strong>maximiser vos avantages fiscaux</strong> et <strong>améliorer la gestion globale de votre entreprise</strong>.`,
         'Bonne initiative',
-        `Vous avez mis en place une structuration, mais <strong>elle n’est pas forcément optimisée</strong>. <strong>Un audit de votre organisation</strong> pourrait vous aider à identifier de nouvelles pistes d’<strong>optimisation fiscale et organisationnelle</strong>.`,
+        `Faites auditer votre montage pour <strong>identifier des optimisations possibles</strong>.`,
         'Attention',
-        `Vous <strong>n’avez pas encore structuré votre activité avec d’autres sociétés</strong>. Pourtant, des montages adaptés (holding, SCI, etc.) peuvent être de <strong>puissants leviers</strong> pour <strong>optimiser votre fiscalité et votre gestion</strong>. Explorer ces options pourrait être intéressant.`
+        `Étudiez les avantages d’une <strong><a href='https://www.acasi.io/comptabilite-holding' target='_blank'>holding</a> ou <a href='https://www.acasi.io/sci' target='_blank'>SCI</a></strong> pour mieux optimiser.`
       );
     } else if (questionId === 'organized-administrative-management') {
       fillInfoTextAnswerCondition(
@@ -779,9 +868,9 @@ function calculGestion() {
         'Super',
         `Vous avez <strong>délégué la gestion administrative à un prestataire externe</strong> (expert-comptable, gestionnaire de paie, etc.). C’est une excellente décision qui vous fait <strong>gagner du temps</strong> et vous apporte un <strong>suivi fiable et stratégique</strong>.`,
         'Bon début',
-        `Vous <strong>gérez l’administratif en interne</strong> avec un outil adapté. C’est une bonne solution, mais <strong>l’accompagnement d’un expert</strong> pourrait renforcer la fiabilité et <strong>optimiser encore davantage votre organisation</strong>.`,
+        `Pensez à <strong>renforcer votre organisation</strong> avec l’appui d’un expert.`,
         'Attention',
-        `Vous <strong>gérez seul(e) toute la partie administrative</strong>. Cela peut vite devenir <strong>chronophage et source d’erreurs</strong>. Déléguer ou vous équiper d’un outil adapté vous permettrait de <strong>gagner en sérénité et en efficacité</strong>.`
+        `Mettez en place un outil ou <strong>déléguez</strong> pour éviter erreurs et perte de temps.`
       );
     } else if (questionId === 'has-management-calendar') {
       fillInfoTextAnswerCondition(
@@ -790,9 +879,9 @@ function calculGestion() {
         'Excellente organisation',
         `Vous avez un <strong>calendrier précis</strong> et respectez vos échéances. C’est une excellente organisation qui <strong>sécurise votre gestion</strong> et <strong>limite les risques d’oubli ou de sanction</strong>.`,
         'Vous êtes sur la bonne voie',
-        `Vous avez un calendrier mais <strong>le suivi reste irrégulier</strong>. <strong>Améliorer votre rigueur</strong> ou <strong>automatiser des rappels</strong> vous permettrait d’éviter retards et imprévus.`,
+        `<strong>Automatisez</strong> vos rappels pour sécuriser vos échéances.`,
         'Attention',
-        `Vous <strong>n’avez pas de calendrier pour vos échéances administratives</strong>. C’est un <strong>risque majeur d’oubli ou de pénalité</strong>. Mettre en place un suivi, même simple avec un <strong>outil numérique</strong>, serait une vraie optimisation.`
+        `<strong><a href='https://culturefreelance.com/comment-organiser-son-planning-hebdomadaire-en-freelance-avec-modele/' target='_blank'>Créez un calendrier</a></strong> simple (Google Agenda, Notion…) pour éviter les pénalités.`
       );
     } else if (questionId === 'how-follow-payments') {
       fillInfoTextAnswerCondition(
@@ -801,9 +890,9 @@ function calculGestion() {
         'Parfait',
         `Vous utilisez un <strong>outil automatisé</strong> pour vos paiements et relances. C’est une excellente pratique qui <strong>sécurise votre trésorerie</strong> et réduit les <strong>risques d’impayés</strong>.`,
         'Bon suivi',
-        `Vous faites un <strong>suivi manuel régulier</strong>. C’est sérieux, mais <strong>l’automatisation</strong> vous ferait gagner en temps et en fiabilité.`,
+        `Passez à <strong>l’automatisation</strong> pour gagner du temps et fiabilité.`,
         'Attention',
-        `Vous gérez vos paiements et relances <strong>au cas par cas, sans processus clair</strong>. C’est risqué pour votre trésorerie. <strong>Mettre en place un suivi structuré</strong> ou un <strong>outil dédié</strong> serait une priorité d’optimisation.`
+        `Mettez en place un <strong><a href='https://culturefreelance.com/recouvrement-amiable-en-freelance/' target='_blank'>suivi structuré</a></strong> pour réduire les impayés.`
       );
     } else if (questionId === 'has-optimized-billing-software') {
       fillInfoTextAnswerCondition(
@@ -812,9 +901,9 @@ function calculGestion() {
         "Bravo",
         `Vous utilisez un <strong>logiciel de facturation avec automatisations complètes</strong> (facturation, paiements, relances). C’est un <strong>levier puissant</strong> pour <strong>sécuriser et fluidifier votre gestion</strong>.`,
         "C'est un bon début",
-        `Vous avez un logiciel de facturation, mais <strong>sans automatisations</strong> pour les paiements et relances. <strong>Ajouter ces fonctions</strong> permettrait d’aller plus loin dans l’optimisation.`,
+        `<strong>Ajoutez des automatisation</strong>s à votre logiciel de facturation pour aller plus loin dans l’efficacité.`,
         "Attention",
-        `Vous <strong>n’utilisez pas encore de logiciel de facturation optimisé</strong>. C’est une <strong>étape essentielle</strong> pour <strong>gagner du temps, limiter les erreurs et améliorer le suivi de votre trésorerie</strong>.`
+        `Installez un <strong><a href='https://culturefreelance.com/comment-facturer-un-client-en-freelance-modele/' target='_blank'>logiciel de facturation</a></strong> pour gagner temps et fiabilité.`
       );
     } else if (questionId === 'has-optimized-pro-account') {
       fillInfoTextAnswerCondition(
@@ -823,9 +912,9 @@ function calculGestion() {
         "Excellent choix",
         `Votre banque est <strong>adaptée à votre activité</strong>, avec des <strong>frais réduits</strong> et des <strong>services performants</strong>. C’est un excellent choix pour <strong>optimiser la gestion financière</strong> de votre entreprise.`,
         "C'est un bon début",
-        `Votre banque <strong>répond partiellement à vos besoins</strong>. <strong>Comparer d’autres offres</strong> pourrait vous permettre de <strong>réduire vos frais</strong> et de bénéficier de <strong>services plus adaptés</strong>.`,
+        `<strong>Comparez d’autres offres</strong> de banques pour réduire frais et optimiser services.`,
         "Attention",
-        `Vous utilisez une banque <strong>peu ou pas adaptée à votre activité</strong>. Cela peut vous <strong>coûter cher en frais</strong> et <strong>limiter votre flexibilité</strong>. Explorer des <strong>solutions spécialisées</strong> serait une optimisation clé.`
+        `<strong>Changez de banque</strong> pour réduire vos coûts et gagner en flexibilité.`
       );
     } else if (questionId === 'is-up-to-date') {
       fillInfoTextAnswerCondition(
@@ -834,9 +923,9 @@ function calculGestion() {
         "Félicitations",
         `Vous êtes <strong>parfaitement à jour</strong> dans vos obligations. <strong>Bravo</strong>, c’est un <strong>pilier essentiel</strong> pour la stabilité et la <strong>sérénité de votre gestion</strong>.`,
         "C'est un bon début",
-        `Vous êtes <strong>globalement à jour</strong>, mais parfois en retard. <strong>Anticiper davantage</strong> et mettre en place un <strong>suivi plus rigoureux</strong> vous éviterait les imprévus.`,
+        `Anticipez mieux vos échéances administratives pour éviter les retards.`,
         "Attention",
-        `Vous <strong>n’êtes pas à jour</strong> dans vos obligations administratives et fiscales. C’est un <strong>risque important</strong>. <strong>Mettre en place un suivi</strong> ou vous faire accompagner par un <strong>expert</strong> serait fortement recommandé.`
+        `Mettez en place un suivi ou <strong><a href='https://www.acasi.io/q0' target='_blank'>consultez un expert</a></strong> pour rattraper vos obligations administratives et fiscales.`
       );
     }
 
@@ -1033,48 +1122,48 @@ function calculOrganisation(questionContainerId) {
     }
     else if (qid === 'hours-worked') {
       if      (answerValue === 'oui')    { title = 'Félicitations'; body = `Vous travaillez entre <strong>35 et 45h par semaine</strong>, un rythme équilibré qui maximise votre productivité tout en préservant votre bien-être.`; }
-      else if (answerValue === 'medium') { title = 'Bon équilibre entre travail et vie personnelle'; body = `Vous travaillez entre <strong>25 et 35h par semaine</strong>. C’est un bon équilibre pro/perso, veillez toutefois à ce que ce rythme reste compatible avec vos objectifs de croissance.`; }
-      else                                { title = 'Attention'; body = `Vous travaillez entre <strong>45 et 55h par semaine</strong>. Ce rythme intensif peut être efficace à court terme, mais attention au <strong>risque de surmenage</strong>. Une meilleure organisation pourrait répartir la charge plus durablement.`; }
+      else if (answerValue === 'medium') { title = 'Bon équilibre entre travail et vie personnelle'; body = `Vérifiez que le rythme 25-35h / semaine reste compatible avec <strong>vos objectifs de croissance</strong>.`; }
+      else                                { title = 'Attention'; body = `Réduisez vos heures ou optimisez votre organisation pour <strong><a href='https://culturefreelance.com/freelance-comment-eviter-le-burn-out/' target='_blank'>éviter le surmenage</a></strong>.`; }
     }
     else if (qid === 'planned-weeks') {
       if      (answerValue === 'oui')    { title = 'Excellent'; body = `Vous planifiez votre semaine avec <strong>précision</strong> et <strong>anticipez vos priorités</strong>. C’est une excellente stratégie pour <strong>optimiser votre temps</strong> et rester concentré.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous planifiez <strong>partiellement vos semaines</strong>. C’est une bonne base, mais un <strong>planning plus structuré</strong> vous aiderait à mieux gérer vos priorités et éviter les imprévus.`; }
-      else                                { title = 'Attention'; body = `Vous gérez vos tâches <strong>au jour le jour, sans plan clair</strong>. Cela peut générer <strong>stress et désorganisation</strong>. Structurer vos semaines avec un planning précis vous ferait <strong>gagner en efficacité</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Structurez davantage <strong><a href='https://culturefreelance.com/comment-organiser-son-planning-hebdomadaire-en-freelance-avec-modele/' target='_blank'>votre planning</a></strong> pour mieux gérer vos priorités.`; }
+      else                                { title = 'Attention'; body = `Créez un <strong><a href='https://culturefreelance.com/comment-organiser-son-planning-hebdomadaire-en-freelance-avec-modele/' target='_blank'>planning hebdo</a></strong> clair pour éviter stress et imprévus.`; }
     }
     else if (qid === 'daily-routine-productivity') {
       if      (answerValue === 'oui')    { title = 'Bravo'; body = `Vous avez une <strong>routine quotidienne</strong> avec des <strong>rituels bien définis</strong>. C’est une excellente habitude pour rester <strong>productif et concentré</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Vous êtes sur la bonne voie'; body = `Vous avez une certaine routine, mais <strong>sans régularité</strong>. En l’ancrant davantage, vous pourriez améliorer encore votre <strong>efficacité</strong> et votre <strong>gestion du temps</strong>.`; }
-      else                                { title = 'Attention'; body = `Vous <strong>n’avez pas de routine structurée</strong>. Cela peut nuire à votre <strong>concentration</strong> et à votre <strong>énergie</strong>. Mettre en place quelques <strong>rituels fixes</strong> renforcerait votre productivité.`; }
+      else if (answerValue === 'medium') { title = 'Vous êtes sur la bonne voie'; body = `<strong><a href='https://culturefreelance.com/la-methode-du-batching-pour-gagner-du-temps/' target='_blank'>Stabilisez vos rituels</a></strong> pour améliorer concentration et efficacité.`; }
+      else                                { title = 'Attention'; body = `Mettez en place <strong><a href='https://culturefreelance.com/la-methode-du-batching-pour-gagner-du-temps/' target='_blank'>une routine</a></strong> simple pour mieux gérer votre énergie.`; }
     }
     else if (qid === 'client-acquisition-strategy') {
       if      (answerValue === 'oui')    { title = 'Super'; body = `Vous avez une <strong>stratégie claire et structurée</strong> pour prospecter, avec des <strong>actions régulières</strong>. C’est une approche idéale pour développer votre activité de manière prévisible.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous avez une stratégie, mais vos <strong>actions manquent de régularité</strong> ou de suivi. Les rendre plus <strong>systématiques</strong> vous aiderait à améliorer vos résultats.`; }
-      else                                { title = 'Attention'; body = `Vous prospectez <strong>sans véritable stratégie</strong>. Cela freine votre croissance. Construire un <strong>plan structuré</strong> avec des <strong>actions mesurables</strong> renforcerait votre acquisition de clients.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Rendez vos actions de prospection plus systématiques pour améliorer vos résultats. Vous pouvez utiliser <strong><a href='https://culturefreelance.com/utiliser-linkedin-pour-prospecter/' target='_blank'>LinkedIn</a></strong> ou <strong><a href='https://culturefreelance.com/comment-prospecter-avec-chatgpt/' target='_blank'>ChatGPT</a></strong>.`; }
+      else                                { title = 'Attention'; body = `Créez un vrai plan de prospection pour accélérer votre croissance avec <strong><a href='https://culturefreelance.com/utiliser-linkedin-pour-prospecter/' target='_blank'>LinkedIn</a></strong> ou <strong><a href='https://culturefreelance.com/comment-prospecter-avec-chatgpt/' target='_blank'>ChatGPT</a></strong>.`; }
     }
     else if (qid === 'weekly-admin-time') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Vous réservez un <strong>créneau précis</strong> chaque semaine pour vos tâches administratives. C’est une excellente organisation qui évite l’<strong>accumulation</strong> et les <strong>oublis</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bonne initiative'; body = `Vous consacrez du temps à l’administratif, mais de manière <strong>peu optimisée</strong>. Structurer davantage ce temps pourrait <strong>réduire la charge mentale</strong> et améliorer l’<strong>efficacité</strong>.`; }
-      else                                { title = 'Attention'; body = `Vous gérez l’administratif <strong>au jour le jour</strong>, ce qui augmente les <strong>risques d’oublis</strong> et de <strong>stress</strong>. Bloquer un <strong>créneau régulier</strong> serait une optimisation clé.`; }
+      else if (answerValue === 'medium') { title = 'Bonne initiative'; body = `Optimisez le temps dédié à l’administratif pour réduire votre charge mentale.`; }
+      else                                { title = 'Attention'; body = `Fixez un créneau hebdo pour éviter les oublis et le stress administratif.`; }
     }
     else if (qid === 'burnout-prevention-breaks') {
       if      (answerValue === 'oui')    { title = 'Bravo'; body = `Vous prenez régulièrement au moins <strong>5 semaines de repos par an</strong>. C’est une excellente habitude pour <strong>préserver votre énergie</strong> et éviter le <strong>burn-out</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bonne initiative'; body = `Vous prenez des vacances, mais <strong>pas assez</strong> ou de manière <strong>irrégulière</strong>. Planifier davantage de <strong>vraies pauses</strong> vous aiderait à maintenir un meilleur équilibre.`; }
-      else                                { title = 'Attention'; body = `Vous prenez <strong>rarement, voire jamais, de pauses</strong>. Cela met votre <strong>santé</strong> et votre <strong>productivité</strong> en danger. Intégrer du <strong>repos</strong> dans votre agenda est essentiel.`; }
+      else if (answerValue === 'medium') { title = 'Bonne initiative'; body = `<strong><a href='https://culturefreelance.com/comment-organiser-ses-vacances-quand-on-est-freelance/' target='_blank'>Planifiez des pauses plus régulières</a></strong> pour préserver votre énergie.`; }
+      else                                { title = 'Attention'; body = `<strong><a href='https://culturefreelance.com/comment-organiser-ses-vacances-quand-on-est-freelance/' target='_blank'>Ajoutez du repos</a></strong> à votre agenda pour protéger santé et productivité.`; }
     }
     else if (qid === 'work-schedule-balance') {
       if      (answerValue === 'oui')    { title = 'Parfait'; body = `Vos horaires sont <strong>fixes</strong> et adaptés à vos <strong>pics de productivité</strong>. C’est une excellente manière d’allier <strong>efficacité</strong> et <strong>équilibre de vie</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Vous avez une certaine organisation'; body = `Vous avez une organisation horaire, mais vos <strong>variations fréquentes</strong> nuisent parfois à votre <strong>efficacité</strong>. Stabiliser vos horaires pourrait améliorer vos journées.`; }
-      else                                { title = 'Attention'; body = `Vous travaillez à <strong>n’importe quelle heure, sans cadre défini</strong>. Cela peut nuire à la fois à votre <strong>productivité</strong> et à votre <strong>équilibre personnel</strong>. Fixer des <strong>plages régulières</strong> serait bénéfique.`; }
+      else if (answerValue === 'medium') { title = 'Vous avez une certaine organisation'; body = `<strong><a href='https://culturefreelance.com/comprendre-loi-de-carlson/' target='_blank'>Stabilisez vos horaires</a></strong> pour gagner en efficacité.`; }
+      else                                { title = 'Attention'; body = `Fixez des <strong><a href='https://culturefreelance.com/comprendre-loi-de-carlson/' target='_blank'>plages horaires régulières</a></strong> pour structurer vos journées.`; }
     }
     else if (qid === 'task-delegation') {
       if      (answerValue === 'oui')    { title = 'Très bonne approche'; body = `Vous <strong>déléguez</strong> ce qui n’est pas votre <strong>cœur de métier</strong> (comptabilité, communication, etc.). C’est une excellente stratégie pour <strong>gagner du temps</strong> et vous concentrer sur l’<strong>essentiel</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous déléguez, mais de manière <strong>limitée</strong>. <strong>Externaliser davantage</strong> de tâches pourrait renforcer votre <strong>productivité</strong> et réduire votre <strong>charge de travail</strong>.`; }
-      else                                { title = 'Attention'; body = `Vous <strong>gérez tout vous-même</strong>. Cela peut rapidement devenir une <strong>surcharge</strong>. <strong>Déléguer certaines missions</strong> vous permettrait de vous recentrer sur votre véritable <strong>valeur ajoutée</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Externalisez davantage vos tâches pour libérer du temps stratégique.`; }
+      else                                { title = 'Attention'; body = `Déléguez certaines tâches pour éviter la surcharge.`; }
     }
     else if (qid === 'monthly-learning-time') {
       if      (answerValue === 'oui')    { title = 'Bravo'; body = `Vous consacrez entre <strong>6 et 9h par mois</strong> à votre formation. C’est un <strong>excellent investissement</strong> pour rester <strong>compétitif</strong> et progresser constamment.`; }
-      else if (answerValue === 'medium') { title = 'Bon investissement'; body = `Vous consacrez entre <strong>3 et 6h par mois</strong> à vous former. C’est une <strong>bonne base</strong>, mais <strong>augmenter légèrement ce temps</strong> renforcerait encore vos <strong>compétences</strong>.`; }
-      else                                { title = 'Attention'; body = `Vous consacrez <strong>moins de 3h par mois</strong> à la formation. Or, rester en <strong>veille</strong> et apprendre régulièrement est essentiel pour évoluer. Intégrer plus de <strong>formation</strong> à votre emploi du temps serait une vraie optimisation.`; }
+      else if (answerValue === 'medium') { title = 'Bon investissement'; body = `Augmentez légèrement le temps de <strong><a href='https://culturefreelance.com/les-formations-gratuites-pour-se-lancer-en-freelance/' target='_blank'>formation</a></strong> pour progresser plus vite.`; }
+      else                                { title = 'Attention'; body = ` Intégrez plus de <strong><a href='https://culturefreelance.com/les-formations-gratuites-pour-se-lancer-en-freelance/' target='_blank'>formation</a></strong> pour rester compétitif.`; }
     }
 
     // f) Injecter dans le simulateur si c’est la question active
@@ -1159,111 +1248,111 @@ function calculDevelopment(questionContainerId) {
 
     if (qid === 'unique-value-proposition') {
       if      (answerValue === 'oui')    { title = 'Bravo'; body = `Vous avez une <strong>proposition de valeur claire et différenciante</strong>. C’est un atout majeur pour <strong>attirer les bons clients</strong> et <strong>vous démarquer</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Votre proposition de valeur existe mais <strong>manque encore de clarté ou de différenciation</strong>. Travailler votre <strong>message</strong> et votre <strong>communication</strong> la rendrait plus percutante.`; }
-      else                                { title = 'Attention'; body = `Vous n’avez pas encore <strong>défini clairement votre proposition de valeur</strong>. Clarifier <strong>ce qui vous rend unique</strong> est une priorité pour convaincre vos clients.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `<strong>Clarifiez votre message</strong> et différenciez-vous (travail éditorial / page offres).`; }
+      else                                { title = 'Attention'; body = `Définissez ce qui vous rend <strong>unique</strong> par rapport à vos concurrent (atelier rapide + page dédiée).`; }
     }
     else if (qid === 'networking-events-participation') {
       if      (answerValue === 'oui')    { title = 'Excellente démarche'; body = `Vous participez régulièrement à des <strong>événements stratégiques</strong>. Excellente démarche pour <strong>développer votre réseau</strong> et accéder à de <strong>nouvelles opportunités</strong>.`; }
-      else if (answerValue === 'medium') { title = 'C\'est un bon début'; body = `Vous participez à certains événements, mais <strong>sans réelle stratégie</strong>. Mieux <strong>choisir vos rendez-vous</strong> et fixer des <strong>objectifs</strong> augmenterait les bénéfices.`; }
-      else                                { title = 'Attention'; body = `Vous ne participez pas à des événements professionnels. Or, ces rencontres sont un <strong>excellent moyen</strong> de développer votre réseau et de <strong>trouver des clients</strong>. En intégrer quelques-uns à votre agenda serait un vrai plus.`; }
+      else if (answerValue === 'medium') { title = 'C\'est un bon début'; body = `Sélectionnez mieux les <strong>évènements professionnels</strong> et fixez des objectifs mesurables.`; }
+      else                                { title = 'Attention'; body = `Ajoutez 1–2 <strong>évènements professionnels</strong> pertinents au calendrier ce trimestre.`; }
     }
     else if (qid === 'online-visibility-channels') {
       if      (answerValue === 'oui')    { title = 'Parfait'; body = `Vous utilisez <strong>LinkedIn</strong> (et d’autres canaux) de manière <strong>régulière et stratégique</strong>, ce qui renforce votre <strong>crédibilité</strong> et attire de <strong>nouveaux clients</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous êtes présent(e) sur LinkedIn, mais <strong>sans réelle stratégie</strong>. Mettre en place un <strong>plan de contenu clair et régulier</strong> améliorerait fortement votre visibilité.`; }
-      else                                { title = 'Attention'; body = `Vous n’utilisez pas encore LinkedIn ou d’autres canaux. Ce sont des <strong>leviers puissants</strong> pour <strong>attirer des clients</strong> et <strong>renforcer votre positionnement</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Créez un <strong><a href='https://culturefreelance.com/utiliser-metricool-pour-gerer-ses-reseaux-sociaux/' target='_blank'>plan éditorial</a></strong> simple (2-3 posts / semaine + messages ciblés).`; }
+      else                                { title = 'Attention'; body = `Ouvrez un canal prioritaire (LinkedIn) et lancez 1 routine hebdo.`; }
     }
     else if (qid === 'client-conversion-system') {
       if      (answerValue === 'oui')    { title = 'Félicitations'; body = `Vous avez mis en place une <strong>stratégie d’acquisition claire, optimisée et suivie</strong>, un levier puissant pour une croissance <strong>stable et prévisible</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous avez un système d’acquisition, mais <strong>pas totalement optimisé</strong>. L’<strong>analyser</strong> et l’<strong>améliorer</strong> vous offrirait de meilleurs résultats.`; }
-      else                                { title = 'Attention'; body = `Vous n’avez pas encore de <strong>système structuré</strong> pour attirer des clients. Construire une stratégie (<strong>SEO, publicité, inbound</strong>) serait une étape clé pour booster votre croissance.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Formalisez votre système d’acquisition et suivez 3 KPIs pour l’améliorer.`; }
+      else                                { title = 'Attention'; body = `Mettez en place une stratégie simple (SEO/Ads + <strong><a href='https://culturefreelance.com/freelance-9-lead-magnet-pour-votre-activite/' target='_blank'>lead magnet</a></strong>) et utilisez un <strong><a href='https://culturefreelance.com/comment-utiliser-un-crm-en-freelance/' target='_blank'>CRM</a></strong> pour tout centraliser.`; }
     }
     else if (qid === 'mentorship-or-peer-support') {
       if      (answerValue === 'oui')    { title = 'Super'; body = `Vous bénéficiez d’un <strong>mentor</strong> ou d’un <strong>groupe d’entrepreneurs</strong>, une ressource précieuse pour <strong>progresser plus vite</strong> et <strong>éviter les erreurs</strong>.`; }
-      else if (answerValue === 'medium') { title = 'C\'est un bon début'; body = `Vous avez un accompagnement, mais <strong>pas régulier ou approfondi</strong>. Le rendre plus <strong>constant</strong> accélérerait votre développement.`; }
-      else                                { title = 'Attention'; body = `Vous n’êtes pas accompagné par un mentor ni un réseau. Ces échanges apportent des <strong>conseils précieux</strong> et <strong>accélèrent la progression</strong>.`; }
+      else if (answerValue === 'medium') { title = 'C\'est un bon début'; body = `Passez à un suivi mensuel dans votre accompagnement avec objectifs et relectures.`; }
+      else                                { title = 'Attention'; body = `Rejoignez un <strong><a href='https://culturefreelance.com/les-8-communautes-de-freelances-a-rejoindre-absolument/' target='_blank'>groupe / communauté</a></strong> ou trouvez un mentor ce mois-ci.`; }
     }
     else if (qid === 'competitor-analysis') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Vous analysez régulièrement vos <strong>concurrents</strong> et <strong>ajustez votre offre</strong> en conséquence, une excellente pratique pour rester <strong>compétitif</strong>.`; }
-      else if (answerValue === 'medium') { title = 'C\'est un bon début'; body = `Vous observez vos concurrents de manière <strong>irrégulière</strong>. Structurer votre <strong>veille</strong> renforcerait votre positionnement et l’<strong>innovation</strong>.`; }
-      else                                { title = 'Attention'; body = `Vous n’analysez pas vos concurrents. Les connaître est <strong>essentiel</strong> pour vous <strong>différencier</strong> et affiner votre offre. Mettre en place une veille simple serait déjà un vrai pas en avant.`; }
+      else if (answerValue === 'medium') { title = 'C\'est un bon début'; body = `Cadrez une <strong>veille mensuelle de vos concurrents</strong> (prix, offres, messages).`; }
+      else                                { title = 'Attention'; body = `Créez une grille simple de <strong>veille et comparez</strong> 5 concurrents.`; }
     }
     else if (qid === 'offer-or-model-innovation') {
       if      (answerValue === 'oui')    { title = 'Excellent'; body = `Vous <strong>innovez régulièrement</strong> dans votre offre ou votre modèle économique, une excellente stratégie pour <strong>rester compétitif</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous innovez, mais <strong>pas de manière systématique</strong>. Rendre le processus plus <strong>régulier</strong> ouvrirait de nouvelles opportunités.`; }
-      else                                { title = 'Attention'; body = `Votre offre n’a pas <strong>évolué récemment</strong>. L’<strong>innovation</strong> est pourtant clé pour se <strong>démarquer</strong> et anticiper les évolutions du marché. Explorer de nouvelles idées dynamiserait votre activité.'`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Rendez <strong><a href='https://culturefreelance.com/comprendre-les-tendances-du-marche-freelance-en-2025/' target='_blank'>l’innovation de votre offre</a></strong> régulière (1 test/mois, retour client).`; }
+      else                                { title = 'Attention'; body = `Identifiez <strong><a href='https://culturefreelance.com/comprendre-les-tendances-du-marche-freelance-en-2025/' target='_blank'>une amélioration d’offre</a></strong> à prototyper ce trimestre.`; }
     }
     else if (qid === 'business-diversification-plan') {
       if      (answerValue === 'oui')    { title = 'Très bonne stratégie'; body = `Vous avez une <strong>stratégie claire de diversification</strong>, excellente approche pour la <strong>pérennité</strong> et la <strong>croissance</strong> de votre activité.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous envisagez une diversification mais <strong>sans plan structuré</strong>. Définir des <strong>actions concrètes</strong> aiderait à passer à l’étape suivante.`; }
-      else                                { title = 'Attention'; body = `Vous n’avez pas prévu de diversifier votre activité. Pourtant, cela permet de trong>réduire les risques</strong> et d'<strong>ouvrir de nouveaux marchés</strong>. Y réfléchir dès maintenant pourrait être une bonne opportunité.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Priorisez un axe de <strong>diversification de votre activité</strong> et listez 3 actions concrètes.`; }
+      else                                { title = 'Attention'; body = `Évaluez un nouveau service / marché avec mini-étude pour <strong>diversifier votre activité</strong>.`; }
     }
     else if (qid === 'mileage-allowance-usage') {
       if      (answerValue === 'oui')    { title = 'Bravo'; body = `Vous utilisez les <strong>indemnités kilométriques</strong> : très bon choix pour <strong>optimiser vos frais de déplacement</strong> et bénéficier d’un <strong>avantage fiscal</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon choix'; body = `Vous utilisez un <strong>véhicule professionnel</strong>. C’est une bonne alternative, mais pensez à vérifier si les indemnités kilométriques ou d’autres dispositifs seraient <strong>plus avantageux</strong> dans votre situation.`; }
-      else if (answerValue === 'non')     { title = 'Bon à savoir'; body = `Vous utilisez votre voiture personnelle <strong>sans demander les indemnités kilométriques</strong>. Les réclamer permettrait de <strong>récupérer une somme intéressante</strong>.`; }
-      else { title = "Pas d'optimisation supplémentaire"; body = `Vous n’utilisez pas de <strong>véhicule personnel</strong> pour vos déplacements professionnels. Pas de frais à optimiser sur ce point.` }
+      else if (answerValue === 'medium') { title = 'Bon choix'; body = `Comparez véhicule professionnel vs <strong><a href='https://comptapedia.fr/indemnites-kilometriques/' target='_blank'>indemnités kilométriques</a></strong> pour le meilleur net.`; }
+      else if (answerValue === 'non')     { title = 'Bon à savoir'; body = `Activez les <strong><a href='https://comptapedia.fr/indemnites-kilometriques/' target='_blank'>indemnités kilométriques</a></strong> sur vos trajets professionnels (barème + suivi).`; }
+      else { title = "Pas d'optimisation supplémentaire"; body = `Vous n'avaez pas de voiture, donc pas de frais à optimiser sur ce point.` }
     }
     else if (qid === 'holiday-voucher-setup') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Vous <strong>maximisez</strong> le montant des <strong>chèques vacances</strong> (jusqu’à 554,40 € en 2024), une optimisation qui <strong>réduit vos charges</strong> et améliore votre qualité de vie.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous utilisez les chèques vacances, mais <strong>pas à leur plein potentiel</strong>. Atteindre le <strong>plafond</strong> permettrait d’optimiser davantage vos avantages.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’utilisez pas encore les <strong>chèques vacances</strong>. C’est une opportunité simple pour <strong>réduire vos charges</strong> et bénéficier d’un avantage fiscal intéressant.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Montez progressivement au plafond des <strong><a href='https://www.acasi.io/optimisations-independant' target='_blank'>chèques vacances</a></strong> pour maximiser l’avantage. `; }
+      else                                { title = 'Bon à savoir'; body = `Mettez en place les <strong><a href='https://www.acasi.io/optimisations-independant' target='_blank'>chèques vacances</a></strong> pour réduire vos charges.`; }
     }
     else if (qid === 'cesu-tax-benefits') {
       if      (answerValue === 'oui')    { title = 'Félicitations'; body = `Vous exploitez pleinement le dispositif <strong>CESU</strong> (jusqu’à 2 540 €), un excellent moyen d’<strong>alléger vos impôts</strong> tout en profitant de services à domicile.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous utilisez les CESU de manière <strong>partielle</strong>. Monter jusqu’au <strong>plafond</strong> maximiserait vos économies fiscales.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’utilisez pas le dispositif <strong>CESU</strong>, alors qu’il <strong>réduit vos charges</strong> et facilite le recours à des <strong>services personnels</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Augmentez jusqu’au plafond des <strong><a href='https://comptapedia.fr/cesu/' target='_blank'>CESU</a></strong> pour <strong>maximiser</strong> l’économie.`; }
+      else                                { title = 'Bon à savoir'; body = `Activez les <strong><a href='https://comptapedia.fr/cesu/' target='_blank'>CESU</a></strong> pour <strong>alléger vos impôt</strong>s et votre charge mentale.`; }
     }
     else if (qid === 'expense-tracking-setup') {
       if      (answerValue === 'oui')    { title = 'Parfait'; body = `Vous <strong>suivez et optimisez</strong> chaque dépense, une pratique qui garantit des <strong>économies substantielles</strong> et une gestion fiable.`; }
-      else if (answerValue === 'medium') { title = 'Vous êtes sur la bonne voie'; body = `Vous enregistrez vos notes de frais, mais de manière <strong>pas totalement rigoureuse</strong>. Un suivi plus <strong>précis</strong> éviterait des pertes financières.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous ne suivez pas vos notes de frais. Cela peut entraîner des erreurs et des coûts supplémentaires. Structurer un <strong>suivi régulier</strong> est une optimisation <strong>clé</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Vous êtes sur la bonne voie'; body = `Formalisez la procédure des notes de frais et faîtes des contrôles mensuels.`; }
+      else                                { title = 'Bon à savoir'; body = `Installez un outil de notes de frais et centralisez-les.`; }
     }
     else if (qid === 'expense-optimization-strategies') {
       if      (answerValue === 'oui')    { title = 'Excellent'; body = `Vous exploitez <strong>tous les leviers possibles</strong> (primes, exonérations, forfaits…) pour <strong>réduire vos charges</strong> : très bonne gestion.`; }
-      else if (answerValue === 'medium') { title = 'Vous avez déjà pris de bonnes initiatives'; body = `Vous optimisez déjà certaines charges, mais <strong>pas toutes</strong>. Un <strong>audit régulier</strong> pourrait révéler d’autres économies.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’avez pas encore exploré les dispositifs d’<strong>optimisation des charges</strong>, une opportunité directe pour <strong>améliorer la rentabilité</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Vous avez déjà pris de bonnes initiatives'; body = `Identifiez 2–3 <strong><a href='https://www.acasi.io/optimisations-independant' target='_blank'>leviers supplémentaires</a></strong> à activer pour optimiser vos charges.`; }
+      else                                { title = 'Bon à savoir'; body = `Faites un mini-audit pour repérer des <strong><a href='https://www.acasi.io/optimisations-independant' target='_blank'>économies rapides</a></strong> sur vos charges.`; }
     }
     else if (qid === 'project-tools-automation') {
       if      (answerValue === 'oui')    { title = 'Félicitations'; body = `Vous utilisez pleinement des outils comme <strong>Notion, Trello, Zapier</strong> : excellente gestion, plus de <strong>productivité</strong> et moins de <strong>charge mentale</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Vous utilisez déjà des outils, c’est un bon début'; body = `Vous utilisez déjà certains outils, mais de manière <strong>partielle</strong>. Une meilleure <strong>intégration</strong> et <strong>automatisation</strong> boosterait votre efficacité.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous <strong>n’utilisez pas</strong> encore d’outils de gestion ou d’automatisation. Tester <strong>Notion, Trello ou Zapier</strong> pourrait vous faire gagner beaucoup de temps et de clarté.`; }
+      else if (answerValue === 'medium') { title = 'Vous utilisez déjà des outils, c’est un bon début'; body = `Intégrez vos outils de gestion de projets et <strong><a href='https://culturefreelance.com/comment-automatiser-taches-repetitives-freelances/' target='_blank'>automatisez les tâches récurrentes</a></strong>.`; }
+      else                                { title = 'Bon à savoir'; body = `Déployez un outil (<strong><a href='https://culturefreelance.com/comment-les-freelances-utilisent-notion-pour-sorganiser/' target='_blank'>Notion</a></strong> / Trello) et une <strong><a href='https://culturefreelance.com/comment-automatiser-taches-repetitives-freelances/' target='_blank'>automatisation clé</a></strong>.`; }
     }
     else if (qid === 'optimized-work-routine') {
       if      (answerValue === 'oui')    { title = 'Bravo'; body = `Vous avez mis en place une <strong>routine claire et régulière</strong>. C’est une excellente habitude pour maximiser votre <strong>concentration</strong> et votre <strong>productivité</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous avez une routine, mais elle <strong>manque de discipline</strong>. La rendre plus <strong>régulière</strong> améliorerait votre efficacité.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’avez pas encore de <strong>routine structurée</strong>. En mettre une en place progressivement vous aiderait à mieux <strong>gérer votre énergie</strong> au quotidien.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Stabilisez vos horaires et <strong><a href='https://culturefreelance.com/la-methode-du-batching-pour-gagner-du-temps/' target='_blank'>rituels</a></strong> pour gagner en focus.`; }
+      else                                { title = 'Bon à savoir'; body = `Définissez une <strong><a href='https://culturefreelance.com/la-methode-du-batching-pour-gagner-du-temps/' target='_blank'>routine de travail</a></strong> pour mieux gérer votre énergie.`; }
     }
     else if (qid === 'time-management-techniques') {
       if      (answerValue === 'oui')    { title = 'Excellent'; body = `Vous appliquez rigoureusement des <strong>techniques de gestion du temps</strong>. C’est un <strong>levier puissant</strong> pour rester <strong>productif</strong> et concentré.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous utilisez certaines techniques, mais <strong>pas régulièrement</strong>. Les appliquer plus <strong>systématiquement</strong> renforcerait leur efficacité.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’utilisez pas de <strong>techniques spécifiques</strong>. Tester <strong>Pomodoro</strong>, le <strong>Time-Blocking</strong> ou d’autres méthodes simples pourrait transformer votre organisation.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Appliquez les <strong><a href='https://culturefreelance.com/les-meilleures-techniques-pour-atteindre-l-etat-de-flow/' target='_blank'>techniques de gestion du temps</a></strong> (Pomodoro, etc) chaque jour sur vos tâches clés.`; }
+      else                                { title = 'Bon à savoir'; body = `Testez <strong><a href='https://culturefreelance.com/les-meilleures-techniques-pour-atteindre-l-etat-de-flow/' target='_blank'>Pomodoro ou Time-Blocking</a></strong> dès cette semaine pour mieux gérer votre temps.`; }
     }
     else if (qid === 'goal-tracking-strategy') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Vous disposez d’un <strong>système clair</strong> pour <strong>suivre vos objectifs</strong> et <strong>prioriser vos tâches</strong>. C’est une excellente façon de garder le cap.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous suivez vos objectifs, mais de manière <strong>peu rigoureuse</strong>. Améliorer le <strong>suivi</strong> et la <strong>priorisation</strong> renforcerait vos résultats.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous ne suivez pas vos objectifs de manière <strong>organisée</strong>. Mettre en place un outil comme <strong>Notion</strong> ou <strong>ClickUp</strong> vous aiderait à mieux structurer vos progrès.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Améliorer le suivi et la priorisation de vos objectifs avec des KPIs simples.`; }
+      else                                { title = 'Bon à savoir'; body = `Mettez en place <strong><a href='https://culturefreelance.com/comment-les-freelances-utilisent-notion-pour-sorganiser/' target='_blank'>un tracker</a></strong> (Notion / ClickUp) dès maintenant pour suivre vos objectifs.`; }
     }
     else if (qid === 'decision-making-method') {
       if      (answerValue === 'oui')    { title = 'Parfait'; body = `Vous prenez vos décisions <strong>rapidement</strong> grâce à une <strong>méthodologie claire</strong>. Cela vous permet de <strong>gagner du temps</strong> et d’<strong>optimiser vos actions</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous prenez vos décisions, mais parfois <strong>trop lentement</strong>. Travailler sur une <strong>méthode plus structurée</strong> renforcerait votre efficacité.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’avez pas de <strong>méthode de décision claire</strong>. Utiliser la <strong>matrice d’Eisenhower</strong> ou la <strong>règle des 2 minutes</strong> pourrait vous aider à décider plus vite.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Travaillez <strong><a href='https://culturefreelance.com/freelance-prioriser-ses-missions-avec-la-matrice-eisenhower/' target='_blank'>une méthode plus structurée</a></strong> pour renforcer votre efficacité dans la prise de décision.`; }
+      else                                { title = 'Bon à savoir'; body = `Adoptez une méthode simple, comme <strong><a href='https://culturefreelance.com/freelance-prioriser-ses-missions-avec-la-matrice-eisenhower/' target='_blank'>la matrice d’Eisenhower</a></strong> ou la règle des 2 minutes, pour décider plus vite.`; }
     }
     else if (qid === 'email-automation-tools') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Vous utilisez des outils comme <strong>Sanebox</strong> ou <strong>Clean Email</strong> pour trier et automatiser vos emails : excellente optimisation de votre <strong>temps</strong>.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous gérez vos emails <strong>manuellement</strong>, ce qui est chronophage. L’<strong>automatisation</strong> vous ferait gagner en efficacité.`; }
+      else                                { title = 'Bon à savoir'; body = `Installez Sanebox / Clean Email et créez des règles pour automatiser vos emails.`; }
     }
     else if (qid === 'task-planning-tools') {
       if      (answerValue === 'oui')    { title = 'Excellent'; body = `Vous planifiez vos tâches avec des outils comme <strong>Trello</strong> ou <strong>Asana</strong>, une méthode très efficace pour gérer vos <strong>priorités</strong> efficacement.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous ne planifiez pas vos tâches avec des <strong>outils numériques</strong>. Les utiliser simplifierait l’<strong>organisation</strong> et la <strong>productivité</strong>.`; }
+      else                                { title = 'Bon à savoir'; body = `Centralisez vos tâches dans <strong><a href='https://culturefreelance.com/comment-les-freelances-utilisent-notion-pour-sorganiser/' target='_blank'>un outil unique</a></strong> pour simplifier votre organisation.`; }
     }
     else if (qid === 'reminder-deadline-tools') {
       if      (answerValue === 'oui')    { title = 'Parfait'; body = `Vous utilisez <strong>Google Calendar</strong> ou <strong>Outlook</strong> pour vos rappels et échéances : excellente pratique pour <strong>ne rien oublier</strong>.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous ne digitalisez pas vos <strong>rappels</strong> et <strong>échéances</strong>. Automatiser avec un calendrier numérique apportera un vrai <strong>gain de sérénité</strong>.`; }
+      else                                { title = 'Bon à savoir'; body = `Activez les rappels et échéances dans un calendrier.`; }
     }
     else if (qid === 'ai-use-professional') {
       if      (answerValue === 'oui')    { title = 'Excellent'; body = `Vous utilisez l’<strong>IA</strong> régulièrement pour <strong>automatiser</strong>, <strong>analyser</strong> et <strong>optimiser</strong> : excellente stratégie pour rester <strong>compétitif</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous utilisez l’IA de façon <strong>ponctuelle</strong>, mais pas encore de manière systématique. Explorer davantage ses <strong>usages</strong> augmenterait les bénéfices.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’utilisez pas l’<strong>IA</strong> dans votre travail. Des outils comme <strong>ChatGPT</strong> ou <strong>DALL·E</strong> pourraient <strong>booster votre activité</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Étendez <strong><a href='https://culturefreelance.com/freelance-ia-outils-pour-gagner-du-temps/' target='_blank'>l’IA</a></strong> à un ou deux cas d’usage supplémentaires.`; }
+      else                                { title = 'Bon à savoir'; body = `Testez <strong><a href='https://culturefreelance.com/freelance-ia-outils-pour-gagner-du-temps/' target='_blank'>ChatGPT / DALL·E pour gagner du temps</a></strong> et de la qualité.`; }
     }
 
     // f) Injection dans le simulateur pour la question active
@@ -1363,14 +1452,14 @@ function calculWage(questionContainerId) {
     let title = '', body = '';
 
     if (qid === 'eligible-benefit-cases') {
-      if      (answerValue.includes('non'))   { title = 'Bon à savoir'; body = `Vous ne profitez d’<strong>aucun dispositif spécifique</strong>. Pourtant, il existe de <strong>nombreuses exonérations</strong> selon votre activité et votre localisation. Une <strong>analyse approfondie</strong> pourrait vous faire économiser beaucoup.`; }
-      else if (answerValue.length === 1)      { title = 'Bon début'; body = `Vous bénéficiez déjà d’un <strong>dispositif fiscal</strong>, mais vous pourriez <strong>explorer d’autres leviers</strong> pour aller plus loin.`; }
+      if      (answerValue.includes('non'))   { title = 'Bon à savoir'; body = `Faites un check des dispositifs fiscaux selon votre activité / localisation.`; }
+      else if (answerValue.length === 1)      { title = 'Bon début'; body = `Explorez 1 ou 2 exonérations fiscales supplémentaires adaptées à votre cas.`; }
       else                                     { title = 'Très bien'; body = `Vous profitez de <strong>plusieurs dispositifs fiscaux</strong> (JEI, ZFU, exonération TVA, etc.). Excellent travail d’<strong>optimisation</strong> pour <strong>réduire vos charges</strong>.`; }
     }
     else if (qid === 'benefits-in-kind-tax-reduction') {
       if      (answerValue.includes('non'))           { title = 'Bon à savoir'; body = `Vous ne bénéficiez pas d’<strong>avantages en nature</strong>. Pourtant, certains dispositifs simples pourraient vous permettre d’<strong>alléger vos charges</strong>.`; }
-      else if (answerValue.length <= 3)               { title = 'Bon début'; body = `Vous utilisez certains <strong>avantages en nature</strong>, mais il existe encore des <strong>leviers</strong> (matériel, frais de transport, repas, etc.) pour aller plus loin.`; }
-      else                                            { title = 'Excellent'; body = `Vous profitez de <strong>plusieurs avantages en nature</strong> (véhicule, repas, télétravail, etc.). Excellente optimisation qui <strong>réduit vos charges personnelles</strong> et votre <strong>imposition</strong>.`; }
+      else if (answerValue.length <= 3)               { title = 'Bon début'; body = `Activez un à deux avantages en nature supplémentaires pertinents (matériel, frais de transport, repas, etc.).`; }
+      else                                            { title = 'Excellent'; body = `Identifiez des avantages simples (matériel, repas, transport).`; }
     }
     else if (qid === 'investment-cashflow-tax-optimization') {
       title = `Vous avez sélectionné ${answerValue.length} option(s)`; 
@@ -1378,66 +1467,66 @@ function calculWage(questionContainerId) {
     }
     else if (qid === 'per-subscription-tax-saving') {
       if      (answerValue === 'oui')    { title = 'Bravo'; body = `Vous alimentez régulièrement votre <strong>PER</strong> avec le <strong>montant maximal déductible</strong>. Bravo ! C’est une excellente stratégie pour <strong>préparer votre avenir</strong> tout en <strong>réduisant vos impôts</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous avez déjà un <strong>PER</strong>, mais vos versements restent <strong>partiels</strong> ou <strong>occasionnels</strong>. Les rendre plus <strong>réguliers</strong> permettrait de renforcer votre <strong>optimisation fiscale</strong> et votre <strong>capital retraite</strong>.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’avez pas encore de <strong>PER</strong>. Pourtant, c’est un <strong>dispositif très avantageux</strong> qui permet d’<strong>épargner pour la retraite</strong> tout en <strong>réduisant vos impôts</strong>. Commencer par des <strong>versements progressifs</strong> pourrait être une bonne approche.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Passez à des versements réguliers sur votre <strong><a href='https://comptapedia.fr/per/' target='_blank'>PER</a></strong> pour maximiser la déduction.`; }
+      else                                { title = 'Bon à savoir'; body = `Ouvrez un <strong><a href='https://comptapedia.fr/per/' target='_blank'>PER</a></strong> et démarrez par des versements progressifs.`; }
     }
     else if (qid === 'training-tax-credit') {
       if      (answerValue === 'oui')    { title = 'Félicitations'; body = `Vous utilisez pleinement le <strong>crédit d’impôt formation</strong> (40 % des dépenses). Félicitations : vous <strong>investissez dans vos compétences</strong> tout en <strong>réduisant vos impôts</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous utilisez ce crédit, mais <strong>pas dans son intégralité</strong>. Vérifiez si d’autres <strong>formations éligibles</strong> pourraient renforcer votre <strong>optimisation</strong>.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous ne profitez pas du <strong>crédit d’impôt formation</strong>. Pourtant, c’est un <strong>levier précieux</strong> pour financer votre <strong>montée en compétences</strong> et <strong>alléger vos charges</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Ajoutez des formations éligibles pour utiliser pleinement le <strong><a href='https://www.acasi.io/optimisations-independant' target='_blank'>crédit d’impôt formation</a></strong>.`; }
+      else                                { title = 'Bon à savoir'; body = `Activez le <strong><a href='https://www.acasi.io/optimisations-independant' target='_blank'>crédit d’impôt formation</a></strong> pour financer votre montée en compétences.`; }
     }
     else if (qid === 'energy-transition-tax-credit') {
       if      (answerValue === 'oui')    { title = 'Excellent choix'; body = `Vous bénéficiez du <strong>CITE</strong> pour vos <strong>travaux de rénovation énergétique</strong>. Très bon choix : vous <strong>réduisez vos dépenses</strong> et vos <strong>impôts</strong> tout en <strong>améliorant votre logement</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous utilisez déjà ce crédit, mais <strong>pas pleinement</strong>. Vérifiez si d’autres <strong>travaux</strong> sont éligibles pour <strong>maximiser vos avantages</strong>.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’utilisez pas le <strong>CITE</strong>. C’est pourtant une <strong>belle opportunité</strong> pour financer des <strong>rénovations énergétiques</strong> et <strong>alléger votre fiscalité</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Listez d’autres travaux éligibles au crédit d’impôt pour la transition énergétique pour maximiser l’aide.`; }
+      else                                { title = 'Bon à savoir'; body = `Étudiez le CITE pour financer vos rénovations et réduire l’impôt.`; }
     }
     else if (qid === 'tax-deferral-mechanism') {
       if      (answerValue === 'oui')    { title = 'Très bonne stratégie'; body = `Vous utilisez des <strong>mécanismes d’étalement</strong> ou de <strong>report d’imposition</strong> (par exemple différer vos revenus). C’est une excellente stratégie pour <strong>lisser vos charges fiscales</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous appliquez certains mécanismes, mais <strong>sans réelle stratégie</strong>. Les approfondir avec un <strong>expert</strong> permettrait d’aller plus loin.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’utilisez pas ces <strong>leviers</strong>. Pourtant, l’<strong>étalement</strong> et le <strong>report d’imposition</strong> sont des <strong>outils puissants</strong> pour <strong>optimiser votre fiscalité</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Approfondissez vos mécanismes d’étalement ou de report d’imposition <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong> permettrait d’aller plus loin.`; }
+      else                                { title = 'Bon à savoir'; body = `Étudiez l’étalement / le report de votre imposition pour <strong>réduire vos pics d’imposition</strong>.`; }
     }
     else if (qid === 'annual-tax-review-expert') {
       if      (answerValue === 'oui')    { title = 'Bravo'; body = `Vous réalisez un <strong>bilan fiscal précis</strong> chaque année avec un <strong>expert</strong>. C’est une excellente pratique pour <strong>maximiser vos déductions</strong> et <strong>sécuriser votre situation</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous consultez un <strong>expert</strong>, mais <strong>pas systématiquement</strong>. En le faisant chaque année, vous pourriez <strong>renforcer vos optimisations</strong>.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous ne réalisez pas de <strong>bilan fiscal annuel</strong>. C’est pourtant <strong>essentiel</strong> pour <strong>éviter les erreurs</strong> et identifier toutes vos <strong>déductions possibles</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Planifiez un bilan annuel récurrent <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong> pour optimiser davantage.`; }
+      else                                { title = 'Bon à savoir'; body = `Prenez rendez-vous <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong> pour un bilan fiscal et rattraper les déductions.`; }
     }
     else if (qid === 'vat-recovery-optimization') {
       if      (answerValue === 'oui')    { title = 'Félicitations'; body = `Vous récupérez <strong>toute la TVA éligible</strong>. Félicitations, vous <strong>optimisez vos charges</strong> et <strong>réduisez vos coûts</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous récupérez la TVA, mais <strong>pas toujours de manière complète</strong>. Un <strong>audit</strong> de vos déclarations pourrait révéler des <strong>opportunités supplémentaires</strong>.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous ne récupérez pas systématiquement la <strong>TVA</strong>. Or, c’est un <strong>levier direct</strong> pour <strong>alléger vos dépenses</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Auditez vos déclarations pour <strong><a href='https://comptapedia.fr/tva/' target='_blank'>capter la TVA manquante</a></strong>.`; }
+      else                                { title = 'Bon à savoir'; body = `Mettez en place un process de <strong><a href='https://comptapedia.fr/tva/' target='_blank'>récupération systématique de TVA</a></strong>.`; }
     }
     else if (qid === 'current-income-perception') {
       // cas à 5 options
       if      (answerValue === 'oui')        { title = 'Très bon choix'; body = `Vous privilégiez les <strong>dividendes</strong> avec un <strong>faible salaire</strong>. C’est une très bonne stratégie pour <strong>réduire vos charges sociales</strong> et <strong>optimiser votre imposition</strong>.`; }
-      else if (answerValue === 'mediumyes')  { title = 'Bien optimisé'; body = `Votre <strong>mix salaire/dividendes</strong> est optimisé, ce qui vous permet de profiter d’une <strong>fiscalité plus avantageuse</strong>. Continuez ainsi !`; }
-      else if (answerValue === 'medium')     { title = 'Bon début'; body = `Vous percevez <strong>uniquement un salaire</strong>. C’est simple à gérer, mais inclure une <strong>part de dividendes</strong> pourrait améliorer votre optimisation.`; }
-      else if (answerValue === 'mediumno')   { title = 'Bon à savoir'; body = `Vos <strong>bénéfices</strong> sont imposés directement en <strong>micro-entreprise</strong>. C’est adapté dans certains cas, mais étudier d’<strong>autres statuts</strong> peut vous ouvrir de <strong>meilleures opportunités fiscales</strong>.`; }
-      else                                   { title = 'Attention'; body = `Vous n’avez pas encore <strong>optimisé votre mode de rémunération</strong>. Une <strong>analyse avec un expert-comptable</strong> pourrait <strong>réduire vos charges</strong> et améliorer votre <strong>fiscalité</strong>.`; }
+      else if (answerValue === 'mediumyes')  { title = 'Bien optimisé'; body = `Maintenez le calibrage salaire / <strong><a href='https://comptapedia.fr/dividendes/' target='_blank'>dividendes</a></strong> et suivez l’impact net.`; }
+      else if (answerValue === 'medium')     { title = 'Bon début'; body = `Étudiez l’introduction de <strong><a href='https://comptapedia.fr/dividendes/' target='_blank'>dividendes</a></strong> pour votre revenu.`; }
+      else if (answerValue === 'mediumno')   { title = 'Bon à savoir'; body = `Prenez rendez-vous <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong> pour comparer votre statut actuel à d’autres pour alléger l’impôt. `; }
+      else                                   { title = 'Attention'; body = `Faites une analyse <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong> pour réduire vos charges / IR et améliorer votre fiscalité.`; }
     }
     else if (qid === 'home-office-rent-tax-optimization') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Vous avez mis en place un <strong>loyer avec convention</strong>. Excellente optimisation pour <strong>réduire votre base imposable</strong> en toute conformité.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous facturez un <strong>loyer</strong> mais <strong>sans convention de location</strong>. Formaliser cela avec un <strong>document officiel</strong> sécuriserait la déduction.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’exploitez pas cette possibilité. Pourtant, un <strong>loyer correctement déclaré</strong> peut être un <strong>levier fiscal intéressant</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Formalisez une convention pour sécuriser la déduction de votre <strong><a href='https://www.acasi.io/optimisations-independant' target='_blank'>loyer au domicile du dirigeant</a></strong>.`; }
+      else                                { title = 'Bon à savoir'; body = `Évaluez la mise en place d’un <strong><a href='https://www.acasi.io/optimisations-independant' target='_blank'>loyer au domicile du dirigeant</a></strong> déclaré.`; }
     }
     else if (qid === 'remuneration-split-optimization') {
       if      (answerValue === 'oui')    { title = 'Félicitations'; body = `Vous avez <strong>optimisé la répartition</strong> de vos revenus (salaires, dividendes, compensations) après <strong>analyse approfondie</strong>. C’est une excellente stratégie pour <strong>réduire vos cotisations</strong> et vos <strong>impôts</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous avez commencé à <strong>optimiser</strong>, mais <strong>sans étude détaillée</strong>. Une <strong>analyse plus fine</strong> pourrait vous permettre de <strong>maximiser vos économies</strong>.`; }
-      else                                { title = 'Bon à savoir'; body = `Votre <strong>rémunération n’est pas optimisée</strong>. Travailler sur un <strong>mix plus adapté</strong> avec un <strong>expert</strong> pourrait <strong>réduire vos charges</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Affinez le mix (salaire / dividendes / autres) <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong>.`; }
+      else                                { title = 'Bon à savoir'; body = `Travaillez sur un mix de rémunération plus adapté <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong> pour réduire vos charges.`; }
     }
     else if (qid === 'holding-structure-income-optimization') {
       if      (answerValue === 'oui')    { title = 'Très bonne stratégie'; body = `Vous avez mis en place une <strong>holding</strong>. C’est une très bonne stratégie pour <strong>optimiser la distribution</strong> de vos revenus et <strong>structurer votre patrimoine</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous envisagez une <strong>holding</strong>. Si votre <strong>chiffre d’affaires est élevé</strong>, cela peut devenir un <strong>levier fiscal</strong> et patrimonial puissant.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’avez pas de <strong>holding</strong>. Cela n’est pas toujours nécessaire, mais si votre <strong>CA est élevé</strong>, ce dispositif pourrait être intéressant.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Étudiez la pertinence d’une holding selon votre CA <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong>.`; }
+      else                                { title = 'Bon à savoir'; body = `Si votre CA est élevé, analysez l’intérêt d’une holding <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong>.`; }
     }
     else if (qid === 'dividends-income-tax-option') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Vous optez pour l’<strong>imposition au barème de l’IR</strong> avec <strong>abattement de 40 %</strong>. Très bon choix : cela permet souvent de <strong>réduire la fiscalité</strong> sur vos dividendes.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous avez choisi cette option, mais <strong>sans certitude d’optimisation totale</strong>. Une <strong>analyse plus approfondie</strong> permettrait de confirmer que c’est le <strong>meilleur choix</strong> pour vous.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous avez choisi le <strong>PFU à 30 %</strong>. C’est simple, mais parfois <strong>moins avantageux</strong> que l’imposition au barème avec abattement. Une <strong>comparaison</strong> pourrait être utile.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Comparez le barème progressif avec le PFU pour valider le meilleur choix. `; }
+      else                                { title = 'Bon à savoir'; body = `Comparez le barème progressif avec le PFU pour valider le meilleur choix.`; }
     }
     else if (qid === 'cca-cash-injection') {
       const vals = answerValue;
       if (vals.includes('oui'))            { title = 'Très bien'; body = `Vous utilisez le <strong>compte courant d’associé</strong> pour injecter de la trésorerie. Bonne pratique qui permet de <strong>soutenir votre société</strong> tout en gardant une <strong>trace comptable claire</strong>.`; }
-      else                                  { title = 'Bon à savoir'; body = `Vous n’utilisez pas le <strong>CCA</strong>. Pourtant, ce mécanisme peut être un <strong>levier intéressant</strong> pour optimiser votre <strong>trésorerie</strong> et votre <strong>fiscalité</strong>.`; }
+      else                                  { title = 'Bon à savoir'; body = `<strong><a href='https://comptapedia.fr/compte-courant-dassocie/' target='_blank'>Utilisez le CCA</a></strong> pour gérer les besoins ponctuels de trésorerie.`; }
     }
 
     // f) Injection dans le simulateur pour la question active
@@ -1538,69 +1627,69 @@ function calculProtection(questionContainerId) {
     if (qid === 'treasury-investment-supports') {
       const n = answerValue.length;
       if      (n === 0)      { title = 'Bon à savoir';       body = `Votre trésorerie <strong>n’est pas placée</strong>. Pourtant, de nombreux supports existent (<strong>assurance vie, SCPI, SICAV</strong>, etc.) pour <strong>générer des rendements</strong> et <strong>optimiser vos impôts</strong>.`; }
-      else if (n <= 2)       { title = 'Bon début';          body = `Vous avez placé votre trésorerie sur <strong>quelques supports</strong>. Une <strong>diversification plus large</strong> pourrait améliorer vos performances et votre fiscalité.`; }
-      else                   { title = 'Excellente diversification'; body = `Vous diversifiez vos placements (<strong>assurance vie, SCPI, obligations</strong>, etc.). C’est une <strong>excellente stratégie</strong> pour <strong>optimiser vos rendements</strong> et <strong>réduire vos risques</strong>.`; }
+      else if (n <= 2)       { title = 'Bon début';          body = `<strong>Ajoutez de nouveaux supports</strong> de placement de la trésorerie pour réduire vos risques et vos impôts.`; }
+      else                   { title = 'Excellente diversification'; body = `Placez votre trésorerie (assurance vie, SCPI, SICAV) pour générer du rendement.`; }
     }
     else if (qid === 'subscribed-insurances-list') {
       const n = answerValue.length;
-      if      (n === 0)      { title = 'Bon à savoir';       body = `Vous n’avez pas d’<strong>assurance professionnelle</strong>. Cela vous expose à des <strong>risques financiers importants</strong> en cas de litige ou de sinistre.`; }
-      else if (n <= 2)       { title = 'Bon début';          body = `Vous avez une <strong>protection partielle</strong>. Ajouter d’autres <strong>assurances adaptées</strong> à votre secteur pourrait <strong>renforcer votre sécurité</strong>.`; }
+      if      (n === 0)      { title = 'Bon à savoir';       body = `Souscrivez à une assurance professionnelle adaptée pour sécuriser votre activité.`; }
+      else if (n <= 2)       { title = 'Bon début';          body = `Ajoutez des assurances professionnelles clés (RCP, multirisque, cyber).`; }
       else                   { title = 'Très bien';          body = `Vous avez souscrit <strong>plusieurs assurances professionnelles</strong> (RCP, multirisque, protection juridique, etc.). Très bonne couverture qui <strong>sécurise votre activité</strong>.`; }
     }
     else if (qid === 'holding-investment-tax-optimization') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Votre holding est <strong>optimisée et active</strong>. Très bon choix : elle vous permet de <strong>maximiser vos avantages fiscaux</strong> et de <strong>structurer efficacement votre patrimoine</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début';  body = `Vous avez une holding mais elle est <strong>sous-exploitée</strong>. Un usage plus <strong>stratégique</strong> pourrait améliorer encore vos optimisations fiscales.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’avez pas encore <strong>structuré vos investissements</strong> via une holding. Si votre <strong>chiffre d’affaires est élevé</strong>, c’est une piste à envisager pour <strong>optimiser vos revenus</strong> et vos placements.`; }
+      else if (answerValue === 'medium') { title = 'Bon début';  body = `<strong><a href='https://www.acasi.io/comptabilite-holding' target='_blank'>Étendez l’usage de votre holding</a></strong> (dividendes, réinvestissements).`; }
+      else                                { title = 'Bon à savoir'; body = `Si votre CA est élevé, analysez la création d’une holding <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong>.`; }
     }
     else if (qid === 'startup-sme-private-equity-investment') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Vous investissez déjà dans des <strong>startups ou PME</strong> et bénéficiez des <strong>réductions fiscales</strong> associées. Très bonne stratégie de <strong>diversification</strong> et d’<strong>optimisation</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début';  body = `Vous envisagez ce type d’investissement mais ne l’avez pas encore <strong>concrétisé</strong>. Lancer un <strong>premier placement</strong> pourrait être intéressant.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’investissez pas dans ces <strong>opportunités</strong>. Pourtant, elles offrent à la fois des <strong>avantages fiscaux</strong> et un <strong>potentiel de rendement</strong> à long terme.`; }
+      else if (answerValue === 'medium') { title = 'Bon début';  body = ` Lancez un premier placement (PME / private equity) pour tester le dispositif.`; }
+      else                                { title = 'Bon à savoir'; body = `Explorez le <strong>private equity</strong> : avantages fiscaux + fort potentiel.`; }
     }
     else if (qid === 'passive-income-distribution-plan') {
       if      (answerValue === 'oui')    { title = 'Excellente stratégie'; body = `Vous avez mis en place une <strong>stratégie fiscale claire</strong> pour vos revenus passifs (<strong>intérêts, loyers, dividendes</strong>). Excellente optimisation de votre <strong>rentabilité nette</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début';          body = `Vous gérez vos revenus passifs de manière <strong>basique</strong>. Une <strong>meilleure structuration fiscale</strong> pourrait améliorer vos gains.`; }
-      else                                { title = 'Bon à savoir';       body = `Vous n’avez pas encore <strong>optimisé la distribution</strong> de vos revenus passifs. C’est une piste importante pour <strong>réduire vos charges fiscales</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début';          body = `Optimisez la structuration de vos revenus passifs pour <strong>augmenter le net après impôt</strong>.`; }
+      else                                { title = 'Bon à savoir';       body = `Créez une stratégie fiscale dédiée à vos revenus passifs.`; }
     }
     else if (qid === 'investment-diversification-tax-optimization') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Votre <strong>portefeuille est bien diversifié</strong> et <strong>fiscalement optimisé</strong>. Très bonne gestion qui <strong>réduit les risques</strong> et augmente vos opportunités.`; }
-      else if (answerValue === 'medium') { title = 'Bon début'; body = `Vous avez commencé à <strong>diversifier vos investissements</strong>, mais pas suffisamment. Une <strong>meilleure répartition</strong> permettrait d’améliorer votre sécurité et vos optimisations fiscales.`; }
-      else                                { title = 'Bon à savoir'; body = `Vos investissements <strong>ne sont pas assez diversifiés</strong>. Cela peut <strong>augmenter vos risques</strong>. Élargir vos placements renforcerait votre stratégie patrimoniale.`; }
+      else if (answerValue === 'medium') { title = 'Bon début'; body = `Ajoutez de nouveaux actifs pour renforcer la <strong><a href='https://culturefreelance.com/riche-independant/' target='_blank'>diversification de vos investissement</a></strong>.`; }
+      else                                { title = 'Bon à savoir'; body = `<tsrong>Diversifiez vos placements</tsrong> pour réduire les risques et les impôts.`; }
     }
     else if (qid === 'long-term-investment-capital-gains-tax') {
       if      (answerValue === 'oui')    { title = 'Excellente approche'; body = `Vous utilisez des dispositifs à <strong>long terme</strong> (<strong>PEA, assurance-vie</strong>, etc.) et profitez des <strong>régimes fiscaux avantageux</strong>. Excellente stratégie pour <strong>optimiser vos plus-values</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début';        body = `Vous investissez à <strong>long terme</strong>, mais sans exploiter toutes les <strong>stratégies fiscales disponibles</strong>. Explorer d’autres solutions renforcerait votre plan.`; }
-      else                                { title = 'Bon à savoir';     body = `Vous n’avez pas encore mis en place de <strong>stratégie d’investissement à long terme</strong>. Pourtant, c’est un <strong>levier majeur</strong> pour <strong>sécuriser</strong> et <strong>optimiser votre patrimoine</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début';        body = `Explorez <strong><a href='https://culturefreelance.com/riche-independant/' target='_blank'>d’autres stratégies fiscales</a></strong> long terme.`; }
+      else                                { title = 'Bon à savoir';     body = `Lancez un <a href='https://comptapedia.fr/plan-depargne-en-actions/' target='_blank'>PEA</a> ou une <a href='https://comptapedia.fr/assurance-vie/' target='_blank'>assurance-vie</a> pour <strong><a href='https://culturefreelance.com/riche-independant/' target='_blank'>optimiser vos gains futurs</a></strong>.`; }
     }
     else if (qid === 'supplementary-retirement-plan') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Vous avez mis en place un <strong>plan de retraite complémentaire</strong> (PER, Madelin, SCPI) avec des <strong>versements optimisés</strong>. Très bonne stratégie : vous <strong>sécurisez votre avenir financier</strong> tout en <strong>réduisant vos impôts</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début';  body = `Vous avez un plan de retraite complémentaire, mais <strong>sans stratégie précise</strong>. Une <strong>analyse plus approfondie</strong> permettrait d’améliorer vos bénéfices et votre optimisation fiscale.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’avez pas encore de <strong>plan de retraite complémentaire</strong>. Explorer des solutions comme le <strong>PER</strong> ou le <strong>Madelin</strong> pourrait renforcer votre protection et vos avantages fiscaux.`; }
+      else if (answerValue === 'medium') { title = 'Bon début';  body = `Ajustez votre plan retraite avec une stratégie plus claire.`; }
+      else                                { title = 'Bon à savoir'; body = `Étudiez le <strong><a href='https://comptapedia.fr/per/' target='_blank'>PER</a></strong>> ou le Madelin pour préparer votre retraite et réduire vos impôts. `; }
     }
     else if (qid === 'health-insurance-family-coverage') {
       if      (answerValue === 'oui')    { title = 'Excellente couverture'; body = `Vous disposez d’une <strong>mutuelle optimisée</strong> en termes de <strong>couverture</strong> et de <strong>coût</strong>. Excellente protection pour vous et votre famille.`; }
-      else if (answerValue === 'medium') { title = 'Bon début';            body = `Vous avez une mutuelle, mais elle est <strong>trop coûteuse</strong> ou avec une <strong>couverture insuffisante</strong>. Une réévaluation vous permettrait d’<strong>optimiser votre protection</strong>.`; }
-      else                                { title = 'Bon à savoir';         body = `Vous n’avez pas de <strong>mutuelle adaptée</strong>. Pourtant, elle est <strong>essentielle</strong> pour couvrir vos <strong>besoins de santé</strong> et ceux de vos proches.`; }
+      else if (answerValue === 'medium') { title = 'Bon début';            body = `Réévaluez votre mutuelle pour réduire le coût ou élargir la couverture.`; }
+      else                                { title = 'Bon à savoir';         body = `Souscrivez une mutuelle adaptée à vos besoins et à ceux de votre famille.`; }
     }
     else if (qid === 'disability-work-interruption-insurance') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Vous êtes bien couvert avec une <strong>prévoyance complète</strong> et des <strong>indemnités optimisées</strong>. C’est une excellente protection en cas de <strong>coup dur</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début';  body = `Vous avez une prévoyance, mais <strong>sans optimisation réelle</strong>. Une <strong>analyse détaillée</strong> pourrait améliorer vos garanties.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’avez pas de <strong>prévoyance</strong>. Cela représente un <strong>risque majeur</strong> en cas de problème de santé ou d’invalidité.`; }
+      else if (answerValue === 'medium') { title = 'Bon début';  body = `<strong>Analysez votre prévoyance</strong> pour optimiser vos garanties.`; }
+      else                                { title = 'Bon à savoir'; body = `<strong>Souscrivez une prévoyance</strong> pour sécuriser vos revenus en cas de coup dur.`; }
     }
     else if (qid === 'unemployment-protection-strategy') {
       if      (answerValue === 'oui')    { title = 'Excellente anticipation'; body = `Vous avez mis en place une <strong>protection efficace</strong> (contrat cadre dirigeant, ARE, cumul emploi…). Excellente anticipation qui <strong>sécurise vos revenus</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début';             body = `Vous disposez de <strong>quelques sécurités</strong>, mais elles restent limitées. Les <strong>renforcer</strong> permettrait d’assurer une <strong>meilleure stabilité financière</strong>.`; }
-      else                                { title = 'Bon à savoir';          body = `Vous n’avez pas de <strong>dispositif en cas de chômage</strong>. Cela peut <strong>fragiliser votre sécurité financière</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début';             body = `Renforcez vos sécurités pour la protection en cas de chômage pour plus de stabilité financière.`; }
+      else                                { title = 'Bon à savoir';          body = `Évaluez les solutions chômage pour protéger vos revenus.`; }
     }
     else if (qid === 'retirement-income-forecast-optimization') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Vous savez précisément <strong>combien vous toucherez à la retraite</strong> et avez mis en place une <strong>stratégie optimisée</strong>. Très bonne anticipation.`; }
-      else if (answerValue === 'medium') { title = 'Bon début';  body = `Vous avez une idée de votre <strong>future retraite</strong>, mais <strong>sans optimisation complète</strong>. Approfondir ce point vous permettrait d’<strong>améliorer vos revenus futurs</strong>.`; }
-      else                                { title = 'Bon à savoir'; body = `Vous n’avez pas évalué vos <strong>revenus de retraite</strong>. Une <strong>étude approfondie</strong> serait utile pour <strong>préparer sereinement votre avenir</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début';  body = `Affinez vos estimations et optimisations pour la retraite.`; }
+      else                                { title = 'Bon à savoir'; body = `Faites une simulation retraite pour planifier vos revenus futurs.`; }
     }
     else if (qid === 'estate-planning-inheritance-tax-optimization') {
       if      (answerValue === 'oui')    { title = 'Excellente gestion'; body = `Vous avez mis en place une <strong>stratégie optimisée</strong> de transmission (<strong>donation, SCI, démembrement</strong>…). Excellent moyen de <strong>réduire les droits de succession</strong>.`; }
-      else if (answerValue === 'medium') { title = 'Bon début';           body = `Vous avez commencé à préparer la <strong>transmission</strong>, mais <strong>sans stratégie complète</strong>. Approfondir cette démarche <strong>optimiserait vos avantages fiscaux</strong>.`; }
-      else                                { title = 'Bon à savoir';        body = `Vous n’avez pas de <strong>stratégie de transmission</strong>. Pourtant, il existe des <strong>solutions simples</strong> pour <strong>réduire les droits de succession</strong> et <strong>protéger vos proches</strong>.`; }
+      else if (answerValue === 'medium') { title = 'Bon début';           body = `Formalisez une stratégie plus complète de <strong>transmission patrimoniale</strong>.`; }
+      else                                { title = 'Bon à savoir';        body = `Mettez en place une <strong>stratégie de transmission patrimonial</strong>e pour réduire droits de succession.`; }
     }
 
     // f) Injecter dans le simulateur uniquement si c'est la question active
