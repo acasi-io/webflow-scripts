@@ -15,13 +15,6 @@ const detailedResults = {
   protection: []
 };
 
-
-/*const totalQuestionsByTheme = {
-  gestion: 13,
-  organisation: 10,
-  development: 8
-};*/
-
 const nextButton = document.getElementById('next-btn');
 const prevButton = document.getElementById('prev-btn');
 const steps = Array.from(document.querySelectorAll('.opti-sim_question-container'));
@@ -36,6 +29,18 @@ function getStepIndex(stepElement) {
   return steps.indexOf(stepElement);
 }
 
+function updateCurrentProgressBar(questionTheme) {
+  document.querySelectorAll('.opti-sim_theme-item').forEach(item => {
+    item.classList.remove('is-current');
+  });
+
+  const currentBar = document.querySelector(`.opti-sim_theme-item[data-theme="${questionTheme}"]`);
+  if (currentBar) {
+    currentBar.classList.add('is-current');
+  }
+}
+
+
 function disableNextButton() {
   nextButton.classList.add('is-disabled');
   nextButton.disabled = true;
@@ -45,80 +50,6 @@ function enableNextButton() {
   nextButton.classList.remove('is-disabled');
   nextButton.disabled = false;
 }
-
-/*function updateProgressBar(questionTheme) {
-  // Liste, par thème, des questions à cases multiples
-  const multiIds = {
-    development: [
-      'chosen-protection-plan',
-      'retirement-contribution-type',
-      'ai-task-usage'
-    ],
-    wage: [
-      'investment-cashflow-tax-optimization'
-    ],
-    protection: [
-      'treasury-investment-supports',
-      'subscribed-insurances-list'
-    ]
-  };
-
-  // on filtre les steps « notées »
-  const themeSteps = steps.filter(
-    step => step.dataset.theme === questionTheme && step.dataset.point !== 'false'
-  );
-  const totalQuestions = themeSteps.length;
-  if (!totalQuestions) return;
-
-  const maxPoints = totalQuestions * 5;
-  let totalPoints = 0;
-  let answeredQuestions = 0;
-
-  // récupère la liste des multi‐IDs pour ce thème
-  const themeMulti = multiIds[questionTheme] || [];
-
-  themeSteps.forEach(step => {
-    // clé « normale »
-    let key = `${questionTheme}-${step.dataset.step}`;
-
-    // si c'est une de vos questions à cases multiples, on utilise l'ID
-    if (themeMulti.includes(step.id)) {
-      key = `${questionTheme}-${step.id}`;
-    }
-
-    const answer = selectedAnswers[key];
-
-    // on compte la question comme « répondue » dès qu'il y a :
-    //  • un tableau non vide (cases multiples)
-    //  • ou une valeur unique « oui/medium/non » autre que '' / 'no-effect'
-    if (Array.isArray(answer) ? answer.length > 0 : answer && answer !== '' && answer !== 'no-effect') {
-      answeredQuestions++;
-
-      // on ajoute des points *seulement* pour les réponses oui/medium (pas pour les tableaux)
-      if (!Array.isArray(answer)) {
-        if (answer === 'oui') {
-          totalPoints += 5;
-        } else if (answer === 'medium') {
-          totalPoints += 3;
-        }
-      }
-    }
-  });
-
-  const progressPercentage = (answeredQuestions / totalQuestions) * 100;
-  let goodPercentage = (totalPoints / maxPoints) * 100;
-  if (goodPercentage > 100) goodPercentage = 100;
-  let badPercentage = progressPercentage - goodPercentage;
-  if (badPercentage < 0) badPercentage = 0;
-
-  // mise à jour du DOM
-  const wrapper = document.querySelector(
-    `.opti-sim_theme-item[data-theme="${questionTheme}"] .opti-sim_progress-bar-wrapper`
-  );
-  if (!wrapper) return;
-  wrapper.querySelector('.opti-sim_progress-bar.is-good').style.width = `${goodPercentage}%`;
-  wrapper.querySelector('.opti-sim_progress-bar.is-bad' ).style.width = `${badPercentage}%`;
-}*/
 
 function updateProgressBar(questionTheme) {
   // les IDs multi par thème
@@ -334,7 +265,6 @@ function updateNextButtonState(questionTheme, questionStep) {
   prevButton.style.opacity = questionStep === 1 ? 0 : 1;
 }
 
-
 function changeQuestion(direction) {
   const activeStep = steps.find(step => !step.classList.contains('hide'));
   if (!activeStep) return;
@@ -362,12 +292,11 @@ function changeQuestion(direction) {
   const questionTheme = nextStepElement.dataset.theme;
   const questionStep = nextStepElement.dataset.step || getStepIndex(nextStepElement) + 1;
 
+  updateCurrentProgressBar(questionTheme);
   updateNextButtonState(questionTheme, questionStep);
 
   activeStep.classList.add('hide');
   nextStepElement.classList.remove('hide');
-
-  console.log(detailedResults);
 }
 
 function showResults() {
@@ -378,89 +307,6 @@ function showResults() {
   resultWrapper.classList.remove('hide');
   renderResults(resultWrapper);
 }
-
-/*function renderResults(container) {
-  const resultsDiv = container.querySelector('.results') ||
-    (() => {
-      const d = document.createElement('div');
-      d.classList.add('results');
-      container.appendChild(d);
-      return d;
-    })();
-
-  resultsDiv.innerHTML = '';
-
-  // --- Légende des couleurs (sans le vert) ---
-  const legend = document.createElement('div');
-  legend.className = 'result-legend';
-  legend.innerHTML = `
-    <span><span class="dot red"></span> urgent</span>
-    <span><span class="dot orange"></span> moyen</span>
-  `;
-  resultsDiv.appendChild(legend);
-
-  // Mapping des noms de thèmes -> libellés affichés
-  const THEME_LABELS = {
-    wage: 'Rémunération',
-    development: 'Développement',
-    organisation: 'Organisation',
-    gestion: 'Gestion',
-    protection: 'Protection'
-  };
-
-  const capitalize = (str) => !str ? '' : str.charAt(0).toUpperCase() + str.slice(1);
-
-  // --- Affichage des sections ---
-  Object.entries(finalResults).forEach(([theme, pct]) => {
-    const section = document.createElement('section');
-    section.classList.add('result-section');
-
-    const resultGrid = document.createElement('div');
-    resultGrid.classList.add('result-grid');
-
-    // Titre (ex: Rémunération : 62%)
-    const title = document.createElement('h3');
-    const themeName = THEME_LABELS[theme] || capitalize(theme);
-    title.textContent = `${themeName} : ${pct}%`;
-
-    // Container des messages
-    const messagesContainer = document.createElement('div');
-    messagesContainer.classList.add('result-messages');
-
-    // Sécurité: récupérer la liste détaillée du thème (sinon tableau vide)
-    const entries = Array.isArray(detailedResults[theme]) ? detailedResults[theme] : [];
-
-    entries.forEach(entry => {
-      // On masque les messages "verts" (points >= 5)
-      if (entry.points >= 5) return;
-
-      const messageWrapper = document.createElement('div');
-      messageWrapper.classList.add('result-message');
-
-      // Couleur en fonction des points
-      messageWrapper.classList.add(entry.points >= 3 ? 'orange' : 'red');
-
-      // Bullet rond
-      const bullet = document.createElement('div');
-      bullet.classList.add('bullet');
-
-      // Texte du message
-      const messageText = document.createElement('div');
-      messageText.innerHTML = entry.message;
-
-      // Structure finale
-      messageWrapper.appendChild(bullet);
-      messageWrapper.appendChild(messageText);
-      messagesContainer.appendChild(messageWrapper);
-    });
-
-    // Construction finale du bloc
-    resultGrid.appendChild(title);
-    resultGrid.appendChild(messagesContainer);
-    section.appendChild(resultGrid);
-    resultsDiv.appendChild(section);
-  });
-}*/
 
 function renderResults(container) {
   const resultsDiv = container.querySelector('.results') ||
@@ -549,8 +395,6 @@ function renderResults(container) {
     resultsDiv.appendChild(section);
   });
 }
-
-
 
 
 nextButton.addEventListener('click', () => changeQuestion('next'));
@@ -828,7 +672,7 @@ function calculGestion() {
       }
     }
 
-    if (questionId === 'defined-strategy') {
+    /* if (questionId === 'defined-strategy') {
       fillInfoTextAnswerCondition(
         answerValue,
         question,
@@ -850,7 +694,7 @@ function calculGestion() {
         'Songez-y',
         `Pensez à envisager un <strong>changement de statut</strong> pour <strong>optimiser</strong> votre activité. Prenez rendez-vous <strong><a href='https://www.acasi.io/q0' target='_blank'>avec un expert</a></strong> maintenant.`
       );
-    } else if (questionId === 'other-company-optimisation') {
+    }*/ if (questionId === 'other-company-optimisation') {
       fillInfoTextAnswerCondition(
         answerValue,
         question,
@@ -916,7 +760,7 @@ function calculGestion() {
         "Attention",
         `<strong>Changez de banque</strong> pour réduire vos coûts et gagner en flexibilité.`
       );
-    } else if (questionId === 'is-up-to-date') {
+    } /* else if (questionId === 'is-up-to-date') {
       fillInfoTextAnswerCondition(
         answerValue,
         question,
@@ -927,7 +771,7 @@ function calculGestion() {
         "Attention",
         `Mettez en place un suivi ou <strong><a href='https://www.acasi.io/q0' target='_blank'>consultez un expert</a></strong> pour rattraper vos obligations administratives et fiscales.`
       );
-    }
+    }*/
 
     // Cumul du score pour cette question
     result += (answerValue === 'oui' ? 5 : answerValue === 'medium' ? 3 : 0);
@@ -1140,11 +984,11 @@ function calculOrganisation(questionContainerId) {
       else if (answerValue === 'medium') { title = 'Bon début'; body = `Rendez vos actions de prospection plus systématiques pour améliorer vos résultats. Vous pouvez utiliser <strong><a href='https://culturefreelance.com/utiliser-linkedin-pour-prospecter/' target='_blank'>LinkedIn</a></strong> ou <strong><a href='https://culturefreelance.com/comment-prospecter-avec-chatgpt/' target='_blank'>ChatGPT</a></strong>.`; }
       else                                { title = 'Attention'; body = `Créez un vrai plan de prospection pour accélérer votre croissance avec <strong><a href='https://culturefreelance.com/utiliser-linkedin-pour-prospecter/' target='_blank'>LinkedIn</a></strong> ou <strong><a href='https://culturefreelance.com/comment-prospecter-avec-chatgpt/' target='_blank'>ChatGPT</a></strong>.`; }
     }
-    else if (qid === 'weekly-admin-time') {
+    /*else if (qid === 'weekly-admin-time') {
       if      (answerValue === 'oui')    { title = 'Très bien'; body = `Vous réservez un <strong>créneau précis</strong> chaque semaine pour vos tâches administratives. C’est une excellente organisation qui évite l’<strong>accumulation</strong> et les <strong>oublis</strong>.`; }
       else if (answerValue === 'medium') { title = 'Bonne initiative'; body = `Optimisez le temps dédié à l’administratif pour réduire votre charge mentale.`; }
       else                                { title = 'Attention'; body = `Fixez un créneau hebdo pour éviter les oublis et le stress administratif.`; }
-    }
+    }*/
     else if (qid === 'burnout-prevention-breaks') {
       if      (answerValue === 'oui')    { title = 'Bravo'; body = `Vous prenez régulièrement au moins <strong>5 semaines de repos par an</strong>. C’est une excellente habitude pour <strong>préserver votre énergie</strong> et éviter le <strong>burn-out</strong>.`; }
       else if (answerValue === 'medium') { title = 'Bonne initiative'; body = `<strong><a href='https://culturefreelance.com/comment-organiser-ses-vacances-quand-on-est-freelance/' target='_blank'>Planifiez des pauses plus régulières</a></strong> pour préserver votre énergie.`; }
