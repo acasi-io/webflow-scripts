@@ -51,7 +51,7 @@ function enableNextButton() {
   nextButton.disabled = false;
 }
 
-function updateProgressBar(questionTheme) {
+/*function updateProgressBar(questionTheme) {
   // les IDs multi par thème
   const multiIds = {
     organisation: [
@@ -131,13 +131,57 @@ function updateProgressBar(questionTheme) {
   const badPercentage = Math.max(0, progressPercentage - goodPercentage);
 
   // mise à jour du DOM
-  const wrapper = document.querySelector(
+  const wrapper = document.querySelectorAll(
     `.opti-sim_theme-item[data-theme="${questionTheme}"] .opti-sim_progress-bar-wrapper`
   );
+
   if (!wrapper) return;
   wrapper.querySelector('.opti-sim_progress-bar.is-good').style.width = `${goodPercentage}%`;
   wrapper.querySelector('.opti-sim_progress-bar.is-bad' ).style.width = `${badPercentage}%`;
+}*/
+
+function updateProgressBar(questionTheme) {
+  const themeSteps = steps.filter(
+    step => step.dataset.theme === questionTheme && step.dataset.point !== 'false'
+  );
+  if (themeSteps.length === 0) return;
+
+  const multiIds = {
+    organisation: ['learning-methods'],
+    development: ['chosen-protection-plan', 'retirement-contribution-type', 'ai-task-usage'],
+    wage: ['eligible-benefit-cases', 'investment-cashflow-tax-optimization', 'benefits-in-kind-tax-reduction'],
+    protection: ['treasury-investment-supports', 'subscribed-insurances-list']
+  };
+  const themeMulti = multiIds[questionTheme] || [];
+
+  let answeredQuestions = 0;
+
+  themeSteps.forEach(step => {
+    const key = themeMulti.includes(step.id)
+      ? `${questionTheme}-${step.id}`
+      : `${questionTheme}-${step.dataset.step}`;
+
+    const answer = selectedAnswers[key];
+
+    const isAnswered = Array.isArray(answer)
+      ? answer.length > 0
+      : answer && answer !== '' && answer !== 'no-effect';
+
+    if (isAnswered) answeredQuestions++;
+  });
+
+  const progressPercentage = (answeredQuestions / themeSteps.length) * 100;
+
+  // 👉 ici on met à jour toutes les barres de ce thème
+  const bars = document.querySelectorAll(
+    `.opti-sim_theme-item[data-theme="${questionTheme}"] .opti-sim_progress-bar`
+  );
+
+  bars.forEach(bar => {
+    bar.style.width = `${progressPercentage}%`;
+  });
 }
+
 
 function handleAnswerClick(event) {
   const answerDiv = event.target.closest('.opti-sim_answer-item');
@@ -309,6 +353,75 @@ function showResults() {
 }
 
 function renderResults(container) {
+  // Libellés des thèmes
+  const THEME_LABELS = {
+    wage: 'Rémunération',
+    development: 'Développement',
+    organisation: 'Organisation',
+    gestion: 'Gestion',
+    protection: 'Protection'
+  };
+
+  const capitalize = str => !str ? '' : str.charAt(0).toUpperCase() + str.slice(1);
+
+  Object.entries(finalResults).forEach(([theme, pct]) => {
+    // 1. Trouver le bon wrapper dans le DOM via data-theme
+    const themeWrapper = container.querySelector(`.opti-sim_results-theme-wrapper[data-theme="${theme}"]`);
+    if (!themeWrapper) return;
+
+    // 2. Injecter le pourcentage
+    const percentEl = themeWrapper.querySelector('.opti-sim_results-theme-percent');
+    if (percentEl) percentEl.textContent = `${pct}%`;
+
+    // 3. Récupérer les résultats détaillés
+    const entries = Array.isArray(detailedResults[theme]) ? detailedResults[theme] : [];
+
+    const good = entries.filter(e => e.points === 5);
+    const medium = entries.filter(e => e.points > 0 && e.points < 5);
+    const bad = entries.filter(e => e.points === 0);
+
+    // 4. Mapping des blocs et données
+    const groups = [
+      { class: 'is-good', data: good },
+      { class: 'is-medium', data: medium },
+      { class: 'is-bad', data: bad }
+    ];
+
+    groups.forEach(group => {
+      const block = themeWrapper.querySelector(`.opti-sim_results-points-wrapper.${group.class}`);
+      if (!block) return;
+
+      const container = block.querySelector('.opti-sim_results-points-check-wrapper');
+      if (!container) return;
+
+      // Vider les anciens paragraphes
+      container.innerHTML = '';
+
+      group.data.forEach(entry => {
+        const line = document.createElement('div');
+        line.classList.add('opti-sim_results-text-wrapper');
+
+        // Le rond
+        const dot = document.createElement('div');
+        dot.classList.add('opti-sim_results-check');
+
+        // Le texte
+        const textContainer = document.createElement('div');
+        textContainer.classList.add('opti-sim_results-text-container');
+        const p = document.createElement('p');
+        p.innerHTML = entry.message;
+        textContainer.appendChild(p);
+
+        // Ajouter au DOM
+        line.appendChild(dot);
+        line.appendChild(textContainer);
+        container.appendChild(line);
+      });
+    });
+  });
+}
+
+/*function renderResults(container) {
   const resultsDiv = container.querySelector('.results') ||
     (() => {
       const d = document.createElement('div');
@@ -318,15 +431,6 @@ function renderResults(container) {
     })();
 
   resultsDiv.innerHTML = '';
-
-  // --- Légende simplifiée ---
-  /*const legend = document.createElement('div');
-  legend.className = 'result-legend';
-  legend.innerHTML = `
-    <span><span class="dot red"></span> urgent</span>
-    <span><span class="dot orange"></span> à améliorer</span>
-  `;
-  resultsDiv.appendChild(legend);*/
 
   // --- Libellés des thèmes ---
   const THEME_LABELS = {
@@ -394,7 +498,7 @@ function renderResults(container) {
     section.appendChild(resultGrid);
     resultsDiv.appendChild(section);
   });
-}
+}*/
 
 
 nextButton.addEventListener('click', () => changeQuestion('next'));
@@ -870,7 +974,7 @@ function calculGestion() {
 
 
   // Calcul de la barre de progression en se basant sur le nombre réel de questions "notées"
-  const maxPointsGestion = totalQuestionsForGestion * 5;
+  /*const maxPointsGestion = totalQuestionsForGestion * 5;
   let goodPercentage = (result / maxPointsGestion) * 100;
   if (goodPercentage > 100) { goodPercentage = 100; }
   let progressPercentage = (answeredQuestions / totalQuestionsForGestion) * 100;
@@ -886,7 +990,9 @@ function calculGestion() {
       goodBar.style.width = `${goodPercentage}%`;
       badBar.style.width = `${badPercentage}%`;
     }
-  }
+  }*/
+
+  updateProgressBar('gestion');
 }
 
 function calculOrganisation(questionContainerId) {
