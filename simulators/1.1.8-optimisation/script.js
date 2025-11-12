@@ -316,8 +316,15 @@ function changeQuestion(direction) {
   let currentIndex = getStepIndex(activeStep);
   let nextIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
 
-  if (direction === 'next' && currentIndex === steps.length - 1) {
+  /*if (direction === 'next' && currentIndex === steps.length - 1) {
     return showResults();
+  }*/
+
+  if (direction === 'next' && currentIndex === steps.length - 1) {
+    // À la fin des questions, afficher le formulaire
+    document.querySelector('.section_opti-sim').classList.add('hide');
+    document.querySelector('.section_opti-sim-form').classList.remove('hide');
+    return;
   }
 
   // 🔁 Boucle pour sauter les questions avec data-ignore="true"
@@ -343,16 +350,16 @@ function changeQuestion(direction) {
   nextStepElement.classList.remove('hide');
 }
 
-function showResults() {
+/*function showResults() {
   // masque le quiz
   document.querySelector('.opti-sim_content-wrapper').classList.add('hide');
   // affiche la zone de résultats
   const resultWrapper = document.querySelector('.opti-sim_results-wrapper');
   resultWrapper.classList.remove('hide');
   renderResults(resultWrapper);
-}
+}*/
 
-function renderResults(container) {
+/*function renderResults(container) {
   // Libellés des thèmes
   const THEME_LABELS = {
     wage: 'Rémunération',
@@ -418,85 +425,6 @@ function renderResults(container) {
         container.appendChild(line);
       });
     });
-  });
-}
-
-/*function renderResults(container) {
-  const resultsDiv = container.querySelector('.results') ||
-    (() => {
-      const d = document.createElement('div');
-      d.classList.add('results');
-      container.appendChild(d);
-      return d;
-    })();
-
-  resultsDiv.innerHTML = '';
-
-  // --- Libellés des thèmes ---
-  const THEME_LABELS = {
-    wage: 'Rémunération',
-    development: 'Développement',
-    organisation: 'Organisation',
-    gestion: 'Gestion',
-    protection: 'Protection'
-  };
-
-  const capitalize = (str) => !str ? '' : str.charAt(0).toUpperCase() + str.slice(1);
-
-  // --- Affichage des sections ---
-  Object.entries(finalResults).forEach(([theme, pct]) => {
-    const section = document.createElement('section');
-    section.classList.add('result-section');
-
-    const resultGrid = document.createElement('div');
-    resultGrid.classList.add('result-grid');
-
-    // Titre principal (ex: Organisation : 64%)
-    const title = document.createElement('h3');
-    const themeName = THEME_LABELS[theme] || capitalize(theme);
-    title.textContent = `${themeName} : ${pct}%`;
-
-    const messagesContainer = document.createElement('div');
-    messagesContainer.classList.add('result-messages');
-
-    // --- Groupes de messages ---
-    const entries = Array.isArray(detailedResults[theme]) ? detailedResults[theme] : [];
-
-    const redMessages = entries.filter(e => e.points < 3);
-    const orangeMessages = entries.filter(e => e.points >= 3 && e.points < 5);
-
-    // --- Fonction de création d’un bloc de messages ---
-    function createMessageBlock(messages, titleText, colorClass) {
-      if (!messages.length) return null;
-
-      const block = document.createElement('div');
-      block.classList.add('result-message-group', colorClass);
-
-      const blockTitle = document.createElement('h4');
-      blockTitle.textContent = titleText;
-      block.appendChild(blockTitle);
-
-      messages.forEach(entry => {
-        const p = document.createElement('p');
-        p.innerHTML = entry.message;
-        block.appendChild(p);
-      });
-
-      return block;
-    }
-
-    // Ajouter blocs si contenu
-    const redBlock = createMessageBlock(redMessages, 'Il est urgent de se pencher sur ces points', 'red');
-    const orangeBlock = createMessageBlock(orangeMessages, 'À améliorer', 'orange');
-
-    if (redBlock) messagesContainer.appendChild(redBlock);
-    if (orangeBlock) messagesContainer.appendChild(orangeBlock);
-
-    // Append au grid
-    resultGrid.appendChild(title);
-    resultGrid.appendChild(messagesContainer);
-    section.appendChild(resultGrid);
-    resultsDiv.appendChild(section);
   });
 }*/
 
@@ -593,7 +521,6 @@ setupExclusiveMultiCheckbox({
   answerKey: 'benefits-in-kind-tax-reduction',
   theme: 'wage'
 });
-
 
 function setupMultiAnswerQuestion({ questionId, answerKey, theme }) {
   const questionElement = document.getElementById(questionId);
@@ -1675,3 +1602,62 @@ function calculProtection(questionContainerId) {
 
   console.log(detailedResults.protection);
 }
+
+
+/*function shareCookies() {
+    let urlParams = JSON.parse(localStorage.getItem('urlParams'));
+    let answers = JSON.parse(localStorage.getItem('choices'));
+    
+    if (answers === null || answers === undefined) {
+        answers = {};
+    }
+
+    const preQualificationData = {...urlParams, ...answers};
+
+    document.cookie = `pre_qualification_workflow_data=${JSON.stringify(preQualificationData)}; domain=acasi.io; path=/`;
+}*/
+
+function saveResultsToCookie() {
+  const data = {
+    finalResults,
+    detailedResults
+  };
+
+  document.cookie = `opti_sim_results=${JSON.stringify(data)}; domain=acasi.io; path=/;`;
+}
+
+document.getElementById('result-btn').addEventListener('click', () => {
+  calculOrganisation();
+  calculWage();
+  calculDevelopment();
+  calculProtection();
+  calculGestion();
+
+  console.log('Final:', finalResults);
+  console.log('Detailed:', detailedResults);
+
+  saveResultsToCookie();
+
+  window.location.href = '/simulateur-optimisations-freelance-resultats';
+});
+
+
+/*function saveResultsToLocalStorage() {
+  const data = {
+    finalResults,
+    detailedResults
+  };
+  localStorage.setItem('optiSimResults', JSON.stringify(data));
+}
+
+document.getElementById('result-btn').addEventListener('click', () => {
+  calculOrganisation();
+  calculWage();
+  calculDevelopment();
+  calculProtection();
+  calculGestion();
+
+  saveResultsToLocalStorage();
+
+  window.location.href = '/simulateur-optimisations-freelance-resultats';
+});*/
