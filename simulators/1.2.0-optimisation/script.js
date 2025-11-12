@@ -1638,7 +1638,9 @@ document.getElementById('result-btn').addEventListener('click', () => {
 
   saveResultsToCookie();
 
-  window.location.href = '/simulateur-optimisations-freelance-resultats';
+  setTimeout(() => {
+    window.location.href = '/simulateur-optimisations-freelance-resultats';
+  }, 200);
 });
 
 
