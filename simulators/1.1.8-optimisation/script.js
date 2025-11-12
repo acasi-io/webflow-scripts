@@ -1623,7 +1623,7 @@ function saveResultsToCookie() {
     detailedResults
   };
 
-  document.cookie = `opti_sim_results=${JSON.stringify(data)}; domain=acasi.io; path=/;`;
+  document.cookie = `opti_sim_results=${encodeURIComponent(JSON.stringify(data))}; domain=acasi.io; path=/;`;
 }
 
 document.getElementById('result-btn').addEventListener('click', () => {
