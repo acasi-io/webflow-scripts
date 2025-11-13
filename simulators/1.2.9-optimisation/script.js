@@ -1690,7 +1690,6 @@ document.getElementById('result-btn').addEventListener('click', function (e) {
 
 
 const form = document.querySelector('#opti-sim-result-form');
-if (!form) return;
 
 form.addEventListener('submit', function (e) {
   e.preventDefault();
