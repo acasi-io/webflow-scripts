@@ -1690,42 +1690,51 @@ document.getElementById('result-btn').addEventListener('click', function (e) {
 
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.querySelector('#opti-sim-result-form');
-
   if (!form) return;
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    // Étape 1 : Calculs
+    // Calculs
     calculOrganisation();
     calculWage();
     calculDevelopment();
     calculProtection();
     calculGestion();
 
-    // Étape 2 : Sauvegarde dans le localStorage
+    // Sauvegarde
     saveResultsToLocalStorage();
 
-    // Étape 3 : Récupération des valeurs du formulaire
+    // Valeurs
     const email = form.querySelector('input[name="email"]').value;
     const phone = form.querySelector('input[name="phone"]').value;
 
-    // Étape 4 : Encodage compatible Apps Script
+    // Vérification email obligatoire
+    if (!email) {
+      alert("Merci de renseigner votre email.");
+      return;
+    }
+
+    // Format encodé
     const formData = new URLSearchParams();
     formData.append('email', email);
     formData.append('phone', phone);
 
-    fetch('https://script.google.com/macros/s/AKfycbyjkjXhj580tGWFyym3Qwpy2XP7MNXYzl48kmb3rZI_cEAuZp6qWVTTjwUbZJ41-55Z/exec', {
+    // Requête
+    fetch('https://script.google.com/macros/s/AKfycbx6ijWntQgZymlhSm8W1TjrG6ioFKYpQ-chMJ6JLUojow4PwHGL52p7LtOjWsH9oiWG/exec', {
       method: 'POST',
       body: formData
     })
-    .then(response => {
-      if (!response.ok) throw new Error('Erreur HTTP');
-      return response.json();
-    })
-    .then(data => {
-      console.log('✅ Données envoyées :', data);
-      window.location.href = '/simulateur-optimisations-freelance-resultats';
+    .then(async response => {
+      const text = await response.text(); // ← capture brut
+      try {
+        const data = JSON.parse(text); // ← tente de parser
+        console.log('✅ Données envoyées :', data);
+        window.location.href = '/simulateur-optimisations-freelance-resultats';
+      } catch (err) {
+        console.error('❌ Réponse non valide :', text);
+        alert("Erreur côté serveur. Merci de réessayer.");
+      }
     })
     .catch(error => {
       console.error('❌ Erreur lors de l’envoi :', error);
