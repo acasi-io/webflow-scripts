@@ -1715,38 +1715,15 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // Format encodé
-    const formData = new URLSearchParams();
-    formData.append('email', email);
-    formData.append('phone', phone);
+    const params = new URLSearchParams();
+    params.append("email", email);
+    params.append("phone", phone);
 
-    console.log('📤 Données prêtes à être envoyées :', { email, phone });
-
-    // Requête
-    fetch('https://script.google.com/macros/s/AKfycbx-XSyREFS61lvITKdbwXckh9yA1F1UuwfxEl-qYYmviYFT-K3-cJVfzcKKEJ6cuhAH/exec', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        phone: phone
-      })
-    })
-    .then(async response => {
-      const raw = await response.text();
-      console.log('📥 Réponse brute reçue :', raw);
-
-      if (!response.ok) throw new Error('Erreur HTTP');
-
-      const data = JSON.parse(raw);
-      console.log('✅ Données envoyées :', data);
-
-      window.location.href = '/simulateur-optimisations-freelance-resultats';
-    })
-    .catch(error => {
-      console.error('❌ Erreur lors de l’envoi :', error);
-      alert("Une erreur est survenue. Merci de réessayer.");
+    fetch("https://script.google.com/macros/s/AKfycbzOvQ1ATx00SZz6mBM0thjyo1MIJK6RFyHqyvbLZMOvik7CnbbzWhzViJnuSz-fnbr5/exec", {
+      method: "POST",
+      body: params
     });
+
+    window.location.href = "/simulateur-optimisations-freelance-resultats";
   });
 });
