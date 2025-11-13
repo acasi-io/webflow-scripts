@@ -322,8 +322,8 @@ function changeQuestion(direction) {
 
   if (direction === 'next' && currentIndex === steps.length - 1) {
     // À la fin des questions, afficher le formulaire
-    document.querySelector('.section_opti-sim').classList.add('hide');
-    document.querySelector('.section_opti-sim-form').classList.remove('hide');
+    document.querySelector('.opti-sim_question-wrapper').classList.add('hide');
+    document.querySelector('.opti-sim_form-results-wrapper').classList.remove('hide');
     return;
   }
 
@@ -897,7 +897,6 @@ function calculGestion() {
   document.getElementById('gestion-result').textContent = Math.round(resultOptimisation);
   // Exemple dans calculDevelopment, juste avant updateProgressBar('development'):
   finalResults.gestion = Math.round(resultOptimisation);
-  console.log(detailedResults);
 
 
   // Calcul de la barre de progression en se basant sur le nombre réel de questions "notées"
@@ -1073,8 +1072,6 @@ function calculOrganisation(questionContainerId) {
   document.getElementById('organisation-result').textContent = pct;
   updateProgressBar('organisation');
   finalResults.organisation = pct;
-
-  console.log(detailedResults.organisation);
 }
 
 function calculDevelopment(questionContainerId) {
@@ -1262,8 +1259,6 @@ function calculDevelopment(questionContainerId) {
   document.getElementById('development-result').textContent = pct;
   updateProgressBar('development');
   finalResults.development = pct;
-
-  console.log(detailedResults.development);
 }
 
 function calculWage(questionContainerId) {
@@ -1436,8 +1431,6 @@ function calculWage(questionContainerId) {
   document.getElementById('wage-result').textContent = pct;
   updateProgressBar('wage');
   finalResults.wage = pct;
-
-  console.log(detailedResults.wage);
 }
 
 function calculProtection(questionContainerId) {
@@ -1599,8 +1592,6 @@ function calculProtection(questionContainerId) {
   document.getElementById('protection-result').textContent = pct;
   updateProgressBar('protection');
   finalResults.protection = pct;
-
-  console.log(detailedResults.protection);
 }
 
 
@@ -1617,7 +1608,7 @@ function calculProtection(questionContainerId) {
     document.cookie = `pre_qualification_workflow_data=${JSON.stringify(preQualificationData)}; domain=acasi.io; path=/`;
 }*/
 
-function saveResultsToCookie() {
+/*function saveResultsToCookie() {
   const data = {
     finalResults,
     detailedResults
@@ -1641,10 +1632,10 @@ document.getElementById('result-btn').addEventListener('click', () => {
   setTimeout(() => {
     window.location.href = '/simulateur-optimisations-freelance-resultats';
   }, 200);
-});
+});*/
 
 
-/*function saveResultsToLocalStorage() {
+function saveResultsToLocalStorage() {
   const data = {
     finalResults,
     detailedResults
@@ -1652,7 +1643,7 @@ document.getElementById('result-btn').addEventListener('click', () => {
   localStorage.setItem('optiSimResults', JSON.stringify(data));
 }
 
-document.getElementById('result-btn').addEventListener('click', () => {
+/*document.getElementById('result-btn').addEventListener('click', () => {
   calculOrganisation();
   calculWage();
   calculDevelopment();
@@ -1660,6 +1651,85 @@ document.getElementById('result-btn').addEventListener('click', () => {
   calculGestion();
 
   saveResultsToLocalStorage();
-
-  window.location.href = '/simulateur-optimisations-freelance-resultats';
 });*/
+
+/*document.getElementById('result-btn').addEventListener('click', () => {
+  calculOrganisation();
+  calculWage();
+  calculDevelopment();
+  calculProtection();
+  calculGestion();
+
+  saveResultsToLocalStorage();
+});
+
+const form = document.querySelector('#opti-sim-result-form');
+
+document.getElementById('result-btn').addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const email = form.querySelector('input[name="email"]').value;
+  const phone = form.querySelector('input[name="phone"]').value;
+
+  fetch('https://script.google.com/macros/s/AKfycbwAdJsKo05YiB2F7orep-2676w4Ka4mrEwA0iZnqidMExemxVRTgv1s9HgyUkldKH_C/exec', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: email, telephone: phone })
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('Erreur HTTP');
+    console.log('✅ Redirection en cours...');
+    window.location.href = "/simulateur-optimisations-freelance-resultats";
+  })
+  .catch(error => {
+    console.error('❌ Erreur lors de l’envoi :', error);
+  });
+});*/
+
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.querySelector('#opti-sim-result-form');
+
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Étape 1 : Calculs
+    calculOrganisation();
+    calculWage();
+    calculDevelopment();
+    calculProtection();
+    calculGestion();
+
+    // Étape 2 : Sauvegarde dans le localStorage
+    saveResultsToLocalStorage();
+
+    // Étape 3 : Récupération des valeurs du formulaire
+    const email = form.querySelector('input[name="email"]').value;
+    const phone = form.querySelector('input[name="phone"]').value;
+
+    // Étape 4 : Encodage compatible Apps Script
+    const formData = new URLSearchParams();
+    formData.append('email', email);
+    formData.append('phone', phone);
+
+    fetch('https://script.google.com/macros/s/AKfycbyjkjXhj580tGWFyym3Qwpy2XP7MNXYzl48kmb3rZI_cEAuZp6qWVTTjwUbZJ41-55Z/exec', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Erreur HTTP');
+      return response.json();
+    })
+    .then(data => {
+      console.log('✅ Données envoyées :', data);
+      window.location.href = '/simulateur-optimisations-freelance-resultats';
+    })
+    .catch(error => {
+      console.error('❌ Erreur lors de l’envoi :', error);
+      alert("Une erreur est survenue. Merci de réessayer.");
+    });
+  });
+});
