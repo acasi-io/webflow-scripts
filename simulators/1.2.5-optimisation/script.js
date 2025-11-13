@@ -1720,21 +1720,27 @@ document.addEventListener('DOMContentLoaded', function () {
     formData.append('email', email);
     formData.append('phone', phone);
 
+    console.log('📤 Envoi des données vers Google Sheets...');
+
     // Requête
-    fetch('https://script.google.com/macros/s/AKfycbx6ijWntQgZymlhSm8W1TjrG6ioFKYpQ-chMJ6JLUojow4PwHGL52p7LtOjWsH9oiWG/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbw_R0XQFlOt4oFDPvfu9YlfdtGzWwEQ92_f_WNYZ1bPSSN9wwk7bpyQToYKEhepROkt/exec', {
       method: 'POST',
-      body: formData
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        phone: phone
+      })
     })
     .then(async response => {
-      const text = await response.text(); // ← capture brut
-      try {
-        const data = JSON.parse(text); // ← tente de parser
-        console.log('✅ Données envoyées :', data);
-        window.location.href = '/simulateur-optimisations-freelance-resultats';
-      } catch (err) {
-        console.error('❌ Réponse non valide :', text);
-        alert("Erreur côté serveur. Merci de réessayer.");
-      }
+      const text = await response.text();
+      console.log('📥 Réponse brute :', text);
+
+      if (!response.ok) throw new Error('Erreur HTTP');
+      const data = JSON.parse(text);
+      console.log('✅ Données envoyées :', data);
+      window.location.href = '/simulateur-optimisations-freelance-resultats';
     })
     .catch(error => {
       console.error('❌ Erreur lors de l’envoi :', error);
