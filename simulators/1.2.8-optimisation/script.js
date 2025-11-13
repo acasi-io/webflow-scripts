@@ -1688,42 +1688,41 @@ document.getElementById('result-btn').addEventListener('click', function (e) {
   });
 });*/
 
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.querySelector('#opti-sim-result-form');
-  if (!form) return;
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
+const form = document.querySelector('#opti-sim-result-form');
+if (!form) return;
 
-    // Calculs
-    calculOrganisation();
-    calculWage();
-    calculDevelopment();
-    calculProtection();
-    calculGestion();
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
 
-    // Sauvegarde
-    saveResultsToLocalStorage();
+  // Calculs
+  calculOrganisation();
+  calculWage();
+  calculDevelopment();
+  calculProtection();
+  calculGestion();
 
-    // Valeurs
-    const email = form.querySelector('input[name="email"]').value;
-    const phone = form.querySelector('input[name="phone"]').value;
+  // Sauvegarde
+  saveResultsToLocalStorage();
 
-    // Vérification email obligatoire
-    if (!email) {
-      alert("Merci de renseigner votre email.");
-      return;
-    }
+  // Valeurs
+  const email = form.querySelector('input[name="email"]').value;
+  const phone = form.querySelector('input[name="phone"]').value;
 
-    const params = new URLSearchParams();
-    params.append("email", email);
-    params.append("phone", phone);
+  // Vérification email obligatoire
+  if (!email) {
+    alert("Merci de renseigner votre email.");
+    return;
+  }
 
-    fetch("https://script.google.com/macros/s/AKfycbzOvQ1ATx00SZz6mBM0thjyo1MIJK6RFyHqyvbLZMOvik7CnbbzWhzViJnuSz-fnbr5/exec", {
-      method: "POST",
-      body: params
-    });
+  const params = new URLSearchParams();
+  params.append("email", email);
+  params.append("phone", phone);
 
-    window.location.href = "/simulateur-optimisations-freelance-resultats";
+  fetch("https://script.google.com/macros/s/AKfycbzOvQ1ATx00SZz6mBM0thjyo1MIJK6RFyHqyvbLZMOvik7CnbbzWhzViJnuSz-fnbr5/exec", {
+    method: "POST",
+    body: params
   });
+
+  window.location.href = "/simulateur-optimisations-freelance-resultats";
 });
