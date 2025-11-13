@@ -1720,10 +1720,10 @@ document.addEventListener('DOMContentLoaded', function () {
     formData.append('email', email);
     formData.append('phone', phone);
 
-    console.log('📤 Envoi des données vers Google Sheets...');
+    console.log('📤 Données prêtes à être envoyées :', { email, phone });
 
     // Requête
-    fetch('https://script.google.com/macros/s/AKfycbw_R0XQFlOt4oFDPvfu9YlfdtGzWwEQ92_f_WNYZ1bPSSN9wwk7bpyQToYKEhepROkt/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbx-XSyREFS61lvITKdbwXckh9yA1F1UuwfxEl-qYYmviYFT-K3-cJVfzcKKEJ6cuhAH/exec', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -1734,12 +1734,14 @@ document.addEventListener('DOMContentLoaded', function () {
       })
     })
     .then(async response => {
-      const text = await response.text();
-      console.log('📥 Réponse brute :', text);
+      const raw = await response.text();
+      console.log('📥 Réponse brute reçue :', raw);
 
       if (!response.ok) throw new Error('Erreur HTTP');
-      const data = JSON.parse(text);
+
+      const data = JSON.parse(raw);
       console.log('✅ Données envoyées :', data);
+
       window.location.href = '/simulateur-optimisations-freelance-resultats';
     })
     .catch(error => {
