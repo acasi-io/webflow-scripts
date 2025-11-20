@@ -647,6 +647,7 @@ function calculGestion() {
   let answeredQuestions = 0;
   let answers = {};
   detailedResults.gestion = [];
+  const multiIds = ['other-company-optimisation'];
 
   let unemploymentAnswer = null;
   let socialFormAnswer = null;
@@ -830,22 +831,6 @@ function calculGestion() {
     }
 
     detailedResults.gestion.push({ message, points });
-    /*const infoTitleEl = question.querySelector('.opti-sim_info-title')?.textContent ?? '';
-    const infoTextEl  = question.querySelector('.opti-sim_info-text')?.textContent  ?? '';
-
-    const message = (infoTitleEl && infoTextEl)
-    ? `${infoTitleEl.textContent} : ${infoTextEl.textContent}`
-    : `Réponse « ${answerValue} »`;
-
-    detailedResults.gestion.push({
-      message,
-      points
-    });*/
-
-    /*detailedResults.gestion.push({
-      message: `${title} : ${text}`,
-      points: points
-    });*/
   });
 
   // Ajout des points conditionnels (non inclus dans selectedAnswers)
@@ -892,31 +877,9 @@ function calculGestion() {
     });
   }
 
-  // Calcul du score en pourcentage pour l'affichage textuel
   const resultOptimisation = answeredQuestions > 0 ? (result / (answeredQuestions * 5)) * 100 : 0;
   document.getElementById('gestion-result').textContent = Math.round(resultOptimisation);
-  // Exemple dans calculDevelopment, juste avant updateProgressBar('development'):
   finalResults.gestion = Math.round(resultOptimisation);
-
-
-  // Calcul de la barre de progression en se basant sur le nombre réel de questions "notées"
-  /*const maxPointsGestion = totalQuestionsForGestion * 5;
-  let goodPercentage = (result / maxPointsGestion) * 100;
-  if (goodPercentage > 100) { goodPercentage = 100; }
-  let progressPercentage = (answeredQuestions / totalQuestionsForGestion) * 100;
-  let badPercentage = progressPercentage - goodPercentage;
-  if (badPercentage < 0) { badPercentage = 0; }
-
-  // Mise à jour de la barre de progression pour Gestion
-  const progressBar = document.querySelector('.opti-sim_theme-item[data-theme="gestion"] .opti-sim_progress-bar-wrapper');
-  if (progressBar) {
-    const goodBar = progressBar.querySelector('.opti-sim_progress-bar.is-good');
-    const badBar = progressBar.querySelector('.opti-sim_progress-bar.is-bad');
-    if (goodBar && badBar) {
-      goodBar.style.width = `${goodPercentage}%`;
-      badBar.style.width = `${badPercentage}%`;
-    }
-  }*/
 
   updateProgressBar('gestion');
 }
@@ -1595,45 +1558,6 @@ function calculProtection(questionContainerId) {
 }
 
 
-/*function shareCookies() {
-    let urlParams = JSON.parse(localStorage.getItem('urlParams'));
-    let answers = JSON.parse(localStorage.getItem('choices'));
-    
-    if (answers === null || answers === undefined) {
-        answers = {};
-    }
-
-    const preQualificationData = {...urlParams, ...answers};
-
-    document.cookie = `pre_qualification_workflow_data=${JSON.stringify(preQualificationData)}; domain=acasi.io; path=/`;
-}*/
-
-/*function saveResultsToCookie() {
-  const data = {
-    finalResults,
-    detailedResults
-  };
-
-  document.cookie = `opti_sim_results=${encodeURIComponent(JSON.stringify(data))}; path=/; SameSite=Lax;`;
-}
-
-document.getElementById('result-btn').addEventListener('click', () => {
-  calculOrganisation();
-  calculWage();
-  calculDevelopment();
-  calculProtection();
-  calculGestion();
-
-  console.log('Final:', finalResults);
-  console.log('Detailed:', detailedResults);
-
-  saveResultsToCookie();
-
-  setTimeout(() => {
-    window.location.href = '/simulateur-optimisations-freelance-resultats';
-  }, 200);
-});*/
-
 
 function saveResultsToLocalStorage() {
   const data = {
@@ -1643,53 +1567,9 @@ function saveResultsToLocalStorage() {
   localStorage.setItem('optiSimResults', JSON.stringify(data));
 }
 
-/*document.getElementById('result-btn').addEventListener('click', () => {
-  calculOrganisation();
-  calculWage();
-  calculDevelopment();
-  calculProtection();
-  calculGestion();
-
-  saveResultsToLocalStorage();
-});*/
-
-/*document.getElementById('result-btn').addEventListener('click', () => {
-  calculOrganisation();
-  calculWage();
-  calculDevelopment();
-  calculProtection();
-  calculGestion();
-
-  saveResultsToLocalStorage();
-});
-
-const form = document.querySelector('#opti-sim-result-form');
-
-document.getElementById('result-btn').addEventListener('click', function (e) {
-  e.preventDefault();
-
-  const email = form.querySelector('input[name="email"]').value;
-  const phone = form.querySelector('input[name="phone"]').value;
-
-  fetch('https://script.google.com/macros/s/AKfycbwAdJsKo05YiB2F7orep-2676w4Ka4mrEwA0iZnqidMExemxVRTgv1s9HgyUkldKH_C/exec', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email: email, telephone: phone })
-  })
-  .then(response => {
-    if (!response.ok) throw new Error('Erreur HTTP');
-    console.log('✅ Redirection en cours...');
-    window.location.href = "/simulateur-optimisations-freelance-resultats";
-  })
-  .catch(error => {
-    console.error('❌ Erreur lors de l’envoi :', error);
-  });
-});*/
 
 
-const form = document.querySelector('#opti-sim-result-form');
+/*const form = document.querySelector('#opti-sim-result-form');
 
 form.addEventListener('submit', function (e) {
   e.preventDefault();
@@ -1724,4 +1604,62 @@ form.addEventListener('submit', function (e) {
   });
 
   window.location.href = "/simulateur-optimisations-freelance-resultats";
+});*/
+
+// 1️⃣ Génération UID + lien de résultats
+const uid = Date.now().toString(36) + Math.random().toString(36).slice(2);
+const resultsLink = `https://www.acasi.io/simulateur-optimisations-freelance-resultats?uid=${uid}`;
+
+
+// 2️⃣ HubSpot callback listener
+window.addEventListener("message", function(event) {
+  
+  // A. Formulaire chargé → on remplit le champ hidden results_link
+  if (event.data.type === "hsFormCallback" && event.data.eventName === "onFormReady") {
+    console.log("✔ HubSpot form loaded");
+
+    const hiddenField = document.querySelector('input[name="results_link"]');
+    if (hiddenField) {
+      hiddenField.value = resultsLink;
+      console.log("➡ results_link injecté :", resultsLink);
+    }
+  }
+
+  // B. Formulaire soumis → on déclenche ton simulateur + Apps Script + redirection
+  if (event.data.type === "hsFormCallback" && event.data.eventName === "onFormSubmit") {
+    console.log("✔ HubSpot form submitted");
+
+    // Récupération email + phone depuis le formulaire HubSpot
+    const emailField = document.querySelector('input[name="email"]');
+    const phoneField = document.querySelector('input[name="phone"]');
+
+    const email = emailField ? emailField.value : "";
+    const phone = phoneField ? phoneField.value : "";
+
+    // 3️⃣ TES CALCULS
+    calculOrganisation();
+    calculWage();
+    calculDevelopment();
+    calculProtection();
+    calculGestion();
+
+    // 4️⃣ Sauvegarde localStorage
+    saveResultsToLocalStorage();
+
+    // 5️⃣ Envoi des données dans Google Sheet
+    const params = new URLSearchParams();
+    params.append("email", email);
+    params.append("phone", phone);
+    params.append("uid", uid);
+    params.append("results_link", resultsLink);
+
+    fetch("https://script.google.com/macros/s/AKfycby3zaoC_WlRVVYSS8rRYmvObHQ5eRzubfrXF5-MsRegneMMPdvAJtqbS-Rwve9KJvFH/exec", {
+      method: "POST",
+      body: params
+    }).catch(err => console.error("Erreur Apps Script :", err));
+
+    // 6️⃣ Redirection vers la page résultats
+    window.location.href = resultsLink;
+  }
+
 });
