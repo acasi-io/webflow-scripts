@@ -1606,60 +1606,16 @@ form.addEventListener('submit', function (e) {
   window.location.href = "/simulateur-optimisations-freelance-resultats";
 });*/
 
-// 1️⃣ Génération UID + lien de résultats
-const uid = Date.now().toString(36) + Math.random().toString(36).slice(2);
-const resultsLink = `https://www.acasi.io/simulateur-optimisations-freelance-resultats?uid=${uid}`;
-
-
-// 2️⃣ HubSpot callback listener
 window.addEventListener("message", function(event) {
-  
-  // A. Formulaire chargé → on remplit le champ hidden results_link
-  if (event.data.type === "hsFormCallback" && event.data.eventName === "onFormReady") {
-    console.log("✔ HubSpot form loaded");
+  if (!event.data || event.data.type !== "hsFormCallback") return;
 
-    const hiddenField = document.querySelector('input[name="results_link"]');
-    if (hiddenField) {
-      hiddenField.value = resultsLink;
-      console.log("➡ results_link injecté :", resultsLink);
-    }
-  }
-
-  // B. Formulaire soumis → on déclenche ton simulateur + Apps Script + redirection
-  if (event.data.type === "hsFormCallback" && event.data.eventName === "onFormSubmit") {
-    console.log("✔ HubSpot form submitted");
-
-    // Récupération email + phone depuis le formulaire HubSpot
-    const emailField = document.querySelector('input[name="0-1/email"]');
-    const phoneField = document.querySelector('input[name="phone"]');
-
-    const email = emailField ? emailField.value : "";
-    const phone = phoneField ? phoneField.value : "";
-
-    // 3️⃣ TES CALCULS
+  if (event.data.eventName === "onFormSubmit") {
     calculOrganisation();
     calculWage();
     calculDevelopment();
     calculProtection();
     calculGestion();
 
-    // 4️⃣ Sauvegarde localStorage
     saveResultsToLocalStorage();
-
-    // 5️⃣ Envoi des données dans Google Sheet
-    const params = new URLSearchParams();
-    params.append("email", email);
-    params.append("phone", phone);
-    params.append("uid", uid);
-    params.append("results_link", resultsLink);
-
-    fetch("https://script.google.com/macros/s/AKfycby3zaoC_WlRVVYSS8rRYmvObHQ5eRzubfrXF5-MsRegneMMPdvAJtqbS-Rwve9KJvFH/exec", {
-      method: "POST",
-      body: params
-    }).catch(err => console.error("Erreur Apps Script :", err));
-
-    // 6️⃣ Redirection vers la page résultats
-    window.location.href = resultsLink;
   }
-
 });
