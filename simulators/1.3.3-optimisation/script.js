@@ -321,9 +321,21 @@ function changeQuestion(direction) {
   }*/
 
   if (direction === 'next' && currentIndex === steps.length - 1) {
-    // À la fin des questions, afficher le formulaire
+
+    // 1️⃣ Calculs juste avant d'afficher le formulaire
+    calculOrganisation();
+    calculWage();
+    calculDevelopment();
+    calculProtection();
+    calculGestion();
+
+    // 2️⃣ Sauvegarde dans le localStorage
+    saveResultsToLocalStorage();
+
+    // 3️⃣ Affichage du formulaire HubSpot
     document.querySelector('.opti-sim_question-wrapper').classList.add('hide');
     document.querySelector('.opti-sim_form-results-wrapper').classList.remove('hide');
+
     return;
   }
 
@@ -1606,7 +1618,7 @@ form.addEventListener('submit', function (e) {
   window.location.href = "/simulateur-optimisations-freelance-resultats";
 });*/
 
-window.addEventListener("message", function(event) {
+/*window.addEventListener("message", function(event) {
   if (!event.data || event.data.type !== "hsFormCallback") return;
 
   if (event.data.eventName === "onFormSubmit") {
@@ -1618,4 +1630,4 @@ window.addEventListener("message", function(event) {
 
     saveResultsToLocalStorage();
   }
-});
+});*/
