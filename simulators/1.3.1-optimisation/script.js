@@ -1630,7 +1630,7 @@ window.addEventListener("message", function(event) {
     console.log("✔ HubSpot form submitted");
 
     // Récupération email + phone depuis le formulaire HubSpot
-    const emailField = document.querySelector('input[name="email"]');
+    const emailField = document.querySelector('input[name="0-1/email"]');
     const phoneField = document.querySelector('input[name="phone"]');
 
     const email = emailField ? emailField.value : "";
